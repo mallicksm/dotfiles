@@ -1,0 +1,54 @@
+# .bashrc
+source ~/dotfiles/bash_functions.sh
+source ~/dotfiles/bash_aliases.sh
+if [[ -f ~/corp_settings.sh ]]; then
+   source ~/corp_settings.sh
+else 
+   echo "Attention: setup ~/corp_settings.sh" 
+   return
+fi
+#
+# User customization starts here
+#
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+bind '"\e[C": forward-char'
+bind '"\e[D": backward-char'
+export RTP_DOTFILE=~/dotfiles/vim/
+export RTP_NVIM_DOTFILE=~/dotfiles/nvim/
+
+# tmux settings
+export LC_ALL=en_IN.UTF-8
+export LANG=en_IN.UTF-8
+
+# User specific settings, aliases, functions, etc.
+[[ -f ~/${USER}.bashrc ]] && source ~/${USER}.bashrc
+[[ -f ~/${USER}.aliases ]] && source ~/${USER}.aliases
+
+# z settings
+[[ -f ~/dotfiles/initrc/z.sh ]] && source ~/dotfiles/initrc/z.sh
+# configure fzf with  z
+# Note: https://github.com/junegunn/fzf/wiki/Examples#integration-with-z
+unalias z 2> /dev/null
+z() {
+  if [[ -z "$*" ]]; then
+    cd "$(_z -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
+  else
+    _last_z_args="$@"
+    _z "$@"
+  fi
+}
+
+zz() {
+  cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q "$_last_z_args")"
+}
+modpath ~/.fzf/bin b
+modpath ~/.local/bin b
+# Starship configuration
+export STARSHIP_CONFIG=$HOME/.starship.toml
+export STARSHIP_LOG=error
+function set_win_title(){
+   echo -ne "\033]0; [$SHLVL] $USER@$(hostname -s)  $PWD\007"
+}
+starship_precmd_user_func="set_win_title"
+eval "$(starship init bash)"

@@ -1,0 +1,108 @@
+{
+   "item header": {
+      "prefix": ["header"],
+      "body": [
+         "//==============================================================================",
+         "// State Description Language",
+         "// Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+         "// Author: ${VIM:\\$USER}",
+         "//",
+         "// Note:",
+         "// P/N - Positive/Negative edge.",
+         "// L/H - Value is stable (0/1 +2cycle)",
+         "// T/S - Transition/Stable (+ve/-ve or +2cycle)",
+         "// X   - Don’t care; any value is accepted as a match.",
+         "// transition() - Detect any value transition",
+         "// sdl Debug: sdl -traceDump -location trace.txt",
+         "//",
+         "// Description: ${1:Description}",
+         "//",
+         "//=============================================================================="
+      ],
+      "description": "insert header code"
+   },
+   "item instance": {
+      "prefix": ["instance"],
+      "body": [
+         "INSTANCE inst1;"
+      ],
+      "description": "instance"
+   },
+   "item state": {
+      "prefix": ["state"],
+      "body": [
+         "STATE s0 {",
+         "   ${1:/* statements */}",
+         "}"
+      ],
+      "description": "Code snippet for state"
+   },
+   "item if": {
+      "prefix": ["if"],
+      "body": [
+         "IF (${1:expression}) {",
+         "   ${2:/* statements */}",
+         "}"
+      ],
+      "description": "Code snippet for if"
+   },
+   "item if-else": {
+      "prefix": ["if-else", "ife"],
+      "body": [
+         "IF (${1:expression}) {",
+         "   ${2:/* statements */}",
+         "} ELSE IF (${3:expression}) {",
+         "   ${4:/* statements */}",
+         "} ELSE {",
+         "   ${5:/* statements */}",
+         "}"
+      ],
+      "description": "Code snippet for if-else-if"
+   },
+   "item tick define": {
+      "prefix": ["define"],
+      "body": [
+         "`define ${1:name} ${1:string}"
+      ],
+      "description": "Code snippet for tick define"
+   },
+   "item tick include": {
+      "prefix": ["include"],
+      "body": [
+         "`include \"${1:global.tdf}\""
+      ],
+      "description": "Code snippet for tick include"
+   },
+   "item single line trigger": {
+      "prefix": ["trigger"],
+      "body": [
+         "TRIGGER = ${1:signal-name};"
+      ],
+      "description": "Code snippet for single line trigger"
+   },
+   "item display statement": {
+      "prefix": ["display"],
+      "body": [
+         "DISPLAY(\"${1:text %t %h}\", ${2:signal-name});"
+      ],
+      "description": "Code snippet for display"
+   },
+   "item tick if": {
+      "prefix": ["tick-if"],
+      "body": [
+         "`if ${1:value}",
+         "   ${2:/* statements */}",
+         "`endif"
+      ],
+      "description": "Code snippet for tick if"
+   },
+   "item tick ifdef": {
+      "prefix": ["tick-ifdef"],
+      "body": [
+         "`ifdef ${1:name}",
+         "${2:/* statements */}",
+         "`endif"
+      ],
+      "description": "Code snippet for tick ifdef"
+   }
+}

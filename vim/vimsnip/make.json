@@ -1,0 +1,74 @@
+{
+   "item header": {
+      "prefix": ["header"],
+      "body": [
+         "#===============================================================================",
+         "# Makefile",
+         "# Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+         "# Author: ${VIM:\\$USER}",
+         "#",
+         "# Note:",
+         "#",
+         "# Description: ${1:Description}",
+         "#",
+         "#===============================================================================",
+         ".ONESHELL:",
+         "SHELL = bash"
+      ],
+      "description": "Code snippet for 'trigger' statement"
+   },
+   "item phony": {
+      "prefix": ["phony"],
+      "body": [
+         ".PHONY: ${1:target}"
+      ],
+      "description": "Code snippet for 'phony' statement"
+   },
+   "item include": {
+      "prefix": ["include"],
+      "body": [
+         "-include ${1:include_file}"
+      ],
+      "description": "Code snippet for 'include' statement"
+   },
+   "item help": {
+      "prefix": ["help"],
+      "body": [
+         "define ${1:Label}",
+         "${2:Multiline_help_string}",
+         "endef",
+         "export $1",
+         "help:",
+         "   @echo \"\\$\\$$1\""
+      ],
+      "description": "Code snippet for 'define' statement"
+   },
+   "if statement": {
+     "prefix": ["if"],
+     "body": [
+       "ifeq (${1:cond0}, ${2:cond1})",
+       "   $0",
+       "endif"
+     ],
+     "description": "if statement"
+   },
+   "if else statement": {
+     "prefix": ["ife"],
+     "body": [
+       "ifeq (${1:cond0}, ${2:cond1})",
+       "   $3",
+       "else",
+       "   $4",
+       "endif"
+     ],
+     "description": "if else statement"
+   },
+   "else": {
+     "prefix": ["else"],
+     "body": [
+       "else",
+       "   $0"
+     ],
+     "description": "else"
+   }
+}

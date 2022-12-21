@@ -1,0 +1,23 @@
+{
+   "item mov": {
+      "prefix": ["mov"],
+      "body": [
+         "mov x${1}, #${2:value}"
+      ],
+      "description": "Code snippet for 'add' statement"
+   },
+   "item orr": {
+      "prefix": ["orr"],
+      "body": [
+         "orr x${1}, x${2}, #${3:value}"
+      ],
+      "description": "Code snippet for 'orr' statement"
+   },
+   "item add": {
+      "prefix": ["add"],
+      "body": [
+         "add x${1}, x${2}, #${3:value}"
+      ],
+      "description": "Code snippet for 'orr' statement"
+   }
+}

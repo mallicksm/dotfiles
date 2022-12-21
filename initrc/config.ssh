@@ -1,0 +1,20 @@
+# Read more about SSH config files: https://linux.die.net/man/5/ssh_config
+Host github.com
+    ForwardX11 no
+
+Host bitbucket.org
+    ForwardX11 no
+
+Host *
+   IdentityFile ~/.ssh/id_rsa
+   ForwardAgent yes
+   ForwardX11 yes
+   Compression yes
+   LogLevel error
+   Port 22
+   ServerAliveCountMax 3600
+   ServerAliveInterval 240
+   StrictHostKeyChecking no
+   ControlPath ~/.ssh/ssh-mux-%r@%h:%p
+   ControlMaster auto
+   ControlPersist yes

@@ -1,0 +1,31 @@
+{
+   "item function": {
+      "prefix": ["function"],
+      "body": [
+         "function! ${1:functionName}()",
+         "   ${2:functionContents}",
+         "endfunction"
+      ],
+      "description": "Code snippet for 'function' statement"
+   },
+   "item augroup": {
+      "prefix": ["augroup"],
+      "body": [
+         "augroup ${1:augroupName}",
+         "   autocmd",
+         "   autocmd",
+         "augroup end"
+      ],
+      "description": "Code snippet for 'au' statement"
+   },
+   "item if": {
+      "prefix": ["if"],
+      "body": [
+         "if number > 0",
+         "elseif number == 0",
+         "else",
+         "endif"
+      ],
+      "description": "Code snippet for 'if' statement"
+   }
+}

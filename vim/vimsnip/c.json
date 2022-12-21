@@ -1,0 +1,192 @@
+{
+   "item header": {
+      "prefix": ["header"],
+      "body": [
+         "//=============================================================================",
+         "// C Programming",
+         "// Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+         "// Author: ${VIM:\\$USER}",
+         "//",
+         "// Note:",
+         "//",
+         "// Description: ${1:Description}",
+         "//",
+         "//============================================================================="
+      ],
+      "description": "insert header code"
+   },
+   "item main": {
+      "prefix": ["main", "function"],
+      "body": [
+         "int main(int argc, const char** argv) {",
+         "   ${1:/* statements */;}",
+         "   return 0;",
+         "}"
+      ],
+      "description": "Code snippet for main function"
+   },
+   "item for loop": {
+      "prefix": ["for"],
+      "body": [
+         "for (${size_t} ${i} = ${1:0}; ${i} < ${2:length}; ${i}++) {",
+         "   ${3:/* statements */}",
+         "}"
+      ],
+      "description": "Code snippet for loop"
+   },
+   "item foreach": {
+      "prefix": ["foreach"],
+      "body": [
+         "for(auto ${var} : ${collection_to_loop}) {",
+         "   $1",
+         "}"
+      ],
+      "description": "Code snippet for range-based for loop (c++11) statement"
+   },
+   "item while loop": {
+      "prefix": ["while"],
+      "body": [
+         "while ($1) {",
+         "   $2",
+         "}"
+      ],
+      "description": ""
+   },
+   "item do": {
+      "prefix": ["do"],
+      "body": [
+         "do {",
+         "   $1",
+         "} while($2);"
+      ],
+      "description": "Code snippet for do...while loop"
+   },
+   "item if": {
+      "prefix": ["if"],
+      "body": [
+         "if ($1) {",
+          "   $2",
+         "}"
+      ],
+      "description": "Code snippet for if statement"
+   },
+   "else": {
+      "prefix": ["else"],
+      "body": [
+         "else {",
+         "   $1",
+         "}"
+      ],
+      "description": "Code snippet for else statement"
+   },
+   "item else-if": {
+      "prefix": ["else-if"],
+      "body": [
+         "else if ($1) {",
+         "   $2",
+         "}"
+      ],
+      "description": "Code snippet for else-if statement"
+   },
+   "item if-else": {
+     "prefix": ["ife","if-else"],
+     "body": [
+       "if ($1) {",
+       "   ",
+       "} else {",
+       "   ",
+       "}"
+     ]
+   },
+   "item enum": {
+      "prefix": ["enum"],
+      "body": [
+         "enum ${MyEnum} {",
+         "   $1",
+         "};"
+      ],
+      "description": "Code snippet for enum"
+   },
+   "item #ifdef": {
+      "prefix": ["#ifdef"],
+      "body": [
+         "#ifdef ${DEBUG}",
+         "$1",
+         "#endif // ${DEBUG}"
+      ],
+      "description": "Code snippet for #ifdef"
+   },
+   "item #ifndef": {
+      "prefix": ["#ifndef"],
+      "body": [
+         "#ifndef ${1:1}",
+         "$2",
+         "#endif // !$1"
+      ],
+      "description": "Code snippet for #ifndef"
+   },
+   "item #if": {
+      "prefix": ["#if"],
+      "body": [
+         "#if ${1:0}",
+         "$2",
+         "#endif"
+      ],
+      "description": "Code snippet for #if"
+   },
+   "item struct": {
+      "prefix": ["struct"],
+      "body": [
+         "struct ${1:MyStruct} {",
+         "   $2",
+         "};"
+      ],
+      "description": "Code snippet for struct"
+   },
+   "item switch": {
+      "prefix": ["switch", "case"],
+      "body": [
+         "switch (${1:switch_on}) {",
+          "   default:",
+          "      break;$2",
+          "}"
+      ],
+      "description": "Code snippet for switch statement"
+   },
+   "item union": {
+      "prefix": ["union"],
+      "body": [
+         "union ${1:MyUnion} {",
+            "   $2",
+            "};"
+      ],
+      "description": "Code snippet for union"
+   },
+   "item #inc": {
+      "prefix": ["#inc"],
+      "body": [
+         "#include \"$1\""
+      ],
+      "description": "Code snippet for #include \" \""
+   },
+   "item #inc<": {
+      "prefix": ["#inc<"],
+      "body": [
+         "#include <$1>"
+      ],
+      "description": "Code snippet for #include \" \""
+   },
+   "item #def": {
+      "prefix": ["#def"],
+      "body": [
+         "#define \"$1\" \"$2\" "
+      ],
+      "description": "Code snippet for #define \" \""
+   },
+  "asm": {
+    "prefix": ["asm"],
+    "body": [
+      "  __asm(\"MSR DAIFClr, #0xF\");"
+    ]
+  }
+}

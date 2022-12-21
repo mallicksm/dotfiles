@@ -1,0 +1,24 @@
+{
+   "item header": {
+      "prefix": ["header"],
+      "body": [
+         ";===============================================================================",
+         "; ARM Scatter file",
+         "; Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+         "; Author: ${VIM:\\$USER}",
+         ";",
+         "; Description: ${1:Description}",
+         ";",
+         ";===============================================================================",
+         "LOAD ${2:0x00000800}",
+         "{",
+         "   EXEC +0 ALIGHALL 8 (0x1024)",
+         "   {",
+         "      startup.o (Startup, +FIRST)",
+         "      * (+RO, +RW, +ZI)",
+         "   }",
+         "}"
+      ],
+      "description": "Code snippet for 'header' statement"
+   }
+}

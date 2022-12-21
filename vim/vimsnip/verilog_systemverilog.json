@@ -1,0 +1,100 @@
+{
+   "item header": {
+      "prefix": ["header"],
+      "body": [
+         "//=============================================================================",
+         "// SystemVerilog HDL",
+         "// Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+         "// Author: ${VIM:\\$USER}",
+         "//",
+         "// Note:",
+         "//",
+         "// Description: ${1:Description}",
+         "//",
+         "//============================================================================="
+      ],
+      "description": "insert header code"
+   },
+   "item module":{
+      "prefix": ["module"],
+      "body": [
+         "module $TM_FILENAME_BASE i_$TM_FILENAME_BASE (",
+            "   ${1:/* statements */}",
+            ");",
+            "\nendmodule // $TM_FILENAME_BASE"
+      ],
+      "description": "Code snippet for module"
+   },
+   "item if statement": {
+      "prefix": ["if"],
+      "body": [
+         "if ($1) begin",
+         "   ${1:/* statements */}",
+         "end"
+      ],
+      "description": "Code snippet for if statement"
+   },
+   "item if-else": {
+      "prefix": ["if-else", "ife"],
+      "body": [
+         "if ($1) begin",
+         "   ${2:/* statements */}",
+         "end",
+         "else begin",
+         "   ${3:/* statements */}",
+         "end"
+      ],
+      "description": "Code snippet for if else statement"
+   },
+   "item case": {
+      "prefix": ["case", "switch"],
+      "body": [
+         "case $1",
+         "   ${1:/* statements */}",
+         "endcase"
+
+      ],
+      "description": "Code snippet for case statement"
+   },
+   "item always": {
+      "prefix": ["always"],
+      "body": [
+         "always @(${1|posedge clk,posedge clk or negedge rstn,*|}) begin",
+         "   ${2:/* statements */}",
+         "end"
+      ],
+      "description": "Code snippet for always statement"
+   },
+   "item generate": {
+      "prefix": ["generate"],
+      "body": [
+         "generate",
+         "   ${1:/* statements */}",
+         "endgenerate"
+      ],
+      "description": "Code snippet for generate keywords"
+   },
+   "item input": {
+      "prefix": ["input"],
+      "body": [
+         "input  ${1|wire,reg|} $0"
+      ],
+      "description": "Code snippet for INPUT statement"
+   },
+   "item output": {
+      "prefix": ["output"],
+      "body": [
+         "output ${1|wire,reg|} $0"
+      ],
+      "description": "Code snippet for output statement"
+   },
+   "item begin": {
+      "prefix": ["begin"],
+      "body": [
+         "begin",
+         "   ${1:/* statements */}",
+         "end"
+      ],
+      "description": "Code snippet for begin statement"
+   }
+}

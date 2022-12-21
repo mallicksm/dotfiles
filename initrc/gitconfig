@@ -1,0 +1,62 @@
+[core]
+   editor = vim
+   filemode = true                            # Tracks exec bits
+   autocrlf = input                           # Deals CR/LF inconsistencies
+   preloadindex = true                        # Caches indeix and makes git status faster
+   sharedrepository = 0660                    # Sets reasonable permissions
+   pager = delta
+[user]
+   name = __USERNAME__
+   email = __USEREMAIL__
+[alias]
+   di = difftool -y --tool tkdiff
+   dm = difftool -y --tool meld
+   dv = difftool -y --tool vimdiff
+   dd = difftool --dir-diff -y --tool meld
+   df = diff --name-status
+   ci = commit
+   co = checkout
+   st = status --untracked-files=no --short
+   url = remote set-url origin
+   root = rev-parse --show-toplevel           # Shows root of current repo
+   ls =  log --format=format:'%C(bold blue)%h%C(red)\t%ad %C(green)%cn %C(red)%d\n\t\t%C(cyan)-- %s%C(reset)\n' --decorate --graph --date=relative --all
+   id = rev-parse --short HEAD
+   br = rev-parse --abbrev-ref --short HEAD
+   alias = config --get-regexp alias
+   uncommit = reset --soft HEAD^                   # uncommits last commit and puts files in staging area
+
+   # Do a pull rebase and update submodules
+   up = "!f() { \
+     git pull -r;git submodule update --recursive --init;\
+   }; f"
+
+   # Update submodules
+   sup = "!f() { \
+     git submodule update --recursive --init;\
+   }; f"
+[color]
+   ui = auto
+   status = auto
+   branch = auto
+   diff = auto
+   interactive = auto
+[interactive]
+   diffFilter = delta --color-only
+[delta]
+   navigate = true
+   light = false      
+   side-by-side = true
+   line-numbers = true
+[merge]
+   conflictstyle = diff3
+[diff]
+   colorMoved = default
+[push]
+   default = current
+[pull]
+	rebase = false
+[init]
+	defaultBranch = master
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

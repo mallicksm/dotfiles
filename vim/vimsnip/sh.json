@@ -1,0 +1,154 @@
+{
+   "item header": {
+      "prefix": ["header"],
+      "body": [
+         "#!/bin/bash",
+         "#===============================================================================",
+         "# Bash Script",
+         "# Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+         "# Author: ${VIM:\\$USER}",
+         "#",
+         "# Note:",
+         "#",
+         "# Description: ${1:Description}",
+         "#",
+         "#===============================================================================",
+         "#!/usr/bin/env bash",
+         "source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null"
+      ],
+      "description": "insert header code"
+   },
+   "item function": {
+      "prefix": ["function"],
+      "body": [
+         "function ${1:function_name}() {",
+         "   ${2:getopt}",
+         "}"
+      ],
+      "description": "New function"
+   },
+   "item Getopt argument parsing": {
+      "prefix": ["getopt"],
+      "body": [
+         "# getopt",
+         "declare -A opt",
+         "local args",
+         "while (( \\$# )); do",
+         "   case \\$1 in",
+         "      -h|--help)",
+         "         opt[HELP]=1",
+         "         shift 1",
+         "      ;;",
+         "      -n|--name)",
+         "         opt[NAME]=\"\\$2\"",
+         "         shift 2",
+         "      ;;",
+         "      -*)",
+         "         echo \"Attention: Unknown Argument \\$1\" >&2",
+         "         return 1",
+         "      ;;",
+         "      *)",
+         "         args+=(\"\\$1\")",
+         "         shift 1",
+         "      ;;",
+         "   esac",
+         "done",
+         "",
+         "# Process -h",
+         "if [[ \"\\${opt[HELP]}\" -eq 1 ]]; then",
+         "helpstr=\"usage: \\$(basename \\$0) <sub-command> [Options]",
+         "",
+         "This command performs the following",
+         "---",
+         "Options:",
+         "-h|--help                    This message",
+         "---\"",
+         "   echo \"\\$helpstr\"",
+         "   return 0",
+         "fi"
+      ],
+      "description": "getopt template"
+   },
+   "item for loop": {
+      "prefix": ["for"],
+      "body": [
+         "for (( i = 0; i < ${1:10}; i++ )); do",
+         "   ${0:#statements}",
+         "done"
+      ],
+      "description": "for loop"
+   },
+   "item foreach loop": {
+      "prefix": ["foreach"],
+      "body": [
+         "for ${1:i} in \"\\${${2:hash}[@]}\"; do",
+         "   ${0:#statements}",
+         "done"
+      ],
+      "description": "foreach loop"
+   },
+   "item while loop": {
+      "prefix": ["while"],
+      "body": [
+         "while ${2:[[ ${1:condition} ]]}; do",
+         "   ${0:#statements}",
+         "done"
+      ],
+      "description": "while loop"
+   },
+   "item if statement": {
+      "prefix": ["if"],
+      "body": [
+         "if [[ (${1:condition}) && (${2:condition}) ]]; then",
+         "   ${0:#statements}",
+         "fi"
+      ],
+      "description": "if statement"
+   },
+   "item if-else block": {
+      "prefix": ["if-else", "ife"],
+      "body": [
+         "if ${2:[[ ${1:condition} ]]}; then",
+         "   ${0:#statements}",
+         "elif ${2:[[ ${1:condition} ]]}; then",
+         "   ${1:#statements}",
+         "else",
+         "   ${2:#statements}",
+         "fi"
+      ],
+      "description": "if-else block"
+   },
+   "item case statement": {
+      "prefix": ["case", "switch"],
+      "body": [
+         "case ${1:word} in",
+         "   ${2:pattern} )",
+         "      $0;;",
+         "esac"
+      ],
+      "description": "case statement"
+   },
+   "item until loop": {
+      "prefix": ["until"],
+      "body": [
+         "until ${2:[[ ${1:condition} ]]}; do",
+         "   ${0:#statements}",
+         "done"
+      ],
+      "description": "until loop"
+   },
+   "item Cat to file": {
+      "prefix": ["cat"],
+      "body": [
+         "cat <<-EOF ${1:>/path/to/file}",
+         "   $2",
+         "EOF"
+      ],
+      "description": "cat... EOF"
+   },
+   "item Shorthand if..then..else": {
+      "prefix": ["ite"],
+      "body": "[[ ${1:condition} ]] && ${2:echo \"true\"} || ${3:echo \"false\"}",
+      "description": "[[ ]] && true || false"
+   }
+}

@@ -1,0 +1,25 @@
+setenv EDITOR /bin/vi
+set      esc=`echo '\033'`
+set    green="%{${esc}[0;32m%}"
+set   custom="%{${esc}[0;43;34m%}"
+set      end="%{${esc}[0m%} " # This is needed at the end... :(
+
+# Special Variables
+set history = 1000
+set autolist
+
+# Aliases
+alias c clear
+alias ls ls -Fs --color
+alias ll ls -l
+alias la ls -a
+alias b cd -
+alias cp cp -f
+alias mv mv -f
+alias rm rm -f
+alias h history
+alias ssh ssh -X
+
+# PATH variable changes
+setenv PATH $HOME/.local/bin:$PATH
+#Please leave a comment at the end of this file

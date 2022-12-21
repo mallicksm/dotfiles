@@ -1,0 +1,10 @@
+######################################################################
+# WARNING! Do NOT modify this file. Your C shell setups may go away
+# if you modify this file. To customize your environment, please modify
+# ~/.shellrc and ~/.aliases.
+######################################################################
+
+if ( -e /tools/lib/configs/setup/unix/cshrc ) then
+    source /tools/lib/configs/setup/unix/cshrc
+endif
+

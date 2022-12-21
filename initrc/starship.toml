@@ -1,0 +1,70 @@
+add_newline = false
+scan_timeout = 100
+command_timeout = 500
+
+format = """
+$hostname\
+$directory\
+$all\
+$fill\
+$shell\
+$time\
+$line_break\
+$git_branch\
+$git_state\
+$git_status\
+$git_metrics\
+$character"""
+
+# Current line
+[git_branch]
+format = '[\[$symbol$branch(:$remote_branch)\]]($style) '
+[git_status]
+untracked = ""
+modified = ""
+up_to_date = "✓"
+staged = '[+$count](green)'
+deleted = '[✘](red)'
+style = "bold yellow"
+ahead = '[⇡$count](bold green)'
+diverged = '[⇕⇡$ahead_count⇣$behind_count](bold red)'
+behind = '[⇣$count](bold yellow)'
+[character]
+format = "$symbol"
+success_symbol = '[➜ \$ ](bold green)'
+error_symbol = '[✗ \$ ](bold red)'
+
+# first line
+[hostname]
+ssh_only = false
+format = "[$hostname:]($style)"
+style = "bold red"
+[directory]
+truncation_length = 0 
+truncate_to_repo = false
+format = "[$path]($style)[$read_only]($read_only_style) "
+[shell]
+disabled = false
+bash_indicator = ""
+tcsh_indicator = "c"
+format = '[$indicator](grey) '
+[time]
+disabled = false
+time_format = "%I:%M%P"
+format = '[\[$time\] ](bold green)'
+utc_time_offset = "local"
+time_range = "-"
+
+# misc
+[fill]
+symbol = " ·"
+style = "black bold dimmed"
+[cmd_duration]
+min_time = 3000
+format = "[$duration](bold yellow)"
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+[username]
+disabled = true
