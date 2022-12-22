@@ -4,7 +4,6 @@ PREFIX=$HOME/.local
 
 AUTOCONF=autoconf-2.69
 CURL=curl-7.47.1
-EXPAT=expat-2.4.7
 GIT=2.6.4
 
 mkdir -p $PREFIX
@@ -12,13 +11,15 @@ mkdir -p $PREFIX
 rm -rf curl-* v2.*
 
 # wget+untar
-wget http://ftp.gnu.org/gnu/autoconf/$AUTOCONF.tar.gz
+wget http://ftp.gnu.org/gnu/autoconf/$AUTOCONF.tar.gz --no-check-certificate
 tar -xvf $AUTOCONF.tar.gz
-wget https://curl.haxx.se/download/$CURL.tar.gz
+wget https://curl.haxx.se/download/$CURL.tar.gz --no-check-certificate
 tar -xf $CURL.tar.gz
-wget http://downloads.sourceforge.net/expat/files/$EXPAT.tar.gz
-tar -xf $EXPAT.tar.gz
-wget https://github.com/git/git/archive/v$GIT.tar.gz
+git clone https://github.com/libexpat/libexpat
+cd libexpat
+git checkout tags/R_2_4_7
+cd ..
+wget https://github.com/git/git/archive/v$GIT.tar.gz --no-check-certificate
 tar -xf v$GIT.tar.gz
 
 # compile exec
@@ -35,7 +36,7 @@ cd $CURL
 make && make install
 cd ..
 
-cd $EXPAT
+cd libexpat
 ./configure --prefix=$PREFIX
 make && make install
 cd ..
