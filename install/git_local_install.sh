@@ -12,12 +12,14 @@
 source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null
 script_loc=$(dirname $0)
 source $script_loc/utils.sh 2>/dev/null
-PREFIX=$HOME/tryout
-PREFIX=$HOME/.local
 
+#===============================================================================
+# Version specs
+PREFIX=$HOME/.local
 AUTOCONF=autoconf-2.69
 CURL=curl-7.47.1
 GIT=2.39.0
+#===============================================================================
 
 mkdir -p $PREFIX
 #https://github.com/git/git/archive/refs/tags/v2.39.0.tar.gz
