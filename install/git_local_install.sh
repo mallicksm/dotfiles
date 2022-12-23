@@ -1,26 +1,37 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#===============================================================================
+# Bash Script
+# Created: Dec-22-2022
+# Author: soummyam
+#
+# Note:
+#
+# Description: Locally installs git
+#
+#===============================================================================
+source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null
+script_loc=$(dirname $0)
+source $script_loc/utils.sh 2>/dev/null
 PREFIX=$HOME/tryout
 PREFIX=$HOME/.local
 
 AUTOCONF=autoconf-2.69
 CURL=curl-7.47.1
-GIT=2.6.4
+GIT=2.39.0
 
 mkdir -p $PREFIX
-# clean
-rm -rf curl-* v2.*
-
+#https://github.com/git/git/archive/refs/tags/v2.39.0.tar.gz
 # wget+untar
-wget http://ftp.gnu.org/gnu/autoconf/$AUTOCONF.tar.gz --no-check-certificate
-tar -xvf $AUTOCONF.tar.gz
-wget https://curl.haxx.se/download/$CURL.tar.gz --no-check-certificate
-tar -xf $CURL.tar.gz
-git clone https://github.com/libexpat/libexpat
-cd libexpat
-git checkout tags/R_2_4_7
-cd ..
-wget https://github.com/git/git/archive/v$GIT.tar.gz --no-check-certificate
-tar -xf v$GIT.tar.gz
+wget4me "tar" http://ftp.gnu.org/gnu/autoconf/$AUTOCONF.tar.gz
+wget4me "tar" https://curl.haxx.se/download/$CURL.tar.gz
+wget4me "tar" https://github.com/git/git/archive/refs/tags/v$GIT.tar.gz
+if [[ ! -d "libexpat" ]]; then
+   echo "Info: gitcloneing libexpat"
+   git clone https://github.com/libexpat/libexpat > libexpat.git.log 2>&1
+   cd libexpat
+      git checkout tags/R_2_4_7 >> libexpat.git.log 2>&1
+   cd ..
+fi
 
 # compile exec
 cd $AUTOCONF

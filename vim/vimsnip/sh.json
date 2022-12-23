@@ -2,7 +2,7 @@
    "item header": {
       "prefix": ["header"],
       "body": [
-         "#!/bin/bash",
+         "#!/usr/bin/env bash",
          "#===============================================================================",
          "# Bash Script",
          "# Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
@@ -13,7 +13,6 @@
          "# Description: ${1:Description}",
          "#",
          "#===============================================================================",
-         "#!/usr/bin/env bash",
          "source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null"
       ],
       "description": "insert header code"
