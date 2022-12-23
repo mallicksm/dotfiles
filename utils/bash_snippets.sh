@@ -30,7 +30,12 @@ function completed() {
 function has() {
    command -v "$1" 1>/dev/null 2>&1
 }
-
+function Pushd() {
+   pushd "$@" >/dev/null 2>&1
+}
+function Popd() {
+   popd >/dev/null 2>&1
+}
 function tempfile() {
    mkdir -p /tmp/$USER
    if has mktemp; then

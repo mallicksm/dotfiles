@@ -18,13 +18,12 @@ source $script_loc/utils.sh 2>/dev/null
 PREFIX=$HOME/.local
 LIBEVENT=libevent-2.1.11-stable
 NCURSES=ncurses-6.2
-TMUX=tmux-3.1b
+TMUX=tmux-3.3a
 #===============================================================================
-
 mkdir -p $PREFIX
 wget4me "tar" https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/$LIBEVENT.tar.gz 
 wget4me "tar" https://ftp.gnu.org/pub/gnu/ncurses/$NCURSES.tar.gz 
-wget4me "tar" https://github.com/tmux/tmux/releases/download/3.1b/$TMUX.tar.gz 
+wget4me "tar" https://github.com/tmux/tmux/releases/download/3.3a/$TMUX.tar.gz 
 
 cd $LIBEVENT
 ./configure --prefix=$PREFIX --disable-shared
