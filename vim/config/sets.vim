@@ -52,7 +52,7 @@ if v:version > 800
    set list
    set listchars=tab:▸\ ,trail:·
 endif
-set timeoutlen=1000 ttimeoutlen=100
+set timeoutlen=500 ttimeoutlen=100
 set foldmethod=marker
 set autoread
 set clipboard=unnamed

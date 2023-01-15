@@ -3,7 +3,6 @@
    filemode = true                            # Tracks exec bits
    autocrlf = input                           # Deals CR/LF inconsistencies
    preloadindex = true                        # Caches indeix and makes git status faster
-   sharedrepository = 0660                    # Sets reasonable permissions
    pager = delta
 [user]
    name = __USERNAME__
