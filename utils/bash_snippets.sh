@@ -16,16 +16,16 @@ function print() {
    printf "${!color}$str$NO_COLOR\n"
 }
 function info() {
-   printf '%s\n' "$BOLD$WHITE> $*$NO_COLOR"
+   printf '%s\n' "$BOLD$WHITE> $@$NO_COLOR"
 }
 function warn() {
-   printf '%s\n' "$YELLOW! $*$NO_COLOR"
+   printf '%s\n' "$YELLOW! $@$NO_COLOR"
 }
 function error() {
-   printf '%s\n' "${RED}x $*$NO_COLOR" >&2
+   printf '%s\n' "${RED}x $@$NO_COLOR" >&2
 }
 function completed() {
-   printf '%s\n' "$GREEN✓ $*$NO_COLOR"
+   printf '%s\n' "$GREEN✓ $@$NO_COLOR"
 }
 function has() {
    command -v "$1" 1>/dev/null 2>&1

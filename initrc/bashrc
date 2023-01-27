@@ -1,12 +1,12 @@
 # .bashrc
 source ~/dotfiles/bash_functions.sh
-source ~/dotfiles/bash_aliases.sh
 if [[ -f ~/corp_settings.sh ]]; then
    source ~/corp_settings.sh
 else 
    echo "Attention: setup ~/corp_settings.sh" 
    return
 fi
+source ~/dotfiles/bash_aliases.sh
 #
 # User customization starts here
 #
