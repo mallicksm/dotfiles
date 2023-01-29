@@ -3,6 +3,7 @@
    filemode = true                            # Tracks exec bits
    autocrlf = input                           # Deals CR/LF inconsistencies
    preloadindex = true                        # Caches indeix and makes git status faster
+#  sharedrepository = 0660                    # Sets reasonable permissions
    pager = delta
 [user]
    name = __USERNAME__
@@ -50,6 +51,7 @@
    conflictstyle = diff3
 [diff]
    colorMoved = default
+   tool = meld
 [push]
    default = current
 [pull]

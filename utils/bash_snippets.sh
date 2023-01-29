@@ -44,6 +44,14 @@ function tempfile() {
       printf "/tmp/$USER/tmp.$(date +%H_%M_%S)"
    fi
 }
+function timestamp() {
+   if [[ $1 == "start" ]]; then
+      time_duration=$(date +%s)
+   else
+      time_duration=$(( $(date +%s) - $time_duration ))
+      echo "$(date -d@${time_duration} -u  +%H:%M:%S) H:M:S"
+   fi
+}
 
 function download() {
    file="$1"

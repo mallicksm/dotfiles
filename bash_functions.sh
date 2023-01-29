@@ -408,7 +408,7 @@ function tm() {
 unalias cat 2> /dev/null # blow away any previous aliases if any
 function cat() {
    if command -v bat ; then
-      command bat "$@"
+      command bat --theme=ansi "$@"
    else
       command cat "$@"
    fi
