@@ -59,6 +59,19 @@
       ],
       "description": "Code snippet for if-else-if"
    },
+   "item signal alias": {
+      "prefix": ["alias"],
+      "body": [
+         "${1:alias} = ${2:signal_instpath};"
+      ],
+      "description": "Code snippet for 'trigger' statement"
+   },"item exec": {
+      "prefix": ["exec"],
+      "body": [
+         "exec \"${1:qel_command}\";"
+      ],
+      "description": "Code snippet for 'exec' statement"
+   },
    "item tick define": {
       "prefix": ["define"],
       "body": [
