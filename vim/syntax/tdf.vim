@@ -38,5 +38,5 @@ highlight default link tdfOperator      PreProc
 highlight default link tdfComment       Comment
 highlight default link tdfString        String
 highlight default link tdfTclvar        Underlined
-highlight default link tdfFacs          TabLineSel
+highlight default link tdfFacs          Statement
 highlight default link verilogNumber    Number
