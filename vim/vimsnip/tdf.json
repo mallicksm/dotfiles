@@ -58,6 +58,18 @@
          "}"
       ],
       "description": "Code snippet for if-else-if"
+   },"item counter": {
+      "prefix": ["counter"],
+      "body": [
+         "${1|COUNTER1,COUNTER2|} ${2|<=,>|} ${3:<value>}"
+      ],
+      "description": "Code snippet for 'counter' statement"
+   },"item load": {
+      "prefix": ["load"],
+      "body": [
+         "LOAD ${1|COUNTER1,COUNTER2|} ${2:<value>}"
+      ],
+      "description": "Code snippet for 'load' statement"
    },
    "item signal alias": {
       "prefix": ["alias"],
@@ -68,7 +80,7 @@
    },"item exec": {
       "prefix": ["exec"],
       "body": [
-         "exec \"${1:qel_command}\";"
+         "EXEC \"${1:qel_command}\";"
       ],
       "description": "Code snippet for 'exec' statement"
    },
