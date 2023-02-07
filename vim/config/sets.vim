@@ -18,7 +18,7 @@ set number
 if exists('+relativenumber') | set relativenumber | endif
 set hidden
 set noerrorbells
-set tabstop=3 softtabstop=3 shiftwidth=3 softtabstop=3
+set tabstop=3 softtabstop=3 shiftwidth=3
 set expandtab
 set autoindent
 set nowrap
