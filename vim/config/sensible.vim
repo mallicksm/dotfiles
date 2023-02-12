@@ -19,7 +19,6 @@ vnoremap <S-k> :m '<-2<CR>gv=gv
 
 " Convinience maps
 nnoremap j gj
-nnoremap <CR> :noh<CR><CR>
 nnoremap k gk
 inoremap jk <ESC>
 nnoremap Q q
@@ -30,7 +29,11 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'| " expand %% t
 nnoremap <silent> <leader>C :lcd %:p:h<CR>:pwd<CR>| " Change to the folder of the current file
 inoremap <silent> <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 inoremap <silent> <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+nnoremap <CR> :noh<CR><CR>
 inoremap <silent> <C-f> <C-X><C-F>
+nnoremap <Leader><Leader> <C-^>
+nnoremap <Left> :bp<CR>
+nnoremap <Right> :bn<CR>
 
 " whichkey maps
 nnoremap <leader>vw :set wrap!<CR>
