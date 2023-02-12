@@ -24,6 +24,7 @@
    br = rev-parse --abbrev-ref --short HEAD
    alias = config --get-regexp alias
    uncommit = reset --soft HEAD^                   # uncommits last commit and puts files in staging area
+   llog = log --stat --graph
 
    # Do a pull rebase and update submodules
    up = "!f() { \
