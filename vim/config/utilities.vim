@@ -2,10 +2,10 @@
 " https://github.com/jiangmiao/auto-pairs
 " System Shortcuts:
 Plug 'jiangmiao/auto-pairs'
-let g:AutoPairsShortcutToggle = "<C-x>"     | " <M-p> Toggle Autopairs (I)
-let g:AutoPairsShortcutFastWrap = "<C-e>"   | " <M-e> Fast Wrap (I)
-let g:AutoPairsShortcutJump = "<C-j>"       | " <M-n> Jump to next closed pair (N+I)
-let g:AutoPairsShortcutBackInsert = "<C-y>" | " <M-b> BackInsert (I)
+let g:AutoPairsShortcutToggle     = "<Leader><Down>"  | " <M-p> Toggle Autopairs (I)
+let g:AutoPairsShortcutFastWrap   = "<Right>"         | " <M-e> Fast Wrap (I)
+let g:AutoPairsShortcutJump       = "<Leader><Right>" | " <M-n> Jump to next closed pair (N+I)
+let g:AutoPairsShortcutBackInsert = "<Up>"            | " <M-b> BackInsert (I)
 let g:AutoPairsFlyMode = 1
 " ------------------------------------------------------------------------------
 " https://github.com/kshenoy/vim-signature
