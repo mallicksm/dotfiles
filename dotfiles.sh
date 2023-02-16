@@ -1,4 +1,15 @@
 #!/usr/bin/env bash
+#===============================================================================
+# Bash Script
+# Created: Feb-14-2023
+# Author: soummya
+#
+# Note:
+#
+# Description: dotfiles executor to setup Unix environment.
+#
+#===============================================================================
+source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null
 cdir=$(dirname $(realpath $0))
 #-------------------------------------------------------------------------------
 # linkrc -link dotfiles
