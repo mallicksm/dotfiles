@@ -1,8 +1,8 @@
 " https://github.com/liuchengxu/vim-which-key
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] } " On-demand lazy load
 
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
-vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
 " Define prefix dictionary
 let g:which_key_hspace = 200
@@ -138,20 +138,6 @@ let g:which_key_map['f'] = {
             \ 'c' : [':Colors'      , 'color schemes'],
             \ 'F' : [':Filetypes'   , 'file types'],
             \ 'm' : [':Maps'        , 'normal maps'] ,
-            \ },
-         \ }
-let g:which_key_map['V'] = {
-         \ 'name' : '+vimwiki',
-         \ 'i' : 'VimWiki Index',
-         \ 'I' : 'VimWiki Index Root select',
-         \ 'X' : 'VimWiki Delete file',
-         \ 'R' : 'VimWiki Rename file',
-         \ 'D' : {
-            \ 'name' : '+vimwikiDiary',
-            \ 'i' : 'VimWikiDiary Index',
-            \ 'n' : 'VimWikiDiary Note',
-            \ 't' : 'VimWikiDiary Tomorrow',
-            \ 'y' : 'VimWikiDiary Yesterday',
             \ },
          \ }
 

@@ -3,14 +3,14 @@
 Plug 'vimwiki/vimwiki'
 Plug 'michal-h21/vimwiki-sync'
 
-nmap <leader>Vi  <Plug>VimwikiIndex
-nmap <leader>VI  <Plug>VimwikiUISelect
-nmap <leader>VX  <Plug>VimwikiDeleteFile
-nmap <leader>VR  <Plug>VimwikiRenameFile
-nmap <leader>VDi <Plug>VimwikiDiaryIndex
-nmap <leader>VDn <Plug>VimwikiMakeDiaryNote
-nmap <leader>VDt <Plug>VimwikiMakeTomorrowDiaryNote
-nmap <leader>VDy <Plug>VimwikiMakeYesterdayDiaryNote
+" nmap <leader>Vi  <Plug>VimwikiIndex
+" nmap <leader>VI  <Plug>VimwikiUISelect
+" nmap <leader>VX  <Plug>VimwikiDeleteFile
+" nmap <leader>VR  <Plug>VimwikiRenameFile
+" nmap <leader>VDi <Plug>VimwikiDiaryIndex
+" nmap <leader>VDn <Plug>VimwikiMakeDiaryNote
+" nmap <leader>VDt <Plug>VimwikiMakeTomorrowDiaryNote
+" nmap <leader>VDy <Plug>VimwikiMakeYesterdayDiaryNote
 
 let g:vimwiki_automatic_nested_syntaxes = 1
 let g:vimwiki_dir_link = 'index'
@@ -57,5 +57,5 @@ augroup end
 let g:vimwiki_sync_branch = "master"
 let g:vimwiki_hl_headers = 1
 let g:vimwiki_listsyms = '✗○◐●✓'
-let g:vimwiki_map_prefix = '<F13>'   "disable all maps
+let g:vimwiki_map_prefix = ','   "replaces <leader>w
 let $vimwiki = '$RTP/config/vimwiki.vim'
