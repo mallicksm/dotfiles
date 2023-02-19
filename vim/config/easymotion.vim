@@ -1,6 +1,6 @@
 " https://github.com/easymotion/vim-easymotion
 Plug 'easymotion/vim-easymotion'
-map <leader><leader> <plug>(easymotion-prefix)
-" <space><space>f    - find letter
-" <space><space>w    - find word
+map <localleader><localleader> <plug>(easymotion-prefix)
+" <localleader><localleader>f    - find letter
+" <localleader><localleader>w    - find word
 let $easymotion = '$RTP/config/easymotion.vim'
