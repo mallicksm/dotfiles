@@ -17,4 +17,5 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Files with preview
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+let g:fzf_preview_window = ['up,65%', 'ctrl-/']
 let $junegunn = '$RTP/config/junegunn.vim'
