@@ -283,10 +283,10 @@ function vgrep () {
 #{{{ fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --multi --info=inline'
+export FZF_DEFAULT_OPTS='--height 70% --layout=reverse --border --multi --info=inline'
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="--height 60% --preview 'bat --color=always --line-range :50 {}'"
+export FZF_CTRL_T_OPTS="--height 70% --preview 'bat --color=always --line-range :50 {}'"
 
 export FZF_ALT_C_COMMAND='fd --type d . --color=never --hidden'
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -50'"
