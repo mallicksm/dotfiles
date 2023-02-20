@@ -43,6 +43,16 @@ zz() {
   cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q "$_last_z_args")"
 }
 modpath ~/.fzf/bin b
+# from ~/.fzf.bash
+# Auto-completion
+# ---------------
+[[ $- == *i* ]] && source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
+
+# Key bindings
+# ------------
+#source "~/.fzf/shell/key-bindings.bash"
+source "${HOME}/.fzf/shell/key-bindings.bash"
+
 modpath ~/.local/bin b
 # Starship configuration
 export STARSHIP_CONFIG=$HOME/.starship.toml

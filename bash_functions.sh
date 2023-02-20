@@ -281,23 +281,13 @@ function vgrep () {
 
 #-------------------------------------------------------------------------------
 #{{{ fzf
-# from ~/.fzf.bash
-# Auto-completion
-# ---------------
-[[ $- == *i* ]] && source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
-
-# Key bindings
-# ------------
-#source "~/.fzf/shell/key-bindings.bash"
-source "${HOME}/.fzf/shell/key-bindings.bash"
-
 # Configuration
 # -------------
 export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
 export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border --multi --info=inline'
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="--height 70% --preview 'bat --color=always --line-range :50 {}'"
+export FZF_CTRL_T_OPTS="--height 100% --preview 'bat --color=always {}'"
 
 export FZF_ALT_C_COMMAND='fd --type d . --color=never --hidden'
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -50'"
@@ -329,6 +319,23 @@ _fzf_comprun() {
 
 #-------------------------------------------------------------------------------
 #{{{ fzf-functions
+#!/usr/bin/env bash
+
+# 1. Search for text in files using Ripgrep
+# 2. Interactively restart Ripgrep with reload action
+# 3. Open the file in Vim
+function rgrep() {
+RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
+INITIAL_QUERY="${*:-}"
+FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
+fzf --ansi \
+    --disabled --query "$INITIAL_QUERY" \
+    --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+    --delimiter : \
+    --preview 'bat --color=always {1} --highlight-line {2}' \
+    --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+    --bind 'enter:become(vim {1} +{2})'
+}
 is_in_git_repo() {
    git rev-parse HEAD > /dev/null 2>&1
 }
@@ -418,7 +425,7 @@ function tm() {
 #{{{ cat ll la and lt aliases
 unalias cat 2> /dev/null # blow away any previous aliases if any
 function cat() {
-   if command -v bat ; then
+   if command -v bat >/dev/null ; then
       command bat --theme=ansi "$@"
    else
       command cat "$@"
@@ -426,7 +433,7 @@ function cat() {
 }
 unalias ll 2> /dev/null
 function ll() {
-   if command -v exa ; then
+   if command -v exa >/dev/null ; then
       command exa --long --header -s modified "$@"
    else
       command ls -Fslr --color=auto "$@"
@@ -434,7 +441,7 @@ function ll() {
 }
 unalias la 2> /dev/null
 function la() {
-   if command -v exa ; then
+   if command -v exa >/dev/null ; then
       command exa --long --header -s modified -a "$@"
    else
       command ls -Fslra --color=auto "$@"
@@ -442,7 +449,7 @@ function la() {
 }
 unalias lt 2> /dev/null
 function lt() {
-   if command -v exa ; then
+   if command -v exa >/dev/null ; then
       command exa --tree "$@"
    else
       command tree
@@ -450,7 +457,7 @@ function lt() {
 }
 unalias du 2> /dev/null
 function du() {
-   if command -v ncdu ; then
+   if command -v ncdu >/dev/null ; then
       command ncdu "$@"
    else
       command du -k "$@"
@@ -458,7 +465,7 @@ function du() {
 }
 unalias df 2> /dev/null
 function df() {
-   if command -v pydf ; then
+   if command -v pydf >/dev/null ; then
       command pydf "$@"
    else
       command df -k "$@"
