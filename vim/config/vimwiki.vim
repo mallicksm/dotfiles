@@ -3,15 +3,6 @@
 Plug 'vimwiki/vimwiki'
 Plug 'michal-h21/vimwiki-sync'
 
-" nmap <leader>Vi  <Plug>VimwikiIndex
-" nmap <leader>VI  <Plug>VimwikiUISelect
-" nmap <leader>VX  <Plug>VimwikiDeleteFile
-" nmap <leader>VR  <Plug>VimwikiRenameFile
-" nmap <leader>VDi <Plug>VimwikiDiaryIndex
-" nmap <leader>VDn <Plug>VimwikiMakeDiaryNote
-" nmap <leader>VDt <Plug>VimwikiMakeTomorrowDiaryNote
-" nmap <leader>VDy <Plug>VimwikiMakeYesterdayDiaryNote
-
 let g:vimwiki_automatic_nested_syntaxes = 1
 let g:vimwiki_dir_link = 'index'
 let g:vimwiki_links_space_char = '_'
@@ -28,7 +19,6 @@ let wiki_2.path = '~/vimwiki/personal/'
 let wiki_2.index = 'index'
 let wiki_2.nested_syntaxes = {'python': 'python', 'c': 'cpp'}
 let wiki_2.auto_toc = 1
-"let wiki_2.auto_export = 1     "export html
 let g:vimwiki_list = [wiki_1, wiki_2]
 
 function! VimwikiLinkHandler(link)

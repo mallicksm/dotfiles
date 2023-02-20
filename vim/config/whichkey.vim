@@ -9,7 +9,7 @@ let g:which_key_hspace = 200
 let g:which_key_map = {
          \ 'name': '+root-menu',
          \ 'R' : 'FullRefresh',
-         \ 'D' : [':SignifyDiff', 'Git Diff'],
+         \ 'd' : [':SignifyDiff', 'Git Diff'],
          \ 'K' : 'Man under cursor',
          \ 'C' : 'cd to %',
          \ '<Down>' : 'Autopairs -Disable/Enable',
@@ -24,12 +24,7 @@ let g:which_key_map = {
          \ 'j' : 'which_key_ignore',
          \ 'k' : 'which_key_ignore',
          \ 'l' : 'which_key_ignore',
-         \ }
-let g:which_key_map['r'] = {
-         \ 'name' : '+register',
-         \ 'p' : [':r !command ssh m1 pbpaste',                          'mac-paste'],
-         \ 'P' : [':r !clip',                                            'unix-paste'],
-         \ 'c' : [":call system('command ssh m1 pbcopy', getreg('\"'))", 'mac-copy'],
+         \ 'o' : 'which_key_ignore',
          \ }
 let g:which_key_map['v'] = {
          \ 'name' : '+vim',
@@ -100,7 +95,6 @@ let g:which_key_map['w'] = {
          \ 'h' : ['<C-W>5>'    , 'expand-window-left'],
          \ 'k' : [':resize +5' , 'expand-window-up'],
          \ 'j' : [':resize -5' , 'expand-window-below'],
-         \ '?' : ['Windows'    , 'fzf-window'],
          \ }
 let g:which_key_map['t'] = {
          \ 'name' : '+tabs',
@@ -113,12 +107,6 @@ let g:which_key_map['t'] = {
          \ 'n' : 'tab-new',
          \ 'o' : 'tab-only',
          \ 'e' : 'edit-in-tab',
-         \ }
-let g:which_key_map['x'] = {
-         \ 'name' : '+xTerm',
-         \ 's' : 'xTerm: Horizontal',
-         \ 'v' : 'xTerm: Vertical',
-         \ 'f' : 'xTerm: Float',
          \ }
 let g:which_key_map['b'] = {
          \ 'name' : '+buffers',
@@ -133,6 +121,18 @@ let g:which_key_map['b'] = {
          \ 'k' : 'buffer-kill',
          \ 'h' : 'buffer-home',
          \ '?' : ['Buffers', 'fzf-buffer'],
+         \ }
+let g:which_key_map['x'] = {
+         \ 'name' : '+xTerm',
+         \ 's' : 'xTerm: Horizontal',
+         \ 'v' : 'xTerm: Vertical',
+         \ 'f' : 'xTerm: Float',
+         \ }
+let g:which_key_map['r'] = {
+         \ 'name' : '+register',
+         \ 'p' : [':r !command ssh m1 pbpaste',                          'mac-paste'],
+         \ 'P' : [':r !clip',                                            'unix-paste'],
+         \ 'c' : [":call system('command ssh m1 pbcopy', getreg('\"'))", 'mac-copy'],
          \ }
 
 autocmd! User vim-which-key call which_key#register('<Space>', 'g:which_key_map')
