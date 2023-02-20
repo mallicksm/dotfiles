@@ -289,7 +289,7 @@ export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border --multi --info=
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--height 100% --preview 'bat --color=always {}'"
 
-export FZF_ALT_C_COMMAND='fd --type d . --color=never --hidden'
+export FZF_ALT_C_COMMAND="fd --type d . --color=never --hidden --exclude '.git'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -50'"
 
 export FZF_TMUX=1
