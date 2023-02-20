@@ -281,7 +281,18 @@ function vgrep () {
 
 #-------------------------------------------------------------------------------
 #{{{ fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# from ~/.fzf.bash
+# Auto-completion
+# ---------------
+[[ $- == *i* ]] && source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
+
+# Key bindings
+# ------------
+#source "~/.fzf/shell/key-bindings.bash"
+source "${HOME}/.fzf/shell/key-bindings.bash"
+
+# Configuration
+# -------------
 export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
 export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border --multi --info=inline'
 
