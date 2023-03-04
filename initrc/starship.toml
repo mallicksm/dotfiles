@@ -45,8 +45,8 @@ truncate_to_repo = false
 format = "[$path]($style)[$read_only]($read_only_style) "
 [shell]
 disabled = false
-bash_indicator = ""
-tcsh_indicator = "c"
+bash_indicator = " "
+tcsh_indicator = "c "
 format = '[$indicator](grey) '
 [time]
 disabled = false
