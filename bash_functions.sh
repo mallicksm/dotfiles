@@ -284,7 +284,7 @@ function vgrep () {
 # Configuration
 # -------------
 export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
-export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border --multi --info=inline'
+export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border=double --margin=1 --padding=1 --multi --info=inline'
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--height 100% --preview 'bat --color=always {}'"
@@ -319,22 +319,13 @@ _fzf_comprun() {
 
 #-------------------------------------------------------------------------------
 #{{{ fzf-functions
-#!/usr/bin/env bash
-
-# 1. Search for text in files using Ripgrep
-# 2. Interactively restart Ripgrep with reload action
-# 3. Open the file in Vim
 function rgrep() {
-RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
-INITIAL_QUERY="${*:-}"
-FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
-fzf --ansi \
-    --disabled --query "$INITIAL_QUERY" \
-    --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
-    --delimiter : \
-    --preview 'bat --color=always {1} --highlight-line {2}' \
-    --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
-    --bind 'enter:become(vim {1} +{2})'
+rg --color=always --line-number --no-heading --smart-case "${*:-}" |
+   fzf --ansi \
+       --delimiter : \
+       --preview 'bat --color=always {1} --highlight-line {2}' \
+       --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+       --bind 'enter:become(vim {1} +{2})'
 }
 is_in_git_repo() {
    git rev-parse HEAD > /dev/null 2>&1

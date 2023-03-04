@@ -3,8 +3,6 @@ autocmd VimEnter * colorscheme gruvbox
 " General Settings
 " ==============================================================================
 " nav
-nnoremap <c-p> :Files<CR>
-
 " \K for unix man
 runtime! ftplugin/man.vim
 " Reselect visual selection after indenting
