@@ -287,7 +287,7 @@ export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
 export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border=double --margin=1 --padding=1 --multi --info=inline'
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="--height 100% --preview 'bat --color=always {}'"
+export FZF_CTRL_T_OPTS="--height 100% --preview 'bat --theme=Nord --color=always {}'"
 
 export FZF_ALT_C_COMMAND="fd --type d . --color=never --hidden --exclude '.git'"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -50'"
@@ -323,7 +323,7 @@ function rgrep() {
 rg --color=always --line-number --no-heading --smart-case "${*:-}" |
    fzf --ansi \
        --delimiter : \
-       --preview 'bat --color=always {1} --highlight-line {2}' \
+       --preview 'bat --theme=Nord --color=always {1} --highlight-line {2}' \
        --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
        --bind 'enter:become(vim {1} +{2})'
 }
@@ -332,7 +332,7 @@ is_in_git_repo() {
 }
 
 fzf-down() {
-   fzf --height 50% --min-height 20 --border --bind ctrl-/:toggle-preview "$@"
+   fzf --height 100% --min-height 20 --border --bind ctrl-/:toggle-preview "$@"
 }
 
 # file explorer
@@ -342,8 +342,7 @@ alias ,f=,e
   fzf-down \
       --header 'Press CTRL-/ to toggle preview' \
       --bind 'ctrl-/:toggle-preview' \
-      --height 100% \
-      --preview '([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
+      --preview '([[ -f {} ]] && (bat --style=numbers --theme=Nord --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
 }
 
 # find-in-file
@@ -417,7 +416,7 @@ function tm() {
 unalias cat 2> /dev/null # blow away any previous aliases if any
 function cat() {
    if command -v bat >/dev/null ; then
-      command bat --theme=ansi "$@"
+      command bat --theme=Nord "$@"
    else
       command cat "$@"
    fi
