@@ -14,6 +14,10 @@
    dv = difftool -y --tool vimdiff
    dd = difftool --dir-diff -y --tool meld
    df = diff --name-status
+   dif = "!f() { \
+      git status --short | fzf --preview-window 75% --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1})';\
+   }; f"
+   sw = !git checkout $(git branch -a --format '%(refname:short)' | sed 's~origin/~~' | sort | uniq | fzf)
    ci = commit
    co = checkout
    st = status --untracked-files=no --short
