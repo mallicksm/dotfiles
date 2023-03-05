@@ -20,34 +20,30 @@ function linkrc () {
       case $dotfile in
          # special cases
          config.ssh)
-            echo "Note: chmod 600 $dotfile -> ~/.ssh/config"
+            info "Note: creating ~/.ssh/config from $dotfile"
             rm -rf ~/.ssh/config && cp -f $cdir/initrc/$dotfile ~/.ssh/config
-            if [[ -f ~/$corp/corp_hosts.txt ]]; then
-               echo "Include ~/$corp/corp_hosts.txt" >> ~/.ssh/config
-               chmod 600 ~/$corp/corp_hosts.txt
-            fi
+            [[ -f ~/$corp/corp_hosts.txt ]] && cat ~/$corp/corp_hosts.txt >> ~/.ssh/config
             chmod 600 ~/.ssh/config 
             ;;
-         svn.*)
-            echo "Note: copying $dotfile into ~/.subversion/ loc"
-            command mkdir -p ~/.subversion
-            linkup ${cdir}/${dotfile} ~/.subversion/${dotfile%.*}
-            ;;
          gitconfig)
-            echo "Note: creating ~/.gitconfig from $dotfile"
+            info "Note: creating ~/.gitconfig from $dotfile"
             rm -rf ~/.gitconfig && cp -f $cdir/initrc/$dotfile ~/.gitconfig
-            sed -i "s/__USERNAME__/$USER/" ~/.gitconfig
-            sed -i "s/__USEREMAIL__/$USER@gmail.com/" ~/.gitconfig
+            [[ -f ~/$corp/corp_gitconfig.txt ]] && cat ~/$corp/corp_gitconfig.txt >> ~/.gitconfig
             ;;
          starship.toml)
-            echo "Note: creating ~/.starship.toml from $dotfile"
+            info "Note: creating ~/.starship.toml from $dotfile"
             rm -rf ~/.starship.toml && cp -f $cdir/initrc/$dotfile ~/.starship.toml
             [[ -f ~/$corp/corp_starship.txt ]] && cat ~/$corp/corp_starship.txt >> ~/.starship.toml
             ;;
          alacritty.yml)
-            echo "Note: copying to ~/.config/alacritty/$dotfile"
+            info "Note: copying to ~/.config/alacritty/$dotfile"
             mkdir -p ~/.config/alacritty
             rm -rf ~/.config/alacritty/alacritty.yml && linkup $cdir/initrc/$dotfile ~/.config/alacritty/alacritty.yml
+            ;;
+         svn.*)
+            info "Note: copying $dotfile to ~/.subversion/"
+            command mkdir -p ~/.subversion
+            linkup ${cdir}/${dotfile} ~/.subversion/${dotfile%.*}
             ;;
          z.sh|gitmux.conf|dircolors)
             # skip
