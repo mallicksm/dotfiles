@@ -43,7 +43,7 @@ function linkrc () {
          svn.*)
             info "Note: copying $dotfile to ~/.subversion/"
             command mkdir -p ~/.subversion
-            linkup ${cdir}/${dotfile} ~/.subversion/${dotfile%.*}
+            linkup ${cdir}/initrc/${dotfile} ~/.subversion/${dotfile#*.}
             ;;
          z.sh|gitmux.conf|dircolors)
             # skip
