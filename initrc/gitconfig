@@ -6,7 +6,7 @@
 #  sharedrepository = 0660                    # Sets reasonable permissions
    pager = delta
 [include]
-   path = $HOME/corp_gitconfig.txt
+   path = ~/$corp/corp_gitconfig.txt
 [alias]
    di = difftool -y --tool tkdiff
    dm = difftool -y --tool meld
