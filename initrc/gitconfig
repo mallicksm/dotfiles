@@ -33,10 +33,10 @@
       fzf | xargs git checkout; \
    }; checkout_fzf"
    # fzf git log checkins
-   cb = "!log_fzf() { \
+   cb = "!cb_fzf() { \
       git log --date=short --format='%cd %h%d %s (%an)' --graph | \
       fzf --preview-window 60% --preview '(grep -o \"[a-f0-9]\\{7,\\}\" <<< {} | xargs git show --color=always)'; \
-   } ; log_fzf"
+   } ; cb_fzf"
    # Do a pull rebase and update submodules
    up = "!f() { \
      git pull -r;git submodule update --recursive --init; \
