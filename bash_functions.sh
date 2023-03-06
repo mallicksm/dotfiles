@@ -74,38 +74,6 @@ function xpopd () {
 #}}}
 
 #-------------------------------------------------------------------------------
-#{{{ list -long ls filechange last minute
-function list () {
-   declare -A opt
-   while (( $# )) ; do
-      case "$1" in
-         -h|help)
-            opt[HELP]=1
-            shift 1
-            ;;
-         -t|time)
-            opt[TIME]=$2
-            shift 2
-            ;;
-         *)
-            args+=("$1")
-            shift 1
-            ;;
-      esac
-   done
-   if [[ "${opt[HELP]}" ]]; then
-      print "blue" "Command:"
-      print "blue" "   Usage: $(basename $0) ${FUNCNAME[0]} [-help|-time] [path]"
-      return 0
-   fi
-   dir=${args[@]:-.}
-   str="find $dir -type f -mmin -${opt[TIME]:-2} -exec ls -ltr {} +"
-   echo "Executing: $str"
-   command $str
-}
-#}}}
-
-#-------------------------------------------------------------------------------
 #{{{ cd/cd_up/cd_func
 # cd up to n dirs
 # using:  cd.. 10   cd.. dir
@@ -426,24 +394,5 @@ function ifont() {
 #{{{ xvim
 function xvim() {
    dbus-launch gnome-terminal --title="gvim: $@" --hide-menubar --geometry=130x50 -- vim "$@" >/dev/null
-}
-#}}}
-
-#-------------------------------------------------------------------------------
-#{{{ utils
-function print() {
-   nc='\033[0m'
-   black="\033[0;30m";        dark_gray="\033[1;30m"
-   red="\033[0;31m";          light_red="\033[1;31m"
-   green="\033[0;32m";        light_green="\033[1;32m"
-   brown_orange="\033[0;33m"; yellow="\033[1;33m"
-   blue="\033[0;34m";         light_blue="\033[1;34m"
-   purple="\033[0;35m";       light_purple="\033[1;35m"
-   cyan="\033[0;36m";         light_cyan="\033[1;36m"
-   light_gray="\033[0;37m";   white="\033[1;37m"
-
-   color=$1
-   str="${@:2}"
-   printf "${!color}$str${nc}\n"
 }
 #}}}
