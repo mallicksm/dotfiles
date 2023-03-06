@@ -1,3 +1,4 @@
+#
 #-------------------------------------------------------------------------------
 # Functions
 #===============================================================================
@@ -327,17 +328,6 @@ rg --color=always --line-number --no-heading --smart-case "${*:-}" |
        --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
        --bind 'enter:become(vim {1} +{2})'
 }
-function glog() {
-   git rev-parse HEAD > /dev/null 2>&1 || return
-   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
-   fzf --ansi \
-      --no-sort \
-      --reverse \
-      --multi \
-      --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | xargs git show --color=always' |
-  grep -o "[a-f0-9]\{7,\}"
-}
-
 #}}}
 
 #-------------------------------------------------------------------------------

@@ -11,12 +11,6 @@
    dv = difftool -y --tool vimdiff
    dd = difftool --dir-diff -y --tool meld
    df = diff --name-status
-   dif = "!diff_fzf() { \
-      git status --short | fzf --preview-window 75% --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1})';\
-   }; diff_fzf"
-   sw = "!checkout_fzf() { \
-      git branch -a --format '%(refname:short)' | sed 's~origin/~~' | grep -v HEAD | sort | uniq | fzf | xargs git checkout;\
-   }; checkout_fzf"
    ci = commit
    co = checkout
    st = status --untracked-files=no --short
@@ -28,15 +22,28 @@
    alias = config --get-regexp alias
    uncommit = reset --soft HEAD^                   # uncommits last commit and puts files in staging area
    llog = log --stat --graph
-
+   # fzf diff
+   dif = "!diff_fzf() { \
+      git status --short | \
+      fzf --preview-window 75% --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1})'; \
+   }; diff_fzf"
+   # fzf switch branch
+   sw = "!checkout_fzf() { \
+      git branch -a --format '%(refname:short)' | sed 's~origin/~~' | grep -v HEAD | sort | uniq | \
+      fzf | xargs git checkout; \
+   }; checkout_fzf"
+   # fzf git log checkins
+   cb = "!log_fzf() { \
+      git log --date=short --format='%cd %h%d %s (%an)' --graph | \
+      fzf --preview-window 60% --preview '(grep -o \"[a-f0-9]\\{7,\\}\" <<< {} | xargs git show --color=always)'; \
+   } ; log_fzf"
    # Do a pull rebase and update submodules
    up = "!f() { \
-     git pull -r;git submodule update --recursive --init;\
+     git pull -r;git submodule update --recursive --init; \
    }; f"
-
    # Update submodules
    sup = "!f() { \
-     git submodule update --recursive --init;\
+     git submodule update --recursive --init; \
    }; f"
 [color]
    ui = auto
