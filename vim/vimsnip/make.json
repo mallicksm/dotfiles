@@ -38,6 +38,13 @@
       ],
       "description": "Code snippet for 'include' statement"
    },
+   "item vpath": {
+      "prefix": ["vpath"],
+      "body": [
+         "VPATH = ${1:dir1} ${2:dir2}"
+      ],
+      "}description": "Code snippet for 'vpath' statement"
+   },
    "item help": {
       "prefix": ["help"],
       "body": [
@@ -75,14 +82,14 @@
    "item subst": {
       "prefix": ["subst"],
       "body": [
-         "\\$(subst,${1:from},${2:to},${3:text})"
+         "\\$(subst,${1:from string},${2:to string},${3:word list})"
       ],
       "description": "Code snippet for 'subst' statement"
    },
    "item patsubst": {
       "prefix": ["patsubst"],
       "body": [
-         "\\$(patsubst,${1:pat},${2:repl},${3:text})"
+         "\\$(patsubst,${1:search pat},${2:repl pat},${3:word list})"
       ],
       "description": "Code snippet for 'patsubst' statement"
    },
@@ -96,44 +103,114 @@
    "item filter": {
       "prefix": ["filter"],
       "body": [
-         "\\$(filter ${1:patterns}, ${2:text})"
+         "\\$(filter ${1:patterns}, ${2:word list})"
       ],
       "description": "Code snippet for 'filter' statement"
    },
    "item filter-out": {
       "prefix": ["filter-out"],
       "body": [
-         "\\$(filter-out ${1:patterns}, ${2:text})"
+         "\\$(filter-out ${1:patterns}, ${2:word list})"
       ],
       "description": "Code snippet for 'filter' statement"
    },
    "item words": {
       "prefix": ["words"],
       "body": [
-         "\\$(words ${1:text})"
+         "\\$(words ${1:word list})"
       ],
       "description": "Code snippet for 'words' statement"
    },
    "item word": {
       "prefix": ["word"],
       "body": [
-         "\\$(word,${1:n-th word},${2:text})"
+         "\\$(word,${1:n-th word},${2:word list})"
       ],
       "description": "Code snippet for 'word' statement"
    },
    "item firstword": {
       "prefix": ["firstword"],
       "body": [
-         "\\$(firstword ${1:text})"
+         "\\$(firstword ${1:word list})"
       ],
       "description": "Code snippet for 'firstword' statement"
    },
    "item lastword": {
       "prefix": ["lastword"],
       "body": [
-         "\\$(lastword ${1:text})"
+         "\\$(lastword ${1:word list})"
       ],
       "description": "Code snippet for 'lastword' statement"
+   },
+   "item sort": {
+      "prefix": ["sort"],
+      "body": [
+         "\\$(sort ${1:word list})"
+      ],
+      "description": "Code snippet for 'sort' statement"
+   },
+   "item shell": {
+      "prefix": ["shell"],
+      "body": [
+         "\\$(shell ${1:command})"
+      ],
+      "description": "Code snippet for 'shell' statement"
+   },
+   "item dir": {
+      "prefix": ["dir"],
+      "body": [
+         "\\$(dir ${1:word list})"
+      ],
+      "description": "Code snippet for 'dir' statement"
+   },
+   "item notdir": {
+      "prefix": ["notdir"],
+      "body": [
+         "\\$(notdir ${1: word list})"
+      ],
+      "description": "Code snippet for 'notdir' statement"
+   },
+   "item suffix": {
+      "prefix": ["suffix"],
+      "body": [
+         "\\$(suffix ${1:word list})"
+      ],
+      "description": "Code snippet for 'suffix' statement"
+   },
+   "item basename": {
+      "prefix": ["basename"],
+      "body": [
+         "\\$(basename ${1:word list})"
+      ],
+      "description": "Code snippet for 'basename' statement"
+   },
+   "item addsuffix": {
+      "prefix": ["addsuffix"],
+      "body": [
+         "\\$(addsuffix ${1:suffix}, ${2:word list})"
+      ],
+      "description": "Code snippet for 'addsuffix' statement"
+   },
+   "item addprefix": {
+      "prefix": ["addprefix"],
+      "body": [
+         "\\$(addprefix ${1:prefix}, ${2:word list})"
+      ],
+      "description": "Code snippet for 'addsuffix' statement"
+   },
+   "item if": {
+      "prefix": ["if"],
+      "body": [
+         "\\$(if ${1:condition}, ${2:then-part}, ${3:else-part})"
+      ],
+      "description": "Code snippet for 'if' statement"
+   },
+   "item foreach": {
+      "prefix": ["foreach"],
+      "body": [
+         "\\$(foreach ${1:var}, ${2:list}, ${3:body})"
+      ],
+      "description": "Code snippet for 'foreach' statement"
    },
    "item var": {
       "prefix": ["var"],

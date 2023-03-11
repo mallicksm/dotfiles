@@ -17,7 +17,7 @@
          "      \"${0:statements}\"",
          "   ],",
          "   \"description\": \"Code snippet for '${1}' statement\"",
-         "}"
+         "},"
       ],
       "description": "Snippet generator"
    }
