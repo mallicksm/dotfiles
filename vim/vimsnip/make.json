@@ -23,6 +23,12 @@
          ".PHONY: ${1:target}"
       ],
       "description": "Code snippet for 'phony' statement"
+   },"item goal": {
+      "prefix": ["goal"],
+      "body": [
+         ".DEFAULT_GOAL := all"
+      ],
+      "description": "Code snippet for 'default' statement"
    },
    "item include": {
       "prefix": ["include"],
