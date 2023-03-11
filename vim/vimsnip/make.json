@@ -12,23 +12,24 @@
          "# Description: ${1:Description}",
          "#",
          "#===============================================================================",
+         "SHELL = bash",
          ".ONESHELL:",
-         "SHELL = bash"
+         ".SHELLFLAGS := -eu -o pipefail -c",
+         ".DELETE_ON_ERROR:",
+         "MAKEFLAGS += --warn-undefined-variables",
+         "MAKEFLAGS += --no-builtin-rules",
+         ".DEFAULT_GOAL := all",
+         "$0"
       ],
       "description": "Code snippet for 'trigger' statement"
    },
    "item phony": {
-      "prefix": ["phony"],
+      "prefix": ["phony", "phoney"],
       "body": [
-         ".PHONY: ${1:target}"
+         ".PHONY: ${1:target}",
+         "$0"
       ],
       "description": "Code snippet for 'phony' statement"
-   },"item goal": {
-      "prefix": ["goal"],
-      "body": [
-         ".DEFAULT_GOAL := all"
-      ],
-      "description": "Code snippet for 'default' statement"
    },
    "item include": {
       "prefix": ["include"],
@@ -45,36 +46,100 @@
          "endef",
          "export $1",
          "help:",
-         "   @echo \"\\$\\$$1\""
+         "\t@echo \"\\$\\$$1\""
       ],
       "description": "Code snippet for 'define' statement"
    },
-   "if statement": {
-     "prefix": ["if"],
+   "item ifeq statement": {
+     "prefix": ["ifeq"],
      "body": [
-       "ifeq (${1:cond0}, ${2:cond1})",
-       "   $0",
+       "ifeq (\\$(${1:var}), ${2:string})",
+       "$3",
+       "else",
+       "$4",
        "endif"
      ],
-     "description": "if statement"
+     "description": "ifeq statement where variable expansion is tested"
    },
-   "if else statement": {
-     "prefix": ["ife"],
-     "body": [
-       "ifeq (${1:cond0}, ${2:cond1})",
-       "   $3",
+   "item ifdef": {
+      "prefix": ["ifdef"],
+      "body": [
+       "ifdef ${1:var}",
+       "$2",
        "else",
-       "   $4",
+       "$3",
        "endif"
-     ],
-     "description": "if else statement"
+      ],
+      "description": "Code snippet for 'ifdef' statement"
    },
-   "else": {
-     "prefix": ["else"],
-     "body": [
-       "else",
-       "   $0"
-     ],
-     "description": "else"
+   "item subst": {
+      "prefix": ["subst"],
+      "body": [
+         "\\$(subst,${1:from},${2:to},${3:text})"
+      ],
+      "description": "Code snippet for 'subst' statement"
+   },
+   "item patsubst": {
+      "prefix": ["patsubst"],
+      "body": [
+         "\\$(patsubst,${1:pat},${2:repl},${3:text})"
+      ],
+      "description": "Code snippet for 'patsubst' statement"
+   },
+   "item strip": {
+      "prefix": ["strip"],
+      "body": [
+         "\\$(strip ${1:string})"
+      ],
+      "description": "Code snippet for 'strip' statement"
+   },
+   "item filter": {
+      "prefix": ["filter"],
+      "body": [
+         "\\$(filter ${1:patterns}, ${2:text})"
+      ],
+      "description": "Code snippet for 'filter' statement"
+   },
+   "item filter-out": {
+      "prefix": ["filter-out"],
+      "body": [
+         "\\$(filter-out ${1:patterns}, ${2:text})"
+      ],
+      "description": "Code snippet for 'filter' statement"
+   },
+   "item words": {
+      "prefix": ["words"],
+      "body": [
+         "\\$(words ${1:text})"
+      ],
+      "description": "Code snippet for 'words' statement"
+   },
+   "item word": {
+      "prefix": ["word"],
+      "body": [
+         "\\$(word,${1:n-th word},${2:text})"
+      ],
+      "description": "Code snippet for 'word' statement"
+   },
+   "item firstword": {
+      "prefix": ["firstword"],
+      "body": [
+         "\\$(firstword ${1:text})"
+      ],
+      "description": "Code snippet for 'firstword' statement"
+   },
+   "item lastword": {
+      "prefix": ["lastword"],
+      "body": [
+         "\\$(lastword ${1:text})"
+      ],
+      "description": "Code snippet for 'lastword' statement"
+   },
+   "item var": {
+      "prefix": ["var"],
+      "body": [
+         "\\$(${1:var}:${2:suffix}=${3:replacement})"
+      ],
+      "description": "Code snippet for 'var' statement"
    }
 }
