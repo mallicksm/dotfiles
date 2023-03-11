@@ -8,6 +8,7 @@
          "# Author: ${VIM:\\$USER}",
          "#",
          "# Note:",
+         "#   \\$(function arg2,arg2..) - % pat wildcard",
          "#",
          "# Description: ${1:Description}",
          "#",

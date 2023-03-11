@@ -22,5 +22,6 @@ let g:vsnip_filetypes = {}
 let g:vsnip_filetypes.verilog_systemverilog = ['verilog_ixcom']
 let g:vsnip_filetypes.vimwiki = ['markdown']
 let g:vsnip_filetypes.sh = ['sh_expansion']
+let g:vsnip_filetypes.tcl = ['tcl_expansion']
 let g:vsnip_snippet_dir = "$HOME/dotfiles/vim/vimsnip"
 let $vimsnip = '$RTP/config/vimsnip.vim'

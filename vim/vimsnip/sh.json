@@ -18,7 +18,7 @@
       "description": "insert header code"
    },
    "item function": {
-      "prefix": ["function"],
+      "prefix": ["func", "proc"],
       "body": [
          "function ${1:function_name}() {",
          "   ${2:getopt}",
@@ -107,12 +107,12 @@
    "item if-else block": {
       "prefix": ["if-else", "ife"],
       "body": [
-         "if ${2:[[ ${1:condition} ]]}; then",
-         "   ${0:#statements}",
-         "elif ${2:[[ ${1:condition} ]]}; then",
-         "   ${1:#statements}",
+         "if [[ ${1:condition} ]]; then",
+         "",
+         "elif [[ ${2:condition} ]]; then",
+         "",
          "else",
-         "   ${2:#statements}",
+         "",
          "fi"
       ],
       "description": "if-else block"
@@ -120,9 +120,12 @@
    "item case statement": {
       "prefix": ["case", "switch"],
       "body": [
-         "case ${1:word} in",
+         "case ${1:\\$var} in",
          "   ${2:pattern} )",
-         "      $0;;",
+         "      $0",
+         "   ;;",
+         "   *)",
+         "   ;;",
          "esac"
       ],
       "description": "case statement"
@@ -130,36 +133,10 @@
    "item until loop": {
       "prefix": ["until"],
       "body": [
-         "until ${2:[[ ${1:condition} ]]}; do",
-         "   ${0:#statements}",
+         "until [[ ${1:condition} ]]; do",
+         "   $0",
          "done"
       ],
       "description": "until loop"
-   },
-   "item Cat to file": {
-      "prefix": ["cat"],
-      "body": [
-         "cat <<-EOF ${1:>/path/to/file}",
-         "   $2",
-         "EOF"
-      ],
-      "description": "cat... EOF"
-   },
-   "item Shorthand if..then..else": {
-      "prefix": ["ite"],
-      "body": "[[ ${1:condition} ]] && ${2:echo \"true\"} || ${3:echo \"false\"}",
-      "description": "[[ ]] && true || false"
-   },"item time": {
-      "prefix": ["time"],
-      "body": [
-         "time=\\$(date +%H-%M-%S)"
-      ],
-      "description": "Code snippet for 'time' statement"
-   },"item date": {
-      "prefix": ["date"],
-      "body": [
-         "date=\\$(date +\"%b-%d-%y_%H%M%p\")"
-      ],
-      "description": "Code snippet for 'date' statement"
    }
 }
