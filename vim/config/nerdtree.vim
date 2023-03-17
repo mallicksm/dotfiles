@@ -5,7 +5,7 @@ Plug 'scrooloose/nerdtree' |
 "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'johnstef99/vim-nerdtree-syntax-highlight'
 nnoremap <expr> <leader>e g:NERDTree.IsOpen() ? ':NERDTreeClose<CR>' : @% == '' ? ':NERDTree<CR>' : ':NERDTreeFind<CR>'
-let g:NERDTreeWinSize=45
+let g:NERDTreeWinSize=35
 let g:NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.d$', '\.o$']
 let NERDTreeBookmarksSort=1
