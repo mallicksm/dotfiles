@@ -174,5 +174,27 @@
      "body": [
        "__asm volatile(\"${1:assembly code}\");"
      ]
+   },
+   "barrier": {
+     "prefix": ["barrier"],
+     "body": [
+       "   // Compiler Barrier",
+       "   //   compiler nukes regsiter cache of memory",
+       "   //   gcc/armclang re-fetches into registers",
+       "   //   no assembly instructions are issued",
+       "__asm__ volatile (\"\" ::: \"memory\");"
+     ]
+   },
+   "synchronize": {
+     "prefix": ["synchronize"],
+     "body": [
+       "   // Tell the C compiler and the CPU to not move loads or stores",
+       "   // past this point, to ensure that all the stores in the critical",
+       "   // section are visible to other CPUs before the lock is released,",
+       "   // and that loads in the critical section occur strictly before",
+       "   // the lock is released.",
+       "   // On AArch64 this issues a \"dmb ish\" instruction",
+       "   __sync_synchronize();"
+     ]
    }
 }
