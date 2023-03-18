@@ -18,7 +18,6 @@ vnoremap <S-k> :m '<-2<CR>gv=gv
 " Convinience maps
 nnoremap j gj
 nnoremap k gk
-inoremap jk <ESC>
 nnoremap Q q
 nnoremap q :q!<CR>
 nnoremap <leader>q :qall<CR>
@@ -30,8 +29,6 @@ inoremap <silent> <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 nnoremap <CR> :noh<CR><CR>
 inoremap <silent> <C-f> <C-X><C-F>
 nnoremap <Leader><Leader> <C-^>
-nnoremap <Left> :bp<CR>
-nnoremap <Right> :bn<CR>
 
 " whichkey maps
 nnoremap <leader>vw :set wrap!<CR>
