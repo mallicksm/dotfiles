@@ -178,23 +178,46 @@
    "barrier": {
      "prefix": ["barrier"],
      "body": [
-       "   // Compiler Barrier",
-       "   //   compiler nukes regsiter cache of memory",
-       "   //   gcc/armclang re-fetches into registers",
-       "   //   no assembly instructions are issued",
+       "// Compiler Barrier",
+       "//   compiler nukes regsiter cache of memory",
+       "//   gcc/armclang re-fetches into registers",
+       "//   no assembly instructions are issued",
        "__asm__ volatile (\"\" ::: \"memory\");"
      ]
    },
    "synchronize": {
      "prefix": ["synchronize"],
      "body": [
-       "   // Tell the C compiler and the CPU to not move loads or stores",
-       "   // past this point, to ensure that all the stores in the critical",
-       "   // section are visible to other CPUs before the lock is released,",
-       "   // and that loads in the critical section occur strictly before",
-       "   // the lock is released.",
-       "   // On AArch64 this issues a \"dmb ish\" instruction",
-       "   __sync_synchronize();"
+       "// Tell the C compiler and the CPU to not move loads or stores",
+       "// past this point, to ensure that all the stores in the critical",
+       "// section are visible to other CPUs before the lock is released,",
+       "// and that loads in the critical section occur strictly before",
+       "// the lock is released.",
+       "// On AArch64 this issues a \"dmb ish\" instruction",
+       "__sync_synchronize();"
+     ]
+   },
+   "release": {
+     "prefix": ["release"],
+     "body": [
+       "// Release the lock, equivalent to lk->locked = 0.",
+       "// This code doesn't use a C assignment, since the C standard",
+       "// implies that an assignment might be implemented with",
+       "// multiple store instructions.",
+       "// On AArch64 this isues a Store Release Register operation",
+       "// Releasing exclusive access held by preceeding LDAXR instruction",
+       "// STLR 0 [lk->locked],",
+       "__sync_lock_release(&memvar);"
+     ]
+   },
+   "lock": {
+     "prefix": ["lock"],
+     "body": [
+       "// On AArch64, sync_lock_test_and_set turns into an atomic swap:",
+       "//   LDAXR Xt [&lk->locked]",
+       "//   STLXR Ws Xt [&lk->locked], success when Ws=0",
+       "// Implemented: Double loop to check for Ws=0 (inner) and ldaxr.Xt=0 (outer)",
+       "localvar = __sync_swap(&memvar, 1);"
      ]
    }
 }
