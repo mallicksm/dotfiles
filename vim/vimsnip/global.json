@@ -19,6 +19,15 @@
       "body": "$CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
       "description": "Insert Date Stamp"
    },
+   "item guard": {
+      "prefix": ["guard"],
+      "body": [
+         "#ifndef ${1:__${TM_FILENAME/(.*)/${1:/upcase}/g}__}",
+         "#define ${1}",
+         "#endif"
+      ],
+      "description": "Code snippet for 'guard' statement"
+   },
    "item timestamp": {
       "prefix": ["$time"],
       "body": [

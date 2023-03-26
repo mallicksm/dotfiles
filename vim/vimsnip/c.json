@@ -157,6 +157,13 @@
       ],
       "description": "Code snippet for #define"
    },
+   "item aligned": {
+      "prefix": ["aligned"],
+      "body": [
+         "__attribute((aligned(${1:16}))) ${2:char} ${3:var};"
+      ],
+      "description": "Code snippet for 'aligned' statement"
+   },
    "mrs": {
      "prefix": ["mrs"],
      "body": [
