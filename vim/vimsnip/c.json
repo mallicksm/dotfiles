@@ -89,29 +89,29 @@
       "description": "Code snippet for enum"
    },
    "item #ifdef": {
-      "prefix": ["#ifdef"],
+      "prefix": ["ifdef"],
       "body": [
-         "#ifdef ${DEBUG}",
+         "#ifdef ${1:DEBUG}",
          "$0",
-         "#endif // ${DEBUG}"
+         "#endif // ${1}"
       ],
       "description": "Code snippet for #ifdef"
    },
    "item #ifndef": {
-      "prefix": ["#ifndef"],
+      "prefix": ["ifndef"],
       "body": [
          "#ifndef ${1:1}",
-         "$2",
-         "#endif // !$1"
+         "$0",
+         "#endif // ${1}"
       ],
       "description": "Code snippet for #ifndef"
    },
    "item #if": {
-      "prefix": ["#if"],
+      "prefix": ["if"],
       "body": [
          "#if ${1:0}",
-         "$2",
-         "#endif"
+         "$0",
+         "#endif // ${1}"
       ],
       "description": "Code snippet for #if"
    },
@@ -150,8 +150,8 @@
       ],
       "description": "Code snippet for #include"
    },
-   "item #def": {
-      "prefix": ["#def"],
+   "item #define": {
+      "prefix": ["define"],
       "body": [
          "#define ${1:name} ${2:value} "
       ],

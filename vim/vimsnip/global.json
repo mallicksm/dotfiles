@@ -15,7 +15,7 @@
       "description": "Code snippet for 'header' statement"
    },
    "item datesstamp": {
-      "prefix": ["$date"],
+      "prefix": ["date"],
       "body": "$CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
       "description": "Insert Date Stamp"
    },
@@ -24,12 +24,12 @@
       "body": [
          "#ifndef ${1:__${TM_FILENAME/(.*)/${1:/upcase}/g}__}",
          "#define ${1}",
-         "#endif"
+         "#endif ${LINE_COMMENT} ${1}"
       ],
       "description": "Code snippet for 'guard' statement"
    },
    "item timestamp": {
-      "prefix": ["$time"],
+      "prefix": ["time"],
       "body": [
          "$CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND"
       ],
