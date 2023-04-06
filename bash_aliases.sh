@@ -41,6 +41,7 @@ alias .....='cd ../../../../../'
 alias .5='cd ../../../../../'
 alias ......='cd ../../../../../../'
 alias .6='cd ../../../../../../'
+alias a64regs="firefox \$(cd ~/aarch64_regs/;fzf | sed 's/./~\/aarch64_regs/')"
 alias vimwiki='vim -c VimwikiIndex'
 if [[ -n "$BASH_VERSION" ]]; then
    shopt -s cdspell

@@ -164,6 +164,13 @@
       ],
       "description": "Code snippet for 'aligned' statement"
    },
+   "item interrupt": {
+      "prefix": ["interrupt"],
+      "body": [
+         "__attribute((interrupt)) void ${1:isr_routine}(void);"
+      ],
+      "description": "Code snippet for 'interrupt' statement"
+   },
    "mrs": {
      "prefix": ["mrs"],
      "body": [

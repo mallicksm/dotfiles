@@ -3,7 +3,7 @@
 " Maintainer: Soummya Mallick
 " Latest Revision: 2020-11-12
 
-if exists("b:current_syntax")
+if exists("b:tdf_syntax")
   finish
 endif
 
