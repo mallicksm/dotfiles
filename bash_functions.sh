@@ -256,10 +256,20 @@ export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
 export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border=double --margin=1 --padding=1 --multi --info=inline'
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="--height 100% --preview 'bat --theme=Nord --color=always {}'"
+export FZF_CTRL_T_OPTS="
+   --height 100% 
+   --preview 'bat -n --theme=Nord --color=always {}'
+   --bind 'ctrl-/:change-preview-window(down|hidden|)'
+   --header 'Press CTRL-/ to toggle preview'"
+
+export FZF_CTRL_R_OPTS="
+  --preview 'echo {}' --preview-window up:3:hidden:wrap
+  --bind 'ctrl-/:toggle-preview'
+  --color header:italic
+  --header 'Press CTRL-/ to toggle preview'"
 
 export FZF_ALT_C_COMMAND="fd --type d . --color=never --hidden --exclude '.git'"
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -50'"
+export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
 
 export FZF_TMUX=1
 # for more info see fzf/shell/completion.zsh
