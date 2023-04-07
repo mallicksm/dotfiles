@@ -260,16 +260,21 @@ export FZF_CTRL_T_OPTS="
    --height 100% 
    --preview 'bat -n --theme=Nord --color=always {}'
    --bind 'ctrl-/:change-preview-window(down|hidden|)'
+   --color header:italic
    --header 'Press CTRL-/ to toggle preview'"
 
 export FZF_CTRL_R_OPTS="
-  --preview 'echo {}' --preview-window up:3:hidden:wrap
-  --bind 'ctrl-/:toggle-preview'
-  --color header:italic
-  --header 'Press CTRL-/ to toggle preview'"
+   --preview 'echo {}' --preview-window up:3:hidden:wrap
+   --bind 'ctrl-/:toggle-preview'
+   --color header:italic
+   --header 'Press CTRL-/ to toggle preview'"
 
 export FZF_ALT_C_COMMAND="fd --type d . --color=never --hidden --exclude '.git'"
-export FZF_ALT_C_OPTS="--preview 'tree -C {}'"
+export FZF_ALT_C_OPTS="
+   --preview 'tree -C {}'
+   --bind 'ctrl-/:toggle-preview'
+   --color header:italic
+   --header 'Press CTRL-/ to toggle preview'"
 
 export FZF_TMUX=1
 # for more info see fzf/shell/completion.zsh
