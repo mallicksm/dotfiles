@@ -31,6 +31,7 @@ alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/m
 alias ipup="ifconfig $(ip -br addr show 2> /dev/null | grep UP|awk '{print $1}')"
 alias upip="echo $(hostname -I 2> /dev/null | awk '{print $1}')"
 alias macip="echo $(ifconfig ppp0 2> /dev/null | grep inet | awk '{print $2}')"
+alias a64regs="command du -a ~/aarch64_regs | grep '\.html$'| grep 2023 | grep -v diff-from |  grep -v AArch32 | awk '{print \$2}'|fzf|xargs -r firefox"
 alias .='cd ../'
 alias ..='cd ../../'
 alias ...='cd ../../../'
@@ -41,7 +42,6 @@ alias .....='cd ../../../../../'
 alias .5='cd ../../../../../'
 alias ......='cd ../../../../../../'
 alias .6='cd ../../../../../../'
-alias a64regs="firefox \$(cd ~/aarch64_regs/;fzf | sed 's/./~\/aarch64_regs/')"
 alias vimwiki='vim -c VimwikiIndex'
 if [[ -n "$BASH_VERSION" ]]; then
    shopt -s cdspell
