@@ -16,7 +16,7 @@
    st = status --untracked-files=no --short
    url = remote set-url origin
    root = rev-parse --show-toplevel           # Shows root of current repo
-   ls =  log --format=format:'%C(bold blue)%h%C(red)\t%ad %C(green)%cn %C(red)%d\n\t\t%C(cyan)-- %s%C(reset)\n' --decorate --graph --date=relative --all
+   ls = log --format=format:'%C(bold blue)%h%C(red)\t%ad %C(green)%cn %C(red)%d %C(magenta)(a:%an)\n\t\t%C(cyan)-- %s%C(reset)\n' --decorate --graph --date=relative
    id = rev-parse --short HEAD
    br = rev-parse --abbrev-ref --short HEAD
    alias = config --get-regexp alias
@@ -30,7 +30,11 @@
    # fzf switch branch
    sw = "!checkout_fzf() { \
       git branch -a --format '%(refname:short)' | sed 's~origin/~~' | grep -v HEAD | sort | uniq | \
-      fzf | xargs git checkout; \
+      fzf  --height=60 --border-label=' All Branches ' --border-label-pos=4| xargs git checkout; \
+   }; checkout_fzf"
+   lsw = "!checkout_fzf() { \
+      git branch --format '%(refname:short)' | sed 's~origin/~~' | grep -v HEAD | sort | uniq | \
+      fzf --height=40 --border-label=' Local Branches ' --border-label-pos=4| xargs git checkout; \
    }; checkout_fzf"
    # fzf git log checkins
    cb = "!cb_fzf() { \
