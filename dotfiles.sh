@@ -109,15 +109,6 @@ function getz () {
 #}}}
 
 #-------------------------------------------------------------------------------
-#{{{ getgitmux
-function getgitmux() {
-   echo "Info: Installing gitmux"
-   rm -rf ~/.tmux-gitbar
-   git clone https://github.com/arl/tmux-gitbar.git ~/.tmux-gitbar
-}
-#}}}
-
-#-------------------------------------------------------------------------------
 #{{{ getstarship
 function getstarship() {
    echo "Info: Installing starship"
@@ -135,7 +126,6 @@ function all() {
    linkrc
 #  getvimwiki
    getz
-   getgitmux
    getstarship
 }
 
