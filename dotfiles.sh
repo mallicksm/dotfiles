@@ -45,7 +45,7 @@ function linkrc () {
             command mkdir -p ~/.subversion
             linkup ${cdir}/initrc/${dotfile} ~/.subversion/${dotfile#*.}
             ;;
-         z.sh|gitmux.conf|dircolors)
+         z.sh|dircolors)
             # skip
             ;;
          *)
@@ -112,16 +112,8 @@ function getz () {
 #{{{ getgitmux
 function getgitmux() {
    echo "Info: Installing gitmux"
-   if [[ $(curl --head --silent --fail git@github.com) ]]; then
-      case $(uname -s) in
-         Linux*)  src=https://github.com/arl/gitmux/releases/download/v0.7.9/gitmux_0.7.9_linux_amd64.tar.gz;;
-         Darwin*) src=https://github.com/arl/gitmux/releases/download/v0.9.1/gitmux_v0.9.1_macOS_amd64.tar.gz;;
-         *)       error "Couldn't determine OS"
-      esac
-      target=~/.local/bin/gitmux
-      mkdir -p $(dirname $target)
-      [[ ! -f $target ]] && curl -L -s $src | tar xz -C $(dirname $target) || true
-   fi
+   rm -rf ~/.tmux-gitbar
+   git clone https://github.com/arl/tmux-gitbar.git ~/.tmux-gitbar
 }
 #}}}
 
