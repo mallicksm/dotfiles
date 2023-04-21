@@ -407,7 +407,7 @@ function xvim() {
    dbus-launch gnome-terminal --title="gvim: $@" --hide-menubar --geometry=130x50 -- vim "$@" >/dev/null
 }
 
-function dc {
+function num {
    input=$1
    output_type=$2
    if [[ $input == "0x"* ]]; then
