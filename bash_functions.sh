@@ -391,7 +391,6 @@ function get_clip() {
 #}}}
 
 #-------------------------------------------------------------------------------
-#{{{ install nerdfonts
 function ifont() {
    # Install font
    echo "Note: Installing FiraCode font"
@@ -403,11 +402,34 @@ function ifont() {
    GNOME_TERMINAL_PROFILE=$(gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}')
    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ font 'FiraCode Nerd Font Mono 12'
 }
-#}}}
 
-#-------------------------------------------------------------------------------
-#{{{ xvim
 function xvim() {
    dbus-launch gnome-terminal --title="gvim: $@" --hide-menubar --geometry=130x50 -- vim "$@" >/dev/null
 }
-#}}}
+
+function dc {
+   input=$1
+   output_type=$2
+   if [[ $input == "0x"* ]]; then
+      # input has 0x prefix, convert hex to decimal or binary
+      if [[ $output_type == "bin" ]]; then
+         printf "%b\n" "$(echo "ibase=16; obase=2; ${input:2}" | bc)"
+      else
+         echo $(( 16#${input:2} ))
+      fi
+   elif [[ $input == "0b"* ]]; then
+      # input has 0b prefix, convert binary to decimal or hex
+      if [[ $output_type == "hex" ]]; then
+         printf "0x%X\n" "$(( 2#${input:2} ))"
+      else
+         echo "$(( 2#${input:2} ))"
+      fi
+   else
+      # input doesn't have prefix, assume decimal and convert to hex or binary
+      if [[ $output_type == "bin" ]]; then
+         printf "%b\n" "$(echo "obase=2; $input" | bc)"
+      else
+         printf "0x%X\n" $input
+      fi
+   fi
+}
