@@ -302,27 +302,6 @@ _fzf_comprun() {
 # }}}
 
 #-------------------------------------------------------------------------------
-#{{{ fzf-functions
-function rgrep() {
-rg --color=always --line-number --no-heading --smart-case "${*:-}" |
-   fzf --ansi \
-       --delimiter : \
-       --preview 'bat --theme=Nord --color=always {1} --highlight-line {2}' \
-       --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
-       --bind 'enter:become(vim {1} +{2})'
-}
-#}}}
-
-#-------------------------------------------------------------------------------
-#{{{ tm
-function tm() {
-  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
-  if [ $1 ]; then
-    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
-  fi
-  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
-}
-#}}}
 
 #-------------------------------------------------------------------------------
 #{{{ cat ll la and lt aliases
@@ -391,6 +370,23 @@ function get_clip() {
 #}}}
 
 #-------------------------------------------------------------------------------
+function rgrep() {
+rg --color=always --line-number --no-heading --smart-case "${*:-}" |
+   fzf --ansi \
+       --delimiter : \
+       --preview 'bat --theme=Nord --color=always {1} --highlight-line {2}' \
+       --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+       --bind 'enter:become(vim {1} +{2})'
+}
+
+function tm() {
+  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+  if [ $1 ]; then
+    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
+  fi
+  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
 function ifont() {
    # Install font
    echo "Note: Installing FiraCode font"

@@ -68,4 +68,12 @@ autocmd VimEnter * call textobj#user#map('wordcolumn', {
             \   'select-a' : 'aQ',
             \   },
             \ })
+"-------------------------------------------------------------------------------
+" https://github.com/kana/vim-textobj-function
+Plug 'kana/vim-textobj-function'
+" {lhs}   {rhs}
+" -----   -----
+"  aF     <Plug>(textobj-function-A)
+"  iF     <Plug>(textobj-function-I)
+"-------------------------------------------------------------------------------
 let $textobj = '$RTP/config/textobj.vim'
