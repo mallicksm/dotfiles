@@ -413,9 +413,41 @@ function num {
    fi
    input=$(($input))
    echo "dec: $input"
-   printf "hex: 0x%X\n" $input
-   printf "bin: 2#%b\n" "$(echo "obase=2; $input" | bc)"
+   printf "hex: 0x"; print_sequence "$(printf "%X\n" $input)"
+   printf "bin: 2#"; print_sequence "$(echo "obase=2; $input" | bc)"
 }
+print_sequence() {
+   binary_sequence="$1"
+
+   # Pad the sequence with zeros to the left with a multiple of 4
+   if [[ $((${#binary_sequence}%4))  != 0 ]]; then
+      padded_sequence=$(printf "%0$((4 - ${#binary_sequence} % 4))d%s" 0 "$binary_sequence")
+   else
+      padded_sequence=$binary_sequence
+   fi
+
+   # Set the colors
+   color1='\033[0;31m'  # Red
+   color2='\033[0;32m'  # Green
+
+   # Loop through the padded sequence
+   for ((i = 0; i < ${#padded_sequence}; i++)); do
+      # Get the current binary digit
+      digit="${padded_sequence:i:1}"
+
+      # Set the color based on the index
+      if ((i % 8 < 4)); then
+         color="$color1"
+      else
+         color="$color2"
+      fi
+
+      # Print the digit with the appropriate color
+      echo -ne "${color}${digit}\033[0m"
+   done
+   echo
+}
+
 function dis() {
    input="$@"
    echo "quit to exit"
