@@ -18,7 +18,7 @@
       "description": "insert header code"
    },
    "item function": {
-      "prefix": ["func", "proc"],
+      "prefix": ["func, function", "proc"],
       "body": [
          "function ${1:function_name}() {",
          "   ${2:getopt}",

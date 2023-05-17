@@ -404,28 +404,52 @@ function xvim() {
 }
 
 function num {
-   input=$1
-   output_type=$2
-   if [[ $input == "0x"* ]]; then
-      # input has 0x prefix, convert hex to decimal or binary
-      if [[ $output_type == "bin" ]]; then
-         printf "%b\n" "$(echo "ibase=16; obase=2; ${input:2}" | bc)"
-      else
-         echo $(( 16#${input:2} ))
-      fi
-   elif [[ $input == "0b"* ]]; then
-      # input has 0b prefix, convert binary to decimal or hex
-      if [[ $output_type == "hex" ]]; then
-         printf "0x%X\n" "$(( 2#${input:2} ))"
-      else
-         echo "$(( 2#${input:2} ))"
-      fi
-   else
-      # input doesn't have prefix, assume decimal and convert to hex or binary
-      if [[ $output_type == "bin" ]]; then
-         printf "%b\n" "$(echo "obase=2; $input" | bc)"
-      else
-         printf "0x%X\n" $input
-      fi
+   input="$@"
+   if [[ $input =~ ^(-h|help)$ ]]; then
+      echo "Usage:"
+      echo "   ${FUNCNAME[0]} [1234|0xdeadbeef|2#1101|'0xab<<2'] - quote <<|>>"
+      echo "   ${FUNCNAME[0]} [-h|help]"
+      return
    fi
+   input=$(($input))
+   echo "dec: $input"
+   printf "hex: 0x%X\n" $input
+   printf "bin: 2#%b\n" "$(echo "obase=2; $input" | bc)"
+}
+function dis() {
+   input="$@"
+   echo "quit to exit"
+   if [[ $input =~ ^(-h|help)$ ]]; then
+      echo "Usage:"
+      echo "   ${FUNCNAME[0]} -v7  - armv7 compiler"
+      echo "   ${FUNCNAME[0]} -h|help"
+      echo "quit to exit"
+      return
+   fi
+   if [[ $input =~ ^(-v7)$ ]]; then
+      ARCH="ARM-v7"
+      CC=(suite_exec -q -t 'Arm Compiler 6' armclang --target=arm-arm-none-eabi -marm -mcpu=cortex-r5)
+      LK=(suite_exec -q -t 'Arm Compiler 6' armlink --diag_suppress=L6305W)
+      OBJDUMP=(aarch64-unknown-nto-qnx7.1.0-objdump)
+   else
+      ARCH="ARM-v8"
+      CC=(suite_exec -q -t 'Arm Compiler 6' armclang --target=aarch64-arm-none-eabi)
+      LK=(suite_exec -q -t 'Arm Compiler 6' armlink --diag_suppress=L6305W)
+      OBJDUMP=(aarch64-unknown-nto-qnx7.1.0-objdump)
+   fi
+   while true; do
+      read -p "$ARCH >> " input
+      if [[ $input == "quit" ]]; then
+         break
+      fi
+      echo "$input" > temp.s
+      "${CC[@]}" -c -o temp.o temp.s
+      if [ $? -eq 0 ]; then
+          "${LK[@]}" -o temp temp.o
+         if [ $? -eq 0 ]; then
+            "${OBJDUMP[@]}" -d temp | grep '8[0-9]*:' | sed 's/.*:\s*//'
+         fi
+      fi
+   done
+   rm temp.s temp.o temp 2>/dev/null
 }
