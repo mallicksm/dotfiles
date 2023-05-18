@@ -10,6 +10,11 @@ CYAN="$(tput setaf 6 2>/dev/null || printf '')"
 WHITE="$(tput setaf 7 2>/dev/null || printf '')"
 GRAY="$(tput setaf 8 2>/dev/null || printf '')"
 NO_COLOR="$(tput sgr0 2>/dev/null || printf '')"
+function printne() {
+   color=$1
+   str="${@:2}"
+   printf "${!color}$str$NO_COLOR"
+}
 function print() {
    color=$1
    str="${@:2}"
@@ -26,6 +31,38 @@ function error() {
 }
 function completed() {
    printf '%s\n' "$GREEN✓ $@$NO_COLOR"
+}
+function print_sequence() {
+   binary_sequence="$1"
+   group_size="${2:-4}"
+
+   # Pad the sequence with zeros to the left with a multiple of 4
+   if [[ $((${#binary_sequence}%${group_size}))  != 0 ]]; then
+      padded_sequence=$(printf "%0$((${group_size} - ${#binary_sequence} % ${group_size}))d%s" 0 "$binary_sequence")
+   else
+      padded_sequence=$binary_sequence
+   fi
+
+   # Set the colors
+   color1=$RED
+   color2=$BLUE
+   resetc=$NO_COLOR
+   # Loop through the padded sequence
+   for ((i = 0; i < ${#padded_sequence}; i++)); do
+      # Get the current binary digit
+      digit="${padded_sequence:i:1}"
+
+      # Set the color based on the index
+      if ((i % $(($group_size * 2)) < $group_size)); then
+         color="$color1"
+      else
+         color="$color2"
+      fi
+
+      # Print the digit with the appropriate color
+      echo -ne "${color}${digit}${resetc}"
+   done
+   echo
 }
 function has() {
    command -v "$1" 1>/dev/null 2>&1
