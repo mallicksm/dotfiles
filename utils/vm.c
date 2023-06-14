@@ -65,8 +65,13 @@ uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels) {
          goto done;
       } else {
          pagetable = kalloc();
-         *pte = PA2PTE((uint64)pagetable) | PTE_T | PTE_V;
-         printf("alloc level=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         if ((levels==2 && level==2) || (levels==1 && level==1)) {
+            *pte = PA2PTE((uint64)pagetable) | PTE_V;
+            printf("block level=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         } else {
+            *pte = PA2PTE((uint64)pagetable) | PTE_T | PTE_V;
+            printf("table level=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         }
       }
    }
 done:
@@ -102,30 +107,33 @@ int pteprint_cli(int argc, char** argv) {
    (void)argc;
    (void)argv;
    pteprint(pagetable, 1);
+   printf("pagetable=0x%016llx\n", pagetable);
+   return 0;
 }
 
 int mappages_cli(int argc, char** argv) {
    uint64 pa;
    uint64 va;
    uint64 pages;
+   int levels;
    if (argc < 2) {
       va = 0;
       pages = 1;
-      pa = 0;
+      levels = 3;
    } else if (argc < 3) {
       va = strtol(argv[1], NULL, 0);
       pages = 1;
-      pa = va;
+      levels = 3;
    } else if (argc < 4) {
       va = strtol(argv[1], NULL, 0);
       pages = strtol(argv[2], NULL, 0);
-      pa = va;
+      levels = 3;
    } else {
       va = strtol(argv[1], NULL, 0);
       pages = strtol(argv[2], NULL, 0);
-      pa = strtol(argv[3], NULL, 0);
+      levels = strtol(argv[3], NULL, 0);
    }
-   mappages(pagetable, va, pa, 3, pages*4096, 0x5bULL<<(14*4));
+   mappages(pagetable, va, (0x1234ULL << 32), levels, pages*4096, 0x5bULL<<(14*4));
    return 0;
 }
 
@@ -138,9 +146,33 @@ int test_cli(int argc, char** argv) {
    }
 }
 
+int mrd_cli(int argc, char** argv) {
+   if (argc != 2) {
+      printf("Please provide 1 argument\n");
+      return -1;
+   }
+   uint64 addr = strtol(argv[1], NULL, 0);
+   uint64 data = *(volatile uint64 *)addr;
+   printf("Mem[0x%016llx] => 0x%016llx\n",addr, data);
+   return 0;
+}
+
+int mwr_cli(int argc, char** argv) {
+   if (argc != 3) {
+      printf("Please provide 2 arguments\n");
+      return -1;
+   }
+   uint64 addr = strtol(argv[1], NULL, 0);
+   uint64 data = strtol(argv[2], NULL, 0);
+   *(volatile uint64 *)addr = data;
+   printf("Mem[0x%016llx] <= 0x%016llx\n",addr, data);
+   return 0;
+}
+
 int help_cli(int argc, char** argv) {
-   printf("mappages va\n");
+   printf("mappages va pages pa levels\n");
    printf("pteprint\n");
+   printf("mrd/mwr\n");
    printf("help\n");
    return 0;
 }
@@ -155,6 +187,14 @@ static struct cmd_t cmd_table[] = {
    {
       .cmd = "help",
       .func = help_cli,
+   }, 
+   {
+      .cmd = "mrd",
+      .func = mrd_cli,
+   }, 
+   {
+      .cmd = "mwr",
+      .func = mwr_cli,
    }, 
    {
       .cmd = "test",
