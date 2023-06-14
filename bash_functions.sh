@@ -465,3 +465,9 @@ function dis() {
    done
    rm temp.s temp.o temp 2>/dev/null
 }
+function duration() {
+   local seconds=$1
+
+   local formatted_time=$(date -u -d @${seconds} +"%Hh %Mm %Ss")
+   echo "${formatted_time}"
+}

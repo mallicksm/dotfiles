@@ -222,14 +222,16 @@
       "body": "import pudb; pudb.set_trace()",
       "description": "Code snippet for pudb debug"
    },
-   "item add/new/cell": {
-      "prefix": ["add/new/cell"],
-      "body": "# %%",
-      "description": "Code snippet to add a new cell"
-   },
    "item mark/markdown": {
-      "prefix": ["mark/markdown"],
+      "prefix": ["mark","markdown"],
       "body": "# %% [markdown]",
       "description": "Code snippet to add a new markdown cell"
-   }
+   },
+  "Print Statement": {
+    "prefix": "print",
+    "body": [
+      "print(${1})"
+    ],
+    "description": "Print a value"
+  }
 }
