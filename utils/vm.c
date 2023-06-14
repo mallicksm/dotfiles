@@ -56,27 +56,37 @@ uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels, uint32 alloc) {
       uint64 *pte = &pagetable[PX(level,va)];
       if (*pte & PTE_V) {
          pagetable = (uint64 *)PTE2PA(*pte);
-         printf("found level=%d numpages=%d &pte=0x%016llx pte=0x%016llx, am=0x%016llx\n", level, numpages,pte,*pte, PX(level,va));
+         printf("found level=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
       } else {
          pagetable = kalloc();
-         *pte = PA2PTE((uint64)pagetable) | PTE_V;
-         printf("alloc level=%d numpages=%d &pte=0x%016llx pte=0x%016llx, am=0x%016llx\n", level, numpages,pte,*pte, PX(level,va));
+         *pte = PA2PTE((uint64)pagetable) | PTE_T | PTE_V;
+         printf("alloc level=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
       }
    }
    return &pagetable[PX(levels, va)];
 }
 
-int mappages(uint64 *pagetable, uint64 va, uint64 pa, uint32 level, uint64 perm) {
+int mappages(uint64 *pagetable, uint64 va, uint64 pa, uint32 level, uint64 size, uint64 perm) {
    uint64 *pte;
-   if ((pte = walk(pagetable, va, level, 1)) == 0) {
-      printf("Jacked\n");
-      return -1;
+   uint64 a = PGROUNDDOWN(va, level);
+   uint64 last = PGROUNDDOWN(va+size-1, level);
+   while (1) {
+      if ((pte = walk(pagetable, a, level, 1)) == 0) {
+         printf("Jacked\n");
+         return -1;
+      }
+      if (*pte & PTE_V) {
+         printf("Mapped\n");
+         return -1;
+      }
+      *pte = PA2PTE(pa) | perm | PTE_T | PTE_V;
+      if (a == last) {
+         goto done;
+      }
+      a += PGSIZE;
+      pa += PGSIZE;
    }
-   if (*pte & PTE_V) {
-      printf("Mapped\n");
-      return -1;
-   }
-   *pte = PA2PTE(pa) | perm | PTE_T | PTE_V;
+done:
    pteprint(pagetable, 1);
    return 0;
 }
@@ -89,13 +99,26 @@ int pteprint_cli(int argc, char** argv) {
 
 int mappages_cli(int argc, char** argv) {
    uint64 pa;
-   uint64 va = strtol(argv[1], NULL, 0);
-   if (argc > 2) {
-      pa = strtol(argv[2], NULL, 0);
-   } else {
+   uint64 va;
+   uint64 pages;
+   if (argc < 2) {
+      va = 0;
+      pages = 1;
+      pa = 0;
+   } else if (argc < 3) {
+      va = strtol(argv[1], NULL, 0);
+      pages = 1;
       pa = va;
+   } else if (argc < 4) {
+      va = strtol(argv[1], NULL, 0);
+      pages = strtol(argv[2], NULL, 0);
+      pa = va;
+   } else {
+      va = strtol(argv[1], NULL, 0);
+      pages = strtol(argv[2], NULL, 0);
+      pa = strtol(argv[3], NULL, 0);
    }
-   mappages(pagetable, va, pa, 3, 0x5bULL<<(14*4));
+   mappages(pagetable, va, pa, 3, pages*4096, 0x5bULL<<(14*4));
    return 0;
 }
 
