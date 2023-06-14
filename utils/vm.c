@@ -5,7 +5,7 @@
 #define uint64 unsigned long long
 
 #define MAXVA 39
-#define TG 12                                                // 12
+#define TG 12                                                // 12|14|16
 
 #define PGSIZE           (1 << (TG))                         // 4096
 #define PXMASK           ((1 << (TG-3)) - 1)                 // 0x1ff
@@ -32,37 +32,44 @@ void pteprint(uint64 *pagetable, int level) {
 #define _PINDENT 25
    if (level == 3) {
       for (int i = 0; i < PXMASK+1; i++) {
-         if (pagetable[i] & PTE_V) {
+         if (pagetable[i] & (PTE_T | PTE_V)) {
             printf("%*s%d: pte=0x%016llx\n", (level-1)*_PINDENT, "", i, pagetable[i]);
          }
       }
    } else {
       uint64 *nextLevelTable;
       for (int i = 0; i < PXMASK+1; i++) {
-         if (pagetable[i] & PTE_V) {
+         if ((pagetable[i] & PTE_T) && (pagetable[i] & PTE_V)) {
             printf("%*s%d: pte=0x%016llx\n", (level-1)*_PINDENT, "", i, pagetable[i]);
             nextLevelTable = (uint64 *)PTE2PA(pagetable[i]);
             pteprint(nextLevelTable, level + 1);
+         } else if (pagetable[i] & PTE_V) {
+            printf("%*s%d: blk=0x%016llx\n", (level-1)*_PINDENT, "", i, pagetable[i]);
          }
       }
    }
 }
 
-uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels, uint32 alloc) {
+uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels) {
    for (uint32 level = 0; level < levels; level++) {
       if (PXSHIFT(level) >= MAXVA)
          continue;
 
       uint64 *pte = &pagetable[PX(level,va)];
-      if (*pte & PTE_V) {
+      if ((*pte & PTE_T) && (*pte & PTE_V)) {
          pagetable = (uint64 *)PTE2PA(*pte);
-         printf("found level=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         printf("found table=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+      } else if (*pte & PTE_V) {
+         pagetable = (uint64 *)PTE2PA(*pte);
+         printf("found block=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         goto done;
       } else {
          pagetable = kalloc();
          *pte = PA2PTE((uint64)pagetable) | PTE_T | PTE_V;
          printf("alloc level=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
       }
    }
+done:
    return &pagetable[PX(levels, va)];
 }
 
@@ -71,7 +78,7 @@ int mappages(uint64 *pagetable, uint64 va, uint64 pa, uint32 level, uint64 size,
    uint64 a = PGROUNDDOWN(va, level);
    uint64 last = PGROUNDDOWN(va+size-1, level);
    while (1) {
-      if ((pte = walk(pagetable, a, level, 1)) == 0) {
+      if ((pte = walk(pagetable, a, level)) == 0) {
          printf("Jacked\n");
          return -1;
       }
