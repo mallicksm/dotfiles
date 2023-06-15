@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #define uint32 unsigned int
 #define uint64 unsigned long long
 
@@ -23,6 +24,13 @@
 
 __attribute((aligned(4096))) uint64 pagetable[512 * 10];
 int numpages = 1;
+
+void logprintf(char *fmt, ...) {
+   va_list args;
+   va_start(args, fmt);
+   vprintf(fmt, args);
+   va_end(args);
+}
 
 uint64 *kalloc(void) {
    return &pagetable[512 * numpages++];
@@ -48,9 +56,10 @@ void pteprint(uint64 *pagetable, int level) {
          }
       }
    }
+   printf("&pagetable[%d]=0x%016llx\n", level, pagetable);
 }
 
-uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels) {
+uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels, int alloc) {
    for (uint32 level = 0; level < levels; level++) {
       if (PXSHIFT(level) >= MAXVA)
          continue;
@@ -58,20 +67,16 @@ uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels) {
       uint64 *pte = &pagetable[PX(level,va)];
       if ((*pte & PTE_T) && (*pte & PTE_V)) {
          pagetable = (uint64 *)PTE2PA(*pte);
-         printf("found table=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         logprintf("found table=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
       } else if (*pte & PTE_V) {
          pagetable = (uint64 *)PTE2PA(*pte);
-         printf("found block=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
-         goto done;
+         logprintf("found block=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         return pagetable;
       } else {
-         pagetable = kalloc();
-         if ((levels==2 && level==2) || (levels==1 && level==1)) {
-            *pte = PA2PTE((uint64)pagetable) | PTE_V;
-            printf("block level=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
-         } else {
-            *pte = PA2PTE((uint64)pagetable) | PTE_T | PTE_V;
-            printf("table level=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
-         }
+         if (!alloc || (pagetable = kalloc()) == 0)
+            return 0;
+         *pte = PA2PTE((uint64)pagetable) | PTE_T | PTE_V;
+         logprintf("alloc table=%d numpages=%d &pte=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
       }
    }
 done:
@@ -83,7 +88,7 @@ int mappages(uint64 *pagetable, uint64 va, uint64 pa, uint32 level, uint64 size,
    uint64 a = PGROUNDDOWN(va, level);
    uint64 last = PGROUNDDOWN(va+size-1, level);
    while (1) {
-      if ((pte = walk(pagetable, a, level)) == 0) {
+      if ((pte = walk(pagetable, a, level, 1)) == 0) {
          printf("Jacked\n");
          return -1;
       }
@@ -91,7 +96,11 @@ int mappages(uint64 *pagetable, uint64 va, uint64 pa, uint32 level, uint64 size,
          printf("Mapped\n");
          return -1;
       }
-      *pte = PA2PTE(pa) | perm | PTE_T | PTE_V;
+      if (level == 3) {
+         *pte = PA2PTE(pa) | perm | PTE_T | PTE_V;
+      } else {
+         *pte = PA2PTE(pa) | perm | PTE_V;
+      }
       if (a == last) {
          goto done;
       }
@@ -99,7 +108,6 @@ int mappages(uint64 *pagetable, uint64 va, uint64 pa, uint32 level, uint64 size,
       pa += PGSIZE;
    }
 done:
-   pteprint(pagetable, 1);
    return 0;
 }
 
@@ -107,7 +115,6 @@ int pteprint_cli(int argc, char** argv) {
    (void)argc;
    (void)argv;
    pteprint(pagetable, 1);
-   printf("pagetable=0x%016llx\n", pagetable);
    return 0;
 }
 
@@ -133,7 +140,7 @@ int mappages_cli(int argc, char** argv) {
       pages = strtol(argv[2], NULL, 0);
       levels = strtol(argv[3], NULL, 0);
    }
-   mappages(pagetable, va, (0x1234ULL << 32), levels, pages*4096, 0x5bULL<<(14*4));
+   mappages(pagetable, va, (0x123456789a000ULL), levels, pages*4096, 0x5bULL<<(14*4));
    return 0;
 }
 
@@ -141,8 +148,8 @@ int test_cli(int argc, char** argv) {
    (void)argc;
    uint64 va = strtol(argv[1], NULL, 0);
    for (int l = 0; l < 4; l++) {
-      printf("PgRoundUp   l=%d: 0x%016llx\n", l, PGROUNDUP(va,l));
-      printf("PgRoundDown l=%d: 0x%016llx\n", l, PGROUNDDOWN(va,l));
+      logprintf("PgRoundUp   l=%d: 0x%016llx\n", l, PGROUNDUP(va,l));
+      logprintf("PgRoundDown l=%d: 0x%016llx\n", l, PGROUNDDOWN(va,l));
    }
 }
 
@@ -159,7 +166,7 @@ int mrd_cli(int argc, char** argv) {
 
 int mwr_cli(int argc, char** argv) {
    if (argc != 3) {
-      printf("Please provide 2 arguments\n");
+      logprintf("Please provide 2 arguments\n");
       return -1;
    }
    uint64 addr = strtol(argv[1], NULL, 0);
@@ -242,7 +249,7 @@ void exec (void) {
       while (!cmd_table[i].last) {
          if (strcmp(argv[0], cmd_table[i].cmd) == 0) {
             uint32 rc = cmd_table[i].func(argc, argv);
-            printf("rc=%d\n",rc);
+            logprintf("rc=%d\n",rc);
             legal_cmd = 1;
          }
          i++;
