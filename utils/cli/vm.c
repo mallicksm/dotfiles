@@ -5,22 +5,22 @@
 uint64 *kernel_pagetable;
 
 void pteprint(uint64 *pagetable, int level) {
-#define _PINDENT 25
+#define _PINDENT_ 25
    if (level == 3) {
       for (int i = 0; i < PXMASK+1; i++) {
          if (pagetable[i] & (PTE_T | PTE_V)) {
-            printf("%*s%d: pte=0x%p\n", (level-1)*_PINDENT, "", i, pagetable[i]);
+            printf("%*s%d: pte=0x%p\n", (level-1)*_PINDENT_, "", i, pagetable[i]);
          }
       }
    } else {
       uint64 *nextLevelTable;
       for (int i = 0; i < PXMASK+1; i++) {
          if ((pagetable[i] & PTE_T) && (pagetable[i] & PTE_V)) {
-            printf("%*s%d: pte=0x%p\n", (level-1)*_PINDENT, "", i, pagetable[i]);
+            printf("%*s%d: pte=0x%p\n", (level-1)*_PINDENT_, "", i, pagetable[i]);
             nextLevelTable = (uint64 *)PAxPTE(pagetable[i]);
             pteprint(nextLevelTable, level + 1);
          } else if (pagetable[i] & PTE_V) {
-            printf("%*s%d: blk=0x%p\n", (level-1)*_PINDENT, "", i, pagetable[i]);
+            printf("%*s%d: blk=0x%p\n", (level-1)*_PINDENT_, "", i, pagetable[i]);
          }
       }
    }
@@ -47,7 +47,6 @@ uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels, int alloc) {
          printf("alloc table=%d numpages=%d pt=0x%p pte=0x%p\n", level, knumpages(),pte,*pte);
       }
    }
-done:
    return &pagetable[PX(levels, va)];
 }
 

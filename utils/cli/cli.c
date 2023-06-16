@@ -101,14 +101,14 @@ int mwr_cli(int argc, char** argv) {
 }
 
 int help_cli(int argc, char** argv) {
-   printf("mappages [va|pages|levels]\n");
-   printf("mrd/mwr  <va>\n");
-   printf("kinit\n");
-   printf("kalloc\n");
-   printf("kfree <pa>\n");
-   printf("kvminit\n");
-   printf("pteprint\n");
-   printf("help|test\n");
+   printf("mappages [va|pages|levels]     -map va #pages of size #levels\n");
+   printf("mrd/mwr  <va>                  -read/write memory\n");
+   printf("kinit                          -kernel allocator init\n");
+   printf("kalloc                         -kalloc a page\n");
+   printf("kfree <pa>                     -kfree a page\n");
+   printf("kvminit                        -initialize boot pagetable\n");
+   printf("pteprint                       -print pagetable\n");
+   printf("help|test                      -help this message, custom test\n");
    return 0;
 }
 
