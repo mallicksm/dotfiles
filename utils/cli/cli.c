@@ -44,7 +44,8 @@ int kvminit_cli(int argc, char** argv) {
 int pteprint_cli(int argc, char** argv) {
    (void)argc;
    (void)argv;
-   pteprint(pagetable, 1);
+   printf("kernel_pagetable = 0x%016llx\n", kernel_pagetable);
+   pteprint(kernel_pagetable, 1);
    return 0;
 }
 
@@ -70,17 +71,20 @@ int mappages_cli(int argc, char** argv) {
       pages = strtol(argv[2], NULL, 0);
       levels = strtol(argv[3], NULL, 0);
    }
-   mappages(pagetable, va, 0x123456789a000ULL+va, levels, pages*PGSIZE, 0x5bULL<<(14*4));
+   mappages(kernel_pagetable, va, 0x123456789a000ULL+va, levels, pages*PGSIZE, 0x5bULL<<(14*4));
    return 0;
 }
 
 int test_cli(int argc, char** argv) {
-   (void)argc;
+   if (argc < 2) {
+      printf("please provide an agrument for va\n");
+      return 1;
+   }
    uint64 va = strtol(argv[1], NULL, 0);
    for (int l = 0; l < 4; l++) {
       printf("PgRoundUp   l=%d: 0x%016llx\n", l, PGROUNDUP(va,l));
       printf("PgRoundDown l=%d: 0x%016llx\n", l, PGROUNDDOWN(va,l));
-      printf("pagetable 0x%016llx\n", pagetable);
+      printf("pagetable 0x%016llx\n", kernel_pagetable);
    }
 }
 

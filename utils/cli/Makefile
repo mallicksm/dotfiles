@@ -1,5 +1,5 @@
 all:
-	cc -std=c99 -g cli.c vm.c kalloc.c -o cli
+	cc -std=c99 -g cli.c vm.c kalloc.c spinlock.c -o cli
 	./cli
 
 clean:
