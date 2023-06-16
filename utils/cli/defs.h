@@ -24,4 +24,3 @@ void private_printf(const char*, ...);
 #define printf private_printf
 
 extern uint64 *kernel_pagetable;
-extern int numpages;
