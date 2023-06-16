@@ -2,6 +2,8 @@
 #include "defs.h"
 #include "vm.h"
 
+uint64 *kernel_pagetable;
+
 void pteprint(uint64 *pagetable, int level) {
 #define _PINDENT 25
    if (level == 3) {
@@ -33,23 +35,23 @@ uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels, int alloc) {
       uint64 *pte = &pagetable[PX(level,va)];
       if ((*pte & PTE_T) && (*pte & PTE_V)) {
          pagetable = (uint64 *)PAxPTE(*pte);
-         logprintf("found table=%d numpages=%d pt=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         logprintf("found table=%d numpages=%d pt=0x%016llx pte=0x%016llx\n", level, knumpages(),pte,*pte);
       } else if (*pte & PTE_V) {
          pagetable = (uint64 *)PAxPTE(*pte);
-         logprintf("found block=%d numpages=%d pt=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         logprintf("found block=%d numpages=%d pt=0x%016llx pte=0x%016llx\n", level, knumpages(),pte,*pte);
          return pagetable;
       } else {
          if (!alloc || (pagetable = kalloc()) == 0)
             return 0;
          *pte = PAxPTE((uint64)pagetable) | PTE_T | PTE_V;
-         logprintf("alloc table=%d numpages=%d pt=0x%016llx pte=0x%016llx\n", level, numpages,pte,*pte);
+         logprintf("alloc table=%d numpages=%d pt=0x%016llx pte=0x%016llx\n", level, knumpages(),pte,*pte);
       }
    }
 done:
    return &pagetable[PX(levels, va)];
 }
 
-int mappages(uint64 *pagetable, uint64 va, uint64 pa, uint32 level, uint64 size, uint64 perm) {
+int mappages(uint64 *pagetable, uint64 va, uint64 pa, int level, uint64 size, uint64 perm) {
    uint64 *pte;
    uint64 a = PGROUNDDOWN(va, level);
    uint64 last = PGROUNDDOWN(va+size-1, level);
@@ -77,3 +79,22 @@ done:
    return 0;
 }
 
+void kvmmap(uint64 *kpgtbl, uint64 va, uint64 pa, int level, uint64 size, uint64 perm) {
+   if (mappages(kpgtbl, va, pa, level, size, perm) != 0) {
+      printf("panic kvmmap\n");
+      while(1);
+   }
+}
+
+uint64 *kvmmake(void) {
+   uint64 *kpgtbl;
+   kpgtbl = (uint64 *)kalloc();
+   memset(kpgtbl, 0, PGSIZE);
+   kvmmap(kpgtbl, 0, 0, 3, 4, 0x54ULL<<(14*4));
+
+   return kpgtbl;
+}
+
+void kvminit(void) {
+   kernel_pagetable = kvmmake();
+}

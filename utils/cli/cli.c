@@ -9,6 +9,38 @@ void logprintf(char *fmt, ...) {
    va_end(args);
 }
 
+int kinit_cli(int argc, char** argv) {
+   (void)argc;
+   (void)argv;
+
+   uint64 ip = kinit();
+   printf("ip=0x%016llx\n", ip);
+   return 0;
+}
+int kalloc_cli(int argc, char** argv) {
+   (void)argc;
+   (void)argv;
+   void *pa = kalloc();
+   printf("pa=0x%016llx\n", pa);
+   return 0;
+}
+int kfree_cli(int argc, char** argv) {
+   (void)argc;
+   if (argc < 2) {
+      printf("1 arg needed\n");
+      return 1;
+   }
+   uint64 pa = strtol(argv[1], NULL, 0);
+   kfree((void *)pa);
+   return 0;
+}
+int kvminit_cli(int argc, char** argv) {
+   (void)argc;
+   (void)argv;
+   kvminit();
+   return 0;
+}
+
 int pteprint_cli(int argc, char** argv) {
    (void)argc;
    (void)argv;
@@ -79,6 +111,9 @@ int help_cli(int argc, char** argv) {
    printf("mappages va pages pa levels\n");
    printf("pteprint\n");
    printf("mrd/mwr\n");
+   printf("kinit\n");
+   printf("kalloc\n");
+   printf("kfree\n");
    printf("test va\n");
    printf("help\n");
    return 0;
@@ -114,6 +149,22 @@ static struct cmd_t cmd_table[] = {
    {
       .cmd = "pteprint",
       .func = pteprint_cli,
+   }, 
+   {
+      .cmd = "kinit",
+      .func = kinit_cli,
+   }, 
+   {
+      .cmd = "kalloc",
+      .func = kalloc_cli,
+   }, 
+   {
+      .cmd = "kfree",
+      .func = kfree_cli,
+   }, 
+   {
+      .cmd = "kvminit",
+      .func = kvminit_cli,
    }, 
    {
       .last = 1,
