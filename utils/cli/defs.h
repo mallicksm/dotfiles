@@ -1,6 +1,3 @@
-extern uint64 *kernel_pagetable;
-extern int numpages;
-
 struct spinlock;
 
 void pteprint(uint64 *, int);
@@ -16,6 +13,13 @@ void kvminit (void);
 int knumpages (void);
 
 // spinlock.c
+void initlock(struct spinlock *, char *);
 void acquire(struct spinlock *);
 void release(struct spinlock *);
-void initlock(struct spinlock *, char *);
+
+// strings.c
+void private_printf(const char*, ...);
+#define printf private_printf
+
+extern uint64 *kernel_pagetable;
+extern int numpages;

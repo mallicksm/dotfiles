@@ -2,26 +2,19 @@
 #include "defs.h"
 #include "vm.h"
 
-void logprintf(char *fmt, ...) {
-   va_list args;
-   va_start(args, fmt);
-   vprintf(fmt, args);
-   va_end(args);
-}
-
 int kinit_cli(int argc, char** argv) {
    (void)argc;
    (void)argv;
 
    uint64 ip = kinit();
-   printf("ip=0x%016llx\n", ip);
+   printf("ip=0x%p\n", ip);
    return 0;
 }
 int kalloc_cli(int argc, char** argv) {
    (void)argc;
    (void)argv;
    void *pa = kalloc();
-   printf("pa=0x%016llx\n", pa);
+   printf("pa=0x%p\n", pa);
    return 0;
 }
 int kfree_cli(int argc, char** argv) {
@@ -44,7 +37,7 @@ int kvminit_cli(int argc, char** argv) {
 int pteprint_cli(int argc, char** argv) {
    (void)argc;
    (void)argv;
-   printf("kernel_pagetable = 0x%016llx\n", kernel_pagetable);
+   printf("kernel_pagetable = 0x%p\n", kernel_pagetable);
    pteprint(kernel_pagetable, 1);
    return 0;
 }
@@ -82,9 +75,9 @@ int test_cli(int argc, char** argv) {
    }
    uint64 va = strtol(argv[1], NULL, 0);
    for (int l = 0; l < 4; l++) {
-      printf("PgRoundUp   l=%d: 0x%016llx\n", l, PGROUNDUP(va,l));
-      printf("PgRoundDown l=%d: 0x%016llx\n", l, PGROUNDDOWN(va,l));
-      printf("pagetable 0x%016llx\n", kernel_pagetable);
+      printf("PgRoundUp   l=%d: 0x%p\n", l, PGROUNDUP(va,l));
+      printf("PgRoundDown l=%d: 0x%p\n", l, PGROUNDDOWN(va,l));
+      printf("pagetable 0x%p\n", kernel_pagetable);
    }
 }
 
@@ -95,19 +88,19 @@ int mrd_cli(int argc, char** argv) {
    }
    uint64 addr = strtol(argv[1], NULL, 0);
    uint64 data = *(volatile uint64 *)addr;
-   printf("Mem[0x%016llx] => 0x%016llx\n",addr, data);
+   printf("Mem[0x%p] => 0x%p\n",addr, data);
    return 0;
 }
 
 int mwr_cli(int argc, char** argv) {
    if (argc != 3) {
-      logprintf("Please provide 2 arguments\n");
+      printf("Please provide 2 arguments\n");
       return -1;
    }
    uint64 addr = strtol(argv[1], NULL, 0);
    uint64 data = strtol(argv[2], NULL, 0);
    *(volatile uint64 *)addr = data;
-   printf("Mem[0x%016llx] <= 0x%016llx\n",addr, data);
+   printf("Mem[0x%p] <= 0x%p\n",addr, data);
    return 0;
 }
 
@@ -204,7 +197,7 @@ void exec (void) {
       while (!cmd_table[i].last) {
          if (strcmp(argv[0], cmd_table[i].cmd) == 0) {
             uint32 rc = cmd_table[i].func(argc, argv);
-            logprintf("rc=%d\n",rc);
+            printf("rc=%d\n",rc);
             legal_cmd = 1;
          }
          i++;
