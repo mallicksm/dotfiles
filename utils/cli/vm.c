@@ -88,10 +88,16 @@ void kvmmap(uint64 *kpgtbl, uint64 va, uint64 pa, int level, uint64 size, uint64
 
 uint64 *kvmmake(void) {
    uint64 *kpgtbl;
+
    kpgtbl = (uint64 *)kalloc();
    memset(kpgtbl, 0, PGSIZE);
-   kvmmap(kpgtbl, 0, 0, 3, 4, 0x54ULL<<(14*4));
-
+#if 1
+   kvmmap(kpgtbl, 0ULL<<30, 0ULL<<30, 1, 1, DEVICE);
+   kvmmap(kpgtbl, 1ULL<<30, 1ULL<<30, 1, 1, DEVICE);
+   kvmmap(kpgtbl, 2ULL<<30, 2ULL<<30, 1, 1, DEVICE);
+   kvmmap(kpgtbl, 3ULL<<30, 3ULL<<30, 1, 1, DEVICE);
+   kvmmap(kpgtbl, 4ULL<<30, 4ULL<<30, 1, 1, NORMAL);
+#endif
    return kpgtbl;
 }
 

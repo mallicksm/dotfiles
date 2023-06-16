@@ -64,21 +64,13 @@ int mappages_cli(int argc, char** argv) {
       pages = strtol(argv[2], NULL, 0);
       levels = strtol(argv[3], NULL, 0);
    }
-   mappages(kernel_pagetable, va, 0x123456789a000ULL+va, levels, pages*PGSIZE, 0x5bULL<<(14*4));
-   return 0;
+   return mappages(kernel_pagetable, va, 0x123456789a000ULL+va, levels, pages*PGSIZE, 0x5bULL<<(14*4));
 }
 
 int test_cli(int argc, char** argv) {
-   if (argc < 2) {
-      printf("please provide an agrument for va\n");
-      return 1;
-   }
-   uint64 va = strtol(argv[1], NULL, 0);
-   for (int l = 0; l < 4; l++) {
-      printf("PgRoundUp   l=%d: 0x%p\n", l, PGROUNDUP(va,l));
-      printf("PgRoundDown l=%d: 0x%p\n", l, PGROUNDDOWN(va,l));
-      printf("pagetable 0x%p\n", kernel_pagetable);
-   }
+   kinit();
+   kvminit();
+   return 0;
 }
 
 int mrd_cli(int argc, char** argv) {
@@ -105,7 +97,7 @@ int mwr_cli(int argc, char** argv) {
 }
 
 int help_cli(int argc, char** argv) {
-   printf("mappages [va|pages|pa|levels]\n");
+   printf("mappages [va|pages|levels]\n");
    printf("mrd/mwr  <va>\n");
    printf("kinit\n");
    printf("kalloc\n");
