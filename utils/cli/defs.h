@@ -18,6 +18,8 @@ void acquire(struct spinlock *);
 void release(struct spinlock *);
 
 // strings.c
+void *private_memset(void *, int, uint32);
+#define memset private_memset
 void private_printf(const char*, ...);
 #define printf private_printf
 
