@@ -105,14 +105,14 @@ int mwr_cli(int argc, char** argv) {
 }
 
 int help_cli(int argc, char** argv) {
-   printf("mappages va pages pa levels\n");
-   printf("pteprint\n");
-   printf("mrd/mwr\n");
+   printf("mappages [va|pages|pa|levels]\n");
+   printf("mrd/mwr  <va>\n");
    printf("kinit\n");
    printf("kalloc\n");
-   printf("kfree\n");
-   printf("test va\n");
-   printf("help\n");
+   printf("kfree <pa>\n");
+   printf("kvminit\n");
+   printf("pteprint\n");
+   printf("help|test\n");
    return 0;
 }
 
