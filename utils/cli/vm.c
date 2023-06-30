@@ -1,3 +1,4 @@
+#include "vm.h"
 #include "types.h"
 #include "defs.h"
 #include "vm.h"
@@ -5,16 +6,17 @@
 uint64 *kernel_pagetable;
 
 void pteprint(uint64 *pagetable, int level) {
+   int i;
 #define _PINDENT_ 25
    if (level == 3) {
-      for (int i = 0; i < PXMASK+1; i++) {
+      for (i = 0; i < PXMASK+1; i++) {
          if (pagetable[i] & (PTE_T | PTE_V)) {
             printf("%*s%d: pte=0x%p\n", (level-1)*_PINDENT_, "", i, pagetable[i]);
          }
       }
    } else {
       uint64 *nextLevelTable;
-      for (int i = 0; i < PXMASK+1; i++) {
+      for (i = 0; i < PXMASK+1; i++) {
          if ((pagetable[i] & PTE_T) && (pagetable[i] & PTE_V)) {
             printf("%*s%d: pte=0x%p\n", (level-1)*_PINDENT_, "", i, pagetable[i]);
             nextLevelTable = (uint64 *)PAxPTE(pagetable[i]);
@@ -28,7 +30,8 @@ void pteprint(uint64 *pagetable, int level) {
 }
 
 uint64 *walk(uint64 *pagetable, uint64 va, uint32 levels, int alloc) {
-   for (uint32 level = 0; level < levels; level++) {
+   uint32 level;
+   for (level = 0; level < levels; level++) {
       if (PXSHIFT(level) >= MAXVA)
          continue;
 

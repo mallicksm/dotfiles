@@ -484,7 +484,7 @@ function ascii() {
       hex=$(printf "%02x" "$i")
       if (( i < 33 || i == 127 )); then
          case $i in
-            0) char="Null";;
+            0) char="NULL: '\\0' Null";;
             1) char="Start of Heading";;
             2) char="Start of Text";;
             3) char="End of Text";;
@@ -494,10 +494,10 @@ function ascii() {
             7) char="Bell";;
             8) char="BS: Backspace";;
             9) char="TAB: Horizontal Tab";;
-            10) char="LF: Line Feed";;
+            10) char="LF: '\\n' Line Feed";;
             11) char="Vertical Tab";;
-            12) char="FF: Form Feed";;
-            13) char="CR: Carriage Return";;
+            12) char="FF: '\\f' Form Feed";;
+            13) char="CR: '\\r' Carriage Return";;
             14) char="Shift Out";;
             15) char="Shift In";;
             16) char="Data Link Escape";;
@@ -516,7 +516,7 @@ function ascii() {
             29) char="Group Separator";;
             30) char="Record Separator";;
             31) char="Unit Separator";;
-            32) char="SPC: Space";;
+            32) char="SPC: ' ' Space";;
             127) char="DEL: Delete";;
          esac
       else

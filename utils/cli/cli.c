@@ -5,6 +5,16 @@
 #include "types.h"
 #include "defs.h"
 #include "vm.h"
+#include "macros.h"
+
+#define FUNCTION_LIST \
+   X(ot32, - Open Trace32) \
+   X(ct32, - Close Trace32) \
+   X(kvminit, - Initialize boot page table) \
+
+#define X(name, comment) CLI_FUNCTION(name, comment)
+   FUNCTION_LIST
+#undef X
 
 int kinit_cli(int argc, char** argv) {
    (void)argc;
@@ -31,13 +41,6 @@ int kfree_cli(int argc, char** argv) {
    kfree((void *)pa);
    return 0;
 }
-int kvminit_cli(int argc, char** argv) {
-   (void)argc;
-   (void)argv;
-   kvminit();
-   return 0;
-}
-
 int pteprint_cli(int argc, char** argv) {
    (void)argc;
    (void)argv;
@@ -47,7 +50,6 @@ int pteprint_cli(int argc, char** argv) {
 }
 
 int mappages_cli(int argc, char** argv) {
-   uint64 pa;
    uint64 va;
    uint64 pages;
    int levels;
@@ -71,9 +73,24 @@ int mappages_cli(int argc, char** argv) {
    return mappages(kernel_pagetable, va, 0x123456789a000ULL+va, levels, pages*PGSIZE, 0x5bULL<<(14*4));
 }
 
-int test_cli(int argc, char** argv) {
-   kinit();
-   kvminit();
+int mwrt32_cli(int argc, char** argv) {
+   if (argc < 3) {
+      printf("Provide 2 args\n");
+      return -1;
+   }
+   uint32 addr = strtol(argv[1], NULL, 0);
+   uint32 data = strtol(argv[2], NULL, 0);
+   mwrt32(addr, data);
+   return 0;
+}
+
+int mrdt32_cli(int argc, char** argv) {
+   if (argc < 2) {
+      printf("Provide 1 args\n");
+      return -1;
+   }
+   uint32 addr = strtol(argv[1], NULL, 0);
+   mrdt32(addr);
    return 0;
 }
 
@@ -101,14 +118,15 @@ int mwr_cli(int argc, char** argv) {
 }
 
 int help_cli(int argc, char** argv) {
-   printf("mappages [va|pages|levels]     -map va #pages of size #levels\n");
-   printf("mrd/mwr  <va>                  -read/write memory\n");
-   printf("kinit                          -kernel allocator init\n");
-   printf("kalloc                         -kalloc a page\n");
-   printf("kfree <pa>                     -kfree a page\n");
-   printf("kvminit                        -initialize boot pagetable\n");
-   printf("pteprint                       -print pagetable\n");
-   printf("help|test                      -help this message, custom test\n");
+   printf("   mrd/mwr  <va>        \t-read/write memory\n");
+   printf("   kinit                \t-kernel allocator init\n");
+   printf("   kalloc               \t-kalloc a page\n");
+   printf("   mappages [va|pg|lvl] \t-map va #pages of size #levels\n");
+   printf("   kfree <pa>           \t-kfree a page\n");
+   printf("   pteprint             \t-print pagetable\n");
+#define X(name, comment) CLI_HELP(name, comment)
+   FUNCTION_LIST
+#undef X
    return 0;
 }
 
@@ -132,8 +150,12 @@ static struct cmd_t cmd_table[] = {
       .func = mwr_cli,
    }, 
    {
-      .cmd = "test",
-      .func = test_cli,
+      .cmd = "mwrt32",
+      .func = mwrt32_cli,
+   }, 
+   {
+      .cmd = "mrdt32",
+      .func = mrdt32_cli,
    }, 
    {
       .cmd = "mappages",
@@ -155,10 +177,9 @@ static struct cmd_t cmd_table[] = {
       .cmd = "kfree",
       .func = kfree_cli,
    }, 
-   {
-      .cmd = "kvminit",
-      .func = kvminit_cli,
-   }, 
+#define X(name, comment) CLI_ALIASES(name, comment)
+   FUNCTION_LIST
+#undef X
    {
       .last = 1,
    }

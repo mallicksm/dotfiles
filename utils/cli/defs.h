@@ -23,9 +23,10 @@ void *private_memset(void *, int, uint32);
 void private_printf(const char*, ...);
 #define printf private_printf
 
+void ot32(void);
+void ct32(void);
+void mwrt32(uint32, uint32);
+void mrdt32(uint32);
+
 extern uint64 *kernel_pagetable;
 
-#define UNUSED_VARIABLE(N) \
-   do {                    \
-      (void)(N);           \
-   } while (0)

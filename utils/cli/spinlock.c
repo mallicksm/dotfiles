@@ -1,6 +1,7 @@
 #include "spinlock.h"
 #include "types.h"
 #include "defs.h"
+#include "macros.h"
 
 void acquire(struct spinlock *lock) {
    UNUSED_VARIABLE(lock);
