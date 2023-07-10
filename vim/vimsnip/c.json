@@ -189,6 +189,15 @@
        "__asm volatile(\"${1:assembly code}\");"
      ]
    },
+   "easm": {
+     "prefix": ["easm"],
+     "body": [
+       "__asm volatile(\"${1:assembly_code}\"",
+       "      : ${2:\"=r\"(output_cvariable)}",
+       "      : ${3:\"r\"(input_cvariable)}",
+       "      : ${4:\"clobberlist\"});"
+     ]
+   },
    "barrier": {
      "prefix": ["barrier"],
      "body": [

@@ -492,8 +492,8 @@ function ascii() {
             5) char="Enquiry";;
             6) char="Acknowledge";;
             7) char="Bell";;
-            8) char="BS: Backspace";;
-            9) char="TAB: Horizontal Tab";;
+            8) char="BS: '\\b' Backspace";;
+            9) char="TAB: '\\t' Horizontal Tab";;
             10) char="LF: '\\n' Line Feed";;
             11) char="Vertical Tab";;
             12) char="FF: '\\f' Form Feed";;
