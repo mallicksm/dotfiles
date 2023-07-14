@@ -528,3 +528,37 @@ function ascii() {
       fi
    done
 }
+
+xch() {
+    if [[ $# -eq 0 || $1 == "-h" || $1 == "--help" ]]; then
+        echo "Usage: xch <file_pattern> <sed_pattern>"
+        echo "   Apply sed pattern to files matching the specified file pattern."
+        echo "   Example: xch *.txt s/foo/bar/g"
+        return
+    fi
+
+    patterns=("$@")
+    sed_pattern="${patterns[-1]}"
+    unset 'patterns[${#patterns[@]}-1]'
+
+    # Find matching files recursively and loop over them
+    for pattern in "${patterns[@]}"; do
+        find . -type f -name "$pattern" | while read -r file; do
+            # Create a temporary file to store the modified version
+            temp_file=$(mktemp)
+
+            # Apply the sed command and save the output to the temporary file
+            sed "$sed_pattern" "$file" > "$temp_file"
+
+            # Compare the original file with the temporary file
+            if ! diff -q "$file" "$temp_file" >/dev/null; then
+                # Changes were made
+                mv "$temp_file" "$file"  # Replace the original file with the modified version
+                echo "Applied sed pattern '$sed_pattern' to '$file'"
+            else
+                # No changes were made
+                rm "$temp_file"  # Remove the temporary file
+            fi
+        done
+    done
+}
