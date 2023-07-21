@@ -19,7 +19,6 @@ source $RTP/config/junegunn.vim    " telescope_fzf + :GV[,!,?]
 source $RTP/config/floaterm.vim
 source $RTP/config/airline.vim
 source $RTP/config/nerdtree.vim
-source $RTP/config/vimwiki.vim
 source $RTP/config/easymotion.vim
 source $RTP/config/signify.vim     " signcolumn git signs and ,d for vdiff
 source $RTP/config/indentline.vim  " | for indents
