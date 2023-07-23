@@ -598,3 +598,9 @@ xch() {
         done
     done
 }
+
+function printer() {
+   filename=$1
+   outfile=$(basename $filename).pdf
+   enscript -E --color $filename -2rGo - | ps2pdf - $outfile
+}
