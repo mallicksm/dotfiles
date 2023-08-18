@@ -23,12 +23,12 @@ prompt_git() {
 
          # Check for deleted changes in the index.
          if [[ $deleted > 0 ]]; then
-            s+="✘${deleted}";
+            s+="#[fg=red]✘${deleted}#[fg=default]";
          fi
 
          # Check for modified changes in the index.
          if [[ $modified > 0 ]]; then
-            s+="${modified}";
+            s+="#[fg=yellow]${modified}#[fg=default]";
          fi
 
          # Check for staged changes in the index.
@@ -67,7 +67,7 @@ prompt_git() {
 
       [ -n "${s}" ] && s=" [${s}]";
 
-      echo -e "$(hostname -s): [ ${branchName}]${s}";
+      echo -e "#[fg=red] $(hostname -s): #[fg=colour204][ ${branchName}]#[fg=default]${s}";
    else
       echo -e "$(hostname -s):";
    fi;
