@@ -12,21 +12,34 @@ prompt_git() {
             git update-index --really-refresh -q &> /dev/null;
          fi;
 
-         # Check for uncommitted changes in the index.
-         if ! git diff --quiet --ignore-submodules --cached; then
-            num=$(git diff --ignore-submodules --cached --numstat|wc -l)
-            s+="+$num";
-         fi;
+         git status --ignore-submodules -sb > /tmp/_git
+         untracked=$(cat /tmp/_git|grep '??'|wc -l)
+         deleted=$(cat /tmp/_git|grep 'D'|wc -l)
+         modified=$(cat /tmp/_git|grep '.M '|wc -l)
+         added=$(cat /tmp/_git|grep '.A'|wc -l)
+         added_staged=$(cat /tmp/_git|grep '^A'|wc -l)
+         modified_staged=$(cat /tmp/_git|grep '^M'|wc -l)
+         staged=$(($added_staged + $modified_staged))
 
-         # Check for unstaged changes.
-         if ! git diff-files --quiet --ignore-submodules --; then
-            s+='';
-         fi;
+         # Check for deleted changes in the index.
+         if [[ $deleted > 0 ]]; then
+            s+="✘${deleted}";
+         fi
 
-         # Check for untracked files.
-         if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-            s+='';
-         fi;
+         # Check for modified changes in the index.
+         if [[ $modified > 0 ]]; then
+            s+="${modified}";
+         fi
+
+         # Check for staged changes in the index.
+         if [[ $staged > 0 ]]; then
+            s+="+${staged}";
+         fi
+
+         # Check for untracked changes in the index.
+         if [[ $untracked > 0 ]]; then
+            s+="${untracked}";
+         fi
 
          # Check for stashed files.
          if git rev-parse --verify refs/stash &>/dev/null; then
