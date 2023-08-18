@@ -49,4 +49,5 @@ prompt_git() {
       echo -e "$(hostname -s):";
    fi;
 }
+
 prompt_git
