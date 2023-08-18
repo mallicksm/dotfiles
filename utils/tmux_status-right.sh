@@ -46,8 +46,13 @@ prompt_git() {
             s+='$';
          fi;
 
-         if git status -uno --ignore-submodules -s; then
-            s+="✓";
+         ahead_behind=$(git status -sb)
+         behind=$(echo "$ahead_behind" |grep behind| sed -E 's/.*\[behind (.)+\]/\1/')
+         ahead=$(echo "$ahead_behind"  |grep ahead|  sed -E 's/.*\[ahead (.)+\]/\1/')
+         if [[ $ahead > 0 ]]; then
+            s+="⇡${ahead}";
+         elif [[ $behind > 0 ]]; then
+            s+="⇣${behind}";
          else
             s+="✓";
          fi
