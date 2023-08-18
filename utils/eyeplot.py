@@ -59,5 +59,6 @@ plt.title(f"LPDDR Eye diagram plot {input_file}")
 plt.legend()
 
 plt.tight_layout()
+
 plt.show()
 
