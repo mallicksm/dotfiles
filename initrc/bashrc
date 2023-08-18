@@ -1,4 +1,15 @@
 # .bashrc
+# Source Silicon Team bashrc
+if [ -f /opt/tools/bin/silicon_team_bashrc ]; then
+        . /opt/tools/bin/silicon_team_bashrc
+elif [ -f /etc/bashrc ]; then # look for system bashrc if we dont find the silicon team file
+  . /etc/bashrc
+fi
+
+#
+# User customization starts here
+#
+
 source ~/dotfiles/bash_functions.sh
 if [[ -f ~/corp_settings.sh ]]; then
    source ~/corp_settings.sh
@@ -46,6 +57,7 @@ modpath ~/.fzf/bin b
 modpath ~/.local/bin b
 modpath ~/bin b
 modpath ~/arm-tools/xpacks/.bin b
+modpath ~/.local/arm-tools/arm-gnu-toolchain-12.3.rel1-x86_64-aarch64-none-elf/bin b
 # Auto-completion
 # ---------------
 [[ $- == *i* ]] && source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
