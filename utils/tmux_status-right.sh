@@ -46,6 +46,11 @@ prompt_git() {
             s+='$';
          fi;
 
+         if git status -uno --ignore-submodules -s; then
+            s+="✓";
+         else
+            s+="✓";
+         fi
       fi;
 
       # Get the short symbolic ref.
