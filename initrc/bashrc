@@ -45,6 +45,7 @@ zz() {
 modpath ~/.fzf/bin b
 modpath ~/.local/bin b
 modpath ~/bin b
+modpath ~/arm-tools/xpacks/.bin b
 # Auto-completion
 # ---------------
 [[ $- == *i* ]] && source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
