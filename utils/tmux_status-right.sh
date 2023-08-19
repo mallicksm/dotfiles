@@ -1,6 +1,13 @@
 prompt_git() {
    local s='';
    local branchName='';
+   local gitStatus='';
+   local c_style=#[fg='colour204'];
+   local c_staged=#[fg='green'];
+   local c_deleted='red';
+   local c_ahead='green';
+   local c_behind='yellow';
+   local c_default=#[fg=default];
 
    # Check if the current directory is in a Git repository.
    if [ "$(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}")" == '0' ]; then
@@ -23,17 +30,17 @@ prompt_git() {
 
          # Check for deleted changes in the index.
          if [[ $deleted > 0 ]]; then
-            s+="#[fg=red]✘${deleted}#[fg=default]";
+            s+="$c_deleted✘${deleted}$c_default";
          fi
 
          # Check for modified changes in the index.
          if [[ $modified > 0 ]]; then
-            s+="#[fg=yellow]${modified}#[fg=default]";
+            s+="#[fg=yellow]${modified}$c_default";
          fi
 
          # Check for staged changes in the index.
          if [[ $staged > 0 ]]; then
-            s+="+${staged}";
+            s+="${c_staged}+${staged}$c_default";
          fi
 
          # Check for untracked changes in the index.
@@ -67,10 +74,11 @@ prompt_git() {
 
       [ -n "${s}" ] && s=" [${s}]";
 
-      echo -e "#[fg=red] $(hostname -s): #[fg=colour204][ ${branchName}]#[fg=default]${s}";
+      gitStatus="$c_style[ ${branchName}]$c_default${s}";
    else
-      echo -e "$(hostname -s):";
+      gitStatus=""
    fi;
+   echo -e "#[fg=red] $(hostname -s): $gitStatus"
 }
 
 prompt_git
