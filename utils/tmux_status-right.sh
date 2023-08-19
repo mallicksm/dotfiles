@@ -32,16 +32,14 @@ prompt_git() {
          fi;
 
          # run git status once and extract the number of files' status
-         GIT_TEMP=$(mktemp /tmp/git.XXXX)
-         git status --ignore-submodules -sb > $GIT_TEMP
-         untracked=$(cat $GIT_TEMP|grep '??'|wc -l)
-         deleted=$(cat $GIT_TEMP|grep 'D'|wc -l)
-         modified=$(cat $GIT_TEMP|grep '.M '|wc -l)
-         added=$(cat $GIT_TEMP|grep '.A'|wc -l)
-         added_staged=$(cat $GIT_TEMP|grep '^A'|wc -l)
-         modified_staged=$(cat $GIT_TEMP|grep '^M'|wc -l)
+         gitStatus=$(git status --ignore-submodules -sb)
+         untracked=$(echo "$gitStatus"|grep '??'|wc -l)
+         deleted=$(echo "$gitStatus"|grep 'D'|wc -l)
+         modified=$(echo "$gitStatus"|grep '.M '|wc -l)
+         added=$(echo "$gitStatus"|grep '.A'|wc -l)
+         added_staged=$(echo "$gitStatus"|grep '^A'|wc -l)
+         modified_staged=$(echo "$gitStatus"|grep '^M'|wc -l)
          staged=$(($added_staged + $modified_staged))
-         rm -rf $GIT_TEMP
 
          # color & place symbols, count for the files' status
          [[ $deleted > 0 ]]   && s+="${c_deleted}✘${deleted}${c_default}";
