@@ -43,25 +43,11 @@ prompt_git() {
          staged=$(($added_staged + $modified_staged))
          rm -rf $GIT_TEMP
 
-         # Check for deleted changes in the index.
-         if [[ $deleted > 0 ]]; then
-            s+="${c_deleted}✘${deleted}${c_default}";
-         fi
-
-         # Check for modified changes in the index.
-         if [[ $modified > 0 ]]; then
-            s+="${c_modified}${modified}${c_default}";
-         fi
-
-         # Check for staged changes in the index.
-         if [[ $staged > 0 ]]; then
-            s+="${c_staged}+${staged}${c_default}";
-         fi
-
-         # Check for untracked changes in the index.
-         if [[ $untracked > 0 ]]; then
-            s+="${c_untracked}${untracked}${c_default}";
-         fi
+         # color & place symbols, count for the files' status
+         [[ $deleted > 0 ]]   && s+="${c_deleted}✘${deleted}${c_default}";
+         [[ $modified > 0 ]]  && s+="${c_modified}${modified}${c_default}";
+         [[ $staged > 0 ]]    && s+="${c_staged}+${staged}${c_default}";
+         [[ $untracked > 0 ]] && s+="${c_untracked}${untracked}${c_default}";
 
          # Check for stashed files.
          if git rev-parse --verify refs/stash &>/dev/null; then
