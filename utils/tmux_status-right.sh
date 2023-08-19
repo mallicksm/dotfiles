@@ -6,7 +6,7 @@ prompt_git() {
    local dateTime=$(date +"%a %b %d %Y, %I:%M %p");
 
    local c_hostname=#[fg='red'];
-   local c_branch=#[fg='colour204'];
+   local c_branch=#[fg='colour199'];
    local c_datetime=#[fg='blue'];
 
    local c_style=#[fg='yellow'];
@@ -31,14 +31,17 @@ prompt_git() {
             git update-index --really-refresh -q &> /dev/null;
          fi;
 
-         git status --ignore-submodules -sb > /tmp/_git
-         untracked=$(cat /tmp/_git|grep '??'|wc -l)
-         deleted=$(cat /tmp/_git|grep 'D'|wc -l)
-         modified=$(cat /tmp/_git|grep '.M '|wc -l)
-         added=$(cat /tmp/_git|grep '.A'|wc -l)
-         added_staged=$(cat /tmp/_git|grep '^A'|wc -l)
-         modified_staged=$(cat /tmp/_git|grep '^M'|wc -l)
+         # run git status once and extract the number of files' status
+         GIT_TEMP=$(mktemp /tmp/git.XXXX)
+         git status --ignore-submodules -sb > $GIT_TEMP
+         untracked=$(cat $GIT_TEMP|grep '??'|wc -l)
+         deleted=$(cat $GIT_TEMP|grep 'D'|wc -l)
+         modified=$(cat $GIT_TEMP|grep '.M '|wc -l)
+         added=$(cat $GIT_TEMP|grep '.A'|wc -l)
+         added_staged=$(cat $GIT_TEMP|grep '^A'|wc -l)
+         modified_staged=$(cat $GIT_TEMP|grep '^M'|wc -l)
          staged=$(($added_staged + $modified_staged))
+         rm -rf $GIT_TEMP
 
          # Check for deleted changes in the index.
          if [[ $deleted > 0 ]]; then
@@ -65,6 +68,7 @@ prompt_git() {
             s+="${c_style}${dollar}${c_default}";
          fi;
 
+         # run git status again to check for ahead behind or up_to_date
          ahead_behind=$(git status -sb)
          behind=$(echo "$ahead_behind" |grep behind| sed -E 's/.*\[behind (.)+\]/\1/')
          ahead=$(echo "$ahead_behind"  |grep ahead | sed -E 's/.*\[ahead (.)+\]/\1/')
