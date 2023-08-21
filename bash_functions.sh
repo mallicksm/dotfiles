@@ -313,8 +313,6 @@ _fzf_comprun() {
 # }}}
 
 #-------------------------------------------------------------------------------
-
-#-------------------------------------------------------------------------------
 #{{{ cat ll la and lt aliases
 unalias cat 2> /dev/null # blow away any previous aliases if any
 function cat() {
@@ -391,11 +389,11 @@ rg --color=always --line-number --no-heading --smart-case "${*:-}" |
 }
 
 function tm() {
-  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
-  if [ $1 ]; then
-    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
-  fi
-  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+   [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+   if [ $1 ]; then
+      tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
+   fi
+   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
 function ifont() {
@@ -526,40 +524,6 @@ function ascii() {
          printf "%-10s %-10s %-15s\n" "$i" "0x$hex" "$char"
       fi
    done
-}
-
-xch0() {
-    if [[ $# -eq 0 || $1 == "-h" || $1 == "--help" ]]; then
-        echo "Usage: xch <file_pattern> <sed_pattern>"
-        echo "   Apply sed pattern to files matching the specified file pattern."
-        echo "   Example: xch *.txt s/foo/bar/g"
-        return
-    fi
-
-    patterns=("$@")
-    sed_pattern="${patterns[-1]}"
-    unset 'patterns[${#patterns[@]}-1]'
-
-    # Find matching files recursively and loop over them
-    for pattern in "${patterns[@]}"; do
-        find . -type f -name "$pattern" | while read -r file; do
-            # Create a temporary file to store the modified version
-            temp_file=$(mktemp)
-
-            # Apply the sed command and save the output to the temporary file
-            sed "$sed_pattern" "$file" > "$temp_file"
-
-            # Compare the original file with the temporary file
-            if ! diff -q "$file" "$temp_file" >/dev/null; then
-                # Changes were made
-                mv "$temp_file" "$file"  # Replace the original file with the modified version
-                echo "Applied sed pattern '$sed_pattern' to '$file'"
-            else
-                # No changes were made
-                rm "$temp_file"  # Remove the temporary file
-            fi
-        done
-    done
 }
 
 function xch() {

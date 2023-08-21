@@ -20,6 +20,10 @@ Plug 'mbbill/undotree'  " :Undo<TAB>
 " https://github.com/azabiong/vim-highlighter
 " f<cr>    -hi (toggle)
 " f<C-L>   -hi clear
+" jump key mappings
+nn n  <Cmd>call HiSearch('n')<CR>
+nn N  <Cmd>call HiSearch('N')<CR>
+"
 " https://github.com/chrisbra/colorizer
 " :ColorToggle to show colors
 " #c83964 red blue green yellow

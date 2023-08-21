@@ -53,10 +53,12 @@ nnoremap <silent> <leader>k :wincmd k<CR>
 nnoremap <silent> <leader>l :wincmd l<CR>
    " terminal mode
 if v:version > 800
-   tnoremap <C-w>j <C-\><C-n><C-w>j
-   tnoremap <C-w>k <C-\><C-n><C-w>k
-   tnoremap <C-w>h <C-\><C-n><C-w>h
-   tnoremap <C-w>l <C-\><C-n><C-w>l
+   tnoremap <leader>j <C-\><C-n><C-w>j
+   tnoremap <leader>k <C-\><C-n><C-w>k
+   tnoremap <leader>h <C-\><C-n><C-w>h
+   tnoremap <leader>l <C-\><C-n><C-w>l
+   tnoremap <Esc> <C-\><C-n>
+   tnoremap <leader><leader>h <C-\><C-n>:FloatermToggle<CR>
 endif
 
 if has ('nvim')

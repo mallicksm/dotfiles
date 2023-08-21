@@ -15,8 +15,6 @@ let g:which_key_map = {
          \ '<Down>' : 'Autopairs -Disable/Enable',
          \ '<Right>' : 'Autopairs -Jump to next closed pair',
          \ 'G' : [':FloatermNew --width=0.60 --height=0.8 --title=gdb gdb -tui' , 'App: GDB'],
-         \ 'L' : [':FloatermNew --width=0.60 --height=0.8 --title=lldb lldb'    , 'App: LLDB'],
-         \ 'E' : [':FloatermNew --title=explorer bash -i -c ,f | exit 0'        , 'App: Explorer'],
          \ 'P' : [':FloatermNew --title=python python'                          , 'App: Python'],
          \ 'q' : 'which_key_ignore',
          \ 'e' : 'which_key_ignore',
