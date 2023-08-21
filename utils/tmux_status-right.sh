@@ -22,7 +22,7 @@ prompt_git() {
    local c_default=#[fg=default];
 
    # Check if the current directory is in a Git repository.
-   if [ "$(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}")" == '0' ]; then
+   if [[ (-z ${__NO_PROMPT__}) && ("$(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}")" == '0') ]]; then
 
       # check if the current directory is in .git before running git checks
       if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
@@ -83,4 +83,11 @@ prompt_git() {
    echo -e "$dateTimeStatus $hostnameStatus $gitStatus"
 }
 
+ # Works in conjunction with ~/dotfiles/utils/tmux_status-right.sh.
+ # This prompt locks up the git repo for long commands, 
+ # so turn off tmux prompt by no_prompt 1
+ # you can turn it back on by no_prompt 0
+if [[ -e "/tmp/no_prompt" ]]; then
+   source /tmp/no_prompt
+fi
 prompt_git

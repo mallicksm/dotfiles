@@ -629,3 +629,20 @@ function printer() {
       liveprint "$files"
    fi
  }
+ # Works in conjunction with ~/dotfiles/utils/tmux_status-right.sh.
+ # This prompt locks up the git repo for long commands, 
+ # so turn off tmux prompt by no_prompt 1
+ # you can turn it back on by no_prompt 0
+ function no_prompt() {
+    if [[ $1 == "-h" ]]; then
+       echo "usage: no_prompt <arg>"
+       echo "  no_prompt 1    - turn off tmux git prompt"
+       echo "  no_prompt 0    - turn on tmux git prompt"
+    fi
+    if [[ $1 == 1 ]]; then
+       echo "export __NO_PROMPT__=1" > /tmp/no_prompt
+    fi
+    if [[ $1 == 0 ]]; then
+       rm -rf /tmp/no_prompt
+    fi
+ }
