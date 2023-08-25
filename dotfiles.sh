@@ -68,30 +68,15 @@ function linkup() {
 }
 
 #-------------------------------------------------------------------------------
-#{{{ getvimwiki
-function getvimwiki() {
-   if [[ ! $(curl --head --silent --fail git@github.com) ]]; then
-      echo "Attention: no url access"
-      return
-   fi
-   echo "Info: Installing Vimwiki"
-   if [[ -d ~/vimwiki ]]; then
-      pushd ~/vimwiki > /dev/null
-         git fetch --all
-         git checkout master
-         git pull origin master
-      popd > /dev/null
+#{{{ clang-format
+function clang-format() {
+   echo "Info: Installing clang-format"
+   if [[ $(curl --head --silent --fail git@github.com) ]]; then
+      src=https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-f4f85437/clang-format-16_linux-amd64
+      target=~/.local/bin/clang-format
+      [[ ! -f $target ]] && curl -L -s $src -o $target && chmod +x $target
    else
-      pushd ~/ > /dev/null
-         git clone git@github.com:/mallicksm/vimwiki >/dev/null 2>&1
-         if [[ $? != 0 ]]; then
-            echo "Tried using git@.. protocol, now trying https://..."
-            git clone https://github.com:/mallicksm/vimwiki >/dev/null 2>&1
-            if [[ $? != 0 ]]; then
-               echo "Failed using https://..."
-            fi
-         fi
-      popd > /dev/null
+      echo "Attention: no url access"
    fi
 }
 #}}}
@@ -104,6 +89,8 @@ function getz () {
       src=https://raw.githubusercontent.com/rupa/z/master/z.sh
       target=~/dotfiles/initrc/z.sh
       [[ ! -f $target ]] && curl -L -s $src -o $target
+   else
+      echo "Attention: no url access"
    fi
 }
 #}}}
@@ -117,6 +104,8 @@ function getstarship() {
       target=~/.local/bin/starship
       mkdir -p $(dirname $target)
       [[ ! -f $target ]] && curl -L -s $src | sh /dev/stdin -b $(dirname $target) || true
+   else
+      echo "Attention: no url access"
    fi
 }
 #}}}
@@ -124,7 +113,7 @@ function getstarship() {
 #-------------------------------------------------------------------------------
 function all() {
    linkrc
-#  getvimwiki
+   clang-format
    getz
    getstarship
 }
