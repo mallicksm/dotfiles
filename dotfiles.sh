@@ -76,7 +76,7 @@ function clang-format() {
       target=~/.local/bin/clang-format
       [[ ! -f $target ]] && curl -L -s $src -o $target && chmod +x $target
    else
-      echo "Attention: no url access"
+      echo "Attention: no url access or not Linux"
    fi
 }
 #}}}
