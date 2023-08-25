@@ -9,8 +9,11 @@ let g:clang_format#style_options = {
          \ "IndentWidth" : 3,
          \ "SortIncludes" : "false",
          \ "AlignConsecutiveBitFields" : "true", 
-         \ "AlignConsecutiveMacros" : "true", 
+         \ "AlignConsecutiveMacros" : "false", 
          \ "AlwaysBreakAfterReturnType" : "None", 
+         \ "ConstructorInitializerIndentWidth" : 3, 
+         \ "ContinuationIndentWidth" : 3, 
+         \ "BreakConstructorInitializers" : "BeforeComma", 
          \ "ColumnLimit" : 0 }
 let g:clang_format#auto_format = 1
 let g:clang_format#auto_format_on_insert_leave = 1
