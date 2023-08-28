@@ -1,13 +1,11 @@
-"Textobj articles
-   "https://ctoomey.com/
-   "https://blog.carbonfive.com/vim-text-objects-the-definitive-guide/
-   "https://benmccormick.org/2014/07/02/learning-vim-in-2014-vim-as-language
-"Usefull plugins
-   "https://github.com/vim-scripts/ReplaceWithRegister
-   "https://github.com/christoomey/vim-system-copy
-"Additional textobjects
-   "Plug 'beloglazov/vim-textobj-quotes'
-   "Plug 'kana/vim-textobj-indent'
+"Supported textobjects
+"                i  Indent
+"                c  Comment
+"                l  Current Line
+"                e  Entire file
+"                z  Fold
+"                q  Column
+"                F  'C' Function
 "-------------------------------------------------------------------------------
 " https://github.com/kana/vim-textobj-user
 " https://github.com/thinca/vim-textobj-between
