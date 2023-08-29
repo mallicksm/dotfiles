@@ -12,7 +12,7 @@ prompt_git() {
    local c_style=#[fg='yellow'];
    local c_deleted=#[fg='red'];
    local c_modified=#[fg='yellow'];
-   local c_untracked=#[fg='yellow'];
+   local c_untracked=#[fg='red'];
    local c_staged=#[fg='green'];
    local c_up_to_date=#[fg='yellow'];
    local c_ahead=#[fg='green'];
