@@ -28,6 +28,7 @@ nn N  <Cmd>call HiSearch('N')<CR>
 " :ColorToggle to show colors
 " #c83964 red blue green yellow
 if v:version > 800
+   " https://github.com/azabiong/vim-highlighter
    Plug 'azabiong/vim-highlighter'
    if !has('nvim')
       Plug 'chrisbra/colorizer'

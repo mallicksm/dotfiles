@@ -118,7 +118,7 @@
       "description": "Code snippet for a with statement"
    },
    "item def": {
-      "prefix": ["def"],
+      "prefix": ["def", "proc", "func"],
       "body": [
          "def ${1:funcname}(${2:parameter_list}):",
          "   ${3:pass}"
