@@ -89,6 +89,7 @@ let g:which_key_map['w'] = {
          \ 's' : ['<C-W>s'     , 'Win: -> split-window-below'],
          \ 'v' : ['<C-W>v'     , 'Win: -> split-window-right'],
          \ '=' : ['<C-W>='     , 'Win: -> balance-window'],
+         \ 'x' : ['<C-W>q'     , 'Win: -> kill-window'],
          \ 'l' : ['<C-W>5<'    , 'Win: -> expand-window-right'],
          \ 'h' : ['<C-W>5>'    , 'Win: -> expand-window-left'],
          \ 'k' : [':resize +5' , 'Win: -> expand-window-up'],
