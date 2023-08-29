@@ -24,18 +24,18 @@ Plug 'mbbill/undotree'  " :Undo<TAB>
 nn n  <Cmd>call HiSearch('n')<CR>
 nn N  <Cmd>call HiSearch('N')<CR>
 "
-" https://github.com/chrisbra/colorizer
 " :ColorToggle to show colors
 " #c83964 red blue green yellow
 if v:version > 800
    " https://github.com/azabiong/vim-highlighter
    Plug 'azabiong/vim-highlighter'
    if !has('nvim')
+      " https://github.com/chrisbra/colorizer
       Plug 'chrisbra/colorizer'
+      " Following lets needed for termguicolors and Alacritty
+      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
    endif
-" Following lets needed for termguicolors and Alacritty
-   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 " ------------------------------------------------------------------------------
 " https://github.com/tmux-plugins/vim-tmux
