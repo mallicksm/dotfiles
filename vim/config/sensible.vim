@@ -20,7 +20,7 @@ nnoremap j gj
 nnoremap k gk
 nnoremap Q q
 nnoremap q :q<CR>
-nnoremap <leader>q :qall!<CR>
+nnoremap <leader>x :qall!<CR>
 nnoremap <leader>R :call FullRefresh()<CR>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'| " expand %% to files directory
 nnoremap <silent> <leader>C :lcd %:p:h<CR>:pwd<CR>| " Change to the folder of the current file
