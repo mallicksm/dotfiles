@@ -24,8 +24,6 @@ nnoremap <leader>x :qall!<CR>
 nnoremap <leader>R :call FullRefresh()<CR>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'| " expand %% to files directory
 nnoremap <silent> <leader>C :lcd %:p:h<CR>:pwd<CR>| " Change to the folder of the current file
-inoremap <silent> <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-inoremap <silent> <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 nnoremap <CR> :noh<CR><CR>
 inoremap <silent> <C-f> <C-X><C-F>
 nnoremap <Leader><Leader> <C-^>
@@ -35,31 +33,20 @@ nnoremap <leader>vw :set wrap!<CR>
 nnoremap <leader>vl :set list!<CR>| " Toggle list   
 map <leader>v= gg=G<C-o><C-o>|      "format current file
 
-" Convinience commands
-command! Filename execute ":echo expand('%:p')"
-command! Reload   execute "source $RTP/init.vim"
-function! NukeRegs()
-   let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"', '\zs')
-   for r in regs
-      call setreg(r, [])
-   endfor
-endf
-
-" Windows {{{
+" Windows
 " ==============================================================================
 nnoremap <silent> <leader>h :wincmd h<CR>
 nnoremap <silent> <leader>j :wincmd j<CR>
 nnoremap <silent> <leader>k :wincmd k<CR>
 nnoremap <silent> <leader>l :wincmd l<CR>
-   " terminal mode
-if v:version > 800
-   tnoremap <leader>j <C-\><C-n><C-w>j
-   tnoremap <leader>k <C-\><C-n><C-w>k
-   tnoremap <leader>h <C-\><C-n><C-w>h
-   tnoremap <leader>l <C-\><C-n><C-w>l
-   tnoremap <Esc> <C-\><C-n>
-   tnoremap <leader><leader>h <C-\><C-n>:FloatermToggle<CR>
-endif
+
+" terminal navigation
+tnoremap <leader>j <C-\><C-n><C-w>j
+tnoremap <leader>k <C-\><C-n><C-w>k
+tnoremap <leader>h <C-\><C-n><C-w>h
+tnoremap <leader>l <C-\><C-n><C-w>l
+tnoremap <Esc> <C-\><C-n>
+tnoremap <leader><leader>h <C-\><C-n>:FloatermToggle<CR>
 
 if has ('nvim')
    nnoremap <leader>ts  :new<CR>:terminal<CR>
@@ -68,7 +55,6 @@ else
    nnoremap <leader>ts  :term ++close<CR>
    nnoremap <leader>tv  :vert term ++close<CR>
 endif
-" }}}
 
 " Tabs {{{
 " ==============================================================================
@@ -100,8 +86,9 @@ nnoremap <leader>b4 :buffer4<CR>
 nnoremap <leader>b5 :buffer5<CR>
 " }}}
 
-" Browse pdf {{{
+" Convinience commands
 " ==============================================================================
+" Browse pdf
 let g:Pdf2Txt = 'pdftotext -nopgbrk -layout -q -eol unix %:p:S -'
 augroup Pdf2Txt
    autocmd!
@@ -110,5 +97,16 @@ augroup Pdf2Txt
    autocmd BufReadCmd *.pdf setfiletype text
    autocmd BufReadCmd *.pdf setlocal buftype=nowrite
 augroup end
-" }}}
+
+" Nuke registers
+function! NukeRegs()
+   let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"', '\zs')
+   for r in regs
+      call setreg(r, [])
+   endfor
+endf
+
+command! Filename execute ":echo expand('%:p')"
+command! Reload   execute "source $RTP/init.vim"
+
 let $sensible = '$RTP/config/sensible.vim'
