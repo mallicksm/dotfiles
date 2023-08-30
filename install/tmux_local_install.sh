@@ -10,9 +10,6 @@
 #
 #===============================================================================
 source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null
-script_loc=$(dirname $0)
-source $script_loc/utils.sh 2>/dev/null
-
 #===============================================================================
 # Version specs
 PREFIX=$HOME/.local
