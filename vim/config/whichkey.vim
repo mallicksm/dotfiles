@@ -5,7 +5,7 @@ nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 
 " Define prefix dictionary
-let g:which_key_hspace = 200
+let g:which_key_hspace = 20
 let g:which_key_map = {
          \ 'name': '+root-menu',
          \ 'R' : 'FullRefresh',
@@ -33,29 +33,16 @@ let g:which_key_map['v'] = {
          \ 'u' : [':UndotreeToggle'    , 'Toggle UndoTree'],
          \ 'n' : [':call NukeRegs()'   , 'Nuke Registers'],
          \ }
-let g:which_key_map['g'] = {
-         \ 'name' : '+git' ,
-         \ 'j' : ['<Plug>(signify-next-hunk)'    , 'Sign:  -> next hunk'],
-         \ 'k' : ['<Plug>(signify-prev-hunk)'    , 'Sign:  -> prev hunk'],
-         \ 't' : ['<C-w>gf'                      , 'Win:   -> gf Tab'],
-         \ 's' : ['<C-w>f'                       , 'Win:   -> gf Split'],
-         \ 'v' : [':vertical wincmd f'           , 'Win:   -> gf Vsplit'],
-         \ 'x' : {
-            \ 'name' : '+extra',
-            \ 'd' : [':Gvdiffsplit'                 , 'Git:   -> Gvdiffsplit'],
-            \ 'c' : [':GV'                          , 'Git:   -> All commits'],
-            \ 'C' : [':GV!'                         , 'Git:   -> Buffer commits'],
-            \ },
-         \ }
 let g:which_key_map['f'] = {
-         \ 'name' : '+fzf',
-         \ 'r' : [':Rg!'         , 'fzf: Rg:       -> ripgrep'],
-         \ 'c' : [':Commits!'    , 'fzf: Commits:  -> All commits'],
-         \ 'C' : [':BCommits!'   , 'fzf: BCommits: -> Buffer commits'],
-         \ 'f' : [':Files!'      , 'fzf: Files:    -> All files'],
-         \ 'e' : [':GFiles!'     , 'fzf: GFiles:   -> files'],
-         \ 'm' : [':GFiles!?'    , 'fzf: GFiles:   -> modified files'],
-         \ 'b' : [':Buffers!'    , 'fzf: Buffers:  -> open buffers'],
+         \ 'name' : '+file-browser',
+         \ 'r' : [':Rg!'                , 'fzf: Rg:       -> ripgrep'],
+         \ 'f' : [':Files!'             , 'fzf: Files:    -> All files'],
+         \ 'e' : [':GFiles!'            , 'fzf: GFiles:   -> files'],
+         \ 'm' : [':GFiles!?'           , 'fzf: GFiles:   -> modified files'],
+         \ 'b' : [':Buffers!'           , 'fzf: Buffers:  -> open buffers'],
+         \ 't' : ['<C-w>gf'             , 'Win:   -> gf Tab'],
+         \ 's' : ['<C-w>f'              , 'Win:   -> gf Split'],
+         \ 'v' : [':vertical wincmd f'  , 'Win:   -> gf Vsplit'],
          \ 'x' : {
             \ 'name' : '+extra',
             \ 'w' : [':Windows'     , 'fzf: Windows:   -> open windows'],
@@ -72,6 +59,25 @@ let g:which_key_map['f'] = {
             \ 'm' : [':Maps'        , 'fzf: Maps:      -> normal maps'] ,
             \ },
          \ }
+let g:which_key_map['g'] = {
+         \ 'name' : '+git' ,
+         \ 'c' : [':Commits!'                    , 'fzf: Commits:  -> All commits'],
+         \ 'C' : [':BCommits!'                   , 'fzf: BCommits: -> Buffer commits'],
+         \ 'j' : ['<Plug>(signify-next-hunk)'    , 'Sign:  -> next hunk'],
+         \ 'k' : ['<Plug>(signify-prev-hunk)'    , 'Sign:  -> prev hunk'],
+         \ 'x' : {
+            \ 'name' : '+extra',
+            \ 'd' : [':Gvdiffsplit'                 , 'Git:   -> Gvdiffsplit'],
+            \ 'c' : [':GV'                          , 'Git:   -> All commits'],
+            \ 'C' : [':GV!'                         , 'Git:   -> Buffer commits'],
+            \ },
+         \ }
+let g:which_key_map['t'] = {
+         \ 'name' : '+Terminal',
+         \ 's' : 'xTerm: -> Horizontal',
+         \ 'v' : 'xTerm: -> Vertical',
+         \ 'f' : 'xTerm: -> Float',
+         \ }
 let g:which_key_map['w'] = {
          \ 'name' : '+windows',
          \ 'q' : ['<C-W>c'     , 'Win: -> close-current-window'],
@@ -84,6 +90,7 @@ let g:which_key_map['w'] = {
          \ 'k' : [':resize +5' , 'Win: -> resize-window-up'],
          \ 'j' : [':resize -5' , 'Win: -> resize-window-below'],
          \ }
+" see $HOME/dotfiles/vim/config/sensible.vim for definitions
 let g:which_key_map['t'] = {
          \ 'name' : '+tabs',
          \ 'c' : 'Tab: -> tab-new',
@@ -99,6 +106,7 @@ let g:which_key_map['t'] = {
          \ 'o' : 'Tab: -> tab-only',
          \ 'e' : 'Tab: -> edit-in-tab',
          \ }
+" see $HOME/dotfiles/vim/config/sensible.vim for definitions
 let g:which_key_map['b'] = {
          \ 'name' : '+buffers',
          \ 'h' : 'Buf: -> buffer-previous',
@@ -110,12 +118,6 @@ let g:which_key_map['b'] = {
          \ '3' : 'Buf: -> buffer-3',
          \ '4' : 'Buf: -> buffer-4',
          \ '5' : 'Buf: -> buffer-5',
-         \ }
-let g:which_key_map['x'] = {
-         \ 'name' : '+xTerm',
-         \ 's' : 'xTerm: -> Horizontal',
-         \ 'v' : 'xTerm: -> Vertical',
-         \ 'f' : 'xTerm: -> Float',
          \ }
 let g:which_key_map['r'] = {
          \ 'name' : '+register',

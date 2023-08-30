@@ -62,11 +62,11 @@ if v:version > 800
 endif
 
 if has ('nvim')
-   nnoremap <leader>xs  :new<CR>:terminal<CR>
-   nnoremap <leader>xv  :vnew<CR>:terminal<CR>
+   nnoremap <leader>ts  :new<CR>:terminal<CR>
+   nnoremap <leader>tv  :vnew<CR>:terminal<CR>
 else
-   nnoremap <leader>xs  :term ++close<CR>
-   nnoremap <leader>xv  :vert term ++close<CR>
+   nnoremap <leader>ts  :term ++close<CR>
+   nnoremap <leader>tv  :vert term ++close<CR>
 endif
 " }}}
 
