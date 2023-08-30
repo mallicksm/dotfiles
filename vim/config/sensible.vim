@@ -19,8 +19,8 @@ vnoremap <S-k> :m '<-2<CR>gv=gv
 nnoremap j gj
 nnoremap k gk
 nnoremap Q q
-nnoremap q :q!<CR>
-nnoremap <leader>q :qall<CR>
+nnoremap q :q<CR>
+nnoremap <leader>q :qall!<CR>
 nnoremap <leader>R :call FullRefresh()<CR>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'| " expand %% to files directory
 nnoremap <silent> <leader>C :lcd %:p:h<CR>:pwd<CR>| " Change to the folder of the current file
@@ -72,13 +72,14 @@ endif
 
 " Tabs {{{
 " ==============================================================================
-nnoremap <leader>tn :tabnew<CR>
+nnoremap <leader>tc :tabnew<CR>
 nnoremap <leader>t1 :tabnext 1<CR>
 nnoremap <leader>t2 :tabnext 2<CR>
 nnoremap <leader>t3 :tabnext 3<CR>
 nnoremap <leader>t4 :tabnext 4<CR>
 nnoremap <leader>t5 :tabnext 5<CR>
-nnoremap <leader>tc :close<CR>
+nnoremap <leader>tq :tabclose<CR>
+nnoremap <leader>tx :tabclose!<CR>
 nnoremap <leader>to :tabonly<CR>
 " Opens a new tab with the current buffer's path
 " " Super useful when editing files in the same directory
@@ -93,8 +94,8 @@ nnoremap <leader>b4 :buffer4<CR>
 nnoremap <leader>b5 :buffer5<CR>
 nnoremap <leader>bp :bprevious<CR>
 nnoremap <leader>bn :bnext<CR>
-nnoremap <leader>bd :bdelete<CR>
-nnoremap <leader>bk :bdelete!<CR>
+nnoremap <leader>bq :bdelete<CR>
+nnoremap <leader>bx :bdelete!<CR>
 nnoremap <leader>bh :brewind<CR>
 " }}}
 
