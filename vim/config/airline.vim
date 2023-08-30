@@ -16,5 +16,5 @@ let g:airline_section_c = '%<%F%m %#__accent_red#%{airline#util#wrap(airline#par
 let g:airline_section_y = ''
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
-
+let g:airline_skip_empty_sections = 1
 let $airline = '$RTP/config/airline.vim'
