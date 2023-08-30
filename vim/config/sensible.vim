@@ -73,13 +73,15 @@ endif
 " Tabs {{{
 " ==============================================================================
 nnoremap <leader>tc :tabnew<CR>
+nnoremap <leader>th :tabprev<CR>
+nnoremap <leader>tl :tabnext<CR>
+nnoremap <leader>tq :tabclose<CR>
+nnoremap <leader>tx :tabclose!<CR>
 nnoremap <leader>t1 :tabnext 1<CR>
 nnoremap <leader>t2 :tabnext 2<CR>
 nnoremap <leader>t3 :tabnext 3<CR>
 nnoremap <leader>t4 :tabnext 4<CR>
 nnoremap <leader>t5 :tabnext 5<CR>
-nnoremap <leader>tq :tabclose<CR>
-nnoremap <leader>tx :tabclose!<CR>
 nnoremap <leader>to :tabonly<CR>
 " Opens a new tab with the current buffer's path
 " " Super useful when editing files in the same directory
@@ -87,16 +89,15 @@ nnoremap <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 " }}}
 
 " Buffers {{{
+nnoremap <leader>bh :bprevious<CR>
+nnoremap <leader>bl :bnext<CR>
+nnoremap <leader>bq :bdelete<CR>
+nnoremap <leader>bx :bdelete!<CR>
 nnoremap <leader>b1 :buffer1<CR>
 nnoremap <leader>b2 :buffer2<CR>
 nnoremap <leader>b3 :buffer3<CR>
 nnoremap <leader>b4 :buffer4<CR>
 nnoremap <leader>b5 :buffer5<CR>
-nnoremap <leader>bp :bprevious<CR>
-nnoremap <leader>bn :bnext<CR>
-nnoremap <leader>bq :bdelete<CR>
-nnoremap <leader>bx :bdelete!<CR>
-nnoremap <leader>bh :brewind<CR>
 " }}}
 
 " Browse pdf {{{
