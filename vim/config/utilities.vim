@@ -43,11 +43,6 @@ endif
 " g!! executes current line 
 Plug 'tmux-plugins/vim-tmux'
 " ------------------------------------------------------------------------------
-" https://github.com/glts/vim-radical
-Plug 'glts/vim-magnum'
-Plug 'glts/vim-radical'     " gA + [crd crx crb] 0x1000f3
-let g:radical_bases = {16: {'format': '0x%08s'}}| " 0x0000007b
-" ------------------------------------------------------------------------------
 Plug 'vhda/verilog_systemverilog.vim'
 " ------------------------------------------------------------------------------
 " https://github.com/ojroques/vim-oscyank
