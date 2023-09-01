@@ -131,6 +131,7 @@ let g:comma_prefix_dict = {
          \ 'd' : [':SignifyDiff'         , 'Git Diff'              ],
          \ 'c' : [':call ConvertBase()'  , 'Convert to next base'  ],
          \ 'f' : [':Filename'            , 'Current full filename' ],
+         \ 'x' : [':qall!'               , 'kill-all'              ],
          \ }
 
 augroup WhichKey

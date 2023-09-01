@@ -43,9 +43,7 @@ function! Dec2Hex(word)
    return printf('0x%08x', dec_number)
 endfunction
 function! ConvertBase()
-   let line = getline('.')
-   let col = col('.')
-   let word = expand('<cword>')
+   let word = expand('<cWORD>')
    if word =~? '^0x[0-9a-fA-F]\+$'
       let new_number = Dec2Bin(Hex2Dec(word))
    elseif word =~? '^0b[01]\+$'
@@ -53,9 +51,7 @@ function! ConvertBase()
    else
       let new_number = Dec2Hex(word)
    endif
-   let line = substitute(line, '\%' . col . 'c\k\+', new_number, '')
-   call setline('.', line)
-   call cursor('.', col)
+   execute 'normal ciw' . new_number
 endfunction
 
 function! NERDTreeYankFullPath()
