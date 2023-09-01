@@ -20,7 +20,6 @@ smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-T
 " If you want to use snippet for multiple filetypes, you can `g:vsnip_filetypes` for it.
 let g:vsnip_filetypes = {}
 let g:vsnip_filetypes.verilog_systemverilog = ['verilog_ixcom']
-let g:vsnip_filetypes.vimwiki = ['markdown']
 let g:vsnip_filetypes.sh = ['sh_expansion']
 let g:vsnip_filetypes.tcl = ['tcl_expansion']
 let g:vsnip_snippet_dir = "$HOME/dotfiles/vim/vimsnip"

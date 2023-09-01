@@ -132,6 +132,8 @@ let g:comma_prefix_dict = {
          \ 'c' : [':call ConvertBase()'  , 'Convert to next base'  ],
          \ 'f' : [':Filename'            , 'Current full filename' ],
          \ 'x' : [':qall!'               , 'kill-all'              ],
+         \ 'j' : ["]'"                   , 'mark-search-next'      ],
+         \ 'k' : ["['"                   , 'mark-search-prev'      ],
          \ }
 
 augroup WhichKey

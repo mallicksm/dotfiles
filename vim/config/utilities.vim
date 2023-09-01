@@ -12,7 +12,6 @@ let g:AutoPairsFlyMode = 1
 Plug 'kshenoy/vim-signature'
 " ma       -toggle mark a
 " m<Space> -delete all marks
-" ['       -jump to next mark
 " ------------------------------------------------------------------------------
 "  https://github.com/mbbill/undotree
 Plug 'mbbill/undotree'  " :Undo<TAB>
@@ -21,8 +20,8 @@ Plug 'mbbill/undotree'  " :Undo<TAB>
 " f<cr>    -hi (toggle)
 " f<C-L>   -hi clear
 " jump key mappings
-nn n  <Cmd>call HiSearch('n')<CR>
-nn N  <Cmd>call HiSearch('N')<CR>
+nnoremap n  <Cmd>call HiSearch('n')<CR>
+nnoremap N  <Cmd>call HiSearch('N')<CR>
 "
 " :ColorToggle to show colors
 " #c83964 red blue green yellow

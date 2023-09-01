@@ -65,4 +65,14 @@ set showcmd
 set updatetime=50 " Faster sign updates on CursorHold/CursorHold (signify)
 set bg=dark " for colormaps
 set virtualedit=block
-let $sets = '$RTP/config/sets.vim'
+set diffopt+=vertical,iwhite,algorithm:histogram,indent-heuristic
+"           +--Disable hlsearch while loading viminfo
+"           | +--Remember marks for last 500 files
+"           | |    +--Remember up to 10000 lines in each register
+"           | |    |      +--Remember up to 1MB in each register
+"           | |    |      |     +--Remember last 1000 search patterns
+"           | |    |      |     |     +---Remember last 1000 commands
+"           | |    |      |     |     |
+"           v v    v      v     v     v
+set viminfo=h,'500,<10000,s1000,/1000,:1000
+let $ets = '$RTP/config/sets.vim'
