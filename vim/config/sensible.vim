@@ -20,6 +20,7 @@ nnoremap j gj
 nnoremap k gk
 nnoremap Q q
 nnoremap q :q<CR>
+nnoremap <leader><leader> <C-^>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'| " expand %% to files directory
 nnoremap <CR> :noh<CR><CR>
 inoremap <silent> <C-f> <C-X><C-F>

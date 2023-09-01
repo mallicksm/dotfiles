@@ -7,9 +7,11 @@ nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 let g:which_key_hspace = 20
 let g:space_prefix_dict = {
          \ 'name': '+root-menu',
-         \ 'K' : 'Man under cursor',
-         \ '<Down>' : 'Autopairs -Disable/Enable',
+         \ '<Down>'  : 'Autopairs -Disable/Enable',
          \ '<Right>' : 'Autopairs -Jump to next closed pair',
+         \ 'K' : 'Man under cursor',
+         \ 'e' : 'Nerdtree Explorer',
+         \ ' ' : 'Switch buffers',
          \ 'G' : ['GdbFloat'    , 'App: GDB'     ],
          \ 'P' : ['PythonFloat' , 'App: Python'  ],
          \ 'x' : [':qall!'      , 'kill-all'     ],
@@ -17,7 +19,6 @@ let g:space_prefix_dict = {
          \ 'j' : [':wincmd j'   , 'down-window'  ],
          \ 'k' : [':wincmd k'   , 'up-window'    ],
          \ 'l' : [':wincmd l'   , 'right-window' ],
-         \ 'e' : 'Nerdtree Explorer',
          \ }
 let g:space_prefix_dict['v'] = {
          \ 'name' : '+vim',
@@ -125,12 +126,11 @@ let g:space_prefix_dict['X'] = {
 let g:comma_prefix_dict = {
          \ 'name': '+comma-menu',
          \ ',' : 'EasyMotion',
-         \ 'C' : [':call CdToFile()'            , 'cd to %'               ],
-         \ 'R' : [':call FullRefresh()'         , 'FullRefresh'           ],
-         \ 'd' : [':SignifyDiff'                , 'Git Diff'              ],
-         \ 'h' : [':call ConvertNumberBase(16)' , 'Convert to hex'        ],
-         \ 'b' : [':call ConvertNumberBase(2)'  , 'Convert to bin'        ],
-         \ 'f' : [':Filename'                   , 'Current full filename' ],
+         \ 'C' : [':call CdToFile()'     , 'cd to %'               ],
+         \ 'R' : [':call FullRefresh()'  , 'FullRefresh'           ],
+         \ 'd' : [':SignifyDiff'         , 'Git Diff'              ],
+         \ 'c' : [':call ConvertBase()'  , 'Convert to next base'  ],
+         \ 'f' : [':Filename'            , 'Current full filename' ],
          \ }
 
 augroup WhichKey

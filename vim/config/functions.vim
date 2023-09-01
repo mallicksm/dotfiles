@@ -42,28 +42,17 @@ function! Dec2Hex(word)
    let dec_number = str2nr(a:word)
    return printf('0x%x', dec_number)
 endfunction
-function! ConvertNumberBase(base)
+function! ConvertBase()
    let line = getline('.')
    let col = col('.')
    let word = expand('<cword>')
-
-   if a:base == 16
-      if word =~? '^0x[0-9a-fA-F]\+$'
-         let new_number = Hex2Dec(word)
-      else
-         let new_number = Dec2Hex(word)
-      endif
-   elseif a:base == 2
-      if word =~? '^0b[01]\+$'
-         let new_number = Bin2Dec(word)
-      else
-         let new_number = Dec2Bin(word)
-      endif
+   if word =~? '^0x[0-9a-fA-F]\+$'
+      let new_number = Dec2Bin(Hex2Dec(word))
+   elseif word =~? '^0b[01]\+$'
+      let new_number = Bin2Dec(word)
    else
-      echo "Invalid base. Use 16 for hex or 2 for binary."
-      return
+      let new_number = Dec2Hex(word)
    endif
-
    let line = substitute(line, '\%' . col . 'c\k\+', new_number, '')
    call setline('.', line)
    call cursor('.', col)
