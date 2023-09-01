@@ -46,4 +46,7 @@ Plug 'vhda/verilog_systemverilog.vim'
 " ------------------------------------------------------------------------------
 " https://github.com/ojroques/vim-oscyank
 Plug 'ojroques/vim-oscyank'
+" ------------------------------------------------------------------------------
+" https://github.com/amix/open_file_under_cursor.vim
+Plug 'amix/open_file_under_cursor.vim'
 let $utilities = '$RTP/config/utilities.vim'
