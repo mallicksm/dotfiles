@@ -52,5 +52,4 @@ Plug 'vhda/verilog_systemverilog.vim'
 " ------------------------------------------------------------------------------
 " https://github.com/ojroques/vim-oscyank
 Plug 'ojroques/vim-oscyank'
-noremap <leader>c <Plug>OSCYankOperator
 let $utilities = '$RTP/config/utilities.vim'

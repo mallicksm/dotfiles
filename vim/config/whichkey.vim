@@ -122,6 +122,7 @@ let g:space_prefix_dict['r'] = {
 let g:comma_prefix_dict = {
          \ 'name': '+comma-menu',
          \ ',' : 'EasyMotion',
+         \ 'c' : ['<Plug>OSCYankOperator'       , 'Yank to buffer'        ] ,
          \ 'C' : [':call CdToFile()'            , 'cd to %'               ] ,
          \ 'R' : [':call FullRefresh()'         , 'FullRefresh'           ],
          \ 'd' : [':SignifyDiff'                , 'Git Diff'              ],
