@@ -114,15 +114,18 @@ let g:space_prefix_dict['b'] = {
          \ }
 let g:space_prefix_dict['r'] = {
          \ 'name' : '+register',
-         \ 'p' : [':r !command ssh m1 pbpaste'                          , 'mac-paste'  ],
-         \ 'P' : [':r !clip'                                            , 'unix-paste' ],
-         \ 'c' : [":call system('command ssh m1 pbcopy', getreg('\"'))" , 'mac-copy'   ],
+         \ 'p' : [':r !command ssh m1 pbpaste'                          , 'mac-paste'      ],
+         \ 'P' : [':r !clip'                                            , 'unix-paste'     ],
+         \ 'c' : [":call system('command ssh m1 pbcopy', getreg('\"'))" , 'mac-copy'       ],
+         \ 'C' : ['<Plug>OSCYankOperator'                               , 'Yank to buffer' ] ,
+         \ }
+let g:space_prefix_dict['x'] = {
+         \ 'name' : '+extras',
          \ }
 
 let g:comma_prefix_dict = {
          \ 'name': '+comma-menu',
          \ ',' : 'EasyMotion',
-         \ 'c' : ['<Plug>OSCYankOperator'       , 'Yank to buffer'        ] ,
          \ 'C' : [':call CdToFile()'            , 'cd to %'               ] ,
          \ 'R' : [':call FullRefresh()'         , 'FullRefresh'           ],
          \ 'd' : [':SignifyDiff'                , 'Git Diff'              ],
