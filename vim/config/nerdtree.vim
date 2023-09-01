@@ -27,21 +27,6 @@ augroup NERDTreeCustom
    autocmd VimEnter * :Reload
 augroup end
 
-function! NERDTreeYankFullPath()
-   let n = g:NERDTreeFileNode.GetSelected()
-   if n != {}
-      call setreg('"', n.path.str())
-   endif
-   call nerdtree#echo("Node full path yanked!")
-endfunction
-
-function! FullRefresh()
-   :e!
-   :NERDTreeRefreshRoot
-   :NERDTreeFind
-   call webdevicons#refresh()
-endfunction
-
 "-------------------------------------------------------------------------------
 " nerdtree-git-plugin
 let g:NERDTreeGitStatusShowClean = 0 " shows ✔ when clean

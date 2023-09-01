@@ -1,7 +1,7 @@
 " https://github.com/liuchengxu/vim-which-key
-Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] } " On-demand lazy load
+Plug 'liuchengxu/vim-which-key' " On-demand lazy load
 
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 
 " Define prefix dictionary
@@ -93,31 +93,30 @@ let g:which_key_map['w'] = {
 " see $HOME/dotfiles/vim/config/sensible.vim for definitions
 let g:which_key_map['t'] = {
          \ 'name' : '+tabs',
-         \ 'c' : 'Tab: -> tab-new',
-         \ 'h' : 'Tab: -> tab-previous',
-         \ 'l' : 'Tab: -> tab-next',
-         \ 'q' : 'Tab: -> tab-close',
-         \ 'x' : 'Tab: -> tab-kill',
-         \ '1' : 'Tab: -> tab-1',
-         \ '2' : 'Tab: -> tab-2',
-         \ '3' : 'Tab: -> tab-3',
-         \ '4' : 'Tab: -> tab-4',
-         \ '5' : 'Tab: -> tab-5',
-         \ 'o' : 'Tab: -> tab-only',
-         \ 'e' : 'Tab: -> edit-in-tab',
+         \ 'c' : [':tabnew'    , 'Tab: -> tab-new'     ],
+         \ 'h' : [':tabprev'   , 'Tab: -> tab-previous'],
+         \ 'l' : [':tabnext'   , 'Tab: -> tab-next'    ],
+         \ 'q' : [':tabclose'  , 'Tab: -> tab-close'   ],
+         \ 'x' : [':tabclose!' , 'Tab: -> tab-kill'    ],
+         \ '1' : [':tabnext 1' , 'Tab: -> tab-1'       ],
+         \ '2' : [':tabnext 2' , 'Tab: -> tab-2'       ],
+         \ '3' : [':tabnext 3' , 'Tab: -> tab-3'       ],
+         \ '4' : [':tabnext 4' , 'Tab: -> tab-4'       ],
+         \ '5' : [':tabnext 5' , 'Tab: -> tab-5'       ],
+         \ 'o' : [':tabonly'   , 'Tab: -> tab-only'    ],
          \ }
 " see $HOME/dotfiles/vim/config/sensible.vim for definitions
 let g:which_key_map['b'] = {
          \ 'name' : '+buffers',
-         \ 'h' : 'Buf: -> buffer-previous',
-         \ 'l' : 'Buf: -> buffer-next',
-         \ 'q' : 'Buf: -> buffer-close',
-         \ 'x' : 'Buf: -> buffer-kill',
-         \ '1' : 'Buf: -> buffer-1',
-         \ '2' : 'Buf: -> buffer-2',
-         \ '3' : 'Buf: -> buffer-3',
-         \ '4' : 'Buf: -> buffer-4',
-         \ '5' : 'Buf: -> buffer-5',
+         \ 'h' : [':bprevious' , 'Buf: -> buffer-previous'],
+         \ 'l' : [':bnext'     , 'Buf: -> buffer-next'    ],
+         \ 'q' : [':bdelete'   , 'Buf: -> buffer-close'   ],
+         \ 'x' : [':bdelete!'  , 'Buf: -> buffer-kill'    ],
+         \ '1' : [':buffer1'   , 'Buf: -> buffer-1'       ],
+         \ '2' : [':buffer2'   , 'Buf: -> buffer-2'       ],
+         \ '3' : [':buffer3'   , 'Buf: -> buffer-3'       ],
+         \ '4' : [':buffer4'   , 'Buf: -> buffer-4'       ],
+         \ '5' : [':buffer5'   , 'Buf: -> buffer-5'       ],
          \ }
 let g:which_key_map['r'] = {
          \ 'name' : '+register',
@@ -126,5 +125,12 @@ let g:which_key_map['r'] = {
          \ 'c' : [":call system('command ssh m1 pbcopy', getreg('\"'))", 'mac-copy'],
          \ }
 
-autocmd! User vim-which-key call which_key#register('<Space>', 'g:which_key_map')
+let g:comma_prefix_dict = {
+         \ 'name': '+comma-menu',
+         \ ',' : 'EasyMotion',
+         \ }
+
+autocmd VimEnter * call which_key#register('<Space>', 'g:which_key_map')
+autocmd VimEnter * call which_key#register(',', 'g:comma_prefix_dict')
+
 let $whichkey = '$RTP/config/whichkey.vim'

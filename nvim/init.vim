@@ -13,6 +13,7 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 let $RTP = expand("$RTP_NVIM_DOTFILE")
 
 call plug#begin('~/.nvim/plugged')
+source $RTP/config/functions.vim
 source $RTP/config/whichkey.vim    " Central menu control
 source $RTP/config/tpope.vim
 source $RTP/config/junegunn.vim    " telescope_fzf + :GV[,!,?]
