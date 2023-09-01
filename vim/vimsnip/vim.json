@@ -1,6 +1,6 @@
 {
    "item function": {
-      "prefix": ["function"],
+      "prefix": ["function", "func", "proc"],
       "body": [
          "function! ${1:functionName}()",
          "   ${2:functionContents}",
