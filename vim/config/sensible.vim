@@ -21,17 +21,11 @@ nnoremap k gk
 nnoremap Q q
 nnoremap q :q<CR>
 nnoremap <leader>x :qall!<CR>
-nnoremap <leader>R :call FullRefresh()<CR>
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'| " expand %% to files directory
-nnoremap <silent> <leader>C :lcd %:p:h<CR>:pwd<CR>| " Change to the folder of the current file
+nnoremap <silent> <localleader>C :lcd %:p:h<CR>:pwd<CR>| " Change to the folder of the current file
 nnoremap <CR> :noh<CR><CR>
 inoremap <silent> <C-f> <C-X><C-F>
 nnoremap <Leader><Leader> <C-^>
-
-" whichkey maps
-nnoremap <leader>vw :set wrap!<CR>
-nnoremap <leader>vl :set list!<CR>| " Toggle list   
-map <leader>v= gg=G<C-o><C-o>|      "format current file
 
 " Windows
 " ==============================================================================
@@ -61,8 +55,6 @@ endif
 " Browse pdf
 command! Filename execute ":echo expand('%:p')"
 command! Reload   execute "source $RTP/init.vim"
-nnoremap <leader><leader>h :call ConvertNumberBase(16)<CR>
-nnoremap <leader><leader>b :call ConvertNumberBase(2)<CR>
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
