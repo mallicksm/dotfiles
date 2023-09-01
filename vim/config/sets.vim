@@ -75,4 +75,4 @@ set diffopt+=vertical,iwhite,algorithm:histogram,indent-heuristic
 "           | |    |      |     |     |
 "           v v    v      v     v     v
 set viminfo=h,'500,<10000,s1000,/1000,:1000
-let $ets = '$RTP/config/sets.vim'
+let $sets = '$RTP/config/sets.vim'
