@@ -84,5 +84,8 @@ endfunction
 
 command! Filename execute ":echo expand('%:p')"
 command! Reload   execute "source $RTP/init.vim"
-
+command! GdbFloat execute "FloatermNew --width=0.60 --height=0.8 --title=gdb gdb -tui"
+command! PythonFloat execute "FloatermNew --title=python python"
+command! MacCopy execute "call system('command ssh m1 pbcopy', getreg('\"'))"
+command! MacPaste execute ":r !command ssh m1 pbpaste"
 let $functions = '$RTP/config/functions.vim'

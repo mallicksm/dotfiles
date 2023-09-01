@@ -1,6 +1,5 @@
 " https://github.com/liuchengxu/vim-which-key
-Plug 'liuchengxu/vim-which-key' " On-demand lazy load
-
+Plug 'liuchengxu/vim-which-key'
 nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 
@@ -11,13 +10,13 @@ let g:space_prefix_dict = {
          \ 'K' : 'Man under cursor',
          \ '<Down>' : 'Autopairs -Disable/Enable',
          \ '<Right>' : 'Autopairs -Jump to next closed pair',
-         \ 'G' : [':FloatermNew --width=0.60 --height=0.8 --title=gdb gdb -tui' , 'App: GDB'   ],
-         \ 'P' : [':FloatermNew --title=python python'                          , 'App: Python'],
-         \ 'x' : [':qall!'    , 'kill-all'     ],
-         \ 'h' : [':wincmd h' , 'left-window'  ],
-         \ 'j' : [':wincmd j' , 'down-window'  ],
-         \ 'k' : [':wincmd k' , 'up-window'    ],
-         \ 'l' : [':wincmd l' , 'right-window' ],
+         \ 'G' : ['GdbFloat'    , 'App: GDB'     ],
+         \ 'P' : ['PythonFloat' , 'App: Python'  ],
+         \ 'x' : [':qall!'      , 'kill-all'     ],
+         \ 'h' : [':wincmd h'   , 'left-window'  ],
+         \ 'j' : [':wincmd j'   , 'down-window'  ],
+         \ 'k' : [':wincmd k'   , 'up-window'    ],
+         \ 'l' : [':wincmd l'   , 'right-window' ],
          \ 'e' : 'Nerdtree Explorer',
          \ }
 let g:space_prefix_dict['v'] = {
@@ -114,19 +113,19 @@ let g:space_prefix_dict['b'] = {
          \ }
 let g:space_prefix_dict['r'] = {
          \ 'name' : '+register',
-         \ 'p' : [':r !command ssh m1 pbpaste'                          , 'mac-paste'      ],
-         \ 'P' : [':r !clip'                                            , 'unix-paste'     ],
-         \ 'c' : [":call system('command ssh m1 pbcopy', getreg('\"'))" , 'mac-copy'       ],
-         \ 'C' : ['<Plug>OSCYankOperator'                               , 'Yank to buffer' ] ,
+         \ 'p' : ['MacPaste'              , 'mac-paste'      ],
+         \ 'P' : [':r !clip'              , 'unix-paste'     ],
+         \ 'c' : ['MacCopy'               , 'mac-copy'       ],
+         \ 'C' : ['<Plug>OSCYankOperator' , 'Yank to buffer' ],
          \ }
-let g:space_prefix_dict['x'] = {
+let g:space_prefix_dict['X'] = {
          \ 'name' : '+extras',
          \ }
 
 let g:comma_prefix_dict = {
          \ 'name': '+comma-menu',
          \ ',' : 'EasyMotion',
-         \ 'C' : [':call CdToFile()'            , 'cd to %'               ] ,
+         \ 'C' : [':call CdToFile()'            , 'cd to %'               ],
          \ 'R' : [':call FullRefresh()'         , 'FullRefresh'           ],
          \ 'd' : [':SignifyDiff'                , 'Git Diff'              ],
          \ 'h' : [':call ConvertNumberBase(16)' , 'Convert to hex'        ],
@@ -134,7 +133,10 @@ let g:comma_prefix_dict = {
          \ 'f' : [':Filename'                   , 'Current full filename' ],
          \ }
 
-autocmd VimEnter * call which_key#register('<Space>', 'g:space_prefix_dict')
-autocmd VimEnter * call which_key#register(','      , 'g:comma_prefix_dict')
+augroup WhichKey
+   autocmd!
+   autocmd VimEnter * call which_key#register('<Space>', 'g:space_prefix_dict')
+   autocmd VimEnter * call which_key#register(','      , 'g:comma_prefix_dict')
+augroup end
 
 let $whichkey = '$RTP/config/whichkey.vim'
