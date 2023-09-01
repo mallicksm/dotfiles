@@ -43,7 +43,8 @@ else
    set ttymouse=xterm2
 endif
 
-set cursorline hlsearch incsearch nowrapscan
+set cursorline cursorlineopt=both
+set hlsearch incsearch nowrapscan
 set scrolloff=0 sidescrolloff=8 sidescroll=1 "sane scrolling
 set noshowmode
 set completeopt=menuone,longest

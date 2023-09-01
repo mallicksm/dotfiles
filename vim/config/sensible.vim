@@ -42,9 +42,18 @@ else
    nnoremap <leader>Tv  :vert term ++close<CR>
 endif
 
-" Return to last edit position when opening files (You want this!)
-autocmd BufReadPost *
-   \ if line("'\"") > 0 && line("'\"") <= line("$") |
-   \    exe "normal! g`\"zz" |
-   \ endif
+augroup LastLineInFocus
+   " Return to last edit position when opening files (You want this!)
+   autocmd!
+   autocmd BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \    exe "normal! g`\"zz" |
+      \ endif
+augroup end
+
+augroup CursorFocusWindow
+   autocmd!
+   autocmd WinEnter,BufEnter * setlocal cursorline | highlight CursorLine guibg=#0E5D27
+   autocmd WinLeave,BufLeave * setlocal nocursorline
+augroup end
 let $sensible = '$RTP/config/sensible.vim'
