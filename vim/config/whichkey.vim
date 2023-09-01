@@ -13,12 +13,12 @@ let g:space_prefix_dict = {
          \ '<Right>' : 'Autopairs -Jump to next closed pair',
          \ 'G' : [':FloatermNew --width=0.60 --height=0.8 --title=gdb gdb -tui' , 'App: GDB'   ],
          \ 'P' : [':FloatermNew --title=python python'                          , 'App: Python'],
-         \ 'x' : 'which_key_ignore',
-         \ 'e' : 'which_key_ignore',
-         \ 'h' : 'which_key_ignore',
-         \ 'j' : 'which_key_ignore',
-         \ 'k' : 'which_key_ignore',
-         \ 'l' : 'which_key_ignore',
+         \ 'x' : [':qall!'    , 'kill-all'     ],
+         \ 'h' : [':wincmd h' , 'left-window'  ],
+         \ 'j' : [':wincmd j' , 'down-window'  ],
+         \ 'k' : [':wincmd k' , 'up-window'    ],
+         \ 'l' : [':wincmd l' , 'right-window' ],
+         \ 'e' : 'Nerdtree Explorer',
          \ }
 let g:space_prefix_dict['v'] = {
          \ 'name' : '+vim',
@@ -68,7 +68,7 @@ let g:space_prefix_dict['g'] = {
             \ 'C' : [':GV!'                         , 'Git:   -> Buffer commits'],
             \ },
          \ }
-let g:space_prefix_dict['t'] = {
+let g:space_prefix_dict['T'] = {
          \ 'name' : '+Terminal',
          \ 's' : 'xTerm: -> Horizontal',
          \ 'v' : 'xTerm: -> Vertical',
@@ -86,7 +86,6 @@ let g:space_prefix_dict['w'] = {
          \ 'k' : [':resize +5' , 'Win: -> resize-window-up'    ],
          \ 'j' : [':resize -5' , 'Win: -> resize-window-below' ],
          \ }
-" see $HOME/dotfiles/vim/config/sensible.vim for definitions
 let g:space_prefix_dict['t'] = {
          \ 'name' : '+tabs',
          \ 'c' : [':tabnew'    , 'Tab: -> tab-new'     ],
@@ -101,7 +100,6 @@ let g:space_prefix_dict['t'] = {
          \ '5' : [':tabnext 5' , 'Tab: -> tab-5'       ],
          \ 'o' : [':tabonly'   , 'Tab: -> tab-only'    ],
          \ }
-" see $HOME/dotfiles/vim/config/sensible.vim for definitions
 let g:space_prefix_dict['b'] = {
          \ 'name' : '+buffers',
          \ 'h' : [':bprevious' , 'Buf: -> buffer-previous'],
@@ -116,19 +114,20 @@ let g:space_prefix_dict['b'] = {
          \ }
 let g:space_prefix_dict['r'] = {
          \ 'name' : '+register',
-         \ 'p' : [':r !command ssh m1 pbpaste'                          , 'mac-paste' ],
-         \ 'P' : [':r !clip'                                            , 'unix-paste'],
-         \ 'c' : [":call system('command ssh m1 pbcopy', getreg('\"'))" , 'mac-copy'  ],
+         \ 'p' : [':r !command ssh m1 pbpaste'                          , 'mac-paste'  ],
+         \ 'P' : [':r !clip'                                            , 'unix-paste' ],
+         \ 'c' : [":call system('command ssh m1 pbcopy', getreg('\"'))" , 'mac-copy'   ],
          \ }
 
 let g:comma_prefix_dict = {
          \ 'name': '+comma-menu',
          \ ',' : 'EasyMotion',
-         \ 'C' : 'cd to %',
-         \ 'R' : [':call FullRefresh()', 'FullRefresh'],
-         \ 'd' : [':SignifyDiff', 'Git Diff'],
-         \ 'h' : [':call ConvertNumberBase(16)', 'Convert to hex'],
-         \ 'b' : [':call ConvertNumberBase(2)' , 'Convert to bin'],
+         \ 'C' : [':call CdToFile()'            , 'cd to %'               ] ,
+         \ 'R' : [':call FullRefresh()'         , 'FullRefresh'           ],
+         \ 'd' : [':SignifyDiff'                , 'Git Diff'              ],
+         \ 'h' : [':call ConvertNumberBase(16)' , 'Convert to hex'        ],
+         \ 'b' : [':call ConvertNumberBase(2)'  , 'Convert to bin'        ],
+         \ 'f' : [':Filename'                   , 'Current full filename' ],
          \ }
 
 autocmd VimEnter * call which_key#register('<Space>', 'g:space_prefix_dict')

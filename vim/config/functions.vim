@@ -77,3 +77,12 @@ function! FullRefresh()
    call webdevicons#refresh()
 endfunction
 
+function! CdToFile()
+   :lcd %:p:h
+   :pwd
+endfunction
+
+command! Filename execute ":echo expand('%:p')"
+command! Reload   execute "source $RTP/init.vim"
+
+let $functions = '$RTP/config/functions.vim'

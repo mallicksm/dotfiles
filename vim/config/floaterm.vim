@@ -3,7 +3,7 @@ if v:version > 800
    Plug 'voldikss/vim-floaterm'
 endif
 " floaterm
-let g:floaterm_keymap_toggle = '<leader>tf'
+let g:floaterm_keymap_toggle = '<leader>Tf'
 let g:floaterm_wintype = 'float'
 let g:floaterm_width = 0.8
 let g:floaterm_height = 0.6
