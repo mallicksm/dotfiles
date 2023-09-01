@@ -138,5 +138,4 @@ augroup WhichKey
    autocmd VimEnter * call which_key#register('<Space>', 'g:space_prefix_dict')
    autocmd VimEnter * call which_key#register(','      , 'g:comma_prefix_dict')
 augroup end
-
 let $whichkey = '$RTP/config/whichkey.vim'

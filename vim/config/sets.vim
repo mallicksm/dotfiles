@@ -65,5 +65,4 @@ set showcmd
 set updatetime=50 " Faster sign updates on CursorHold/CursorHold (signify)
 set bg=dark " for colormaps
 set virtualedit=block
-
 let $sets = '$RTP/config/sets.vim'

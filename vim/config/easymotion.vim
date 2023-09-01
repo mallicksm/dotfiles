@@ -7,5 +7,4 @@ map <localleader><localleader> <plug>(easymotion-prefix)
 Plug 'rhysd/clever-f.vim'
 let g:clever_f_show_prompt = 1
 "-------------------------------------------------------------------------------
-
 let $easymotion = '$RTP/config/easymotion.vim'
