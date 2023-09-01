@@ -14,7 +14,7 @@ function! NukeRegs()
       call setreg(r, [])
    endfor
 endf
-" cli conversions
+" cli base conversions
 function! Hex2Dec(word)
    let hex_number = a:word[2:]
    let dec_number = str2nr(hex_number, 16)
@@ -23,10 +23,10 @@ endfunction
 function! Dec2Bin(word)
    let dec_number = str2nr(a:word)
    let bin_number = ''
-   while dec_number > 0
+   for i in range(0,31)
       let bin_number = printf('%s', dec_number % 2) . bin_number
       let dec_number = dec_number / 2
-   endwhile
+   endfor
    return "0b" . bin_number
 endfunction
 function! Bin2Dec(word)
@@ -40,7 +40,7 @@ function! Bin2Dec(word)
 endfunction
 function! Dec2Hex(word)
    let dec_number = str2nr(a:word)
-   return printf('0x%x', dec_number)
+   return printf('0x%08x', dec_number)
 endfunction
 function! ConvertBase()
    let line = getline('.')
