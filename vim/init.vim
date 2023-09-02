@@ -27,7 +27,9 @@ source $RTP/config/utilities.vim   " autopairs, marks, UndoTreeShow, f<CR>=highl
 source $RTP/config/vimsnip.vim
 source $RTP/config/textobj.vim
 source $RTP/config/clang-format.vim
-" source $RTP/config/lsp.vim
+if has('mac')
+source $RTP/config/lsp.vim
+endif
 "source $RTP/config/telescope.vim
 call plug#end()
 
