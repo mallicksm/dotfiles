@@ -70,6 +70,7 @@ function linkup() {
 #-------------------------------------------------------------------------------
 #{{{ clang-format
 function clang-format() {
+   # https://github.com/muttleyxd/clang-tools-static-binaries
    echo "Info: Installing clang-format"
    if [[ $(curl --head --silent --fail git@github.com) && ($(uname -s) == "Linux") ]]; then
       src=https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-f4f85437/clang-format-16_linux-amd64

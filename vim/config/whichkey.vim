@@ -132,6 +132,7 @@ let g:comma_prefix_dict = {
          \ 'c' : [':call ConvertBase()'  , 'Convert to next base'  ],
          \ 'f' : [':Filename'            , 'Current full filename' ],
          \ 'x' : [':qall!'               , 'kill-all'              ],
+         \ 'N' : [':call NukeRegs()'     , 'Kill marked registers' ],
          \ 'j' : ["]'"                   , 'mark-search-next'      ],
          \ 'k' : ["['"                   , 'mark-search-prev'      ],
          \ }
