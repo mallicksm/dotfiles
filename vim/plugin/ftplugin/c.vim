@@ -1,1 +1,1 @@
-autocmd VimEnter,BufRead,BufNewFile *.c setlocal commentstring=//\ %s
+autocmd FileType c,cpp,java setlocal commentstring=//\ %s
