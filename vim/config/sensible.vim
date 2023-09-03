@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:SENSIBLE_LOADED')
-  finish
-end
-let g:SENSIBLE_LOADED = 1
 
 "-------------------------------------------------------------------------------
 " Initial Essential

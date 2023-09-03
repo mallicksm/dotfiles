@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:TPOPE_LOADED')
-  finish
-end
-let g:TPOPE_LOADED = 1
 
 "-------------------------------------------------------------------------------
 Plug 'tpope/vim-sensible'

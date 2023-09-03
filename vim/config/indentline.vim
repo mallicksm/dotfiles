@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:INDENTLINE_LOADED')
-  finish
-end
-let g:INDENTLINE_LOADED = 1
 
 "-------------------------------------------------------------------------------
 " https://github.com/Yggdroot/indentLine

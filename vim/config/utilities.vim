@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:UTILITIES_LOADED')
-  finish
-end
-let g:UTILITIES_LOADED = 1
 
 " ------------------------------------------------------------------------------
 " https://github.com/jiangmiao/auto-pairs

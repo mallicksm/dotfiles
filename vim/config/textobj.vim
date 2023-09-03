@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:TEXTOBJ_LOADED')
-  finish
-end
-let g:TEXTOBJ_LOADED = 1
 
 "-------------------------------------------------------------------------------
 "Supported textobjects

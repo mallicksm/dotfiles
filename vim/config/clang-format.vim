@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:CLANG_FORMAT_LOADED')
-  finish
-end
-let g:CLANG_FORMAT_LOADED = 1
 
 " ------------------------------------------------------------------------------
 " https://github.com/rhysd/vim-clang-format

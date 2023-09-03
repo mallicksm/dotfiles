@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:NERDTREE_LOADED')
-  finish
-end
-let g:NERDTREE_LOADED = 1
 
 "-------------------------------------------------------------------------------
 " https://github.com/preservim/nerdtree

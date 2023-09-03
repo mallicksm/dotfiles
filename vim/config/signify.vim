@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:SIGNIFY_LOADED')
-  finish
-end
-let g:SIGNIFY_LOADED = 1
 
 "-------------------------------------------------------------------------------
 " https://github.com/mhinz/vim-signify

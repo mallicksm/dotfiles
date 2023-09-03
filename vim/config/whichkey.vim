@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:WHICHKEY_LOADED')
-  finish
-end
-let g:WHICHKEY_LOADED = 1
 
 "-------------------------------------------------------------------------------
 " https://github.com/liuchengxu/vim-which-key

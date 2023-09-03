@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:FLOATERM_LOADED')
-  finish
-end
-let g:FLOATERM_LOADED = 1
 
 "-------------------------------------------------------------------------------
 " https://github.com/voldikss/vim-floaterm

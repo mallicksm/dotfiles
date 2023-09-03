@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:AIRLINE_LOADED')
-  finish
-end
-let g:AIRLINE_LOADED = 1
 
 " https://github.com/vim-airline/vim-airline/blob/master/doc/airline.txt
 Plug 'morhetz/gruvbox'

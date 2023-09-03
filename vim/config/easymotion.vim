@@ -7,10 +7,6 @@
 " Description: Description
 "
 "===============================================================================
-if exists('g:EASYMOTION_LOADED')
-  finish
-end
-let g:EASYMOTION_LOADED = 1
 
 "-------------------------------------------------------------------------------
 " https://github.com/easymotion/vim-easymotion
