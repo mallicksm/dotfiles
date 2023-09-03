@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:FLOATERM_LOADED')
+  finish
+end
+let g:FLOATERM_LOADED = 1
+
+"-------------------------------------------------------------------------------
 " https://github.com/voldikss/vim-floaterm
 if v:version > 800
    Plug 'voldikss/vim-floaterm'

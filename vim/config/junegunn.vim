@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:JUNEGUNN_LOADED')
+  finish
+end
+let g:JUNEGUNN_LOADED = 1
+
+"-------------------------------------------------------------------------------
 " https://github.com/voldikss/vim-floaterm
 if v:version > 800
    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }

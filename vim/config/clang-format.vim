@@ -1,5 +1,19 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:CLANG_FORMAT_LOADED')
+  finish
+end
+let g:CLANG_FORMAT_LOADED = 1
+
 " ------------------------------------------------------------------------------
-"  https://github.com/rhysd/vim-clang-format
+" https://github.com/rhysd/vim-clang-format
 " https://github.com/kana/vim-operator-user
 Plug 'kana/vim-operator-user'
 Plug 'rhysd/vim-clang-format'

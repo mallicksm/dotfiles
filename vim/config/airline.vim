@@ -1,3 +1,17 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:AIRLINE_LOADED')
+  finish
+end
+let g:AIRLINE_LOADED = 1
+
 " https://github.com/vim-airline/vim-airline/blob/master/doc/airline.txt
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'

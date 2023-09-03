@@ -1,3 +1,17 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:EASYMOTION_LOADED')
+  finish
+end
+let g:EASYMOTION_LOADED = 1
+
 "-------------------------------------------------------------------------------
 " https://github.com/easymotion/vim-easymotion
 Plug 'easymotion/vim-easymotion'

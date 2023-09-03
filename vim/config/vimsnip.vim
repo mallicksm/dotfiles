@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:VIMSNIP_LOADED')
+  finish
+end
+let g:VIMSNIP_LOADED = 1
+
+"-------------------------------------------------------------------------------
 " https://github.com/hrsh7th/vim-vsnip
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'

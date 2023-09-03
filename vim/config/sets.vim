@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:SETS_LOADED')
+  finish
+end
+let g:SETS_LOADED = 1
+
+"-------------------------------------------------------------------------------
 set encoding=utf-8 " vim-devicons
 set path+=**
 " Nice menu when typing `:find *.py`

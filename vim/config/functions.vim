@@ -1,3 +1,19 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:FUNCTIONS_LOADED')
+  finish
+end
+let g:FUNCTIONS_LOADED = 1
+
+
+"-------------------------------------------------------------------------------
 let g:Pdf2Txt = 'pdftotext -nopgbrk -layout -q -eol unix %:p:S -'
 augroup Pdf2Txt
    autocmd!

@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:TEXTOBJ_LOADED')
+  finish
+end
+let g:TEXTOBJ_LOADED = 1
+
+"-------------------------------------------------------------------------------
 "Supported textobjects
 "                i  Indent
 "                c  Comment

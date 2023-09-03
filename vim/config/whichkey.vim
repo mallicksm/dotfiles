@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:WHICHKEY_LOADED')
+  finish
+end
+let g:WHICHKEY_LOADED = 1
+
+"-------------------------------------------------------------------------------
 " https://github.com/liuchengxu/vim-which-key
 Plug 'liuchengxu/vim-which-key'
 nnoremap <silent> <localleader> :<c-u>WhichKey ','<CR>

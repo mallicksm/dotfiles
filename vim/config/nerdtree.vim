@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:NERDTREE_LOADED')
+  finish
+end
+let g:NERDTREE_LOADED = 1
+
+"-------------------------------------------------------------------------------
 " https://github.com/preservim/nerdtree
 Plug 'scrooloose/nerdtree' |
          \ Plug 'ryanoasis/vim-devicons' |

@@ -1,4 +1,24 @@
 {
+   "item header": {
+      "prefix": ["header"],
+      "body": [
+         "${LINE_COMMENT}===============================================================================",
+         "${LINE_COMMENT} Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+         "${LINE_COMMENT} Author: ${VIM:\\$USER}",
+         "${LINE_COMMENT}",
+         "${LINE_COMMENT} Note:",
+         "${LINE_COMMENT}",
+         "${LINE_COMMENT} Description: ${1:Description}",
+         "${LINE_COMMENT}",
+         "${LINE_COMMENT}===============================================================================",
+         "if exists('g:${TM_FILENAME_BASE/(.*)/${1:/upcase}/g}_LOADED')",
+         "  finish",
+         "end",
+         "let g:${TM_FILENAME_BASE/(.*)/${1:/upcase}/g}_LOADED = 1",
+         "${0}"
+      ],
+      "description": "Code snippet for 'header' statement"
+   },
    "item function": {
       "prefix": ["function", "func", "proc"],
       "body": [

@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:LSP_LOADED')
+  finish
+end
+let g:LSP_LOADED = 1
+
+"-------------------------------------------------------------------------------
 Plug 'mallicksm/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'

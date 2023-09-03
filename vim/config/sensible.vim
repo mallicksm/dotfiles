@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:SENSIBLE_LOADED')
+  finish
+end
+let g:SENSIBLE_LOADED = 1
+
+"-------------------------------------------------------------------------------
 " Initial Essential
 autocmd VimEnter * colorscheme gruvbox
 " General Settings

@@ -1,3 +1,18 @@
+"===============================================================================
+" Created: Sep-03-2023
+" Author: mallick1
+"
+" Note:
+"
+" Description: Description
+"
+"===============================================================================
+if exists('g:SIGNIFY_LOADED')
+  finish
+end
+let g:SIGNIFY_LOADED = 1
+
+"-------------------------------------------------------------------------------
 " https://github.com/mhinz/vim-signify
 Plug 'mhinz/vim-signify'
 let g:signify_sign_add               = '+'
