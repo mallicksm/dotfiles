@@ -30,8 +30,8 @@ Plug 'mbbill/undotree'  " :Undo<TAB>
 " f<cr>    -hi (toggle)
 " f<C-L>   -hi clear
 " jump key mappings
-nnoremap n  <Cmd>call HiSearch('n')<CR>
-nnoremap N  <Cmd>call HiSearch('N')<CR>
+nnoremap n  :<c-u>call HiSearch('n')<CR>
+nnoremap N  :<c-u>call HiSearch('N')<CR>
 "
 " :ColorToggle to show colors
 " #c83964 red blue green yellow
