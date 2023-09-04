@@ -12,8 +12,6 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 
 let $RTP = expand("$RTP_DOTFILE")
 
-let g:ubuntu = system('uname -a|grep Ubuntu')
-
 call plug#begin('~/.vim/plugged')
 source $RTP/config/functions.vim
 source $RTP/config/whichkey.vim    " Central menu control
@@ -29,9 +27,7 @@ source $RTP/config/utilities.vim   " autopairs, marks, UndoTreeShow, f<CR>=highl
 source $RTP/config/vimsnip.vim
 source $RTP/config/textobj.vim
 source $RTP/config/clang-format.vim
-if has('mac') || exists('g:ubuntu')
 source $RTP/config/lsp.vim
-endif
 "source $RTP/config/telescope.vim
 call plug#end()
 
