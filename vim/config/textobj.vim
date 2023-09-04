@@ -85,7 +85,11 @@ autocmd VimEnter * call textobj#user#map('wordcolumn', {
 Plug 'kana/vim-textobj-function'
 " {lhs}   {rhs}
 " -----   -----
-"  aF     <Plug>(textobj-function-A)
-"  iF     <Plug>(textobj-function-I)
+"  af     <Plug>(textobj-function-A)
+"  if     <Plug>(textobj-function-I)
 "-------------------------------------------------------------------------------
+let g:textobj_function_no_default_key_mappings=0
+omap if <Plug>(textobj-function-i)
+omap af <Plug>(textobj-function-a)
+
 let $textobj = '$RTP/config/textobj.vim'
