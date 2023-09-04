@@ -136,12 +136,12 @@ let g:space_prefix_dict['X'] = {
 
 let g:comma_prefix_dict = {
          \ 'name': '+comma-menu',
-         \ ',' : 'EasyMotion',
+         \ 'f' : 'EasyMotion-f',
          \ 'C' : [':call CdToFile()'     , 'cd to %'               ],
          \ 'R' : [':call FullRefresh()'  , 'FullRefresh'           ],
          \ 'd' : [':SignifyDiff'         , 'Git Diff'              ],
          \ 'c' : [':call ConvertBase()'  , 'Convert to next base'  ],
-         \ 'f' : [':Filename'            , 'Current full filename' ],
+         \ 'F' : [':Filename'            , 'Current full filename' ],
          \ 'x' : [':qall!'               , 'kill-all'              ],
          \ 'N' : [':call NukeRegs()'     , 'Kill marked registers' ],
          \ 'j' : ["]'"                   , 'mark-search-next'      ],

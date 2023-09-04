@@ -11,7 +11,7 @@
 "-------------------------------------------------------------------------------
 " https://github.com/easymotion/vim-easymotion
 Plug 'easymotion/vim-easymotion'
-map <localleader><localleader> <plug>(easymotion-prefix)
+nmap <localleader>f <plug>(easymotion-overwin-f)
 "-------------------------------------------------------------------------------
 " https://github.com/rhysd/clever-f.vim
 Plug 'rhysd/clever-f.vim'
