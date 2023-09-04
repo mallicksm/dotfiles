@@ -25,7 +25,7 @@ source $RTP/config/nerdtree.vim
 source $RTP/config/easymotion.vim
 source $RTP/config/signify.vim     " signcolumn git signs and ,d for vdiff
 source $RTP/config/indentline.vim  " | for indents
-source $RTP/config/utilities.vim   " autopairs, marks, UndoTreeShow, f<CR>=highlight, ColorToggle, RainbowToggle, K=man
+source $RTP/config/utilities.vim   " autopairs, marks, UndoTreeShow, f<CR>=highlight, ColorToggle, K=man
 source $RTP/config/vimsnip.vim
 source $RTP/config/textobj.vim
 source $RTP/config/clang-format.vim

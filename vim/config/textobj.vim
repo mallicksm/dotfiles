@@ -18,6 +18,9 @@
 "                q  Column
 "                F  'C' Function
 "-------------------------------------------------------------------------------
+" https://github.com/wellle/targets.vim
+Plug 'wellle/targets.vim'
+"-------------------------------------------------------------------------------
 " https://github.com/kana/vim-textobj-user
 " https://github.com/thinca/vim-textobj-between
 Plug 'kana/vim-textobj-user'
