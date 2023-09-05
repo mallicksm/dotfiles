@@ -137,6 +137,7 @@ let g:space_prefix_dict['X'] = {
 let g:comma_prefix_dict = {
          \ 'name': '+comma-menu',
          \ 'f' : 'EasyMotion-f',
+         \ 'm' : 'Git messages',
          \ 'C' : [':call CdToFile()'     , 'cd to %'               ],
          \ 'R' : [':call FullRefresh()'  , 'FullRefresh'           ],
          \ 'd' : [':SignifyDiff'         , 'Git Diff'              ],

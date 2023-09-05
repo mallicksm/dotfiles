@@ -59,4 +59,14 @@ Plug 'ojroques/vim-oscyank'
 " ------------------------------------------------------------------------------
 " https://github.com/amix/open_file_under_cursor.vim
 Plug 'amix/open_file_under_cursor.vim'
+" ------------------------------------------------------------------------------
+" https://github.com/rhysd/accelerated-jk
+Plug 'rhysd/accelerated-jk'
+let g:accelerated_jk_enable_deceleration = 1
+nmap j <plug>(accelerated_jk_gj)
+nmap j <plug>(accelerated_jk_gk)
+" ------------------------------------------------------------------------------
+" https://github.com/rhysd/git-messenger.vim
+Plug 'rhysd/git-messenger.vim'
+nmap <localLeader>m <Plug>(git-messenger)
 let $utilities = '$RTP/config/utilities.vim'
