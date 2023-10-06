@@ -51,7 +51,7 @@ if has('nvim')
    set inccommand=nosplit
 else
    set undodir=~/.vim/undodir
-   set ttymouse=xterm2
+   set ttymouse=sgr
 endif
 
 set cursorline cursorlineopt=both

@@ -21,12 +21,12 @@ endfunction
 augroup lsp_install
    autocmd!
    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled() 
-   nmap <buffer> gi <plug>(lsp-definition)
-   nmap <buffer> gd <plug>(lsp-declaration)
-   nmap <buffer> gr <plug>(lsp-references)
-   nmap <buffer> gl <plug>(lsp-document-diagnostics)
-   nmap <buffer> gg <plug>(lsp-rename)
-   nmap <buffer> gh <plug>(lsp-hover)
+   nmap <buffer> <leader>gi <plug>(lsp-definition)
+   nmap <buffer> <leader>gd <plug>(lsp-declaration)
+   nmap <buffer> <leader>gr <plug>(lsp-references)
+   nmap <buffer> <leader>gl <plug>(lsp-document-diagnostics)
+   nmap <buffer> <leader>gg <plug>(lsp-rename)
+   nmap <buffer> <leader>gh <plug>(lsp-hover)
 augroup end 
 
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"

@@ -50,11 +50,11 @@ plt.figure(figsize=(20, 12))
 
 # Plot each combination of column 1 and 2 on the same graph
 for key, values in separated_data.items():
-    plt.plot(values['column3'], values['column6'], marker='.', label=f"Slice={int(key[0])} Bit={int(key[1])}")
-    plt.plot(values['column3'], values['column7'], marker='.')
+    plt.plot(values['column6'], values['column3'], marker='.', label=f"Slice={int(key[0])} Bit={int(key[1])}")
+    plt.plot(values['column7'], values['column3'], marker='.')
 
-plt.xlabel("VREF")
-plt.ylabel("Values (ps)")
+plt.xlabel("Delay (ps)")
+plt.ylabel("VREF")
 plt.title(f"LPDDR Eye diagram plot {input_file}")
 plt.legend()
 
