@@ -124,3 +124,7 @@ function wget4me() {
       fi
    fi
 }
+function latest_file() {
+   pat=$1
+   command fd -td $pat --max-depth=2 --exec stat --printf='%Y\t%n\n'|sort -nr|head -n1|cut -f2
+}
