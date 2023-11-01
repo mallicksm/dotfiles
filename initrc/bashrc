@@ -1,9 +1,10 @@
 # .bashrc
 # Source Silicon Team bashrc
 if [ -f /opt/tools/bin/silicon_team_bashrc ]; then
-        . /opt/tools/bin/silicon_team_bashrc
+#  . /opt/tools/bin/silicon_team_bashrc
+   . /etc/bashrc
 elif [ -f /etc/bashrc ]; then # look for system bashrc if we dont find the silicon team file
-  . /etc/bashrc
+   . /etc/bashrc
 fi
 
 #
@@ -59,6 +60,8 @@ modpath ~/bin b
 modpath ~/arm-tools/xpacks/.bin b
 modpath ~/.local/arm-tools/arm-gnu-toolchain-12.3.rel1-x86_64-aarch64-none-elf/bin b
 modpath ~/.local/nvim-macos/bin b
+modpath /opt/tools/bin a
+modpath /opt/si/emu/users/soummya/tools/ads/bin b
 # Auto-completion
 # ---------------
 [[ $- == *i* ]] && source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null

@@ -4,6 +4,7 @@ Host github.com
 
 Host bitbucket.org
     ForwardX11 no
+   ControlMaster no
 
 Host *
    IdentityFile ~/.ssh/id_rsa

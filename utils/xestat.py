@@ -9,6 +9,7 @@ target_patterns = [
    (r"Design utilization: (\S+)", "Design utilization is {}"),
    (r"Maximum emulator operating speed is (\S+) kHz.", "Maximum emulator operating speed is {} kHz."),
    (r"This design is scheduled in (\S+) steps", "This design is scheduled in {} steps"),
+   (r"Instruction Usage: (\S+)", "This design is uses {}% of the emulator"),
 ]
 
 # Define the maximum depth to search for the file
@@ -32,18 +33,16 @@ def search_patterns_in_file(file_path, target_patterns):
 
    return found_matches
 
-# Search for the file in the current directory and its subdirectories
-for root, dirs, files in os.walk(".", topdown=True):
-   # Limit the search to a depth of 1
-   if root.count(os.sep) - 1 > max_depth:
-      continue
-   if "xeCompile.log" in files:
-      file_path = os.path.join(root, "xeCompile.log")
-      found_matches = search_patterns_in_file(file_path, target_patterns)
-      if found_matches:
-         print(f"Matches found in {file_path}:")
-         for match in found_matches:
-            print(match)
+# Search for the file in the current directory and its immediate subdirectories (depth of 1)
+for entry in os.scandir('.'):
+   if entry.is_dir(follow_symlinks=False):
+      for subentry in os.scandir(entry.path):
+         if (subentry.name == "xeCompile.log" or subentry.name == "compileStatsReport.log") and subentry.is_file():
+            found_matches = search_patterns_in_file(subentry.path, target_patterns)
+            if found_matches:
+               print(f"Matches found in {subentry.path}:")
+               for match in found_matches:
+                  print(match)
 
 if not found_matches:
    print("No matches found in 'xeCompile.log' within the specified depth.")
