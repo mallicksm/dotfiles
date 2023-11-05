@@ -33,7 +33,7 @@ set tabstop=3 softtabstop=3 shiftwidth=3
 set expandtab
 set autoindent
 set nowrap
-set ignorecase smartcase
+set ignorecase smartcase smarttab
 if v:version > 800
    set termguicolors
    set signcolumn=yes "no jumping

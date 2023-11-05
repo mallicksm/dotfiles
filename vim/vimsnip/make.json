@@ -32,6 +32,14 @@
       ],
       "description": "Code snippet for 'phony' statement"
    },
+   "item default_goal": {
+      "prefix": ["default_goal", "default"],
+      "body": [
+         ".default_goal := ${1:all}",
+         "$0"
+      ],
+      "description": "Code snippet for 'default_goal' statement"
+   },
    "item include": {
       "prefix": ["include"],
       "body": [
