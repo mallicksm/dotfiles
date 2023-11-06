@@ -26,7 +26,7 @@ source $RTP/config/indentline.vim  " | for indents
 source $RTP/config/utilities.vim   " autopairs, marks, UndoTreeShow, f<CR>=highlight, ColorToggle, K=man
 source $RTP/config/vimsnip.vim
 source $RTP/config/textobj.vim
-" source $RTP/config/clang-format.vim
+source $RTP/config/clang-format.vim
 source $RTP/config/lsp.vim
 "source $RTP/config/telescope.vim
 call plug#end()

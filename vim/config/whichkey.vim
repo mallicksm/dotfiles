@@ -34,6 +34,7 @@ let g:space_prefix_dict = {
 let g:space_prefix_dict['v'] = {
          \ 'name' : '+vim',
          \ '=' : ['gg=G<C-o><C-o>'     , 'vim Format'       ],
+         \ '+' : ['ClangFormat'     , 'Clang Format'       ],
          \ 'i' : [':IndentLinesToggle' , 'toggle indentLine'],
          \ 'l' : [':set list!'         , 'toggle listchars' ],
          \ 'w' : [':set wrap!'         , 'wrap lines'       ],

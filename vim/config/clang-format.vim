@@ -25,7 +25,5 @@ let g:clang_format#style_options = {
          \ "ContinuationIndentWidth" : 3, 
          \ "BreakConstructorInitializers" : "BeforeComma", 
          \ "ColumnLimit" : 0 }
-let g:clang_format#auto_format = 1
-let g:clang_format#auto_format_on_insert_leave = 1
 let $clangFormat = '$RTP/config/clang-format.vim'
 
