@@ -1,0 +1,9 @@
+autocmd! BufNewFile,BufRead bash_profile setfiletype sh
+autocmd! BufNewFile,BufRead gitconfig setfiletype gitconfig
+autocmd! BufNewFile,BufRead cshrc setfiletype csh
+autocmd! BufNewFile,BufRead config.ssh setfiletype sshconfig
+autocmd! VimEnter,BufRead,BufNewFile *.f setfiletype f
+autocmd! VimEnter,BufRead,BufNewFile *.qel setfiletype tcl
+autocmd! VimEnter,BufRead,BufNewFile *.S setfiletype asm
+autocmd! VimEnter,BufRead,BufNewFile *.scat setfiletype scat
+autocmd! VimEnter,BufRead,BufNewFile *.tdf setfiletype tdf
