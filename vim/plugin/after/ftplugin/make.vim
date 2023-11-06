@@ -1,3 +1,6 @@
-autocmd VimEnter,BufRead,BufNewFile Makefile setlocal noexpandtab
-autocmd VimEnter,BufRead,BufNewFile makefile setlocal noexpandtab
-autocmd VimEnter,BufRead,BufNewFile *.mk setlocal noexpandtab
+augroup MakeSettings
+   autocmd!
+autocmd BufRead Makefile setlocal noexpandtab
+autocmd BufRead makefile setlocal noexpandtab
+autocmd BufRead *.mk setlocal noexpandtab
+augroup end

@@ -67,10 +67,4 @@ augroup CursorFocusWindow
    autocmd WinEnter,BufEnter * setlocal cursorline | highlight CursorLine guibg=#0E5D27
    autocmd WinLeave,BufLeave * setlocal nocursorline
 augroup end
-augroup FixPyTabs
-   autocmd VimEnter,WinEnter,BufNewFile,BufRead,BufEnter,TabEnter *.py set tabstop=3
-   autocmd VimEnter,WinEnter,BufNewFile,BufRead,BufEnter,TabEnter *.py set softtabstop=3
-   autocmd VimEnter,WinEnter,BufNewFile,BufRead,BufEnter,TabEnter *.py set shiftwidth=3
-   autocmd VimEnter,WinEnter,BufNewFile,BufRead,BufEnter,TabEnter *.py* IndentLinesReset
-augroup end
 let $sensible = '$RTP/config/sensible.vim'
