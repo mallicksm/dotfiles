@@ -10,7 +10,7 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
    \| PlugInstall --sync | source $MYVIMRC
    \| endif
 
-let $RTP = expand("$RTP_NVIM_DOTFILE")
+let $RTP = expand("~/dotfiles/nvim")
 
 call plug#begin('~/.nvim/plugged')
 source $RTP/config/functions.vim

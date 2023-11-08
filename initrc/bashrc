@@ -26,8 +26,6 @@ bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 bind '"\e[C": forward-char'
 bind '"\e[D": backward-char'
-export RTP_DOTFILE=~/dotfiles/vim/
-export RTP_NVIM_DOTFILE=~/dotfiles/nvim/
 
 # tmux settings
 export LC_ALL=en_US.UTF-8

@@ -3,4 +3,3 @@ alias ssh='ssh -Y'
 alias c=clear
 source ~/dotfiles/bash_functions.sh
 source ~/dotfiles/bash_aliases.sh
-export RTP_DOTFILE=~/dotfiles/vim/.config/vim/
