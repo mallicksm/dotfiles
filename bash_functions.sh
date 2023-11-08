@@ -644,7 +644,7 @@ function noprompt() {
 }
 function ex() {
    # Store the STDOUT of fzf in a variable
-   selection=$(find -type d | fzf --multi --height=80% --border=sharp \
+   selection=$(fd --type d --exclude '.git'| fzf --multi --height=80% --border=sharp \
 --preview='tree -C {}' --preview-window='45%,border-sharp' \
 --prompt='Dirs > ' \
 --bind='del:execute(rm -ri {+})' \
