@@ -269,7 +269,7 @@ export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border=double --margin
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="
    --height 100% 
-   --preview 'bat -n --theme=Nord --color=always {}'
+   --preview 'bat -n --theme=gruvbox-dark --color=always {}'
    --bind 'ctrl-/:change-preview-window(down|hidden|)'
    --bind 'enter:become(vim {} < /dev/tty > /dev/tty)'
    --color header:italic
@@ -318,7 +318,7 @@ _fzf_comprun() {
 unalias cat 2> /dev/null # blow away any previous aliases if any
 function cat() {
    if command -v bat >/dev/null ; then
-      command bat --theme=Nord "$@"
+      command bat --theme=gruvbox-dark "$@"
    else
       command cat "$@"
    fi
@@ -384,7 +384,7 @@ function rgrep() {
 rg --color=always --line-number --no-heading --smart-case "${*:-}" |
    fzf --ansi \
        --delimiter : \
-       --preview 'bat --theme=Nord --color=always {1} --highlight-line {2}' \
+       --preview "bat --theme=gruvbox-dark --color=always {1} --highlight-line {2}" \
        --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
        --bind 'enter:become(vim {1} +{2})'
 }
@@ -644,8 +644,9 @@ function noprompt() {
 }
 function ex() {
    # Store the STDOUT of fzf in a variable
-   selection=$(fd --type d --exclude '.git'| fzf --multi --height=80% --border=sharp \
---preview='tree -C {}' --preview-window='45%,border-sharp' \
+   selection=$(fd --type d --exclude '.git'| fzf --ansi --multi --height=80% --border=sharp \
+--preview='tree -C {}' \
+--preview-window='45%,border-sharp' \
 --prompt='Dirs > ' \
 --bind='del:execute(rm -ri {+})' \
 --bind='ctrl-p:toggle-preview' \
@@ -654,8 +655,8 @@ function ex() {
 --bind='ctrl-d:+change-preview(tree -C {})' \
 --bind='ctrl-d:+refresh-preview' \
 --bind='ctrl-f:change-prompt(Files > )' \
---bind='ctrl-f:+reload(find -type f)' \
---bind='ctrl-f:+change-preview(cat {})' \
+--bind='ctrl-f:+reload(fd --type f)' \
+--bind='ctrl-f:+change-preview(bat -n --color=always {})' \
 --bind='ctrl-f:+refresh-preview' \
 --bind='ctrl-a:select-all' \
 --bind='ctrl-x:deselect-all' \
@@ -669,8 +670,10 @@ CTRL-P to toggle preview
 
 # Determine what to do depending on the selection
    if [ -d "$selection" ]; then
-       cd "$selection" || exit
+      cd "$selection" && ex || exit
+   elif [[ -f "$selection" ]]; then
+      eval "$EDITOR $selection"
    else
-       eval "$EDITOR $selection"
+      echo "Done with ${FUNCNAME[0]}"
    fi
 }
