@@ -386,9 +386,9 @@ function rgrep() {
    done
    RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case $FILE_TYPE"
    IFS=: read -ra selected < <(
-   FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
+   FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "")" \
       fzf --ansi \
-         --disabled \
+         --disabled --query "" \
          --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
          --delimiter : \
          --preview 'bat --color=always {1} --highlight-line {2}' \
