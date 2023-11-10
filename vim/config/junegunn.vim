@@ -25,8 +25,17 @@ Plug 'junegunn/gv.vim'
 
 "Auto-clean fugitive buffers
 autocmd BufReadPost fugitive://* set bufhidden=delete 
+" Ripgrep
+command! -bang -nargs=* Rg
+   \ call fzf#vim#grep(
+   \ "rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1,
+   \ {'options': '--delimiter : --nth 4..'},
+   \ <bang>0)
 " Files with preview
 command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+   \ call fzf#vim#files(
+   \ <q-args>, 
+   \ fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
 let g:fzf_preview_window = ['up,65%', 'ctrl-/']
+
 let $junegunn = '$RTP/config/junegunn.vim'

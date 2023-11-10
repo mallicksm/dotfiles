@@ -10,6 +10,7 @@ CYAN="$(tput setaf 6 2>/dev/null || printf '')"
 WHITE="$(tput setaf 7 2>/dev/null || printf '')"
 GRAY="$(tput setaf 8 2>/dev/null || printf '')"
 NO_COLOR="$(tput sgr0 2>/dev/null || printf '')"
+export BAT_THEME=gruvbox-dark
 function printne() {
    color=$1
    str="${@:2}"

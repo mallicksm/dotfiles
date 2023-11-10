@@ -40,6 +40,7 @@ let g:space_prefix_dict['v'] = {
          \ 'w' : [':set wrap!'         , 'wrap lines'       ],
          \ 'u' : [':UndotreeToggle'    , 'Toggle UndoTree'  ],
          \ 'n' : [':call NukeRegs()'   , 'Nuke Registers'   ],
+         \ 'x' : [':call popup_close(win_getid())'   , 'Close popups'   ],
          \ }
 let g:space_prefix_dict['f'] = {
          \ 'name' : '+file-browser',

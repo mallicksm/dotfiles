@@ -269,7 +269,7 @@ export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border=double --margin
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="
    --height 100% 
-   --preview 'bat -n --theme=gruvbox-dark --color=always {}'
+   --preview 'bat -n --color=always {}'
    --bind 'ctrl-/:change-preview-window(down|hidden|)'
    --bind 'enter:become(vim {} < /dev/tty > /dev/tty)'
    --color header:italic
@@ -318,7 +318,7 @@ _fzf_comprun() {
 unalias cat 2> /dev/null # blow away any previous aliases if any
 function cat() {
    if command -v bat >/dev/null ; then
-      command bat --theme=gruvbox-dark "$@"
+      command bat "$@"
    else
       command cat "$@"
    fi
@@ -381,14 +381,21 @@ function get_clip() {
 
 #-------------------------------------------------------------------------------
 function rgrep() {
-rg --color=always --line-number --no-heading --smart-case "${*:-}" |
-   fzf --ansi \
-       --delimiter : \
-       --preview "bat --theme=gruvbox-dark --color=always {1} --highlight-line {2}" \
-       --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
-       --bind 'enter:become(vim {1} +{2})'
+   for arg in "$@"; do
+      FILE_TYPE+="--type $arg "
+   done
+   RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case $FILE_TYPE"
+   IFS=: read -ra selected < <(
+   FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
+      fzf --ansi \
+         --disabled \
+         --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+         --delimiter : \
+         --preview 'bat --color=always {1} --highlight-line {2}' \
+         --preview-window 'left,50%,border-bottom,+{2}+3/3,~3'
+)
+[ -n "${selected[0]}" ] && $EDITOR "${selected[0]}" "+${selected[1]}"
 }
-
 function tm() {
    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
    if [ $1 ]; then
@@ -651,7 +658,7 @@ function ex() {
 --bind='del:execute(rm -ri {+})' \
 --bind='ctrl-p:toggle-preview' \
 --bind='ctrl-d:change-prompt(Dirs > )' \
---bind='ctrl-d:+reload(find -type d)' \
+--bind='ctrl-d:+reload(fd --type d)' \
 --bind='ctrl-d:+change-preview(tree -C {})' \
 --bind='ctrl-d:+refresh-preview' \
 --bind='ctrl-f:change-prompt(Files > )' \
