@@ -26,7 +26,7 @@ Plug 'junegunn/gv.vim'
 "Auto-clean fugitive buffers
 autocmd BufReadPost fugitive://* set bufhidden=delete 
 " Ripgrep
-command! -bang -nargs=* Rg
+command! -bang -nargs=* Rgg
    \ call fzf#vim#grep(
    \ "rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1,
    \ {'options': '--delimiter : --nth 4..'},
