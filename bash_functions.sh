@@ -383,12 +383,14 @@ function get_clip() {
 export RIPGREP_CONFIG_PATH=~/dotfiles/initrc/ripgrep
 function rgrep() {
    # https://sourcegraph.com/github.com/junegunn/fzf/-/blob/ADVANCED.md
+   arg=
+   FILE_TYPE=
    for arg in "$@"; do
-      FILE_TYPE+="--type $arg "
+      FILE_TYPE+="--glob=*.$arg "
    done
    # Switch between Ripgrep launcher mode (CTRL-R) and fzf filtering mode (CTRL-F)
    rm -f /tmp/rg-fzf-{r,f}
-   RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case --glob='!emu-soummya-*' --glob='!run-soummya-*' $FILE_TYPE"
+   RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case $FILE_TYPE"
    : | fzf --ansi --disabled --query "" \
       --bind "start:reload($RG_PREFIX {q})+unbind(ctrl-r)" \
       --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \

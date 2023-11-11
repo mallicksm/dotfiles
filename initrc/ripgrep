@@ -1,3 +1,17 @@
 # Don't let ripgrep vomit really long lines to my terminal, and show a preview.
---max-columns=150
+--max-columns
+150
 --max-columns-preview
+--max-count
+10
+--max-depth
+10
+
+# sort reverse last modified files
+--sortr=modified
+
+# filter out generated files
+--glob
+!emu-soummya-*
+--glob
+!run-soummya-*
