@@ -36,6 +36,8 @@ command! -bang -nargs=? -complete=dir Files
    \ call fzf#vim#files(
    \ <q-args>, 
    \ fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
-let g:fzf_preview_window = ['up,65%', 'ctrl-/']
+
+let g:fzf_layout = {'window': {'width': 0.9, 'height': 0.9}}
+let g:fzf_preview_window = ['left,50%', '?']
 
 let $junegunn = '$RTP/config/junegunn.vim'
