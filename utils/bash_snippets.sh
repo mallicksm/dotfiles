@@ -65,14 +65,62 @@ function print_sequence() {
    done
    echo
 }
+function modpath () {
+   loc=$1
+   cmd=${2:-"d"}
+   var=${3:-PATH}
+   eval PATHv=\$$var    # set PATHv to the var reference (double indirection)
+   NEW_PATH=${PATHv/#"$loc:"}         #    Begining
+   NEW_PATH=${NEW_PATH/#"$loc"}       #    Solo
+   NEW_PATH=${NEW_PATH/%":$loc"}      #    Ending
+   NEW_PATH=${NEW_PATH//":$loc:"/:}   #    Multiple middles
+
+   if [ $cmd = "d" ]; then
+      export ${var}=$NEW_PATH
+   elif [ $cmd = "b" ]; then
+      if [ -z $NEW_PATH ]; then
+         export ${var}=$loc   # old PATH empty
+      else
+         export ${var}=$loc:$NEW_PATH
+      fi
+   elif [ $cmd = "a" ]; then
+      if [ -z $NEW_PATH ]; then
+         export ${var}=$loc   # old PATH empty
+      else
+         export ${var}=$NEW_PATH:$loc
+      fi
+   else
+      echo "usage: modpath [location] [d elete|b efore|a fter] [VARIABLE]"
+   fi
+}
+function var () {
+   VAR=${1:-PATH}
+   DOLLARVAR=${!VAR}
+   echo -e ${DOLLARVAR//:/\\n}
+}
 function has() {
    command -v "$1" 1>/dev/null 2>&1
 }
 function Pushd() {
-   pushd "$@" >/dev/null 2>&1
+   command pushd "$@" >/dev/null 2>&1
 }
 function Popd() {
-   popd >/dev/null 2>&1
+   command popd >/dev/null 2>&1
+}
+function xpushd () {
+   dir=${1:-.}
+   cd $dir
+   echo "pushing: $proj/.x_push_pop_stack"
+   mkdir -p $proj
+   echo "$PWD" > "$proj/.x_push_pop_stack"
+}
+function xpopd () {
+   echo "popping: $proj/.x_push_pop_stack"
+   if [[ -f $proj/.x_push_pop_stack ]]; then
+      cd $(command cat "$proj/.x_push_pop_stack")
+   else
+      echo "Note: xpushd first"
+   fi
 }
 function tempfile() {
    mkdir -p /tmp/$USER
@@ -128,4 +176,36 @@ function wget4me() {
 function latest_file() {
    pat=$1
    command fd -td $pat --max-depth=2 --exec stat --printf='%Y\t%n\n'|sort -nr|head -n1|cut -f2
+}
+function ifont() {
+   # Install font
+   echo "Note: Installing FiraCode font"
+   mkdir -p ~/.fonts && pushd ~/.fonts >> /dev/null
+   wget --no-verbose https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FiraCode.zip -O /tmp/FiraCode.zip 2>/dev/null
+   unzip -q /tmp/FiraCode.zip
+   popd >> /dev/null
+   # Now set font@gnome-terminal
+   GNOME_TERMINAL_PROFILE=$(gsettings get org.gnome.Terminal.ProfilesList default | awk -F \' '{print $2}')
+   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$GNOME_TERMINAL_PROFILE/ font 'FiraCode Nerd Font Mono 12'
+}
+function xvim() {
+   dbus-launch gnome-terminal --title="gvim: $@" --hide-menubar --geometry=130x50 -- vim "$@" >/dev/null
+}
+function duration() {
+   local seconds=$1
+
+   local formatted_time=$(date -u -d @${seconds} +"%Hh %Mm %Ss")
+   echo "${formatted_time}"
+}
+#-------------------------------------------------------------------------------
+# Note: clip from gvim
+# My workaround for not having xsel or xclip
+#   Ex: clipboard=$( get_clip )
+function get_clip() {
+   mkdir -p /tmp/$USER
+   file=/tmp/$USER/clipboard_contents.txt
+   /bin/rm -f $file
+   # Help from:  http://stackoverflow.com/a/23237529/120681
+   command gvim $file -T dumb --noplugin -n -es -c 'set nomore' +'normal "*P' +'wq'
+   cat $file
 }
