@@ -685,17 +685,23 @@ CTRL-P to toggle preview
 }
 fkill() {
    local pid description
+   fzf_header='Select processes to kill
+   TAB to select multi
+   ENTER to kill
+   CTRL-R to refresh
+   '
    if [ "$UID" != "0" ]; then
       # For non-root users
-      pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+      pid=$(ps -f -u $UID | sed 1d | fzf -m --header="$fzf_header" --bind="ctrl-r:+reload(ps -f -u $UID)" | awk '{print $2}')
+
    else
       # For root user
-      pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+      pid=$(ps -ef | sed 1d | fzf -m --header="$fzf_header" --bind="ctrl-r:+reload(ps -ef)" | awk '{print $2}')
    fi
 
    if [ "x$pid" != "x" ]; then
       # Print header only once
-      echo "Killing selected processes:"
+      info "Killing selected processes:"
       header_printed=false
       for id in $pid; do
          description=$(ps -p $id -o user,pid,vsz=MEM -o comm,args=ARG)
