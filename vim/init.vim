@@ -37,4 +37,5 @@ let mapleader = "\<space>"
 let maplocalleader = ","
 source $RTP/config/sets.vim
 source $RTP/config/sensible.vim
+set term=screen-256color
 let $init = '$RTP/init.vim'
