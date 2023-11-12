@@ -683,3 +683,33 @@ CTRL-P to toggle preview
       echo "Done with ${FUNCNAME[0]}"
    fi
 }
+fkill() {
+   local pid description
+   if [ "$UID" != "0" ]; then
+      # For non-root users
+      pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+   else
+      # For root user
+      pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+   fi
+
+   if [ "x$pid" != "x" ]; then
+      # Print header only once
+      echo "Killing selected processes:"
+      header_printed=false
+      for id in $pid; do
+         description=$(ps -p $id -o user,pid,vsz=MEM -o comm,args=ARG)
+         
+         # Print header if not printed yet
+         if [ "$header_printed" = false ]; then
+            echo "$description"
+            header_printed=true
+         else
+            echo "$description" | sed 1d
+         fi
+      done
+      echo $pid | xargs kill -${1:-9}
+   else
+      echo "No process selected."
+   fi
+}
