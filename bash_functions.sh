@@ -13,7 +13,7 @@ source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null
 #-------------------------------------------------------------------------------
 # Functions
 #===============================================================================
-#{{{ modpath
+# Note: modpath
 function modpath () {
    loc=$1
    cmd=${2:-"d"}
@@ -42,10 +42,9 @@ function modpath () {
       echo "usage: modpath [location] [d elete|b efore|a fter] [VARIABLE]"
    fi
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ Pushd/Popd
+# Note: Pushd/Popd
 function Pushd () {
    command pushd "$@" > /dev/null
 }
@@ -53,19 +52,17 @@ function Pushd () {
 function Popd () {
    command popd "$@" > /dev/null
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ var
+# Note: var
 function var () {
    VAR=${1:-PATH}
    DOLLARVAR=${!VAR}
    echo -e ${DOLLARVAR//:/\\n}
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ xpushd/xpopd
+# Note: xpushd/xpopd
 function xpushd () {
    dir=${1:-.}
    cd $dir
@@ -82,10 +79,9 @@ function xpopd () {
       echo "Note: xpushd first"
    fi
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ cd/cd_up/cd_func
+# Note: cd/cd_up/cd_func
 # cd up to n dirs
 # using:  cd.. 10   cd.. dir
 function cd () {
@@ -160,10 +156,9 @@ function cd_func () {
 
    return 0
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ vgrep
+# Note: vgrep
 function vgrep () {
    declare -A opt
    local args
@@ -257,10 +252,9 @@ function vgrep () {
    echo "Executing: $str"
    command $str
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ fzf
+# Note: fzf
 # Configuration
 # -------------
 export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
@@ -311,10 +305,9 @@ _fzf_comprun() {
     *)            fzf "$@" ;;
   esac
 }
-# }}}
 
 #-------------------------------------------------------------------------------
-#{{{ cat ll la and lt aliases
+# Note: cat ll la and lt aliases
 unalias cat 2> /dev/null # blow away any previous aliases if any
 function cat() {
    if command -v bat >/dev/null ; then
@@ -363,10 +356,9 @@ function df() {
       command df -k "$@"
    fi
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ clip from gvim
+# Note: clip from gvim
 # My workaround for not having xsel or xclip
 #   Ex: clipboard=$( get_clip )
 function get_clip() {
@@ -377,7 +369,6 @@ function get_clip() {
    command gvim $file -T dumb --noplugin -n -es -c 'set nomore' +'normal "*P' +'wq'
    cat $file
 }
-#}}}
 
 #-------------------------------------------------------------------------------
 export RIPGREP_CONFIG_PATH=~/dotfiles/initrc/ripgrep
@@ -649,7 +640,7 @@ function printer() {
       liveprint "$files"
    fi
 }
-# Works in conjunction with ~/dotfiles/utils/tmux_status-right.sh.
+# Note: Works in conjunction with ~/dotfiles/utils/tmux_status-right.sh.
 # This prompt locks up the git repo for long commands, 
 function prompt() {
    rm -rf /tmp/no_prompt
