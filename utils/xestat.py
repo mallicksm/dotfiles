@@ -7,9 +7,9 @@ import re
 # In this example, we capture the entire word.
 target_patterns = [
    (r"Design utilization: (\S+)", "Design utilization is {}"),
-   (r"Maximum emulator operating speed is (\S+) kHz.", "Maximum emulator operating speed is {} kHz."),
-   (r"This design is scheduled in (\S+) steps", "This design is scheduled in {} steps"),
-   (r"Instruction Usage: (\S+)", "This design is uses {}% of the emulator"),
+   (r"emulator operating speed is (\S+) kHz", "Maximum emulator operating speed is {} kHz."),
+   (r"Design is scheduled in (\S+) steps", "This design is scheduled in {} steps"),
+   (r"Instruction usage is (\S+)", "This design uses {}% of the emulator"),
 ]
 
 # Define the maximum depth to search for the file

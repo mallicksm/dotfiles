@@ -51,7 +51,7 @@ if [[ -n "$BASH_VERSION" ]]; then
 fi
 export EDITOR=vim
 export IGNOREEOF=1
-export HISTCONTROL="erasedups:ignoreboth"
+export HISTCONTROL="erasedups:ignoredups"
 export HISTSIZE=1000000
 export HISTFILESIZE=1000000000
 export HISTIGNORE='pwd:exit:fg:bg:top:clear:history:ls:ll:uptime:df'
