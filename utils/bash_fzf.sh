@@ -3,7 +3,8 @@
 # Configuration
 # -------------
 export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
-export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border=double --margin=1 --padding=1 --multi --info=inline'
+export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border=double --margin=1 --padding=1 --multi --inline-info'
+export FZF_TMUX_OPTS='-p 80%,60%'
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="
@@ -30,10 +31,10 @@ export FZF_ALT_C_OPTS="
 export FZF_TMUX=1
 # for more info see fzf/shell/completion.zsh
 _fzf_compgen_path() {
-    fd . "$1"
+   fd . "$1"
 }
 _fzf_compgen_dir() {
-    fd --type d . "$1"
+   fd --type d . "$1"
 }
 
 # (EXPERIMENTAL) Advanced customization of fzf options via _fzf_comprun function
@@ -44,9 +45,9 @@ _fzf_comprun() {
   shift
 
   case "$command" in
-    cd)           fzf "$@" --preview 'tree -C {} | head -200' ;;
-    export|unset) fzf "$@" --preview "eval 'echo \$'{}" ;;
-    ssh)          fzf "$@" --preview 'dig {}' ;;
-    *)            fzf "$@" ;;
+   cd)           fzf "$@" --preview 'tree -C {} | head -200' ;;
+   export|unset) fzf "$@" --preview "eval 'echo \$'{}" ;;
+   ssh)          fzf "$@" --preview 'dig {}' ;;
+   *)            fzf "$@" ;;
   esac
 }

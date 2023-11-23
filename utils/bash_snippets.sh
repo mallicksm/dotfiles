@@ -140,8 +140,8 @@ function timestamp() {
 }
 
 function download() {
-   file="$1"
-   url="$2"
+   url="$1"
+   file="${url##*/}"
 
    if has curl; then
       cmd="curl --fail --silent --location --output $file $url"
