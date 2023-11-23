@@ -37,5 +37,12 @@ let mapleader = "\<space>"
 let maplocalleader = ","
 source $RTP/config/sets.vim
 source $RTP/config/sensible.vim
-set term=screen-256color
+let os_info = system("cat /etc/os-release")
+let is_ubuntu = match(os_info, 'ID=ubuntu') != -1
+if is_ubuntu
+   set term=xterm-256color
+else
+   set term=screen-256color
+endif
+
 let $init = '$RTP/init.vim'
