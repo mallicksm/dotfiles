@@ -45,7 +45,7 @@ function df() {
    if command -v pydf >/dev/null ; then
       command pydf "$@"
    else
-      command df -k "$@"
+      command df -h --total "$@"
    fi
 }
 
