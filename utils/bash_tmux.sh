@@ -1,3 +1,7 @@
+# tmux settings
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 #-------------------------------------------------------------------------------
 function tm() {
    [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"

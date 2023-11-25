@@ -12,7 +12,6 @@ source "${HOME}/.fzf/shell/key-bindings.bash"
 
 export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
 export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border=double --margin=1 --padding=1 --multi --inline-info'
-export FZF_TMUX_OPTS='-p 80%,60%'
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="

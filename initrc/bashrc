@@ -7,34 +7,35 @@ elif [ -f /etc/bashrc ]; then # look for system bashrc if we dont find the silic
    . /etc/bashrc
 fi
 
-#
 # User customization starts here
-#
-
+source ~/corp_settings.sh 2>/dev/null || echo "Attention: setup ~/corp_settings.sh" 
 source ~/dotfiles/bash_functions.sh
-if [[ -f ~/corp_settings.sh ]]; then
-   source ~/corp_settings.sh
-else 
-   echo "Attention: setup ~/corp_settings.sh" 
-   return
-fi
 source ~/dotfiles/bash_aliases.sh
-#
-# User customization starts here
-#
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
-bind '"\e[C": forward-char'
-bind '"\e[D": backward-char'
 
-# tmux settings
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+# Sensible cli setup
+if [[ $- == *i* ]]; then
+   stty sane
+   set -o vi
+   set -o physical
+   set t_Co=256
+   umask 002
+   shopt -s cdspell
+   shopt -s histappend
+   shopt -s cdable_vars
+   shopt -s autocd
+   shopt -s direxpand
+   bind '"\e[A": history-search-backward'  # sane arrow keys
+   bind '"\e[B": history-search-forward'
+   bind '"\e[C": forward-char'
+   bind '"\e[D": backward-char'
+fi
 
-# User specific settings, aliases, functions, etc.
-[[ -f ~/${USER}.bashrc ]] && source ~/${USER}.bashrc
-[[ -f ~/${USER}.aliases ]] && source ~/${USER}.aliases
+export HISTCONTROL="erasedups:ignoredups" HISTSIZE=1000000 HISTFILESIZE=1000000000 HISTIGNORE='pwd:exit:fg:bg:top:clear:history:ls:ll:uptime:df'
+export EDITOR=vim
+export IGNOREEOF=1 # use exit to leave shell
+export CDPATH+=.:
 
+# temp modpath
 modpath ~/.fzf/bin b
 modpath ~/.local/bin b
 modpath ~/bin b
