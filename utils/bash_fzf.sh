@@ -4,6 +4,7 @@
 # -------------
 # Auto-completion
 # ---------------
+modpath ~/.fzf/bin b
 [[ $- == *i* ]] && source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
 
 # Key bindings
