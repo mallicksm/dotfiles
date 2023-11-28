@@ -35,7 +35,7 @@
    "item default_goal": {
       "prefix": ["default_goal", "default"],
       "body": [
-         ".default_goal := ${1:all}",
+         ".DEFAULT_GOAL := ${1:all}",
          "$0"
       ],
       "description": "Code snippet for 'default_goal' statement"

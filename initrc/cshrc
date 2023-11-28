@@ -7,4 +7,5 @@
 if ( -e /tools/lib/configs/setup/unix/cshrc ) then
     source /tools/lib/configs/setup/unix/cshrc
 endif
+umask 002
 
