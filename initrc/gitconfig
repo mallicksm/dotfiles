@@ -72,6 +72,7 @@
 [pull]
 	rebase = false
 [init]
+   templatedir = ~/.local/share/git-core/templates
 	defaultBranch = master
 [credential "https://github.com"]
 	helper = 
