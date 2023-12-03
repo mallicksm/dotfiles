@@ -20,20 +20,5 @@ function noprompt() {
    echo "export __NO_PROMPT__=1" > /tmp/no_prompt
 }
 tmux-help() {
-  search_term="$1"
-
-  tmux_header=$(cat <<'EOF'
----------------------------------------------------------------------------
-Mapping   | Cmmmand                                     | Role
----------------------------------------------------------------------------
-EOF
-)
-  # Perform fuzzy search and print matching rows
-   help_textfile=~/dotfiles/utils/help_tmux.txt
-   echo "$tmux_header"
-   if [[ -z $search_term ]]; then
-      cat $help_textfile
-   else
-      grep -i "$search_term" $help_textfile
-   fi
+   cat ~/dotfiles/utils/help_tmux.txt | fzf --header-lines 2
 }

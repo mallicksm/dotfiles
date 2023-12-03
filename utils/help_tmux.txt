@@ -1,3 +1,5 @@
+Mapping   | Cmmmand                                     | Role
+----------+---------------------------------------------+------------------
 M-H       | resize-pane -L 4                            | Resize pane toward left
 M-J       | resize-pane -D 4                            | Resize pane toward bottom
 M-K       | resize-pane -U 4                            | Resize pane toward up
