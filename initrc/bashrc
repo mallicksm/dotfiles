@@ -1,11 +1,6 @@
 # .bashrc
 # Source Silicon Team bashrc
-if [ -f /opt/tools/bin/silicon_team_bashrc ]; then
-#  . /opt/tools/bin/silicon_team_bashrc
-   . /etc/bashrc
-elif [ -f /etc/bashrc ]; then # look for system bashrc if we dont find the silicon team file
-   . /etc/bashrc
-fi
+# . /opt/tools/bin/silicon_team_bashrc 2>/dev/null
 
 # User customization starts here
 source ~/corp_settings.sh 2>/dev/null || echo "Attention: setup ~/corp_settings.sh" 
