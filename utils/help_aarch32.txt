@@ -1,61 +1,106 @@
 System Control Registers:
 sctlr:      p15, 0, <rd>, c1, c0, 0:  System Control Register
-actlr:      p15, 0, <rd>, c1, c0, 1:  Auxiliary Control Register 6,B
-cpacr:      p15, 0, <rd>, c1, c0, 2:  Coprocessor Access Control Register 6
-scr:        p15, 0, <rd>, c1, c1, 0:  Secure Configuration (Secure only) S
-sder:       p15, 0, <rd>, c1, c1, 1:  Secure Debug Enable (Secure only) S
-nsacr:      p15, 0, <rd>, c1, c1, 2:  Non-Secure Access Control (Non-Secure RO) S
+actlr:      p15, 0, <rd>, c1, c0, 1:  Auxiliary Control Register
+cpacr:      p15, 0, <rd>, c1, c0, 2:  Coprocessor Access Control Register
+scr:        p15, 0, <rd>, c1, c1, 0:  Secure Configuration (Secure only)
+sder:       p15, 0, <rd>, c1, c1, 1:  Secure Debug Enable (Secure only)
+nsacr:      p15, 0, <rd>, c1, c1, 2:  Non-Secure Access Control (Non-Secure RO)
 
 Memory System Fault Registers:
-dfsr:       p15, 0, <rd>, c5, c0, 0:  Data Fault Status Register B
-ifsr:       p15, 0, <rd>, c5, c0, 1:  Instruction Fault Status Register 6,B
-adfsr:      p15, 0, <rd>, c5, c1, 0:  Auxiliary DFSR 7,B
-aifsr:      p15, 0, <rd>, c5, c1, 1:  Auxiliary IFSR 7,B
-dfar:       p15, 0, <rd>, c6, c0, 0:  Data Fault Address Register B
-ifar:       p15, 0, <rd>, c6, c0, 2:  Instruction Fault Address Register 6,B
-drbar:      p15, 0, <rd>, c6, c1, 0:  Data Region Base Address Register R
-irbar:      p15, 0, <rd>, c6, c1, 1:  Instruction Region Base Address Register R
-drsr:       p15, 0, <rd>, c6, c1, 2:  Data Region Size and Enable Register R
-irsr:       p15, 0, <rd>, c6, c1, 3:  Instruction Region Size and Enable Register R
-dracr:      p15, 0, <rd>, c6, c1, 4:  Data Region Access Control Register R
-iracr:      p15, 0, <rd>, c6, c1, 5:  Instruction Region Access Control Register R
-rgnr:       p15, 0, <rd>, c6, c2, 0:  MPU Region Number Register R
+dfsr:       p15, 0, <rd>, c5, c0, 0:  Data Fault Status Register
+ifsr:       p15, 0, <rd>, c5, c0, 1:  Instruction Fault Status Register
+adfsr:      p15, 0, <rd>, c5, c1, 0:  Auxiliary DFSR
+aifsr:      p15, 0, <rd>, c5, c1, 1:  Auxiliary IFSR
+dfar:       p15, 0, <rd>, c6, c0, 0:  Data Fault Address Register
+ifar:       p15, 0, <rd>, c6, c0, 2:  Instruction Fault Address Register
+drbar:      p15, 0, <rd>, c6, c1, 0:  Data Region Base Address Register
+irbar:      p15, 0, <rd>, c6, c1, 1:  Instruction Region Base Address Register
+drsr:       p15, 0, <rd>, c6, c1, 2:  Data Region Size and Enable Register
+irsr:       p15, 0, <rd>, c6, c1, 3:  Instruction Region Size and Enable Register
+dracr:      p15, 0, <rd>, c6, c1, 4:  Data Region Access Control Register
+iracr:      p15, 0, <rd>, c6, c1, 5:  Instruction Region Access Control Register
+rgnr:       p15, 0, <rd>, c6, c2, 0:  MPU Region Number Register
 
 ID Registers:
 midr:       p15, 0, <rd>, c0, c0, 0:  Main ID Register
 ctr:        p15, 0, <rd>, c0, c0, 1:  Cache Type Register
 tcmtr:      p15, 0, <rd>, c0, c0, 2:  TCM Type Register
-tlbtr:      p15, 0, <rd>, c0, c0, 3:  TLB Type Register A
-mpuir:      p15, 0, <rd>, c0, c0, 4:  MPU Type Register R
+tlbtr:      p15, 0, <rd>, c0, c0, 3:  TLB Type Register
+mpuir:      p15, 0, <rd>, c0, c0, 4:  MPU Type Register
 mpidr:      p15, 0, <rd>, c0, c0, 5:  Multiprocessor Affinity Register
 revidr:     p15, 0, <rd>, c0, c0, 6:  Revision ID
-id pfr0:    p15, 0, <rd>, c0, c1, 0:  Processor Feature Registers 6
-id pfr1:    p15, 0, <rd>, c0, c1, 1:  Processor Feature Registers 6
-id dfr0:    p15, 0, <rd>, c0, c1, 2:  Debug Feature Register 0 6
-id afr0:    p15, 0, <rd>, c0, c1, 3:  Auxiliary Feature Register 0 6
-id mmfr0:   p15, 0, <rd>, c0, c1, 4:  Memory Model Feature Regs 6
-id mmfr1:   p15, 0, <rd>, c0, c1, 5:  Memory Model Feature Regs 6
-id mmfr2:   p15, 0, <rd>, c0, c1, 6:  Memory Model Feature Regs 6
-id mmfr3:   p15, 0, <rd>, c0, c1, 7:  Memory Model Feature Regs 6
-id isar0:   p15, 0, <rd>, c0, c2, 0:  Instruction Set Attribute Regs 6
-id isar1:   p15, 0, <rd>, c0, c2, 1:  Instruction Set Attribute Regs 6
-id isar2:   p15, 0, <rd>, c0, c2, 2:  Instruction Set Attribute Regs 6
-id isar3:   p15, 0, <rd>, c0, c2, 3:  Instruction Set Attribute Regs 6
-id isar4:   p15, 0, <rd>, c0, c2, 4:  Instruction Set Attribute Regs 6
-id isar5:   p15, 0, <rd>, c0, c2, 5:  Instruction Set Attribute Regs 6
-ccsidr:     p15, 1, <rd>, c0, c0, 0:  Cache Size ID Register 7
-clidr:      p15, 1, <rd>, c0, c0, 1:  Cache Level ID Register 7
-aidr:       p15, 1, <rd>, c0, c0, 7:  Auxiliary ID Register 7
-csselr:     p15, 2, <rd>, c0, c0, 0:  Cache Size Selection Register (RW) 7,B
+id pfr0:    p15, 0, <rd>, c0, c1, 0:  Processor Feature Registers
+id pfr1:    p15, 0, <rd>, c0, c1, 1:  Processor Feature Registers
+id dfr0:    p15, 0, <rd>, c0, c1, 2:  Debug Feature Register 0
+id afr0:    p15, 0, <rd>, c0, c1, 3:  Auxiliary Feature Register 0
+id mmfr0:   p15, 0, <rd>, c0, c1, 4:  Memory Model Feature Regs
+id mmfr1:   p15, 0, <rd>, c0, c1, 5:  Memory Model Feature Regs
+id mmfr2:   p15, 0, <rd>, c0, c1, 6:  Memory Model Feature Regs
+id mmfr3:   p15, 0, <rd>, c0, c1, 7:  Memory Model Feature Regs
+id isar0:   p15, 0, <rd>, c0, c2, 0:  Instruction Set Attribute Regs
+id isar1:   p15, 0, <rd>, c0, c2, 1:  Instruction Set Attribute Regs
+id isar2:   p15, 0, <rd>, c0, c2, 2:  Instruction Set Attribute Regs
+id isar3:   p15, 0, <rd>, c0, c2, 3:  Instruction Set Attribute Regs
+id isar4:   p15, 0, <rd>, c0, c2, 4:  Instruction Set Attribute Regs
+id isar5:   p15, 0, <rd>, c0, c2, 5:  Instruction Set Attribute Regs
+ccsidr:     p15, 1, <rd>, c0, c0, 0:  Cache Size ID Register
+clidr:      p15, 1, <rd>, c0, c0, 1:  Cache Level ID Register
+aidr:       p15, 1, <rd>, c0, c0, 7:  Auxiliary ID Register
+csselr:     p15, 2, <rd>, c0, c0, 0:  Cache Size Selection Register (RW)
 
 Generic Timer Registers:
-cntfrq:     p15, 0, <rd>, c14, c0, 0: Counter Frequency Reg (Non-Secure RO) 7
-cntkctl:    p15, 0, <rd>, c14, c1, 0: Timer PL1 Control Register 7
-cntp tval:  p15, 0, <rd>, c14, c2, 0: PL1 Physical TimerValue Register 7,B
-cntp ctl:   p15, 0, <rd>, c14, c2, 1: PL1 Physical Timer Control Register 7,B
-cntv tval:  p15, 0, <rd>, c14, c3, 0: Virtual TimerValue Register 7
-cntv ctl:   p15, 0, <rd>, c14, c3, 1: Virtual TimerControl Register 7
-cntpct:     p15, 0, <rd>, c14,      : Physical Count Register (RO) 7
-cntvct:     p15, 1, <rd>, c14,      : Virtual Count Register (RO) 7
-cntp cval:  p15, 2, <rd>, c14,      : PL1 Physical Timer CompareValue Register 7,B
-cntv cval:  p15, 3, <rd>, c14,      : Virtual Timer CompareValue Register 7
+cntfrq:     p15, 0, <rd>, c14, c0, 0: Counter Frequency Reg (Non-Secure RO)
+cntkctl:    p15, 0, <rd>, c14, c1, 0: Timer PL1 Control Register
+cntp tval:  p15, 0, <rd>, c14, c2, 0: PL1 Physical TimerValue Register
+cntp ctl:   p15, 0, <rd>, c14, c2, 1: PL1 Physical Timer Control Register
+cntv tval:  p15, 0, <rd>, c14, c3, 0: Virtual TimerValue Register
+cntv ctl:   p15, 0, <rd>, c14, c3, 1: Virtual TimerControl Register
+cntpct:     p15, 0, <rd>, c14,      : Physical Count Register (RO)
+cntvct:     p15, 1, <rd>, c14,      : Virtual Count Register (RO)
+cntp cval:  p15, 2, <rd>, c14,      : PL1 Physical Timer CompareValue Register
+cntv cval:  p15, 3, <rd>, c14,      : Virtual Timer CompareValue Register
+
+Performance Monitor Registers:
+PMCR:       p15, 0, <rd>, c9, c12, 0: PM Control Register
+PMCNTENSET: p15, 0, <rd>, c9, c12, 1: PM Count Enable Set Register
+PMCNTENCLR: p15, 0, <rd>, c9, c12, 2: PM Count Enable Clear Register
+PMOVSR:     p15, 0, <rd>, c9, c12, 3: PM Overflow Flag Status Register
+PMSWINC:    p15, 0, <rd>, c9, c12, 4: PM Software Increment Register
+PMSELR:     p15, 0, <rd>, c9, c12, 5: PM Event Counter Selection Register
+PMCEID0:    p15, 0, <rd>, c9, c12, 6: PM Common Event Identification Register 0
+PMCEID1:    p15, 0, <rd>, c9, c12, 7: PM Common Event Identification Register 1
+PMCCNTR:    p15, 0, <rd>, c9, c13, 0: PM Cycle Count Register
+PMXEVTYPER: p15, 0, <rd>, c9, c13, 1: PM Event Type Select Register
+PMXEVCNTR:  p15, 0, <rd>, c9, c13, 2: PM Event Count Register
+PMUSERENR:  p15, 0, <rd>, c9, c14, 0: PM User Enable Register
+PMINTENSET: p15, 0, <rd>, c9, c14, 1: PM Interrupt Enable Set Register
+PMINTENCLR: p15, 0, <rd>, c9, c14, 2: PM Interrupt Enable Clear Register
+
+Cache Maintainance Registers:
+cp15wfi:    p15, 0, <rd>, c7, c0,  4: Wait for interrupt operation
+icialluis:  p15, 0, <rd>, c7, c1,  0: Inv all instr caches to PoU Inner Sharable
+bpiallis:   p15, 0, <rd>, c7, c1,  6: Inv all branche predictors Inner Sharable
+par:        p15, 0, <rd>, c7, c4,  0: Physical Address Register (RW)
+iciallu:    p15, 0, <rd>, c7, c5,  0: Invalidate all instruction caches to PoU
+icimvau:    p15, 0, <rd>, c7, c5,  1: Inv instruction caches by MVA to PoU
+cp15isb:    p15, 0, <rd>, c7, c5,  4: Instruction Sync Barrier operation
+bpiall:     p15, 0, <rd>, c7, c5,  6: Invalidate all branch predictors
+bpimva:     p15, 0, <rd>, c7, c5,  7: Invalidate MVA from branch predictors
+dcimvac:    p15, 0, <rd>, c7, c6,  1: Inv data cache line my MVA to PoC
+dcisw:      p15, 0, <rd>, c7, c6,  2: Invalidate data cache line by set/way
+ats1cpr:    p15, 0, <rd>, c7, c8,  0: PL1 read translation (Current state)
+ats1cpw:    p15, 0, <rd>, c7, c8,  1: PL1 write translation (Current state)
+ats1cur:    p15, 0, <rd>, c7, c8,  2: Unpriv read translation (Current state)
+ats1cuw:    p15, 0, <rd>, c7, c8,  3: Unpriv write translation (Current state)
+ats12nsopr: p15, 0, <rd>, c7, c8,  4: PL1 read translation (NS state)
+ats12nsopw: p15, 0, <rd>, c7, c8,  5: PL1 write translation (NS state)
+ats12nsour: p15, 0, <rd>, c7, c8,  6: Unprivileged read translation (NS state)
+ats12nsouw: p15, 0, <rd>, c7, c8,  7: Unprivileged write translation (NS state)
+dccmvac:    p15, 0, <rd>, c7, c10, 1: Clean data cache line my MVA to PoC
+dccsw:      p15, 0, <rd>, c7, c10, 2: Clean data cache line by set/way
+cp15dsb:    p15, 0, <rd>, c7, c10, 4: Data Synchronization Barrier operation
+cp15dmb:    p15, 0, <rd>, c7, c10, 5: Data Memory Barrier operation
+dccmvau:    p15, 0, <rd>, c7, c11, 1: Clean data cache line by MVA to PoU
+dccimvac:   p15, 0, <rd>, c7, c14, 1: Clean and inv data c-line by MVA to PoC
+dccisw:     p15, 0, <rd>, c7, c14, 2: Clean and inv data c-line by set/way
+par:        p15, 0, <rd>, c7        : Physical Address Register (RW)

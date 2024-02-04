@@ -68,6 +68,21 @@ function linkup() {
 }
 
 #-------------------------------------------------------------------------------
+#{{{ zellij
+function zellij() {
+   # https://github.com/muttleyxd/clang-tools-static-binaries
+   echo "Info: Installing zellij"
+   if [[ $(curl --head --silent --fail git@github.com) && ($(uname -s) == "Linux") ]]; then
+      src="https://github.com/zellij-org/zellij/releases/latest/download/zellij-$(uname -m)-unknown-linux-musl.tar.gz"
+      target=~/.local/bin/zellij
+      [[ ! -f $target ]] && curl -L "$src" | tar -C "$(dirname $target)" -xz
+   else
+      echo "Attention: no url access or not Linux"
+   fi
+}
+#}}}
+
+#-------------------------------------------------------------------------------
 #{{{ clang-format
 function clang-format() {
    # https://github.com/muttleyxd/clang-tools-static-binaries
@@ -117,6 +132,7 @@ function all() {
    clang-format
    getz
    getstarship
+   zellij
 }
 
 echo "Executing ~/$corp/dotfiles.sh if any.."
