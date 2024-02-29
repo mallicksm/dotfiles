@@ -1,0 +1,59 @@
+layout {
+   default_tab_template {
+      pane size=1 borderless=true {
+         plugin location="file:~/dotfiles/initrc/zellij/plugins/zjstatus.wasm" {
+            format_left   "{mode} #[fg=#a6ff2e,bold]{session}"
+            format_center "{tabs}"
+            format_right  "{command_git_branch} {datetime}"
+            format_space  ""
+      
+            border_enabled  "false"
+      
+            mode_normal        "#[bg=blue]  {name} "
+            mode_locked        "#[bg=red]   {name} "
+            mode_resize        "#[bg=green] {name} "
+            mode_pane          "#[bg=green] {name} "
+            mode_tab           "#[bg=green] {name} "
+            mode_scroll        "#[bg=green] {name} "
+            mode_enter_search  "#[bg=green] {name} "
+            mode_search        "#[bg=green] {name} "
+            mode_rename_tab    "#[bg=green] {name} "
+            mode_rename_pane   "#[bg=green] {name} "
+            mode_session       "#[bg=green] {name} "
+            mode_move          "#[bg=green] {name} "
+            mode_prompt        "#[bg=green] {name} "
+            mode_tmux          "#[bg=green] {name} "
+      
+            tab_normal "#[bg=#68775b,fg=#000000] #[bg=#68775b,fg=#000000,bold]{name} {sync_indicator}{fullscreen_indicator}{floating_indicator} #[bg=#000000,fg=#68775b]"
+            tab_active "#[bg=#AFFF00,fg=#000000] #[bg=#AFFF00,fg=#000000,bold]{name} {sync_indicator}{fullscreen_indicator}{floating_indicator} #[bg=#000000,fg=#AFFF00]"
+
+            tab_sync_indicator       " "
+            tab_fullscreen_indicator "□ "
+            tab_floating_indicator   " "
+      
+            command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+            command_git_branch_format      "#[fg=#84ce24,bold] {stdout} "
+            command_git_branch_interval    "10"
+            command_git_branch_rendermode  "static"
+      
+            datetime        "#[fg=#ff5e2e,bold] {format} "
+            datetime_format "%A, %b %d %Y %H:%M"
+            datetime_timezone "America/Los_Angeles"
+         }
+      }
+      children
+      pane size=2 borderless=true {
+         plugin location="zellij:status-bar"
+      }
+   }
+   tab {
+      pane split_direction="vertical" {
+         pane focus=true
+         pane split_direction="horizontal" {
+            pane size="40%"
+            pane size="30%"
+            pane size="30%"
+         }
+      }
+   }
+}

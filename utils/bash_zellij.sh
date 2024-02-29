@@ -1,2 +1,2 @@
-export ZELLIJ_CONFIG_DIR=~/dotfiles/initrc
+export ZELLIJ_CONFIG_DIR=~/dotfiles/initrc/zellij
 
