@@ -11,6 +11,11 @@ function cd () {
       # builtin cd ~&& ls
       cd_func ~
    fi
+# Note: 
+#    ~/dotfiles/utils/bash_cd_func.sh writes /tmp/__CWD__ with $CWD after cd
+#    This script sources it and executes the prompt_git proc
+#    This script is used by zjstatus under in ~/dotfiles/initrc/zellij/layouts/def.kdl
+   echo "cd $PWD" > /tmp/__CWD__
 }
 
 function cd_up () {

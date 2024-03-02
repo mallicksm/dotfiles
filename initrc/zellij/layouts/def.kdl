@@ -31,10 +31,14 @@ layout {
             tab_fullscreen_indicator "□ "
             tab_floating_indicator   " "
       
-            command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+// Note: 
+//    ~/dotfiles/utils/bash_cd_func.sh writes /tmp/__CWD__ with $CWD after cd
+//    This script sources it and executes the prompt_git proc
+//    This script is used by zjstatus under in ~/dotfiles/initrc/zellij/layouts/def.kdl
+            command_git_branch_command     "/users/soummya/dotfiles/utils/zellij_git_prompt.sh"
             command_git_branch_format      "#[fg=#84ce24,bold] {stdout} "
             command_git_branch_interval    "10"
-            command_git_branch_rendermode  "static"
+            command_git_branch_rendermode  "dynamic"
       
             datetime        "#[fg=#ff5e2e,bold] {format} "
             datetime_format "%A, %b %d %Y %H:%M"
