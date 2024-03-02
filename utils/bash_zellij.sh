@@ -1,6 +1,10 @@
 export ZELLIJ_CONFIG_DIR=~/dotfiles/initrc/zellij
-function zm() {
-   session=$(zellij ls 2>/dev/null | fzf --exit-0 --ansi) && zellij attach "${session%% *}" || echo "No sessions found."
+function zm () {
+   if [[ ! -z $ZELLIJ ]]; then
+      echo "Attention: cannot be run from within zellij"
+      return
+   fi
+   session=$(zellij ls 2>/dev/null | fzf --exit-0 --ansi --header 'Enter to open:') && zellij attach "${session%% *}"
 }
 function zr () { 
    zellij run --name "$*" -- bash -ic "$*";}
@@ -12,5 +16,8 @@ function ze () {
 }
 function zef () { 
    zellij edit --floating "$*";
+}
+function zsc () { 
+   zellij action edit-scrollback;
 }
 
