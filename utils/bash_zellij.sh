@@ -51,6 +51,10 @@ function zm () {
       rm -rf ~/.cache/zellij/
       return
    fi
+   if [[ ! -z ${opt[ZELLIJ_SESSION_NAME]} ]]; then
+      zellij -s ${opt[ZELLIJ_SESSION_NAME]} 
+      return
+   fi
    if [[ $num_sessions -eq 0 ]]; then
       if [[ -z ${opt[ZELLIJ_SESSION_NAME]} ]]; then
          echo "Attention: no sessions found or new name given"
