@@ -75,17 +75,21 @@ prompt_git() {
 
       [ -n "${s}" ] && s=" ${c_style}[${c_default}${s}${c_style}]${c_default}";
 
-      gitStatus="$c_branch[ ${branchName}]$c_default${s}";
+      gitStatus="$c_default${s}$c_default";
+      gitBranch="$c_branch[ ${branchName}]$c_default";
    else
       gitStatus=""
+      gitBranch=""
    fi;
-   dateTimeStatus="${c_dateTime}$dateTime${c_default}"
-   hostnameStatus="${c_hostname}$(hostname -s):${c_default}"
-   echo -e "$gitStatus"
+   if [[ $@ == status ]]; then
+      echo -e "$gitStatus"
+   else
+      echo -e "$gitBranch"
+   fi
 }
 # Note: 
 #    ~/dotfiles/utils/bash_cd_func.sh writes /tmp/__CWD__ with $CWD after cd
 #    This script sources it and executes the prompt_git proc
 #    This script is used by zjstatus under in ~/dotfiles/initrc/zellij/layouts/def.kdl
 source /tmp/__CWD__ >/dev/null 2>&1
-prompt_git
+prompt_git "$@"
