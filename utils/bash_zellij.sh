@@ -49,22 +49,25 @@ function zm () {
       zellij ka -y
       zellij da -y
       rm -rf ~/.cache/zellij/
+      echo "Note: check if zellij process exists and kill it"
       return
    fi
    if [[ ! -z ${opt[ZELLIJ_SESSION_NAME]} ]]; then
-      zellij -s ${opt[ZELLIJ_SESSION_NAME]} 
+      zellij --session ${opt[ZELLIJ_SESSION_NAME]} 
       return
    fi
    if [[ $num_sessions -eq 0 ]]; then
       if [[ -z ${opt[ZELLIJ_SESSION_NAME]} ]]; then
          echo "Attention: no sessions found or new name given"
       else
-         zellij -s ${opt[ZELLIJ_SESSION_NAME]}
+         zellij --session ${opt[ZELLIJ_SESSION_NAME]}
       fi
    elif [[ ($num_sessions -eq 1) && ( ! $(zellij ls) =~ EXITED ) ]]; then
+      # Only attach if a single good session exists
       zellij attach --create
    else
-      session=$(zellij ls 2>/dev/null | fzf --exit-0 --ansi --header 'Enter to open:') && zellij attach "${session%% *}" || echo "No sessions found"
+      # fzf if >1 session exists (even if EXITED)
+      session=$(zellij ls 2>/dev/null | fzf --exit-0 --ansi --header 'Enter to open:') && zellij attach "${session%% *}" || echo "No sessions selected"
    fi
 }
 function zr () { 
