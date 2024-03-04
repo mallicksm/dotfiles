@@ -67,19 +67,19 @@ prompt_git() {
       fi;
 
       # Get the short symbolic ref.
-      # If HEAD isn?t a symbolic ref, get the short SHA for the latest commit
+      # If HEAD isn't a symbolic ref, get the short SHA for the latest commit
       # Otherwise, just give up.
       branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
          git rev-parse --short HEAD 2> /dev/null || \
          echo '(unknown)')";
 
-      [ -n "${s}" ] && s=" ${c_style}[${c_default}${s}${c_style}]${c_default}";
+      [ -n "${s}" ] && s="${c_style}[${c_default}${s}${c_style}]${c_default}";
 
-      gitStatus="$c_default${s}$c_default";
       gitBranch="$c_branch[ ${branchName}]$c_default";
+      gitStatus="$c_default${s}$c_default";
    else
-      gitStatus=""
       gitBranch=""
+      gitStatus=""
    fi;
    if [[ $@ == status ]]; then
       echo -e "$gitStatus"
