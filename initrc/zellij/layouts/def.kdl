@@ -4,7 +4,8 @@ layout {
          plugin location="file:~/dotfiles/initrc/zellij/plugins/zjstatus.wasm" {
             format_left   "{mode} #[fg=#a6ff2e,bold]{session}"
             format_center "{tabs}"
-            format_right  "{command_git_branch}{command_git_status}{datetime}"
+//          format_right  "{command_git_branch}{command_git_status}{datetime}"
+            format_right  "{command_git_branch}{datetime}"
             format_space  ""
       
             border_enabled  "false"
@@ -37,13 +38,13 @@ layout {
 //    This script is used by zjstatus under in ~/dotfiles/initrc/zellij/layouts/def.kdl
             command_git_branch_command     "/users/soummya/dotfiles/utils/zellij_git_prompt.sh branch"
             command_git_branch_format      "#[fg=#84ce24,bold] {stdout} "
-            command_git_branch_interval    "10"
+            command_git_branch_interval    "30"
             command_git_branch_rendermode  "dynamic"
 
-            command_git_status_command     "/users/soummya/dotfiles/utils/zellij_git_prompt.sh status"
-            command_git_status_format      "#[fg=#84ce24,bold] {stdout} "
-            command_git_status_interval    "100"
-            command_git_status_rendermode  "dynamic"
+//          command_git_status_command     "/users/soummya/dotfiles/utils/zellij_git_prompt.sh status"
+//          command_git_status_format      "#[fg=#84ce24,bold] {stdout} "
+//          command_git_status_interval    "200"
+//          command_git_status_rendermode  "dynamic"
       
             datetime        "#[fg=#ff5e2e,bold] {format} "
             datetime_format "%A, %b %d %Y %H:%M"

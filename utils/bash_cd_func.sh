@@ -11,25 +11,14 @@ function cd () {
       # builtin cd ~&& ls
       cd_func ~
    fi
+   rc=$?
 # Note: 
 #    ~/dotfiles/utils/bash_cd_func.sh writes /tmp/__CWD__ with $CWD after cd
 #    This script sources it and executes the prompt_git proc
 #    This script is used by zjstatus under in ~/dotfiles/initrc/zellij/layouts/def.kdl
    echo "cd $PWD" > /tmp/__CWD__
+   return $rc
 }
-
-function cd_up () {
-  case $1 in
-    *[!0-9]*)                                          # if not a number ..
-      cd $( pwd | sed -r "s|(.*/$1[^/]*/).*|\1|" )     # search dir_name in current path, if found - cd to it
-      ;;                                               # if not found - not cd
-    *)
-      cd $(printf "%0.0s../" $(seq 1 $1));             # cd ../../../../  (N dirs)
-    ;;
-  esac
-}
-alias 'cd..'='cd_up'                                   # because can not name function 'cd..'
-
 function cd_func () {
    local x2 the_new_dir adir index
    local -i cnt
@@ -55,6 +44,7 @@ function cd_func () {
    # '~' has to be substituted by ${HOME}
    [[ ${the_new_dir:0:1} == '~' ]] && the_new_dir="${HOME}${the_new_dir:1}"
 
+   [[ ! -d $the_new_dir ]] && { echo bash: cd: $the_new_dir: No such file or directory;return 1; }
    #
    # Now change to the new dir and add to the top of the stack
    Pushd "${the_new_dir}"
@@ -79,3 +69,15 @@ function cd_func () {
 
    return 0
 }
+function cd_up () {
+  case $1 in
+    *[!0-9]*)                                          # if not a number ..
+      cd $( pwd | sed -r "s|(.*/$1[^/]*/).*|\1|" )     # search dir_name in current path, if found - cd to it
+      ;;                                               # if not found - not cd
+    *)
+      cd $(printf "%0.0s../" $(seq 1 $1));             # cd ../../../../  (N dirs)
+    ;;
+  esac
+}
+alias 'cd..'='cd_up'                                   # because can not name function 'cd..'
+
