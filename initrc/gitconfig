@@ -5,6 +5,7 @@
    preloadindex = true                        # Caches indeix and makes git status faster
 #  sharedrepository = 0660                    # Sets reasonable permissions
    pager = delta
+   autocrlf = true
 [alias]
    di = difftool -y --tool tkdiff
    dm = difftool -y --tool meld
