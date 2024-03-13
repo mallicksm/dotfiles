@@ -38,3 +38,5 @@ modpath /opt/tools/bin a
 modpath /opt/si/emu/users/soummya/tools/ads/bin b
 modpath /opt/tools/qnx/7.1/host/linux/x86_64/usr/bin a
 modpath ~/$corp a
+modpath ~/.local/bin a
+modpath ~/bin b
