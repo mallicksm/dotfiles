@@ -42,4 +42,5 @@ modpath ~/.local/bin a
 # individual latest files
 modpath ~/.local/bin/vim9 b
 modpath ~/.local/bin/nvim10 b
+modpath ~/.local/bin/git2.36 b
 modpath ~/bin b
