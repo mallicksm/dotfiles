@@ -26,6 +26,8 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 vim.keymap.set('n', '<leader>x', '<cmd>q!<CR>', { desc = 'Quit without any change saved' })
+vim.keymap.set('n', 'qq', 'q', { desc = 'macro start (prev q)' })
+vim.keymap.set('n', 'q', '<cmd>q<CR>', { desc = 'Quit if no change' })
 
 -- global
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<cr>", {silent = true, noremap = true, desc = 'Open nvim-tree' })
