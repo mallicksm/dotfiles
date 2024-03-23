@@ -1,0 +1,13 @@
+---
+Language:        Cpp
+UseTab : Never
+IndentWidth : 3
+SortIncludes : false
+AlignConsecutiveBitFields : true
+AlignConsecutiveMacros : false
+ConstructorInitializerIndentWidth : 3
+ContinuationIndentWidth : 3
+BreakConstructorInitializers : BeforeComma
+IndentCaseLabels: true
+ColumnLimit : 0
+...

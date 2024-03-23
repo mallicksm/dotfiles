@@ -354,9 +354,9 @@
     "body": ["parray ${1:arrayName} ${2:?pattern?}", "$0"],
     "description": "Prints on standard output the names and values of all elements in the array arrayName"
   },
-  "Create a Tcl procedure": {
-    "prefix": "proc",
-    "body": ["proc ${1:name} {${2:args}} {", "\t${3:body}", "}", "$0"],
+  "item proc function": {
+    "prefix": ["proc", "func"],
+    "body": ["proc ${1:name} {${2:args}} {", "   ${3:#statements}", "}"],
     "description": "The proc command creates a new Tcl procedure named name, replacing any existing command or procedure there may have been by that name. Whenever the new command is invoked, the contents of body will be executed by the Tcl interpreter."
   },
   "Write to a channel": {
@@ -407,21 +407,20 @@
     "body": ["while {${1:test}} {", "\t${2:body}", "}", "$0"],
     "description": "Evaluate test as an expression and if true, execute body until test evaluates to false or break is encountered."
   },
-  "Comment block for procedure": {
-    "prefix": "#proc",
+  "item header": {
+    "prefix": ["header"],
     "body": [
-      "################################################################################",
-      "#",
+      "#===============================================================================",
+      "# Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
       "# Author: ${1:Author}",
-      "# Date: ${CURRENT_MONTH}/${CURRENT_DATE}/${CURRENT_YEAR}",
+      "#",
+      "# Note:",
+      "#",
       "# Description: ${2:Description}",
       "#",
-      "# Arguments:",
-      "# * ${3:`argument_name`} - ${4: description.}",
-      "#",
-      "################################################################################",
+      "#===============================================================================",
       "$0"
     ],
-    "description": "Documentation template for a TCL proc."
+    "description": "insert header code"
   }
 }
