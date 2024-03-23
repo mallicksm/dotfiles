@@ -1,125 +1,113 @@
 {
-   "item header": {
-      "prefix": ["header"],
-      "body": [
-         "#===============================================================================",
-         "# Tcl",
-         "# Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
-         "# Author: ${VIM:\\$USER}",
-         "#",
-         "# Note:",
-         "#",
-         "# Description: ${1:Description}",
-         "#",
-         "#===============================================================================",
-         ""
-      ],
-      "description": "insert header code"
-   },
-   "item proc function": {
-      "prefix": ["proc", "func"],
-      "body": [
-         "proc ${1:name} {${2:args}} {",
-         "   ${3:#statements}",
-         "}"
-      ],
-      "description": "Code snippet for proc function"
-   },
-   "item getopt block": {
-      "prefix": ["getopt"],
-      "body": [
-         "# getopt",
-         "array set opt {HELP \"\" SWITCH \"\" NAME \"\" ARGS \"\"}",
-         "while {[llength \\$args]} {",
-         "   set arg [lindex \\$args 0]",
-         "   switch -regexp \\$arg {",
-         "      \"-h|--help\" {",
-         "         set args [lassign \\$args -]",
-         "         set opt(HELP) yes",
-         "      }",
-         "      \"-n|--name\" {",
-         "         set args [lassign \\$args - opt(NAME)]",
-         "      }",
-         "      \"-+\" {",
-         "         puts \"Attention: Unknown argument \\$arg\"",
-         "         return",
-         "      }",
-         "      default {",
-         "         set args [lassign \\$args pos]",
-         "         lappend opt(ARGS) \\$pos",
-         "      }",
-         "   }",
-         "}",
-         "",
-         "# Process -h",
-         "if {\\$opt(HELP) == \"yes\"} {",
-         "   puts \"usage: tclsh [info script] \\[options\\]",
-         "         ",
-         "         Options:",
-         "         -h|help   Display this message\"",
-         "   return",
-         "}"
-      ],
-      "description": "Code snippet for getopt block"
-   },
-   "item for loop": {
-      "prefix": ["for"],
-      "body": [
-         "for {set i 0} {\\$i < ${1:10}} {incr i} {",
-         "   ${0:#statements}",
-         "}"
-      ],
-      "description": " Code snippet for 'for' loop"
-   },
-   "item foreach loop": {
-      "prefix": ["foreach"],
-      "body": [
-         "foreach ${1:var} ${2:\\$list} {",
-         "   ${3:#statements}",
-         "}"
-      ],
-      "description": "Code snippet for 'foreach' loop"
-   },
-   "item while loop": {
-      "prefix": ["while"],
-      "body": [
-         "while {${1:condition}} {",
-         "   ${2:#statements}",
-         "}"
-      ],
-      "description": "Code generator for 'while' loop"
-   },
-   "item if statement": {
-      "prefix": ["if"],
-      "body": [
-         "if {(${1:condition1}) && (${2:condition2})} {",
-         "   ${3:#statements}",
-         "}"
-      ],
-      "description": "Code snippet for if statement"
-   },
-   "item if-else statement": {
-     "prefix": ["if-else", "ife"],
-     "body": [
-       "if {${1:condition}} {",
-       "",
-       "} elseif {${2:condition}} {",
-       "",
-       "} else {",
-       "",
-       "}"
-     ]
-   },
-   "item switch statement": {
-      "prefix": ["case","switch"],
-      "body": [
-         "switch -exact -- ${1:\\$var} {",
-         "   ${2:pattern} {",
-         "      $0",
-         "   }",
-         "   default {}",
-         "}"
-      ],
-      "description": "Code snippet for switch statement"
-   }
+  "item header": {
+    "prefix": ["header"],
+    "body": [
+      "#===============================================================================",
+      "# Tcl",
+      "# Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+      "# Author: ${VIM:\\$USER}",
+      "#",
+      "# Note:",
+      "#",
+      "# Description: ${1:Description}",
+      "#",
+      "#===============================================================================",
+      ""
+    ],
+    "description": "insert header code"
+  },
+  "item proc function": {
+    "prefix": ["proc", "func"],
+    "body": ["proc ${1:name} {${2:args}} {", "   ${3:#statements}", "}"],
+    "description": "Code snippet for proc function"
+  },
+  "item getopt block": {
+    "prefix": ["getopt"],
+    "body": [
+      "# getopt",
+      "array set opt {HELP \"\" SWITCH \"\" NAME \"\" ARGS \"\"}",
+      "while {[llength \\$args]} {",
+      "   set arg [lindex \\$args 0]",
+      "   switch -regexp \\$arg {",
+      "      \"-h|--help\" {",
+      "         set args [lassign \\$args -]",
+      "         set opt(HELP) yes",
+      "      }",
+      "      \"-n|--name\" {",
+      "         set args [lassign \\$args - opt(NAME)]",
+      "      }",
+      "      \"-+\" {",
+      "         puts \"Attention: Unknown argument \\$arg\"",
+      "         return",
+      "      }",
+      "      default {",
+      "         set args [lassign \\$args pos]",
+      "         lappend opt(ARGS) \\$pos",
+      "      }",
+      "   }",
+      "}",
+      "",
+      "# Process -h",
+      "if {\\$opt(HELP) == \"yes\"} {",
+      "   puts \"usage: tclsh [info script] \\[options\\]",
+      "         ",
+      "         Options:",
+      "         -h|help   Display this message\"",
+      "   return",
+      "}"
+    ],
+    "description": "Code snippet for getopt block"
+  },
+  "item for loop": {
+    "prefix": ["for"],
+    "body": [
+      "for {set i 0} {\\$i < ${1:10}} {incr i} {",
+      "   ${0:#statements}",
+      "}"
+    ],
+    "description": " Code snippet for 'for' loop"
+  },
+  "item foreach loop": {
+    "prefix": ["foreach"],
+    "body": ["foreach ${1:var} ${2:\\$list} {", "   ${3:#statements}", "}"],
+    "description": "Code snippet for 'foreach' loop"
+  },
+  "item while loop": {
+    "prefix": ["while"],
+    "body": ["while {${1:condition}} {", "   ${2:#statements}", "}"],
+    "description": "Code generator for 'while' loop"
+  },
+  "item if statement": {
+    "prefix": ["if"],
+    "body": [
+      "if {(${1:condition1}) && (${2:condition2})} {",
+      "   ${3:#statements}",
+      "}"
+    ],
+    "description": "Code snippet for if statement"
+  },
+  "item if-else statement": {
+    "prefix": ["if-else", "ife"],
+    "body": [
+      "if {${1:condition}} {",
+      "",
+      "} elseif {${2:condition}} {",
+      "",
+      "} else {",
+      "",
+      "}"
+    ]
+  },
+  "item switch statement": {
+    "prefix": ["case", "switch"],
+    "body": [
+      "switch -exact -- ${1:\\$var} {",
+      "   ${2:pattern} {",
+      "      $0",
+      "   }",
+      "   default {}",
+      "}"
+    ],
+    "description": "Code snippet for switch statement"
+  }
 }
