@@ -16,6 +16,8 @@ return {
           graph_style = "unicode",
         })
       vim.cmd([[nnoremap g\ :Neogit kind=auto<cr>]])
+      vim.cmd([[nnoremap d\ :DiffviewOpen<cr>]])
+      vim.cmd([[nnoremap \d :DiffviewClose<cr>]])
     end
   }
 }
