@@ -15,18 +15,10 @@ return {
           end
           return 'make install_jsregexp CC="gcc -std=c99"'
         end)(),
-        dependencies = {
-          -- `friendly-snippets` contains a variety of premade snippets.
-          --    See the README about individual language/framework/plugin snippets:
-          --    https://github.com/rafamadriz/friendly-snippets
-          {
-            'rafamadriz/friendly-snippets',
-            config = function()
-              require('luasnip.loaders.from_vscode').lazy_load({ paths = { "~/dotfiles/snippets/vscode_snippets" } })
-              require('luasnip.loaders.from_lua').load({ paths = { "~/dotfiles/snippets/lua_snippets" } })
-            end,
-          },
-        },
+        config = function()
+          require('luasnip.loaders.from_vscode').lazy_load({ paths = { "~/dotfiles/snippets/vscode_snippets" } })
+          require('luasnip.loaders.from_lua').load({ paths = { "~/dotfiles/snippets/lua_snippets" } })
+        end,
       },
       'saadparwaiz1/cmp_luasnip',
 
@@ -41,18 +33,7 @@ return {
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
-      luasnip.config.setup {
-        snip_env = {
-          s = function(...)
-            local snip = luasnip.s(...)
-            table.insert(getfenv(2).ls_file_snippets, snip)
-          end,
-          parse = function(...)
-            local snip = luasnip.parser.parse_snippet(...)
-            table.insert(getfenv(2).ls_file_snippets, snip)
-          end,
-        },
-      }
+      luasnip.config.setup {}
 
       cmp.setup {
         snippet = {
