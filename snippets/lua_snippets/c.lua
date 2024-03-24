@@ -6,9 +6,10 @@ local i = ls.insert_node
 
 return {
 	s("cheader", {
-		t({ "also", "loaded!!" }),
+		t({ "also loaded!!", "" }),
 		i(1),
-		t("also loaded!!")
+		t({ "also loaded!!", "" }),
+		i(0),
 	}),
 	s("autotrig", {
 		t("autotriggered, if enabled")
