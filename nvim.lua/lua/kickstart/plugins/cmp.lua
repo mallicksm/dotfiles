@@ -100,7 +100,7 @@ return {
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
-          { name = 'buffer', keyword_length = 5 },
+          { name = 'buffer',  keyword_length = 5 },
         },
       }
     end,
