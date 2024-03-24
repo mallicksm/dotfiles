@@ -22,7 +22,8 @@ return {
           {
             'rafamadriz/friendly-snippets',
             config = function()
-              require('luasnip.loaders.from_vscode').lazy_load({ paths = { "~/dotfiles/personal_snippets" } })
+              require('luasnip.loaders.from_vscode').lazy_load({ paths = { "~/dotfiles/snippets/vscode_snippets" } })
+              require('luasnip.loaders.from_lua').load({ paths = { "~/dotfiles/snippets/lua_snippets" } })
             end,
           },
         },
@@ -40,7 +41,18 @@ return {
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
-      luasnip.config.setup {}
+      luasnip.config.setup {
+        snip_env = {
+          s = function(...)
+            local snip = luasnip.s(...)
+            table.insert(getfenv(2).ls_file_snippets, snip)
+          end,
+          parse = function(...)
+            local snip = luasnip.parser.parse_snippet(...)
+            table.insert(getfenv(2).ls_file_snippets, snip)
+          end,
+        },
+      }
 
       cmp.setup {
         snippet = {
