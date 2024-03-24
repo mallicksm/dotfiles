@@ -77,6 +77,7 @@ return {
         },
       }
       require("nvim-tree").setup(opt)
+      vim.cmd([[nnoremap <leader>e :NvimTreeToggle<cr>]])
     end,
   },
 }

@@ -15,6 +15,7 @@ return {
           },
           graph_style = "unicode",
         })
+      vim.cmd([[nnoremap g\ :Neogit kind=auto<cr>]])
     end
   }
 }

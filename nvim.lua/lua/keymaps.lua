@@ -29,9 +29,6 @@ vim.keymap.set('n', '<leader>x', '<cmd>q!<CR>', { desc = 'Quit without any chang
 vim.keymap.set('n', 'qq', 'q', { desc = 'macro start (prev q)' })
 vim.keymap.set('n', 'q', '<cmd>q<CR>', { desc = 'Quit if no change' })
 
--- global
-vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<cr>", {silent = true, noremap = true, desc = 'Open nvim-tree' })
-
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
