@@ -307,7 +307,7 @@ return {
       }
     })
 
-    vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
+    vim.cmd([[nnoremap \ :Neotree toggle<cr>]])
     vim.cmd([[nnoremap <leader>g\ :Neotree float git_status git_base=master<cr>]])
   end
 }
