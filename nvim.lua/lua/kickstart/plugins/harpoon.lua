@@ -25,8 +25,9 @@ return {
         }):find()
       end
 
-      vim.keymap.set("n", "<leader>p", function() toggle_telescope(harpoon:list()) end, { desc = "Harpoon: Open window" })
-      vim.keymap.set("n", "<leader>pa", function() harpoon:list():append() end, { desc = "Harpoon: Append" })
+      vim.keymap.set("n", "<leader>Hl", function() toggle_telescope(harpoon:list()) end,
+        { desc = "Harpoon: Open list picker" })
+      vim.keymap.set("n", "<leader>Ha", function() harpoon:list():append() end, { desc = "Harpoon: Append list" })
     end
   }
 }

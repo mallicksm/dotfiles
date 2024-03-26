@@ -263,7 +263,7 @@ default_layout "def"
 // Valid values: positive integers
 // Default value: 10000
 //
-scroll_buffer_size 100000
+scroll_buffer_size 10000
 
 // Provide a command to execute when copying text. The text will be piped to
 // the stdin of the program to perform the copy. This can be used with
@@ -292,7 +292,7 @@ copy_on_select true
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
 //
-scrollback_editor "/users/soummya/.local/bin/vim9/vim"
+scrollback_editor "/opt/si/emu/users/soummya/tools/nvim_latest/nvim-linux64/bin/nvim"
 
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)

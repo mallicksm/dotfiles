@@ -40,7 +40,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 vim.filetype.add({
   extension = {
-    qel = "tcl"
+    qel = "tcl",
+    f = "f"
   }
 })
 -- vim: ts=2 sts=2 sw=2 et

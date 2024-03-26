@@ -307,7 +307,6 @@ return {
       }
     })
 
-    vim.cmd([[nnoremap \ :Neotree toggle<cr>]])
-    vim.cmd([[nnoremap <leader>g\ :Neotree float git_status git_base=master<cr>]])
+    vim.keymap.set("n", "<leader>e", ":Neotree toggle<cr>", { desc = "Neo-tree: File browser toggle" })
   end
 }

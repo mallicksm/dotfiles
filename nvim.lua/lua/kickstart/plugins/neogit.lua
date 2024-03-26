@@ -14,10 +14,11 @@ return {
             telescope = true,
           },
           graph_style = "unicode",
+          console_timeout = 5000,
         })
-      vim.cmd([[nnoremap g\ :Neogit kind=auto<cr>]])
-      vim.cmd([[nnoremap d\ :DiffviewOpen -uno<cr>]])
-      vim.cmd([[nnoremap \d :DiffviewClose<cr>]])
+      vim.keymap.set("n", "<leader>g", ":Neogit kind=auto<cr>", { desc = "Neogit: Git CLI" })
+      vim.keymap.set("n", "<leader>Do", ":DiffviewOpen -uno<cr>", { desc = "Diffview: open" })
+      vim.keymap.set("n", "<leader>Dc", ":DiffviewClose<cr>", { desc = "Diffview: close" })
     end
   }
 }
