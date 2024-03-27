@@ -16,7 +16,7 @@ return {
           graph_style = "unicode",
           console_timeout = 5000,
         })
-      vim.keymap.set("n", "<leader>g", ":Neogit kind=auto<cr>", { desc = "Neogit: Git CLI" })
+      vim.keymap.set("n", "<leader>gg", ":Neogit kind=auto<cr>", { desc = "Neogit: Git CLI" })
       vim.keymap.set("n", "<leader>Do", ":DiffviewOpen -uno<cr>", { desc = "Diffview: open" })
       vim.keymap.set("n", "<leader>Dc", ":DiffviewClose<cr>", { desc = "Diffview: close" })
     end

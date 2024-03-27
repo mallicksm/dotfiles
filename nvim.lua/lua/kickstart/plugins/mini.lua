@@ -32,6 +32,9 @@ return {
         return '%2l:%-2v'
       end
 
+      -- bring back my autopairs without complications
+      require('mini.pairs').setup()
+
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
