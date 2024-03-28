@@ -9,9 +9,6 @@ return {
     priority = 1000,
     opts = {
       terminal_colors = true,
-      palette_overrides = {
-        dark2 = "#6e6967",
-      }
     },
     config = function(_, opts)       -- make sure to load this before all the other start plugins
       require("gruvbox").setup(opts) -- calling setup is optional
@@ -19,7 +16,7 @@ return {
       vim.cmd.colorscheme 'gruvbox'
 
       -- You can configure highlights by doing something like
-      -- vim.cmd.hi 'Comment gui=none'
+      vim.cmd.hi 'GitSignsCurrentLineBlame gui=bold'
     end,
   }
 }
