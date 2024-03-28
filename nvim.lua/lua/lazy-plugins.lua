@@ -48,7 +48,6 @@ require('lazy').setup({
 
   require 'kickstart/plugins/treesitter',
 
-  require 'kickstart/plugins/nvim-tree',
   require 'kickstart/plugins/neo-tree',
 
 
