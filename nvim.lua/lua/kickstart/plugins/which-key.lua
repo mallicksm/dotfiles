@@ -22,7 +22,6 @@ return {
 
       -- Document existing key chains
       require('which-key').register {
-        ['<leader>D'] = { name = '[D]iffview', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>H'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
       }

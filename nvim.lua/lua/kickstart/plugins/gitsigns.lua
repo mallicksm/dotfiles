@@ -8,10 +8,10 @@ return {
     'lewis6991/gitsigns.nvim',
     opts = {
       signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
+        add          = { text = '+' },
+        change       = { text = '~' },
+        delete       = { text = '_' },
+        topdelete    = { text = '‾' },
         changedelete = { text = '~' },
         untracked    = { text = '┆' },
       },
@@ -27,7 +27,7 @@ return {
   vim.keymap.set("n", "<leader>gN", ":Gitsigns toggle_numhl<cr>", { desc = "GitSigns: Setup: Toggle number highlight" }),
   vim.keymap.set("n", "<leader>gB", ":Gitsigns blame_line<cr>", { desc = "GitSigns: Setup: Blame line" }),
   vim.keymap.set("n", "<leader>gD", ":Gitsigns toggle_deleted<cr>", { desc = "GitSigns: Setup: Toggle deleted lines" }),
-  vim.keymap.set("n", "<leader>gd", ":Gitsigns diffthis master<cr>", { desc = "GitSigns: Setup: Git Diff file" }),
+  vim.keymap.set("n", "<leader>gd", ":Gitsigns diffthis<cr>", { desc = "GitSigns: Setup: Git Diff file" }),
   vim.keymap.set("n", "<leader>gn", ":Gitsigns next_hunk<cr>", { desc = "GitSigns: Hunk: next" }),
   vim.keymap.set("n", "<leader>gp", ":Gitsigns prev_hunk<cr>", { desc = "GitSigns: Hunk: previous" }),
   vim.keymap.set("n", "<leader>gs", ":Gitsigns stage_hunk<cr>", { desc = "GitSigns: Hunk: stage" }),
