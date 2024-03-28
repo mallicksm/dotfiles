@@ -10,4 +10,6 @@ ContinuationIndentWidth : 3
 BreakConstructorInitializers : BeforeComma
 IndentCaseLabels: true
 ColumnLimit : 0
+PointerAlignment: Left
+ReferenceAlignment: Left
 ...

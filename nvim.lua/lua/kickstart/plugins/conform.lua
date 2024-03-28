@@ -7,16 +7,22 @@ return {
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = false, cpp = true, json = false, lua = false }
+        local disable_filetypes = { c = true, cpp = true, json = false, lua = false }
         return {
           timeout_ms = 1800,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
+      formatters = {
+        clang_format = {
+          command = "clang-format",
+          args = { "--style=file:" .. os.getenv("HOME") .. "/dotfiles/initrc/clang-format" },
+        }
+      },
       formatters_by_ft = {
         lua = { 'lua-language-server' },
         json = { "prettier" },
-        c = { "clang-format" },
+        c = { "clang_format" },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
