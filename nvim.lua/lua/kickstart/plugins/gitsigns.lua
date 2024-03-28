@@ -6,17 +6,20 @@
 return {
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
-    config = function()
-      require('gitsigns').setup {
-        signs = {
-          add = { text = '+' },
-          change = { text = '~' },
-          delete = { text = '_' }, topdelete = { text = '‾' },
-          changedelete = { text = '~' },
-          untracked    = { text = '┆' },
-        },
-        attach_to_untracked = true,
-      }
+    opts = {
+      signs = {
+        add = { text = '+' },
+        change = { text = '~' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked    = { text = '┆' },
+      },
+      attach_to_untracked = true,
+
+    },
+    config = function(_, opts)
+      require('gitsigns').setup(opts)
     end,
   },
   vim.keymap.set("n", "<leader>gb", ":Gitsigns toggle_current_line_blame<cr>", { desc = "GitSigns: Setup: Toggle Blame" }),
