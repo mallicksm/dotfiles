@@ -8,8 +8,8 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>E', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+vim.keymap.set('n', '<leader>Q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Rapid quit keymap
 vim.keymap.set('n', '<leader>x', '<cmd>q!<CR>', { desc = 'Quit without any change saved' })
@@ -38,10 +38,19 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- [[ Basic Filetypes ]]
+-- add custom filetypes
 vim.filetype.add({
   extension = {
     qel = "tcl",
     f = "f"
   }
 })
+
+-- [[ Basic user functions ]]
+-- The first argument is the name of the command (which must start with an uppercase letter).
+vim.api.nvim_create_user_command("Filename",
+  function()
+    vim.print(vim.fn.expand('%:p'))
+  end, { nargs = 0 })
 -- vim: ts=2 sts=2 sw=2 et

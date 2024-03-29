@@ -85,8 +85,8 @@ return {
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('n', ',f', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', ',g', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', ',f', builtin.find_files, { desc = 'Telescope: [S]earch [F]iles' })
+      vim.keymap.set('n', ',g', builtin.live_grep, { desc = 'Telescope: [S]earch by [G]rep' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
