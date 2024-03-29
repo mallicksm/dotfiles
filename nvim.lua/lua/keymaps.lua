@@ -53,4 +53,26 @@ vim.api.nvim_create_user_command("Filename",
   function()
     vim.print(vim.fn.expand('%:p'))
   end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("Explorer",
+  function()
+    vim.notify("keymap: ,f")
+    local builtin = require 'telescope.builtin'
+    builtin.find_files()
+  end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("Rg",
+  function()
+    vim.notify("keymap: ,g")
+    local builtin = require 'telescope.builtin'
+    builtin.live_grep({
+      prompt_title = 'Live Grep in Open Files',
+    })
+  end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("Git",
+  function()
+    vim.notify("keymap: <leader>gs")
+    vim.cmd('Neogit kind=auto')
+  end, { nargs = 0 })
 -- vim: ts=2 sts=2 sw=2 et
