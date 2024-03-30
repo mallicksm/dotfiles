@@ -60,9 +60,8 @@ layout {
       pane split_direction="vertical" {
          pane focus=true
          pane split_direction="horizontal" {
-            pane size="40%"
-            pane size="30%"
-            pane size="30%"
+            pane size="50%"
+            pane size="50%"
          }
       }
    }

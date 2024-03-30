@@ -17,8 +17,6 @@ return {
 
       -- You can configure highlights by doing something like
       vim.cmd.hi 'GitSignsCurrentLineBlame gui=bold'
-      vim.cmd.hi 'FlashMatch guifg=orange'
-      vim.cmd.hi 'FlashLabel guifg=white'
     end,
   }
 }
