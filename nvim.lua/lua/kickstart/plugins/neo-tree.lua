@@ -187,6 +187,15 @@ return {
           ["<"] = "prev_source",
           [">"] = "next_source",
           ["i"] = "show_file_details",
+          ["Y"] = {
+            function(state)
+              local node = state.tree:get_node()
+              local path = node:get_id()
+              print("Copied to clipboard: " .. path)
+              vim.fn.setreg("+", path, "c")
+            end,
+            desc = "Copy Path to Clipboard",
+          },
         }
       },
       nesting_rules = {},
