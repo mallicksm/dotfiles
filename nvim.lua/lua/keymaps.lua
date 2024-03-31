@@ -58,7 +58,9 @@ vim.api.nvim_create_user_command("Explorer",
   function()
     vim.notify("keymap: ,f")
     local builtin = require 'telescope.builtin'
-    builtin.find_files()
+    builtin.find_files({
+      prompt_title = 'Find Files (<esc> to quit)'
+    })
   end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("Rg",
@@ -66,7 +68,7 @@ vim.api.nvim_create_user_command("Rg",
     vim.notify("keymap: ,g")
     local builtin = require 'telescope.builtin'
     builtin.live_grep({
-      prompt_title = 'Live Grep in Open Files',
+      prompt_title = 'Live Grep in Open Files <ESC> to quit',
     })
   end, { nargs = 0 })
 

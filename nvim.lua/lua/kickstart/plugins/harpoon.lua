@@ -31,7 +31,12 @@ return {
       -- harpoon management edit(e) and add(a)
       vim.keymap.set("n", ",m", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end,
         { desc = "Harpoon: Marks list" })
-      vim.keymap.set("n", ",a", function() harpoon:list():append() end, { desc = "Harpoon: Append list" })
+
+      vim.keymap.set("n", ",a", function()
+          harpoon:list():append()
+          print("Harpoon: appended " .. vim.fn.expand('%:t'))
+        end,
+        { desc = "Harpoon: Append list" })
 
       -- remember by position 4 files, left right down and up
       vim.keymap.set("n", ",h", function() harpoon:list():select(1) end, { desc = "Harpoon: Select left" })
