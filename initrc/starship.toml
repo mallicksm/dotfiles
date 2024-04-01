@@ -6,7 +6,6 @@ format = """
 $hostname\
 $directory\
 $all\
-$fill\
 $shell\
 $time\
 $line_break\

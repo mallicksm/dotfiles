@@ -3,9 +3,38 @@ return {
   branch = "v3.x",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+    {
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      config = function()
+        require 'nvim-web-devicons'.setup({
+          override_by_extension = {
+            ["f"] = {
+              icon = "⚒️",
+              color = "#6d8086",
+              name = "f"
+            },
+            ["cmm"] = {
+              icon = "⚒️",
+              color = "#89e051",
+              name = "cmm"
+            },
+            ["qel"] = {
+              icon = "󰛓",
+              color = "#e37933",
+              name = "qel"
+            },
+            ["bash"] = {
+              icon = "󱆃",
+              color = "#89e051",
+              cterm_color = "113",
+              name = "bash"
+            },
+          },
+        })
+      end,
+    },
     "MunifTanjim/nui.nvim",
-    "3rd/image.nvim",              -- Optional image support in preview window: See `# Preview Mode` for more information
+    "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
     {
       's1n7ax/nvim-window-picker',
       version = '2.*',
@@ -38,7 +67,7 @@ return {
       { text = "󰌵", texthl = "DiagnosticSignHint" })
 
     require("neo-tree").setup({
-      close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
       popup_border_style = "rounded",
       enable_git_status = true,
       enable_diagnostics = true,
