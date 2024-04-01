@@ -9,9 +9,14 @@ return {
         require 'nvim-web-devicons'.setup({
           override_by_extension = {
             ["f"] = {
-              icon = "⚒️",
-              color = "#6d8086",
+              icon = "",
+              color = "#4285f4",
               name = "f"
+            },
+            ["tdf"] = {
+              icon = "󰃰",
+              color = "#89e051",
+              name = "tdf"
             },
             ["cmm"] = {
               icon = "⚒️",
@@ -67,7 +72,7 @@ return {
       { text = "󰌵", texthl = "DiagnosticSignHint" })
 
     require("neo-tree").setup({
-      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+      close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
       popup_border_style = "rounded",
       enable_git_status = true,
       enable_diagnostics = true,
