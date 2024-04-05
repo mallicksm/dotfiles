@@ -14,12 +14,6 @@ return {
       require("gruvbox").setup(opts) -- calling setup is optional
       -- Load the colorscheme here.
       vim.cmd.colorscheme 'gruvbox'
-
-      -- You can configure highlights by doing something like
-      vim.cmd.hi 'GitSignsCurrentLineBlame gui=bold'
-      vim.cmd.hi 'TablineSel gui=Bold guifg=#a3e512 guibg=NONE'
-      vim.cmd.hi 'Tabline guifg=White guibg=NONE'
-      vim.cmd.hi 'TablineFill guibg=NONE'
     end,
   }
 }

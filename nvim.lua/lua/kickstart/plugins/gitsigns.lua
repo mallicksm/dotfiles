@@ -20,6 +20,9 @@ return {
     },
     config = function(_, opts)
       require('gitsigns').setup(opts)
+
+      -- You can configure highlights by doing something like
+      vim.cmd.hi 'GitSignsCurrentLineBlame gui=bold'
     end,
   },
   vim.keymap.set("n", "<leader>gb", ":Gitsigns toggle_current_line_blame<cr>", { desc = "GitSigns: Setup: Toggle Blame" }),
