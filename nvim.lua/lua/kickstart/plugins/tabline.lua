@@ -7,7 +7,7 @@ return {
       modify_indicator = '[*]',
     })
     vim.cmd.hi 'TablineSel gui=Bold guifg=#a3e512 guibg=NvimDarkGrey4'
-    vim.cmd.hi 'Tabline guifg=White guibg=NvimDarkGrey2'
+    vim.cmd.hi 'Tabline guifg=LightGray guibg=NvimDarkGrey2'
     vim.cmd.hi 'TablineFill guibg=NONE'
     vim.opt.showtabline = 1
   end,
