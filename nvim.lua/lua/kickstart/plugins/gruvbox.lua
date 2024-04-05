@@ -17,6 +17,8 @@ return {
 
       -- You can configure highlights by doing something like
       vim.cmd.hi 'GitSignsCurrentLineBlame gui=bold'
+      vim.cmd.hi 'TablineSel guifg=Bold guifg=White guibg=SeaGreen'
+      vim.cmd.hi 'Tabline guifg=Bold guifg=White guibg=DarkGreen'
     end,
   }
 }
