@@ -21,7 +21,28 @@ return {
   {
     'chentoast/marks.nvim',
     config = function()
-      require("marks").setup({})
+      require("marks").setup({
+        mappings = {
+          next = false,
+          prev = false,
+          toggle = false,
+          set_next = false,
+          delete = '<leader>dm',
+          preview = false,
+          prev_bookmark = false,
+          next_bookmark = false,
+          set_bookmark0 = false,
+          set_bookmark1 = false,
+          set_bookmark2 = false,
+          set_bookmark3 = false,
+          set_bookmark4 = false,
+          set_bookmark5 = false,
+          set_bookmark6 = false,
+          set_bookmark7 = false,
+          set_bookmark8 = false,
+          set_bookmark9 = false,
+        }
+      })
     end
   },
 }

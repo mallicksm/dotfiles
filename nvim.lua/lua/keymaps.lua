@@ -13,8 +13,7 @@ vim.keymap.set('n', '<leader>Q', vim.diagnostic.setloclist, { desc = 'Open diagn
 
 -- Rapid quit keymap
 vim.keymap.set('n', '<leader>x', '<cmd>q!<CR>', { desc = 'Quit without any change saved' })
-vim.keymap.set('n', 'qq', 'q', { desc = 'macro start (prev q)' })
-vim.keymap.set('n', 'q', '<cmd>q<CR>', { desc = 'Quit if no change' })
+vim.keymap.set('n', '<leader>q', '<cmd>q<CR>', { desc = 'Quit if no change' })
 
 -- Keybinds to make split navigation easier.
 --
