@@ -12,11 +12,10 @@ vim.keymap.set('n', '<leader>E', vim.diagnostic.open_float, { desc = 'Show diagn
 vim.keymap.set('n', '<leader>Q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Rapid quit keymap
-vim.keymap.set('n', '<leader>x', '<cmd>q!<CR>', { desc = 'Quit without any change saved' })
-vim.keymap.set('n', '<leader>q', '<cmd>q<CR>', { desc = 'Quit if no change' })
+vim.keymap.set('n', '<leader>x', '<cmd>wqa!<CR>', { desc = 'Quit without any change saved' })
+vim.keymap.set('n', '<leader>q', '<cmd>qa<CR>', { desc = 'Quit if no change' })
 
 -- Keybinds to make split navigation easier.
---
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<leader>h', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<leader>l', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -38,7 +37,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- [[ Basic Filetypes ]]
--- add custom filetypes
+-- add custom similar filetypes
 vim.filetype.add({
   extension = {
     qel = "tcl",

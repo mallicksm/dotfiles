@@ -20,7 +20,7 @@ require('lazy').setup({
   -- Use `opts = {}` to force a plugin to be loaded.
   --
   -- "gc" to comment visual regions/lines
-  -- comment.usage for help on this topic
+  -- :help comment.usage for help on this topic
   {
     'numToStr/Comment.nvim',
     opts = {
@@ -85,14 +85,14 @@ require('lazy').setup({
   ui = {
     -- If you have a Nerd Font, set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons otherwise define a unicode icons table
-    icons = vim.g.have_nerd_font and {} or {
+    icons = {
       cmd = '⌘',
       config = '🛠',
       event = '📅',
       ft = '📂',
       init = '⚙',
       keys = '🗝',
-      plugin = '🔌',
+      plugin = "",
       runtime = '💻',
       require = '🌙',
       source = '📄',
