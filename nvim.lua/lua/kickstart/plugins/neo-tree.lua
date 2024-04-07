@@ -351,5 +351,7 @@ return {
     })
 
     vim.keymap.set("n", "<leader>e", ":Neotree reveal_force_cwd toggle<cr>", { desc = "Neo-tree: File browser toggle" })
+    vim.g.loaded_netrwPlugin = 1
+    vim.g.loaded_netrw = 1
   end
 }

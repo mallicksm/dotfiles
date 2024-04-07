@@ -51,7 +51,7 @@ vim.api.nvim_create_user_command("Filename",
     vim.print(vim.fn.expand('%:p'))
   end, { nargs = 0 })
 
-vim.api.nvim_create_user_command("Explorer",
+vim.api.nvim_create_user_command("Explore",
   function()
     vim.notify("keymap: ,f")
     local builtin = require 'telescope.builtin'
