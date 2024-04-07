@@ -20,11 +20,16 @@ require('lazy').setup({
   -- Use `opts = {}` to force a plugin to be loaded.
   --
   -- "gc" to comment visual regions/lines
+  -- comment.usage for help on this topic
   {
     'numToStr/Comment.nvim',
     opts = {
+      toggler = {
+        line = 'gcc',
+        block = 'gbc',
+      },
       opleader = {
-        line = 'cc',
+        line = '<leader>gc',
         block = '<leader>gb',
       },
       mappings = {

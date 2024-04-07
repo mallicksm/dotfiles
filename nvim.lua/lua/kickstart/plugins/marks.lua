@@ -1,21 +1,8 @@
 --[[ marks help text
     mx              Set mark x
-    m,              Set the next available alphabetical (lowercase) mark
-    m;              Toggle the next available mark at the current line
-    dmx             Delete mark x
-    dm-             Delete all marks on the current line
+    <leader>dmx     Delete mark x
     dm<space>       Delete all marks in the current buffer
-    m]              Move to next mark
-    m[              Move to previous mark
-    m:              Preview mark. This will prompt you for a specific mark to preview; press <cr> to preview the next mark.
-
-    Poor man's harpoon (bookmark)
-    -----------------------------
-    m[0-9]          Add a bookmark from bookmark group[0-9].
-    dm[0-9]         Delete all bookmarks from bookmark group[0-9].
-    m}              Move to the next bookmark having the same type as the bookmark under the cursor. Works across buffers.
-    m{              Move to the previous bookmark having the same type as the bookmark under the cursor. Works across buffers.
-    dm=             Delete the bookmark under the cursor.
+    dm-             Delete all marks on the current line
 --]]
 return {
   {
@@ -23,11 +10,13 @@ return {
     config = function()
       require("marks").setup({
         mappings = {
+          -- changed
+          delete = '<leader>dm',
+          -- nuked
           next = false,
           prev = false,
           toggle = false,
           set_next = false,
-          delete = '<leader>dm',
           preview = false,
           prev_bookmark = false,
           next_bookmark = false,
