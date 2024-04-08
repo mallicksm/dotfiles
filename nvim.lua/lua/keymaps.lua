@@ -12,8 +12,10 @@ vim.keymap.set('n', '<leader>E', vim.diagnostic.open_float, { desc = 'Show diagn
 vim.keymap.set('n', '<leader>Q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Rapid quit keymap
-vim.keymap.set('n', '<leader>x', '<cmd>wqa!<CR>', { desc = 'Quit without any change saved' })
-vim.keymap.set('n', '<leader>q', '<cmd>qa<CR>', { desc = 'Quit if no change' })
+vim.keymap.set('n', 'gq', 'q', { desc = 'Record a macro' })
+vim.keymap.set('n', 'q', '<cmd>q<CR>', { desc = 'Quit if no change' })
+vim.keymap.set('n', '<leader>q', '<cmd>qa<CR>', { desc = 'Quit all if no change' })
+vim.keymap.set('n', '<leader>x', '<cmd>wqa!<CR>', { desc = 'Write quit all and all changes saved' })
 
 -- Keybinds to make split navigation easier.
 --  See `:help wincmd` for a list of all window commands
