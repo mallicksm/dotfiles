@@ -198,7 +198,7 @@ return {
             -- this command supports BASH style brace expansion ("x{a,b,c}" -> xa,xb,xc). see `:h neo-tree-file-actions` for details
             -- some commands may take optional config options, see `:h neo-tree-mappings` for details
             config = {
-              show_path = "none" -- "none", "relative", "absolute"
+              show_path = "relative" -- "none", "relative", "absolute"
             }
           },
           ["A"] = "add_directory", -- also accepts the optional config.show_path option like "add". this also supports BASH style brace expansion.
@@ -207,14 +207,20 @@ return {
           ["y"] = "copy_to_clipboard",
           ["x"] = "cut_to_clipboard",
           ["p"] = "paste_from_clipboard",
-          ["c"] = "copy", -- takes text input for destination, also accepts the optional config.show_path option like "add":
-          -- ["c"] = {
-          --  "copy",
-          --  config = {
-          --    show_path = "none" -- "none", "relative", "absolute"
-          --  }
-          --}
-          ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
+          -- takes text input for destination, also accepts the optional config.show_path option like "add":
+          ["c"] = {
+            "copy",
+            config = {
+              show_path = "none" -- "none", "relative", "absolute"
+            }
+          },
+          -- takes text input for destination, also accepts the optional config.show_path option like "add".
+          ["m"] = {
+            "move",
+            config = {
+              show_path = "none" -- "none", "relative", "absolute"
+            }
+          },
           ["q"] = "close_window",
           ["R"] = "refresh",
           ["?"] = "show_help",
@@ -226,7 +232,7 @@ return {
               local node = state.tree:get_node()
               local path = node:get_id()
               print("Copied to clipboard: " .. path)
-              vim.fn.setreg("+", path, "c")
+              vim.fn.setreg("*", path, "c")
             end,
             desc = "Copy Path to Clipboard",
           },
@@ -272,27 +278,27 @@ return {
         -- instead of relying on nvim autocmd events.
         window = {
           mappings = {
-            ["u"] = "navigate_up",
-            ["<bs>"] = "navigate_up",
-            ["C"] = "set_root",
-            ["."] = "set_root",
-            ["H"] = "toggle_hidden",
-            ["/"] = "fuzzy_finder",
-            ["D"] = "fuzzy_finder_directory",
-            ["#"] = "fuzzy_sorter", -- fuzzy sorting using the fzy algorithm
+            ["u"]     = "navigate_up",
+            ["<bs>"]  = "navigate_up",
+            ["C"]     = "set_root",
+            ["."]     = "set_root",
+            ["H"]     = "toggle_hidden",
+            ["/"]     = "fuzzy_finder",
+            ["D"]     = "fuzzy_finder_directory",
+            ["#"]     = "fuzzy_sorter", -- fuzzy sorting using the fzy algorithm
             -- ["D"] = "fuzzy_sorter_directory",
-            ["f"] = "filter_on_submit",
+            ["f"]     = "filter_on_submit",
             ["<c-x>"] = "clear_filter",
-            ["[g"] = "prev_git_modified",
-            ["]g"] = "next_git_modified",
-            ["o"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },
-            ["oc"] = { "order_by_created", nowait = false },
-            ["od"] = { "order_by_diagnostics", nowait = false },
-            ["og"] = { "order_by_git_status", nowait = false },
-            ["om"] = { "order_by_modified", nowait = false },
-            ["on"] = { "order_by_name", nowait = false },
-            ["os"] = { "order_by_size", nowait = false },
-            ["ot"] = { "order_by_type", nowait = true },
+            ["[g"]    = "prev_git_modified",
+            ["]g"]    = "next_git_modified",
+            ["o"]     = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },
+            ["oc"]    = { "order_by_created", nowait = false },
+            ["od"]    = { "order_by_diagnostics", nowait = false },
+            ["og"]    = { "order_by_git_status", nowait = false },
+            ["om"]    = { "order_by_modified", nowait = false },
+            ["on"]    = { "order_by_name", nowait = false },
+            ["os"]    = { "order_by_size", nowait = false },
+            ["ot"]    = { "order_by_type", nowait = true },
           },
           fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode
             ["<down>"] = "move_cursor_down",
