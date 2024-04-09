@@ -47,10 +47,14 @@ function zm () {
    fi
    num_sessions=$(zellij ls 2>/dev/null | wc -l)
    if [[ ${opt[ZELLIJ_KILL_ALL_SESSIONS]} == "yes" ]]; then
-      zellij ka -y
-      zellij da -y
+      zellij ka -y || true
+      zellij da -y || true
+      # if the above does not work, go turbo
+      local zj=$(ps aux |grep soummya|grep 'zellij --server' |grep -v grep|head -n 1|awk '{print $2}')
+      if [[ $zj != "" ]]; then
+         kill -9 $zj
+      fi
       rm -rf ~/.cache/zellij/
-      echo "Note: check if zellij process exists and kill it"
       return
    fi
    if [[ ! -z ${opt[ZELLIJ_SESSION_NAME]} ]]; then
