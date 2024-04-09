@@ -10,7 +10,7 @@ keybinds clear-defaults=true {
         ToggleFocusFullscreen; 
      }
      // bind F11 to open monocle in a new floating pane and open any results in a new tiled/floating pane
-     bind "F11" {
+     bind "F3" {
          LaunchOrFocusPlugin "file:~/dotfiles/initrc/zellij/plugins/monocle.wasm" {
             floating true
          };
@@ -20,7 +20,7 @@ keybinds clear-defaults=true {
      }
    }
    locked {
-       bind "Ctrl g" "Alt Up" { SwitchToMode "Normal"; }
+       bind "Alt Up" { SwitchToMode "Normal"; }
    }
    resize {
       bind "Ctrl n" { SwitchToMode "Normal"; }
@@ -125,7 +125,7 @@ keybinds clear-defaults=true {
       bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
    }
    session {
-      bind "Ctrl o" { SwitchToMode "Normal"; }
+      bind "Ctrl g" { SwitchToMode "Normal"; }
       bind "Ctrl s" { SwitchToMode "Scroll"; }
       bind "d" { Detach; }
       bind "s" {
@@ -137,7 +137,7 @@ keybinds clear-defaults=true {
       }
    }
    shared_except "locked" {
-      bind "Ctrl g" "Alt Up" { SwitchToMode "Locked"; }
+      bind "Alt Up" { SwitchToMode "Locked"; }
       bind "Ctrl q" { Quit; }
       bind "Alt n" { NewPane; }
       bind "Alt h" { MoveFocusOrTab "Left"; }
@@ -162,7 +162,7 @@ keybinds clear-defaults=true {
       bind "Ctrl s" { SwitchToMode "Scroll"; }
    }
    shared_except "session" "locked" {
-      bind "Ctrl o" { SwitchToMode "Session"; }
+      bind "Ctrl g" { SwitchToMode "Session"; }
    }
    shared_except "tab" "locked" {
       bind "Ctrl t" { SwitchToMode "Tab"; }
@@ -311,11 +311,11 @@ scrollback_editor "nvim"
 
 // The folder in which Zellij will look for layouts
 //
-layout_dir "/users/soummya/dotfiles/initrc/zellij/layouts"
+// layout_dir "/users/soummya/dotfiles/initrc/zellij/layouts"
 
 // The folder in which Zellij will look for themes
 //
-theme_dir "/users/soummya/dotfiles/initrc/zellij/themes"
+// theme_dir "/users/soummya/dotfiles/initrc/zellij/themes"
 
 // Enable or disable the rendering of styled and colored underlines (undercurl).
 // May need to be disabled for certain unsupported terminals
