@@ -73,18 +73,12 @@ function zm () {
       session=$(zellij ls 2>/dev/null | fzf --exit-0 --ansi --height 40% --header 'Enter to open session:') && zellij attach "${session%% *}" || echo "No sessions selected"
    fi
 }
-function zr () { 
-   zellij run --name "$*" -- bash -ic "$*";}
 function zrf () { 
    zellij run --name "$*" --floating -- bash -ic "$*";
 }
 function ze () { 
-   zellij edit "$*";
-}
-function zef () { 
-   zellij edit --floating "$*";
-}
-function zsc () { 
    zellij action edit-scrollback;
 }
-
+function zs () { 
+   zellij action launch-or-focus-plugin -f "zellij:session-manager"
+}
