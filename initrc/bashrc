@@ -1,9 +1,6 @@
 # .bashrc
-# Source Silicon Team bashrc
-# . /opt/tools/bin/silicon_team_bashrc 2>/dev/null
-source /usr/share/lsf/conf/profile.lsf
-# User customization starts here
-source ~/corp_settings.sh 2>/dev/null || echo "Attention: setup ~/corp_settings.sh" 
+source /usr/share/lsf/conf/profile.lsf 2>/dev/null
+source ~/corp_settings.sh
 source ~/dotfiles/bash_functions.sh
 source ~/dotfiles/bash_aliases.sh
 
@@ -29,17 +26,3 @@ export HISTCONTROL="erasedups:ignoredups" HISTSIZE=1000000 HISTFILESIZE=10000000
 export EDITOR=vim
 export IGNOREEOF=1 # use exit to leave shell
 export CDPATH+=.:
-
-# temp modpath
-modpath ~/arm-tools/xpacks/.bin b
-modpath ~/.local/arm-tools/arm-gnu-toolchain-12.3.rel1-x86_64-aarch64-none-elf/bin b
-modpath ~/.local/nvim-macos/bin b
-modpath /opt/tools/bin a
-modpath /opt/si/emu/users/soummya/tools/ads/bin b
-modpath /opt/tools/qnx/7.1/host/linux/x86_64/usr/bin a
-modpath ~/$corp a
-modpath ~/.local/bin a
-# individual latest files
-modpath ~/.local/bin/vim9 b
-modpath ~/.local/bin/git2.36 b
-modpath ~/bin b
