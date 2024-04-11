@@ -22,7 +22,12 @@ if [[ $- == *i* ]]; then
    bind '"\e[D": backward-char'
 fi
 
-export HISTCONTROL="erasedups:ignoredups" HISTSIZE=1000000 HISTFILESIZE=1000000000 HISTIGNORE='pwd:exit:fg:bg:top:clear:history:ls:ll:uptime:df'
-export EDITOR=vim
+export HISTCONTROL=ignoredups:erasedups
+export HISTSIZE=100000
+export HISTFILESIZE=100000
+export HISTTIMEFORMAT="[%h-%d %T] "
+export HISTIGNORE='pwd:exit:fg:bg:top:c:clear::b:.:..:...:....:z:h:history:ls:ll:ld'
+
+export EDITOR=nvim
 export IGNOREEOF=1 # use exit to leave shell
 export CDPATH+=.:

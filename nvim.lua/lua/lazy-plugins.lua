@@ -29,8 +29,8 @@ require('lazy').setup({
         block = 'gbc',
       },
       opleader = {
-        line = '<leader>gc',
-        block = '<leader>gb',
+        line = '<leader>cc',
+        block = '<leader>cb',
       },
       mappings = {
         extra = false,
