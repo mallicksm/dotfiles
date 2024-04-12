@@ -43,7 +43,9 @@ function cd_func () {
    #
    # '~' has to be substituted by ${HOME}
    [[ ${the_new_dir:0:1} == '~' ]] && the_new_dir="${HOME}${the_new_dir:1}"
-   [[ ! -z ${!the_new_dir} ]] && the_new_dir=${!the_new_dir};# handle cdable_vars 
+   if [[  -v ${the_new_dir} ]]; then
+      the_new_dir=${!the_new_dir};# handle cdable_vars 
+   fi
    [[ ! -d $the_new_dir ]] && { echo bash: cd: $the_new_dir: No such file or directory;return 1; }
    #
    # Now change to the new dir and add to the top of the stack

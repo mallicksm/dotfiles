@@ -55,7 +55,7 @@ function linkrc () {
       esac
    done
    command mkdir -p ~/.config
-   pushd ~/.config >/dev/null && rm -rf ./nvim && ln -fs ~/dotfiles/nvim .
+   pushd ~/.config >/dev/null && rm -rf ./nvim && ln -fs ~/dotfiles/nvim.lua nvim
    popd >/dev/null
 }
 function linkup() {
@@ -76,6 +76,8 @@ function zellij() {
       src="https://github.com/zellij-org/zellij/releases/latest/download/zellij-$(uname -m)-unknown-linux-musl.tar.gz"
       target=~/.local/bin/zellij
       [[ ! -f $target ]] && curl -L "$src" | tar -C "$(dirname $target)" -xz
+   elif [[ $(uname -s) == "Darwin" ]]; then
+      brew install zellij
    else
       echo "Attention: no url access or not Linux"
    fi
@@ -91,6 +93,8 @@ function clang-format() {
       src=https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-f4f85437/clang-format-16_linux-amd64
       target=~/.local/bin/clang-format
       [[ ! -f $target ]] && curl -L -s $src -o $target && chmod +x $target
+   elif [[ $(uname -s) == "Darwin" ]]; then
+      brew install clang-format
    else
       echo "Attention: no url access or not Linux"
    fi

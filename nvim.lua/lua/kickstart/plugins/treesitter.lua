@@ -1,6 +1,6 @@
 return {
   { -- Highlight, edit, and navigate code
-    'mallicksm/nvim-treesitter',
+    'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
       ensure_installed = { 'bash', 'c', 'cpp', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'verilog', 'tcl', 'json' },
