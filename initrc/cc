@@ -1,1 +1,2 @@
+# This trick is applied to coerce c99 compiler
 /usr/bin/cc -std=c99 "$@"
