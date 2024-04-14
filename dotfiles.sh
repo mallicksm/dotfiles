@@ -38,13 +38,17 @@ function linkrc () {
          alacritty.yml)
             info "Note: copying to ~/.config/alacritty/$dotfile"
             mkdir -p ~/.config/alacritty
-            rm -rf ~/.config/alacritty/alacritty.yml && linkup $cdir/initrc/$dotfile ~/.config/alacritty/alacritty.yml
+            rm -rf ~/.config/alacritty/alacritty.{yml,toml} && linkup $cdir/initrc/$dotfile ~/.config/alacritty/alacritty.yml
+            linkup $cdir/initrc/alacritty.toml  ~/.config/alacritty/alacritty.toml
             ;;
          svn.*)
             info "Note: copying $dotfile to ~/.subversion/"
             command mkdir -p ~/.subversion
             linkup ${cdir}/initrc/${dotfile} ~/.subversion/${dotfile#*.}
             ;;
+         cc)
+            info "Note: copying $dotfile to ~/.local/bin/c99/"
+            mkdir -p ~/.local/bin/c99 && cp ${cdir}/initrc/${dotfile} ~/.local/bin/c99/
          z.sh|dircolors)
             # skip
             ;;
@@ -54,9 +58,6 @@ function linkrc () {
             ;;
       esac
    done
-   command mkdir -p ~/.config
-   pushd ~/.config >/dev/null && rm -rf ./nvim && ln -fs ~/dotfiles/nvim.lua nvim
-   popd >/dev/null
 }
 function linkup() {
    s=$1 # Source
