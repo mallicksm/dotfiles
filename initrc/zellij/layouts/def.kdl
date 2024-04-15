@@ -58,10 +58,10 @@ layout {
    }
    tab {
       pane split_direction="vertical" {
-         pane focus=true
+         pane focus=true command="bash"
          pane split_direction="horizontal" {
-            pane size="50%"
-            pane size="50%"
+            pane size="50%" command="bash"
+            pane size="50%" command="bash"
          }
       }
    }
