@@ -49,6 +49,7 @@ function linkrc () {
          cc)
             info "Note: copying $dotfile to ~/.local/bin/c99/"
             mkdir -p ~/.local/bin/c99 && cp ${cdir}/initrc/${dotfile} ~/.local/bin/c99/
+            ;;
          z.sh|dircolors)
             # skip
             ;;
