@@ -28,6 +28,6 @@ export HISTFILESIZE=100000
 export HISTTIMEFORMAT="[%h-%d %T] "
 export HISTIGNORE='pwd:exit:fg:bg:top:c:clear::b:.:..:...:....:z:h:history:ls:ll:ld'
 
-export EDITOR=nvim
+export EDITOR=vi
 export IGNOREEOF=1 # use exit to leave shell
 export CDPATH+=.:

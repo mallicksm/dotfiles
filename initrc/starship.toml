@@ -6,13 +6,13 @@ format = """
 $hostname\
 $directory\
 $all\
+$fill\
 $shell\
 $time\
 $line_break\
 $git_branch\
 $git_state\
 $git_status\
-$git_metrics\
 $character"""
 
 # Current line
@@ -38,7 +38,7 @@ error_symbol = '[✗ \$ ](bold red)'
 [hostname]
 ssh_only = false
 format = "[$hostname:]($style)"
-style = "bold red"
+style = "bold #a9c901"
 [directory]
 truncation_length = 0 
 truncate_to_repo = false
@@ -57,8 +57,7 @@ time_range = "-"
 
 # misc
 [fill]
-symbol = " ·"
-style = "black bold dimmed"
+symbol = " "
 [cmd_duration]
 min_time = 3000
 format = "[$duration](bold yellow)"

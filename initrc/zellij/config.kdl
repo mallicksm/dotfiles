@@ -138,7 +138,7 @@ keybinds clear-defaults=true {
    }
    shared_except "locked" {
       bind "Alt Up" { SwitchToMode "Locked"; }
-      bind "Ctrl q" { Quit; }
+      bind "Ctrl Q" { Quit; }
       bind "Alt n" { NewPane; }
       bind "Alt h" { MoveFocusOrTab "Left"; }
       bind "Alt l" { MoveFocusOrTab "Right"; }
@@ -300,7 +300,7 @@ copy_on_select true
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
 //
-scrollback_editor "nvim"
+scrollback_editor "zvim"
 
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)

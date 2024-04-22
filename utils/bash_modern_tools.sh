@@ -9,9 +9,17 @@ function cat() {
    fi
 }
 unalias ll 2> /dev/null
+export LS_COLORS="*.c=31:*.h=32;;01:*.svh=32:*.sv=33;;01:*.tcl=34;;01:*.f=35:*.qel=34:*.v=33:*.tdf=36:*.cmm=37"
+function l() {
+   if command -v exa >/dev/null ; then
+      command exa --color=always --icons --sort=Ext --group-directories-first "$@"
+   else
+      command ls -Fslr --color=auto "$@"
+   fi
+}
 function ll() {
    if command -v exa >/dev/null ; then
-      command exa --long --header -s modified "$@"
+      command exa --long -s modified "$@"
    else
       command ls -Fslr --color=auto "$@"
    fi
@@ -19,7 +27,7 @@ function ll() {
 unalias la 2> /dev/null
 function la() {
    if command -v exa >/dev/null ; then
-      command exa --long --header -s modified -a "$@"
+      command exa --long -s modified -a "$@"
    else
       command ls -Fslra --color=auto "$@"
    fi
