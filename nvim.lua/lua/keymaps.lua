@@ -24,20 +24,6 @@ vim.keymap.set('n', '<leader>l', '<C-w><C-l>', { desc = 'Move focus to the right
 vim.keymap.set('n', '<leader>j', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<leader>k', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
-
 -- [[ Basic Filetypes ]]
 -- add custom similar filetypes
 vim.filetype.add({
@@ -45,35 +31,4 @@ vim.filetype.add({
     qel = "tcl",
   }
 })
-
--- [[ Basic user functions ]]
--- The first argument is the name of the command (which must start with an uppercase letter).
-vim.api.nvim_create_user_command("Filename",
-  function()
-    vim.print(vim.fn.expand('%:p'))
-  end, { nargs = 0 })
-
-vim.api.nvim_create_user_command("Explore",
-  function()
-    vim.notify("keymap: ,f")
-    local builtin = require 'telescope.builtin'
-    builtin.find_files({
-      prompt_title = 'Find Files (<esc> to quit)'
-    })
-  end, { nargs = 0 })
-
-vim.api.nvim_create_user_command("Rg",
-  function()
-    vim.notify("keymap: ,g")
-    local builtin = require 'telescope.builtin'
-    builtin.live_grep({
-      prompt_title = 'Live Grep in Open Files <ESC> to quit',
-    })
-  end, { nargs = 0 })
-
-vim.api.nvim_create_user_command("Git",
-  function()
-    vim.notify("keymap: <leader>gs")
-    vim.cmd('Neogit kind=auto')
-  end, { nargs = 0 })
 -- vim: ts=2 sts=2 sw=2 et

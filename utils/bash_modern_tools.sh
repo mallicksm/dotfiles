@@ -19,7 +19,7 @@ function l() {
 }
 function ll() {
    if command -v exa >/dev/null ; then
-      command exa --long -s modified "$@"
+      command exa --long --header --group -s modified "$@"
    else
       command ls -Fslr --color=auto "$@"
    fi
@@ -27,7 +27,7 @@ function ll() {
 unalias la 2> /dev/null
 function la() {
    if command -v exa >/dev/null ; then
-      command exa --long -s modified -a "$@"
+      command exa --long --header --group -s modified -a "$@"
    else
       command ls -Fslra --color=auto "$@"
    fi

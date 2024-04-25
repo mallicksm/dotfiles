@@ -74,6 +74,7 @@ require('lazy').setup({
   require 'kickstart.plugins.colorizer',
   require 'kickstart.plugins.harpoon',
   require 'kickstart.plugins.tabline',
+  require 'kickstart.plugins.noice',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
