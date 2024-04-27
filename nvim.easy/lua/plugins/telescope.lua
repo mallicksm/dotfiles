@@ -17,10 +17,10 @@ return {
          }
       end, { desc = "Telescope: [e]xplorer" })
       vim.keymap.set('n', ',g', function()
-         builtin.find_files {
+         builtin.live_grep {
             prompt_title = "Grep Files (<esc> to quit)"
          }
-      end, { desc = "Telescope: [e]xplorer" })
+      end, { desc = "Telescope: [g]rep live" })
    end
 }
 -- vim: ts=3 sts=3 sw=3 et

@@ -29,6 +29,4 @@ vim.g.maplocalleader = ' '
 require("options")
 require("keymaps")
 require("lazy-bootstrap")
-require("lazy").setup("plugins")
-
 -- vim: ts=3 sts=3 sw=3 et

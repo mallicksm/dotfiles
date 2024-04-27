@@ -6,10 +6,10 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Rapid quit keymap
-vim.keymap.set('n', 'gq', 'q', { desc = 'Record a macro' })
-vim.keymap.set('n', 'q', '<cmd>q<CR>', { desc = 'Quit if no change' })
-vim.keymap.set('n', '<leader>q', '<cmd>qa<CR>', { desc = 'Quit all if no change' })
-vim.keymap.set('n', '<leader>x', '<cmd>wqa!<CR>', { desc = 'Write quit all and all changes saved' })
+vim.keymap.set('n', 'gq', 'q', { desc = 'Nav: Macro' })
+vim.keymap.set('n', 'q', '<cmd>q<CR>', { desc = 'Nav: Quit if no change' })
+vim.keymap.set('n', '<leader>q', '<cmd>qa<CR>', { desc = 'Nav: Quit all if no change' })
+vim.keymap.set('n', '<leader>x', '<cmd>wqa!<CR>', { desc = 'Nav: Write quit all' })
 
 -- Keybinds to make split navigation easier.
 --  See `:help wincmd` for a list of all window commands
