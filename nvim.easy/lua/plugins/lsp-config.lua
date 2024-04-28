@@ -16,12 +16,13 @@ return {
    {
       "neovim/nvim-lspconfig",
       dependencies = {
-         {"folke/neodev.nvim", opts = {}},
+         { "folke/neodev.nvim", opts = {} },
       },
       config = function()
          local lspconfig = require("lspconfig")
          lspconfig.lua_ls.setup({})
          lspconfig.bashls.setup({})
+         lspconfig.clangd.setup({})
 
          vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
@@ -35,7 +36,6 @@ return {
                map('<leader>rn', vim.lsp.buf.rename, "[R]e[n]ame")
             end,
          })
-
       end,
    },
 }
