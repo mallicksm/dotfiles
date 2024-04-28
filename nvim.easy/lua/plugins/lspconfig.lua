@@ -20,9 +20,10 @@ return {
 		},
 		config = function()
 			local lspconfig = require("lspconfig")
-			lspconfig.lua_ls.setup({})
-			lspconfig.bashls.setup({})
-			lspconfig.clangd.setup({})
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			lspconfig.lua_ls.setup({ capabilities = capabilities })
+			lspconfig.bashls.setup({ capabilities = capabilities })
+			lspconfig.clangd.setup({ capabilities = capabilities })
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
