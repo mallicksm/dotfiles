@@ -30,7 +30,7 @@ return {
 					})
 				end,
 				cwd = "${workspaceFolder}",
-				stopOnEntry = true,
+				stopOnEntry = false,
 				args = {},
 				runInTerminal = false,
 			},
