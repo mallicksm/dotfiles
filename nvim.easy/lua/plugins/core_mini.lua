@@ -36,4 +36,4 @@ return {
       end,
    },
 }
--- vim: ts=2 sts=2 sw=2 et
+-- vim: ts=3 sts=3 sw=3 et

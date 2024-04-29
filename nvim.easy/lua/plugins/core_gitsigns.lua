@@ -31,4 +31,4 @@ return {
    vim.keymap.set('n', '<leader>gu', ':Gitsigns undo_stage_hunk<cr>', { desc = 'GitSigns: Hunk: unstage' }),
    vim.keymap.set('n', '<leader>gS', ':Gitsigns stage_buffer<cr>', { desc = 'GitSigns: Hunk: Stage buffer' }),
 }
--- vim: ts=2 sts=2 sw=2 et
+-- vim: ts=3 sts=3 sw=3 et
