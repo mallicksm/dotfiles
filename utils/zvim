@@ -1,0 +1,4 @@
+#!/bin/bash
+export XDG_CONFIG_HOME=~/dotfiles/
+export NVIM_APPNAME=nvim.easy
+nvim -p "$@"

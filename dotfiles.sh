@@ -70,7 +70,10 @@ function linkup() {
 }
 
 #-------------------------------------------------------------------------------
-#{{{ zellij
+function install_zvim() {
+   ln -sf ~/dotfiles/utils/zvim ~/.local/bin/zvim
+}
+#-------------------------------------------------------------------------------
 function zellij() {
    # https://github.com/muttleyxd/clang-tools-static-binaries
    echo "Info: Installing zellij"
@@ -84,10 +87,8 @@ function zellij() {
       echo "Attention: no url access or not Linux"
    fi
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ clang-format
 function clang-format() {
    # https://github.com/muttleyxd/clang-tools-static-binaries
    echo "Info: Installing clang-format"
@@ -101,10 +102,8 @@ function clang-format() {
       echo "Attention: no url access or not Linux"
    fi
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ getz
 function getz () {
    echo "Info: Installing z"
    if [[ $(curl --head --silent --fail git@github.com) ]]; then
@@ -115,10 +114,8 @@ function getz () {
       echo "Attention: no url access"
    fi
 }
-#}}}
 
 #-------------------------------------------------------------------------------
-#{{{ getstarship
 function getstarship() {
    echo "Info: Installing starship"
    if [[ $(curl --head --silent --fail git@github.com) ]]; then
@@ -130,7 +127,6 @@ function getstarship() {
       echo "Attention: no url access"
    fi
 }
-#}}}
 
 #-------------------------------------------------------------------------------
 function all() {
@@ -139,6 +135,7 @@ function all() {
    getz
    getstarship
    zellij
+   install_zvim
 }
 
 echo "Executing ~/$corp/dotfiles.sh if any.."
