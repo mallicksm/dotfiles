@@ -23,10 +23,10 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ','
 
-require("options")
-require("keymaps")
-require("lazy-bootstrap")
+require('options')
+require('keymaps')
+require('lazy-bootstrap')
 -- vim: ts=3 sts=3 sw=3 et

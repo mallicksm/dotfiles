@@ -7,7 +7,7 @@ return {
    {
       'chentoast/marks.nvim',
       config = function()
-         require('marks').setup {
+         require('marks').setup({
             mappings = {
                -- nuked
                set_next = false,
@@ -62,7 +62,7 @@ return {
                prev_bookmark8 = false,
                prev_bookmark9 = false,
             },
-         }
+         })
       end,
    },
 }
