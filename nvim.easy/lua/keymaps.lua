@@ -18,11 +18,4 @@ vim.keymap.set('n', '<leader>l', '<C-w><C-l>', { desc = 'Nav: right window' })
 vim.keymap.set('n', '<leader>j', '<C-w><C-j>', { desc = 'Nav: lower window' })
 vim.keymap.set('n', '<leader>k', '<C-w><C-k>', { desc = 'Nav: upper window' })
 
--- [[ Basic Filetypes ]]
--- add custom similar filetypes
-vim.filetype.add({
-   extension = {
-      qel = 'tcl',
-   },
-})
 -- vim: ts=3 sts=3 sw=3 et
