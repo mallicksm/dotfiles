@@ -4,6 +4,15 @@ return {
       require('lualine').setup({
          options = {
             theme = 'dracula',
+            disabled_filetypes = {
+               statusline = { "neo-tree" },
+            },
+         },
+         sections = {
+            lualine_x = { "fileformat", "filetype" }
+         },
+         inactive_sections = {
+            lualine_c = { { "filename", path = 1 } },
          },
       })
    end,
