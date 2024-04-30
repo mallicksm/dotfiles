@@ -5,7 +5,11 @@ return {
          options = {
             theme = 'dracula',
             disabled_filetypes = {
-               statusline = { "neo-tree" },
+               statusline = {
+                  "neo-tree",
+                  "undotree",
+                  "diff",
+               },
             },
          },
          sections = {
