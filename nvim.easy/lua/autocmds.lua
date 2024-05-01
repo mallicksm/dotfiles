@@ -2,9 +2,9 @@
 --  See `:help lua-guide-autocommands`
 
 -- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
+  --  Try it with `yap` in normal mode
+  --  See `:help vim.highlight.on_yank()`
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
@@ -30,16 +30,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
--- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = vim.api.nvim_create_augroup('checktime', { clear = true }),
-  callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
-    end
-  end,
-})
-
 -- [[ Basic user functions ]]
 -- The first argument is the name of the command (which must start with an uppercase letter).
 vim.api.nvim_create_user_command("Filename",
@@ -49,7 +39,6 @@ vim.api.nvim_create_user_command("Filename",
 
 vim.api.nvim_create_user_command("Explore",
   function()
-    vim.notify("keymap: ,f")
     local builtin = require 'telescope.builtin'
     builtin.find_files({
       prompt_title = 'Find Files (<esc> to quit)'
@@ -58,7 +47,6 @@ vim.api.nvim_create_user_command("Explore",
 
 vim.api.nvim_create_user_command("Rg",
   function()
-    vim.notify("keymap: ,g")
     local builtin = require 'telescope.builtin'
     builtin.live_grep({
       prompt_title = 'Live Grep in Open Files <ESC> to quit',
@@ -67,8 +55,6 @@ vim.api.nvim_create_user_command("Rg",
 
 vim.api.nvim_create_user_command("Git",
   function()
-    vim.notify("keymap: <leader>gs")
     vim.cmd('Neogit kind=auto')
   end, { nargs = 0 })
-
 -- vim: ts=2 sts=2 sw=2 et

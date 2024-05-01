@@ -14,6 +14,7 @@ return {
          terminal_colors = true,
       })
       vim.cmd.colorscheme('gruvbox')
+      vim.api.nvim_set_hl(0, "NoiceVirtualText", { fg = "yellow" })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
