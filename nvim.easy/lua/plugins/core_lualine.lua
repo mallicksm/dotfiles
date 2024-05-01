@@ -28,7 +28,7 @@ return {
             },
          },
          sections = {
-            lualine_x = { clients_lsp, "fileformat", "filetype" },
+            lualine_x = { "fileformat", clients_lsp, "filetype" },
          },
          inactive_sections = {
             lualine_c = { { "filename", path = 1 } },
