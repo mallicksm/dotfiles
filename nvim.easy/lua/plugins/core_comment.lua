@@ -8,8 +8,8 @@ return {
          block = 'gbc',
       },
       opleader = {
-         line = '<leader>cc',
-         block = '<leader>cb',
+         line = 'gc',
+         block = 'gb',
       },
       mappings = {
          extra = false,
