@@ -57,4 +57,4 @@ vim.api.nvim_create_user_command("Git",
   function()
     vim.cmd('Neogit kind=auto')
   end, { nargs = 0 })
--- vim: ts=2 sts=2 sw=2 et
+-- vim: ts=3 sts=3 sw=3 et
