@@ -24,6 +24,7 @@ return {
                   "neo-tree",
                   "undotree",
                   "diff",
+                  "aerial",
                },
             },
          },
