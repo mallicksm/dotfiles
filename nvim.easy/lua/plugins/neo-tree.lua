@@ -42,9 +42,10 @@ return {
       '3rd/image.nvim',
    },
    config = function()
+      local ntwidth = 35
       require('neo-tree').setup({
          window = {
-            width = 35,
+            width = ntwidth,
             mappings = {
                ['s'] = 'open_split',
                ['v'] = 'open_vsplit',
@@ -67,8 +68,8 @@ return {
                   if node:get_depth() == 1 then
                      local path = node:get_id()
                      local pathlen = string.len(path)
-                     if pathlen > 35 then
-                        name.text = '..' .. string.sub(path, pathlen - 25)
+                     if pathlen > (ntwidth - 8) then
+                        name.text = '..' .. string.sub(path, pathlen - (ntwidth - 8))
                      end
                      name.text = name.text
                   end
@@ -83,7 +84,19 @@ return {
             },
          },
       })
-      vim.keymap.set('n', '<leader>e', ':Neotree reveal_force_cwd toggle<cr>', { desc = 'Neo-tree: File browser toggle' })
+      vim.keymap.set('n', '<leader>e', function()
+         require('neo-tree.command').execute({
+            action = 'focus',
+            source = 'filesystem',
+            position = 'left',
+            reveal_force_cwd = true,
+         })
+         --[[ auto execute ot which is order by type ]]
+         local state = require('neo-tree.sources.manager').get_state("filesystem")
+         require('neo-tree.sources.common.commands').order_by_type(state)
+      end, { desc = 'Neo-tree: File browser toggle' })
+      vim.keymap.set('n', '<leader>b', ':Neotree toggle show buffers right<cr>',
+         { desc = 'Neo-tree: Buffer browser toggle' })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
