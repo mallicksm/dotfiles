@@ -44,7 +44,7 @@ return {
    config = function()
       require('neo-tree').setup({
          window = {
-            width = 40,
+            width = 35,
             mappings = {
                ['s'] = 'open_split',
                ['v'] = 'open_vsplit',
@@ -60,6 +60,21 @@ return {
             },
          },
          filesystem = {
+            components = {
+               --[[ truncate neo-tree header ]]
+               name = function(config, node, state)
+                  local name = require('neo-tree.sources.common.components').name(config, node, state)
+                  if node:get_depth() == 1 then
+                     local path = node:get_id()
+                     local pathlen = string.len(path)
+                     if pathlen > 35 then
+                        name.text = '..' .. string.sub(path, pathlen - 25)
+                     end
+                     name.text = name.text
+                  end
+                  return name
+               end,
+            },
             window = {
                mappings = {
                   ['u'] = 'navigate_up',
