@@ -89,6 +89,7 @@ return {
             action = 'focus',
             source = 'filesystem',
             position = 'left',
+            toggle = true,
             reveal_force_cwd = true,
          })
          --[[ auto execute ot which is order by type ]]
