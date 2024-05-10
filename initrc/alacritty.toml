@@ -60,14 +60,9 @@ key = "C"
 mods = "Control|Shift"
 
 [[keyboard.bindings]]
-chars = "\u001Bc"
-key = "C"
-mods = "Alt"
-
-[[keyboard.bindings]]
 action = "Quit"
 key = "Q"
-mods = "Control"
+mods = "Control|Shift"
 
 [[keyboard.bindings]]
 action = "SpawnNewInstance"
@@ -110,7 +105,7 @@ multiplier = 3
 save_to_clipboard = true
 
 [window]
-opacity = 0.94
+opacity = 0.985
 
 [window.dimensions]
 columns = 140
