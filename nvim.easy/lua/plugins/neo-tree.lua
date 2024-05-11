@@ -96,8 +96,15 @@ return {
          local state = require('neo-tree.sources.manager').get_state("filesystem")
          require('neo-tree.sources.common.commands').order_by_type(state)
       end, { desc = 'Neo-tree: File browser toggle' })
-      vim.keymap.set('n', '<leader>b', ':Neotree toggle show buffers right<cr>',
-         { desc = 'Neo-tree: Buffer browser toggle' })
+      vim.keymap.set('n', '<leader>b', function()
+         require('neo-tree.command').execute({
+            action = 'show',
+            source = 'buffers',
+            position = 'right',
+            toggle = true,
+            reveal_force_cwd = true,
+         })
+      end, { desc = 'Neo-tree: Buffer browser toggle' })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et

@@ -120,7 +120,7 @@ font:
     family: FiraCode Nerd Font
 
     # The `style` can be specified to pick a specific face.
-    #style: Regular
+    style: Regular
 
   # Bold font face
   bold:
@@ -131,7 +131,7 @@ font:
     family: FiraCode Nerd Font
 
     # The `style` can be specified to pick a specific face.
-    #style: Bold
+    style: Bold
 
   # Italic font face
   italic:
@@ -142,7 +142,7 @@ font:
     family: FiraCode Nerd Font
 
     # The `style` can be specified to pick a specific face.
-    #style: Italic
+    style: Italic
 
   # Bold italic font face
   bold_italic:
@@ -153,7 +153,7 @@ font:
     family: FiraCode Nerd Font
 
     # The `style` can be specified to pick a specific face.
-    #style: Bold Italic
+    style: Bold Italic
 
   # Point size
   size: 14.0
@@ -769,10 +769,11 @@ mouse_bindings:
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
 key_bindings:
-  - { key: V,         mods: Control|Shift,       action: Paste                 }
+  - { key: U,         mods: Control|Shift,       action: Paste                 }
+  - { key: V,         mods: Control|Shift,       action: PasteSelection        }
   - { key: C,         mods: Control|Shift,       action: Copy                  }
   - { key: Q,         mods: Control|Shift,       action: Quit                  }
-  - { key: N,         mods: Control,             action: SpawnNewInstance      }
+  - { key: N,         mods: Control|Shift,       action: SpawnNewInstance      }
   - { key: Return,    mods: Control,             action: ToggleFullscreen      }
   - { key: Key0,      mods: Control,             action: ResetFontSize         }
   - { key: Equals,    mods: Control,             action: IncreaseFontSize      }

@@ -35,15 +35,19 @@ size = 14.0
 
 [font.bold]
 family = "FiraCode Nerd Font"
+style = "Bold"
 
 [font.bold_italic]
 family = "FiraCode Nerd Font"
+style = "Bold Italic"
 
 [font.italic]
 family = "FiraCode Nerd Font"
+style = "Italic"
 
 [font.normal]
 family = "FiraCode Nerd Font"
+style = "Regular"
 
 [font.offset]
 x = 0
@@ -51,6 +55,11 @@ y = 0
 
 [[keyboard.bindings]]
 action = "Paste"
+key = "U"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "PasteSelection"
 key = "V"
 mods = "Control|Shift"
 
@@ -67,7 +76,7 @@ mods = "Control|Shift"
 [[keyboard.bindings]]
 action = "SpawnNewInstance"
 key = "N"
-mods = "Control"
+mods = "Control|Shift"
 
 [[keyboard.bindings]]
 action = "ToggleFullscreen"

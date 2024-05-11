@@ -1,0 +1,81 @@
+{
+   "item header": {
+      "prefix": ["header"],
+      "body": [
+         "#===============================================================================",
+         "# Makefile",
+         "# Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+         "# Author: ${VIM:\\$USER}",
+         "#",
+         "# Note:",
+         "#   \\$(function arg2,arg2..) - % pat wildcard",
+         "#",
+         "# Description: ${1:Description}",
+         "#",
+         "#===============================================================================",
+         "SHELL = bash",
+         ".ONESHELL:",
+         ".SHELLFLAGS := -eu -o pipefail -c",
+         ".DELETE_ON_ERROR:",
+         "MAKEFLAGS += --warn-undefined-variables",
+         "MAKEFLAGS += --no-builtin-rules",
+         ".DEFAULT_GOAL := all",
+         "$0"
+      ],
+      "description": "Code snippet for 'trigger' statement"
+   },
+   "item phony": {
+      "prefix": ["phony", "phoney"],
+      "body": [".PHONY: ${1:target}", "$0"],
+      "description": "Code snippet for 'phony' statement"
+   },
+   "item default_goal": {
+      "prefix": ["default_goal", "default"],
+      "body": [".DEFAULT_GOAL := ${1:all}", "$0"],
+      "description": "Code snippet for 'default_goal' statement"
+   },
+   "item include": {
+      "prefix": ["include"],
+      "body": ["-include ${1:include_file}"],
+      "description": "Code snippet for 'include' statement"
+   },
+   "item vpath": {
+      "prefix": ["vpath"],
+      "body": ["VPATH = ${1:dir1} ${2:dir2}"],
+      "}description": "Code snippet for 'vpath' statement"
+   },
+   "help": {
+      "prefix": "help",
+      "body": [
+         "help: ## Prints help for targets with comments",
+         "\t@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = \":.*?## \"}; {printf \"\\033[36m%-30s\\033[0m %s\\n\", $\\$1, $\\$2}'"
+      ],
+      "description": "help target for self-documented Makefile"
+   },
+   "if statement": {
+      "prefix": "if",
+      "body": ["ifeq (${1:cond0}, ${2:cond1})", "\t$0", "endif"],
+      "description": "if statement"
+   },
+   "print": {
+      "prefix": "print",
+      "body": ["print-%: ; @echo $*=$($*)"],
+      "description": "print"
+   },
+   "if else statement": {
+      "prefix": "ife",
+      "body": [
+         "ifeq (${1:cond0}, ${2:cond1})",
+         "\t$3",
+         "else",
+         "\t$4",
+         "endif"
+      ],
+      "description": "if else statement"
+   },
+   "else": {
+      "prefix": "el",
+      "body": ["else", "\t$0"],
+      "description": "else"
+   }
+}

@@ -5,9 +5,22 @@ return {
       'hrsh7th/cmp-buffer',
    },
    {
-      'L3MON4D3/LuaSnip',
+      'hrsh7th/cmp-vsnip',
       dependencies = {
-         'saadparwaiz1/cmp_luasnip',
+         'hrsh7th/vim-vsnip',
+         config = function()
+            vim.g.vsnip_snippet_dir = '$HOME/dotfiles/snippets/vsnip_snippets'
+            vim.g.vsnip_filetypes = {
+               systemverilog = { 'verilog_ixcom' },
+               sh = { 'sh_expansion' },
+               tcl = { 'tcl_expansion' },
+               qel = { 'tcl' },
+            }
+            vim.cmd [[
+               imap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>'
+               imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
+            ]]
+         end,
       },
    },
    {
@@ -15,13 +28,10 @@ return {
       event = 'InsertEnter',
       config = function()
          local cmp = require('cmp')
-         require('luasnip.loaders.from_vscode').lazy_load({
-            paths = '~/dotfiles/snippets/vscode_snippets',
-         })
          cmp.setup({
             snippet = {
                expand = function(args)
-                  require('luasnip').lsp_expand(args.body)
+                  vim.fn["vsnip#anonymous"](args.body)
                end,
             },
             window = {
@@ -37,9 +47,9 @@ return {
             }),
             sources = cmp.config.sources({
                { name = 'nvim_lsp' },
-               { name = 'luasnip' },
+               { name = 'vsnip' },
                { name = 'path' },
-               { name = 'buffer', keyword_length = 5 },
+               { name = 'buffer',  keyword_length = 5 },
             }, {}),
          })
       end,

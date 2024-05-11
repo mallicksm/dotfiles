@@ -1,0 +1,100 @@
+{
+   "item stderr to /dev/null": {
+      "prefix": ["2"],
+      "body": "2>/dev/null",
+      "description": "2>/dev/null"
+   },
+   "item stdout to /dev/null": {
+      "prefix": ["1"],
+      "body": ">/dev/null",
+      "description": ">/dev/null"
+   },
+   "item stdout & stderr to /dev/null": {
+      "prefix": ["12"],
+      "body": ">/dev/null 2>&1",
+      "description": ">/dev/null 2>&1"
+   },
+   "item hash": {
+      "prefix": ["hash"],
+      "body": [
+         "declare -A ${1:hashname}",
+         "${1}=(",
+         "   [${2:key}]=\"${3:value}\"",
+         ")"
+      ],
+      "description": "Code snippet for 'hash' statement"
+   },
+   "expr": {
+     "prefix": ["expr"],
+     "body": "expr ${0:1 + 1}",
+     "description": "Calculate numbers with Bash."
+   },
+   "item var": {
+      "prefix": ["var"],
+      "body": [
+         "\\${var${1|#->globPattern,%globPattern<-,/glob/replace,:-default_value|}}"
+      ],
+      "description": "Code snippet for 'var' statement"
+   },
+   "file": {
+     "prefix": ["file"],
+     "body": [
+       "input=\"${1:/path/to/txt/file}\"",
+       "while IFS= read -r line; do",
+       "   echo \"\\$line\"",
+       "done < \"\\$input\""
+     ]
+   },
+   "item Cat to file": {
+      "prefix": ["cat"],
+      "body": [
+         "cat <<-EOF ${1:>/path/to/file}",
+         "   $2",
+         "EOF"
+      ],
+      "description": "cat... EOF"
+   },
+   "item Shorthand if..then..else": {
+      "prefix": ["ite"],
+      "body": "[[ ${1:condition} ]] && ${2:echo \"true\"} || ${3:echo \"false\"}",
+      "description": "[[ ]] && true || false"
+   },
+   "item time": {
+      "prefix": ["time"],
+      "body": [
+         "time=\\$(date +%H-%M-%S)"
+      ],
+      "description": "Code snippet for 'time' statement"
+   },
+   "item date": {
+      "prefix": ["date"],
+      "body": [
+         "date=\\$(date +\"%b-%d-%y_%H%M%p\")"
+      ],
+      "description": "Code snippet for 'date' statement"
+   },
+   "print": {
+     "prefix": ["print"],
+     "body": [
+       "print \"${1|RED,BLUE,GREEN,YELLOW,WHITE|}\" \"${2:Hello World}\""
+     ]
+   },
+   "error": {
+     "prefix": ["error"],
+     "body": [
+       "${1|info,warn,error,completed|} \"${2:file not found}\""
+     ]
+   },
+   "download": {
+     "prefix": ["download"],
+     "body": [
+       "download \"${1:file}\" \"${2:url}\""
+     ]
+   },
+   "tempfile": {
+     "prefix": ["tempfile"],
+     "body": [
+       "tempfile=\\$(tempfile)"
+     ]
+   }
+}

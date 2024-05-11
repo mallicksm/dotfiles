@@ -1,3 +1,4 @@
+unalias vi 2>/dev/null
 function vi () {
    _XDG_CONFIG_HOME=$XDG_CONFIG_HOME
    _NVIM_APPNAME=$NVIM_APPNAME
