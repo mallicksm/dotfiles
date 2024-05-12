@@ -23,9 +23,7 @@
    },
    "item instance": {
       "prefix": ["instance"],
-      "body": [
-         "INSTANCE inst1;"
-      ],
+      "body": ["INSTANCE inst1;"],
       "description": "instance"
    },
    "item state": {
@@ -58,51 +56,42 @@
          "}"
       ],
       "description": "Code snippet for if-else-if"
-   },"item counter": {
+   },
+   "item counter": {
       "prefix": ["counter"],
       "body": [
          "${1|COUNTER1,COUNTER2|} ${2|<=,>|} ${3:<value>}"
       ],
       "description": "Code snippet for 'counter' statement"
-   },"item load": {
+   },
+   "item load": {
       "prefix": ["load"],
-      "body": [
-         "LOAD ${1|COUNTER1,COUNTER2|} ${2:<value>}"
-      ],
+      "body": ["LOAD ${1|COUNTER1,COUNTER2|} ${2:<value>}"],
       "description": "Code snippet for 'load' statement"
    },
    "item signal alias": {
       "prefix": ["alias"],
-      "body": [
-         "${1:alias} = ${2:signal_instpath};"
-      ],
+      "body": ["${1:alias} = ${2:signal_instpath};"],
       "description": "Code snippet for 'trigger' statement"
-   },"item exec": {
+   },
+   "item exec": {
       "prefix": ["exec"],
-      "body": [
-         "EXEC \"${1:qel_command}\";"
-      ],
+      "body": ["EXEC \"${1:qel_command}\";"],
       "description": "Code snippet for 'exec' statement"
    },
    "item tick define": {
       "prefix": ["define"],
-      "body": [
-         "`define ${1:name} ${1:string}"
-      ],
+      "body": ["`define ${1:name} ${1:string}"],
       "description": "Code snippet for tick define"
    },
    "item tick include": {
       "prefix": ["include"],
-      "body": [
-         "`include \"${1:global.tdf}\""
-      ],
+      "body": ["`include \"${1:global.tdf}\""],
       "description": "Code snippet for tick include"
    },
    "item single line trigger": {
       "prefix": ["trigger"],
-      "body": [
-         "TRIGGER = ${1:signal-name};"
-      ],
+      "body": ["TRIGGER = ${1:signal-name};"],
       "description": "Code snippet for single line trigger"
    },
    "item display statement": {

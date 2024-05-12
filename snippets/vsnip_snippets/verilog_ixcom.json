@@ -15,15 +15,15 @@
       "description": "Code snippet for 'map-delays' statement"
    },
    "item map-bc": {
-     "prefix": ["map-bc"],
-     "body": [
-       "`ifdef IXCOM_COMPILE",
-       "    _ixc_clkgen ixc_clkgen();",
-       "    initial \\$ixc_ctrl(\"map_bc\");",
-       "    initial \\$ixc_ctrl(\"tb_import\",\"\\$display\");",
-       "    initial \\$ixc_ctrl(\"tb_import\",\"\\$stop\");",
-       "`endif"
-     ]
+      "prefix": ["map-bc"],
+      "body": [
+         "`ifdef IXCOM_COMPILE",
+         "    _ixc_clkgen ixc_clkgen();",
+         "    initial \\$ixc_ctrl(\"map_bc\");",
+         "    initial \\$ixc_ctrl(\"tb_import\",\"\\$display\");",
+         "    initial \\$ixc_ctrl(\"tb_import\",\"\\$stop\");",
+         "`endif"
+      ]
    },
    "item tran": {
       "prefix": ["tran"],

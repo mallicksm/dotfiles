@@ -22,7 +22,9 @@
    },
    "item cpreprocessor": {
       "prefix": ["cpreprocessor", "cpreproc"],
-      "body": ["#! armclang --target=arm-arm-non-eabi -march=armv8-a -E -x c"],
+      "body": [
+         "#! armclang --target=arm-arm-non-eabi -march=armv8-a -E -x c"
+      ],
       "description": "Code snippet for 'cpreprocessor' statement"
    },
    "item template": {

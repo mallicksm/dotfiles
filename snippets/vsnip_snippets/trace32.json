@@ -1,9 +1,7 @@
 {
    "item hll": {
       "prefix": ["hll"],
-      "body": [
-         "mode.hll"
-      ],
+      "body": ["mode.hll"],
       "description": "Code snippet for 'hll' statement"
    },
    "item if": {
@@ -30,9 +28,7 @@
    },
    "print": {
       "prefix": ["print"],
-      "body": [
-         "print \"Hello world\""
-      ]
+      "body": ["print \"Hello world\""]
    },
    "gosub": {
       "prefix": ["gosub"],
@@ -49,6 +45,5 @@
          "",
          "return &return_value"
       ]
-  }
-   
+   }
 }

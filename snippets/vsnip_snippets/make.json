@@ -54,7 +54,11 @@
    },
    "if statement": {
       "prefix": "if",
-      "body": ["ifeq (${1:cond0}, ${2:cond1})", "\t$0", "endif"],
+      "body": [
+         "ifeq (${1:cond0}, ${2:cond1})",
+         "\t$0",
+         "endif"
+      ],
       "description": "if statement"
    },
    "print": {

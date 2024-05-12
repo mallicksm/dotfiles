@@ -39,7 +39,10 @@
    },
    "item for": {
       "prefix": ["for"],
-      "body": ["for ${1:target_list} in ${2:expression_list}:", "   ${3:pass}"],
+      "body": [
+         "for ${1:target_list} in ${2:expression_list}:",
+         "   ${3:pass}"
+      ],
       "description": "Code snippet for a for loop"
    },
    "try/except": {
@@ -54,7 +57,12 @@
    },
    "try/finally": {
       "prefix": "try/finally",
-      "body": ["try:", "\t${1:pass}", "finally:", "\t${2:pass}"],
+      "body": [
+         "try:",
+         "\t${1:pass}",
+         "finally:",
+         "\t${2:pass}"
+      ],
       "description": "Code snippet for a try/finally statement"
    },
    "try/except/else": {
@@ -97,7 +105,10 @@
    },
    "def(class method)": {
       "prefix": "def class method",
-      "body": ["def ${1:funcname}(self, ${2:parameter_list}):", "\t${3:pass}"],
+      "body": [
+         "def ${1:funcname}(self, ${2:parameter_list}):",
+         "\t${3:pass}"
+      ],
       "description": "Code snippet for a class method"
    },
    "def(static class method)": {
@@ -119,22 +130,33 @@
    },
    "lambda": {
       "prefix": "lambda",
-      "body": ["lambda ${1:parameter_list}: ${2:expression}"],
+      "body": [
+         "lambda ${1:parameter_list}: ${2:expression}"
+      ],
       "description": "Code snippet for a lambda statement"
    },
    "if(main)": {
       "prefix": "__main__",
-      "body": ["if __name__ == \"__main__\":", "    ${1:pass}"],
+      "body": [
+         "if __name__ == \"__main__\":",
+         "    ${1:pass}"
+      ],
       "description": "Code snippet for a `if __name__ == \"__main__\": ...` block"
    },
    "async/def": {
       "prefix": "async/def",
-      "body": ["async def ${1:funcname}(${2:parameter_list}):", "\t${3:pass}"],
+      "body": [
+         "async def ${1:funcname}(${2:parameter_list}):",
+         "\t${3:pass}"
+      ],
       "description": "Code snippet for an async statement"
    },
    "async/for": {
       "prefix": "async/for",
-      "body": ["async for ${1:target} in ${2:iter}:", "\t${3:block}"],
+      "body": [
+         "async for ${1:target} in ${2:iter}:",
+         "\t${3:block}"
+      ],
       "description": "Code snippet for an async for statement"
    },
    "async/for/else": {
@@ -149,7 +171,10 @@
    },
    "async/with": {
       "prefix": "async/with",
-      "body": ["async with ${1:expr} as ${2:var}:", "\t${3:block}"],
+      "body": [
+         "async with ${1:expr} as ${2:var}:",
+         "\t${3:block}"
+      ],
       "description": "Code snippet for an async with statement"
    },
    "add/new/cell": {
