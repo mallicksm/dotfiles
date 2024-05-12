@@ -11,17 +11,18 @@
          "//",
          "// Description: ${1:Description}",
          "//",
-         "//============================================================================="
+         "//=============================================================================",
+         "${0}"
       ],
       "description": "insert header code"
    },
-   "item module":{
+   "item module": {
       "prefix": ["module"],
       "body": [
          "module $TM_FILENAME_BASE i_$TM_FILENAME_BASE (",
-            "   ${1:/* statements */}",
-            ");",
-            "\nendmodule // $TM_FILENAME_BASE"
+         "   ${1:/* statements */};",
+         ");",
+         "\nendmodule // $TM_FILENAME_BASE"
       ],
       "description": "Code snippet for module"
    },
@@ -29,7 +30,7 @@
       "prefix": ["if"],
       "body": [
          "if ($1) begin",
-         "   ${1:/* statements */}",
+         "   ${2:/* statements */};",
          "end"
       ],
       "description": "Code snippet for if statement"
@@ -38,10 +39,10 @@
       "prefix": ["if-else", "ife"],
       "body": [
          "if ($1) begin",
-         "   ${2:/* statements */}",
+         "   ${2:/* statements */};",
          "end",
          "else begin",
-         "   ${3:/* statements */}",
+         "   ${3:/* statements */};",
          "end"
       ],
       "description": "Code snippet for if else statement"
@@ -52,7 +53,6 @@
          "case $1",
          "   ${1:/* statements */}",
          "endcase"
-
       ],
       "description": "Code snippet for case statement"
    },
@@ -76,23 +76,19 @@
    },
    "item input": {
       "prefix": ["input"],
-      "body": [
-         "input  ${1|wire,reg|} $0"
-      ],
+      "body": ["input  ${1|wire,reg|} $0;"],
       "description": "Code snippet for INPUT statement"
    },
    "item output": {
       "prefix": ["output"],
-      "body": [
-         "output ${1|wire,reg|} $0"
-      ],
+      "body": ["output ${1|wire,reg|} ${0};"],
       "description": "Code snippet for output statement"
    },
    "item begin": {
       "prefix": ["begin"],
       "body": [
          "begin",
-         "   ${1:/* statements */}",
+         "   ${1:/* inside statements */};",
          "end"
       ],
       "description": "Code snippet for begin statement"
