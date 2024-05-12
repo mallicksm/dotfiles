@@ -2,16 +2,13 @@ return {
    -- lazy.nvim
    "folke/noice.nvim",
    event = "VeryLazy",
-   opts = {
-      -- add any options here
-   },
    dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      -- "rcarriga/nvim-notify",
+      "rcarriga/nvim-notify",
    },
    config = function()
       require("noice").setup({
@@ -31,19 +28,13 @@ return {
             inc_rename = false,           -- enables an input dialog for inc-rename.nvim
             lsp_doc_border = false,       -- add a border to hover docs and signature help
          },
-         routes = {
-            {
-               filter = {
-                  event = 'msg_show',
-                  any = {
-                     { find = '%d+L, %d+B' },
-                     { find = '; after #%d+' },
-                     { find = '; before #%d+' },
-                  },
-               },
-               view = 'mini',
-            },
-         },
+         messages = {
+            view = "messages",
+            view_error = "notify",
+            view_warn = "notify",
+            view_history = "messages",
+            view_search = "virtualtext",
+         }
       })
    end
 }
