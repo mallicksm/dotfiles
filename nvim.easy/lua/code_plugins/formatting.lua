@@ -15,6 +15,7 @@ return {
                json = { 'prettier' },
                c = { 'clang_format' },
             },
+            notify_on_error = false,
             format_on_save = function(bufnr)
                local disable_filetypes = { c = true, cpp = true, json = false, lua = false }
                return {

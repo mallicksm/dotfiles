@@ -13,7 +13,7 @@ return {
                set_next = false,
                toggle = false,
                delete_line = false,
-               delete_buf = false,
+               -- delete_buf = false,
                next = false,
                prev = false,
                preview = false,

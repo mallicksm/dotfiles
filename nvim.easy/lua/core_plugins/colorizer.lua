@@ -1,3 +1,9 @@
+--[[ Colorizes visually ]]
+
+--red   #ff0000
+--green #00ff00
+--blue  #0000ff
+
 return {
    {
       'norcalli/nvim-colorizer.lua',
