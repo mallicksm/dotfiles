@@ -26,15 +26,52 @@ return {
             command_palette = true,       -- position the cmdline and popupmenu together
             long_message_to_split = true, -- long messages will be sent to a split
             inc_rename = false,           -- enables an input dialog for inc-rename.nvim
-            lsp_doc_border = false,       -- add a border to hover docs and signature help
+            lsp_doc_border = true,        -- add a border to hover docs and signature help
          },
          messages = {
-            view = "messages",
+            enabled = true,
+            view = "notify",
             view_error = "notify",
             view_warn = "notify",
             view_history = "messages",
             view_search = "virtualtext",
-         }
+         },
+         routes = {
+            {
+               --[[ suppress all "written" messages ]]
+               filter = {
+                  event = "msg_show",
+                  kind = { "" },
+                  any = {
+                     { find = "written" },
+                  },
+               },
+               opts = { skip = true },
+            },
+            {
+               --[[ redirect annoying messages to mini ]]
+               filter = {
+                  event = "msg_show",
+                  any = {
+                     { find = '%d+L, %d+B' },
+                     { find = '; after #%d+' },
+                     { find = '; before #%d+' },
+                  },
+               },
+               view = "mini",
+            },
+            {
+               --[[ only Push "User: " output to messages ]]
+               filter = {
+                  event = "msg_show",
+                  kind = { "" },
+                  any = {
+                     { find = "User: " },
+                  },
+               },
+               view = "messages",
+            },
+         },
       })
    end
 }
