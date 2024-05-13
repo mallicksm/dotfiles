@@ -99,8 +99,13 @@ key = "Minus"
 mods = "Control"
 
 [[mouse.bindings]]
+action = "Paste"
+mouse = "Middle"
+
+[[mouse.bindings]]
 action = "PasteSelection"
 mouse = "Middle"
+mods = "Shift"
 
 [[mouse.bindings]]
 action = "ExpandSelection"

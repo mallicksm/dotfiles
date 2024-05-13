@@ -49,11 +49,11 @@ return {
             mappings = {
                ['s'] = 'open_split',
                ['v'] = 'open_vsplit',
-               ['Y'] = {
+               ['y'] = {
                   function(state)
                      local node = state.tree:get_node()
                      local path = node:get_id()
-                     print('Copied to clipboard: ' .. path)
+                     print('Copied to clipboard: (*) ' .. path)
                      vim.fn.setreg('*', path)
                   end,
                   desc = 'Copy Path to Clipboard',

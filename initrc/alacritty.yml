@@ -557,8 +557,9 @@ live_config_reload: true
 #
 # - `mods` (see key bindings)
 mouse_bindings:
-  - { mouse: Middle,                action: PasteSelection }
-  - { mouse: Right,                 action: ExpandSelection }
+  - { mouse: Middle,                            action: Paste }
+  - { mouse: Middle,     mods: Shift,           action: PasteSelection }
+  - { mouse: Right,                             action: ExpandSelection }
 
 # Key bindings
 #
