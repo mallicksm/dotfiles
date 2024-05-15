@@ -38,26 +38,24 @@ return {
          },
          routes = {
             {
-               --[[ only Push "User: " output to messages ]]
-               filter = {
-                  event = "msg_show",
-                  kind = { "" },
-                  any = {
-                     { find = "User: " },
-                  },
-               },
-               view = "messages",
-            },
-            {
                --[[ suppress all "written" messages ]]
                filter = {
                   event = "msg_show",
-                  kind = { "" },
                   any = {
                      { find = "written" },
                   },
                },
                opts = { skip = true },
+            },
+            {
+               --[[ only Push "User: " output to messages ]]
+               filter = {
+                  event = "msg_show",
+                  any = {
+                     { find = "User: " },
+                  },
+               },
+               view = "messages",
             },
             {
                --[[ redirect annoying messages to mini ]]
