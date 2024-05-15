@@ -27,7 +27,7 @@ return {
          lspconfig.clangd.setup({ capabilities = capabilities })
          lspconfig.verible.setup({
             capabilities = capabilities,
-            filetypes = "verilog_systemverilog",
+            filetypes = { "verilog_systemverilog" },
             root_dir = function()
                return vim.loop.cwd()
             end,
