@@ -25,6 +25,13 @@ return {
          lspconfig.lua_ls.setup({ capabilities = capabilities })
          lspconfig.bashls.setup({ capabilities = capabilities })
          lspconfig.clangd.setup({ capabilities = capabilities })
+         lspconfig.verible.setup({
+            capabilities = capabilities,
+            filetypes = "verilog_systemverilog",
+            root_dir = function()
+               return vim.loop.cwd()
+            end,
+         })
 
          vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),

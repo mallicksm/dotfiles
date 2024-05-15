@@ -9,28 +9,25 @@ return {
                   command = 'clang-format',
                   args = { '--style=file:' .. os.getenv('HOME') .. '/dotfiles/initrc/clang-format' },
                },
+               verible_verilog_format = {
+                  command = 'verible-verilog-format',
+                  args = { "--port_declarations_indentation=indent", "--port_declarations_alignment=align", "--indentation_spaces=3", "$FILENAME" },
+               },
             },
             formatters_by_ft = {
                lua = { 'stylua' },
                json = { 'prettier' },
                c = { 'clang_format' },
+               verilog_systemverilog = { 'verible_verilog_format' },
             },
             notify_on_error = false,
-            format_on_save = function(bufnr)
-               local disable_filetypes = { c = true, cpp = true, json = false, lua = false }
-               return {
-                  async = false,
-                  timeout_ms = 1800,
-                  lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-               }
-            end,
          })
       end,
       vim.keymap.set({ 'n', 'v' }, '<leader>mp', function()
          require('conform').format({
             lsp_fallback = true,
             async = false,
-            timeout_ms = 1000,
+            timeout_ms = 1800,
          })
       end, { desc = 'Fmt: Format file' }),
    },
