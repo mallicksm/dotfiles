@@ -38,6 +38,17 @@ return {
          },
          routes = {
             {
+               --[[ only Push "User: " output to messages ]]
+               filter = {
+                  event = "msg_show",
+                  kind = { "" },
+                  any = {
+                     { find = "User: " },
+                  },
+               },
+               view = "messages",
+            },
+            {
                --[[ suppress all "written" messages ]]
                filter = {
                   event = "msg_show",
@@ -59,17 +70,6 @@ return {
                   },
                },
                view = "mini",
-            },
-            {
-               --[[ only Push "User: " output to messages ]]
-               filter = {
-                  event = "msg_show",
-                  kind = { "" },
-                  any = {
-                     { find = "User: " },
-                  },
-               },
-               view = "messages",
             },
          },
       })
