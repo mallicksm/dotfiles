@@ -26,6 +26,10 @@ return {
          lspconfig.bashls.setup({ capabilities = capabilities })
          lspconfig.clangd.setup({ capabilities = capabilities })
          lspconfig.verible.setup({
+            cmd = {
+               'verible-verilog-ls',
+               '--rules_config=~/dotfiles/initrc/verible-rules'
+            },
             capabilities = capabilities,
             filetypes = { "verilog_systemverilog" },
             root_dir = function()
