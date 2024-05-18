@@ -24,6 +24,13 @@ function ll() {
       command ls -Fslr --color=auto "$@"
    fi
 }
+function lsd() {
+   if command -v exa >/dev/null ; then
+      command exa --long --header --group -s modified -D "$@"
+   else
+      command ls -Fslr --color=auto "$@"
+   fi
+}
 unalias la 2> /dev/null
 function la() {
    if command -v exa >/dev/null ; then
