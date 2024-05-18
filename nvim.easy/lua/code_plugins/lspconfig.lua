@@ -28,7 +28,7 @@ return {
          lspconfig.verible.setup({
             cmd = {
                'verible-verilog-ls',
-               '--rules_config=~/dotfiles/initrc/verible-rules'
+               '--rules_config=~/dotfiles/formatters/verible-rules'
             },
             capabilities = capabilities,
             filetypes = { "verilog_systemverilog" },
