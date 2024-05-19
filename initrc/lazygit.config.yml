@@ -1,0 +1,6 @@
+os:
+  edit: 'zvim {{filename}}'
+  editAtLine: 'zvim --line={{line}} {{filename}}'
+  copyToClipboardCmd: 'xclip'
+gui:
+  nerdFontsVersion: "3"

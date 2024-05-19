@@ -36,10 +36,15 @@ function linkrc () {
             [[ -f ~/$corp/corp_starship.txt ]] && cat ~/$corp/corp_starship.txt >> ~/.starship.toml
             ;;
          alacritty.yml)
-            info "Note: copying to ~/.config/alacritty/$dotfile"
+            info "Note: linking to ~/.config/alacritty/$dotfile"
             mkdir -p ~/.config/alacritty
             rm -rf ~/.config/alacritty/alacritty.{yml,toml} && linkup $cdir/initrc/$dotfile ~/.config/alacritty/alacritty.yml
             linkup $cdir/initrc/alacritty.toml  ~/.config/alacritty/alacritty.toml
+            ;;
+         lazygit.config.yml)
+            info "Note: linking to ~/.config/lazygit/config.yml"
+            mkdir -p ~/.config/lazygit
+            rm -rf ~/.config/lazygit/config.yml && linkup $cdir/initrc/$dotfile $_
             ;;
          svn.*)
             info "Note: copying $dotfile to ~/.subversion/"

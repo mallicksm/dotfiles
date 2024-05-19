@@ -30,7 +30,11 @@ return {
          })
 
          -- bring back my autopairs without complications
-         require('mini.pairs').setup()
+         require('mini.pairs').setup({
+            mappings = {
+            ["`"] = false,
+            }
+         })
 
          -- ... and there is more!
          --  Check out: https://github.com/echasnovski/mini.nvim
