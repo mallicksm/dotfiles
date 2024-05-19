@@ -495,22 +495,6 @@
       ],
       "description": "Evaluate test as an expression and if true, execute body until test evaluates to false or break is encountered."
    },
-   "item header": {
-      "prefix": ["header"],
-      "body": [
-         "#===============================================================================",
-         "# Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
-         "# Author: ${1:Author}",
-         "#",
-         "# Note:",
-         "#",
-         "# Description: ${2:Description}",
-         "#",
-         "#===============================================================================",
-         "$0"
-      ],
-      "description": "insert header code"
-   },
    "item getopt block": {
       "prefix": ["getopt"],
       "body": [

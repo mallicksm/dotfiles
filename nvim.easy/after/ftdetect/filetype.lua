@@ -14,6 +14,7 @@ vim.filetype.add({
       fs = "tcl",
       tdf = "tdf",
       f = "f",
+      scat = "scat",
    },
    -- Detect and apply filetypes based on the entire filename
    filename = {

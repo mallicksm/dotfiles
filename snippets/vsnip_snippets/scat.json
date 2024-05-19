@@ -1,21 +1,13 @@
 {
    "item header": {
-      "prefix": ["header"],
+      "prefix": ["sheader"],
       "body": [
          "#! armclang --target=arm-arm-non-eabi -march=armv8-a -E -x c",
-         ";===============================================================================",
-         "; ARM Scatter file",
-         "; Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
-         "; Author: ${VIM:\\$USER}",
-         ";",
-         "; Description: ${1:Description}",
-         ";",
          "; Syntax:",
          ";    region_name (base_address | (\"+\" offset)) [attribute_list] [max_size]",
          ";       {",
          ";          region_description+",
          ";       }",
-         ";===============================================================================",
          "$0"
       ],
       "description": "Code snippet for 'header' statement"

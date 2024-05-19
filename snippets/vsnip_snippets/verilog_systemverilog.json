@@ -1,21 +1,4 @@
 {
-   "item header": {
-      "prefix": ["header"],
-      "body": [
-         "//=============================================================================",
-         "// SystemVerilog HDL",
-         "// Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
-         "// Author: ${VIM:\\$USER}",
-         "//",
-         "// Note:",
-         "//",
-         "// Description: ${1:Description}",
-         "//",
-         "//=============================================================================",
-         "${0}"
-      ],
-      "description": "insert header code"
-   },
    "item module": {
       "prefix": ["module"],
       "body": [

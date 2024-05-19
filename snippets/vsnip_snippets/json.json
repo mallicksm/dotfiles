@@ -1,6 +1,6 @@
 {
    "item header": {
-      "prefix": ["header"],
+      "prefix": ["jheader"],
       "body": ["{", "   ${0:snippet}", "}"],
       "description": "Code snippet for 'header' statement"
    },

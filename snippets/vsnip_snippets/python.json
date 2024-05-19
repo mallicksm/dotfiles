@@ -1,20 +1,4 @@
 {
-   "item header": {
-      "prefix": ["header"],
-      "body": [
-         "//=============================================================================",
-         "// Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
-         "// Author: ${1:Author}",
-         "//",
-         "// Note:",
-         "//",
-         "// Description: ${2:Description}",
-         "//",
-         "//=============================================================================",
-         "$0"
-      ],
-      "description": "insert header code"
-   },
    "item if": {
       "prefix": ["if"],
       "body": ["if ${1:expression}:", "   ${2:pass}"],

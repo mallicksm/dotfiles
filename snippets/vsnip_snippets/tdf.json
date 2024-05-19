@@ -1,23 +1,14 @@
 {
    "item header": {
-      "prefix": ["header"],
+      "prefix": ["theader"],
       "body": [
-         "//==============================================================================",
-         "// State Description Language",
-         "// Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
-         "// Author: ${VIM:\\$USER}",
-         "//",
-         "// Note:",
          "// P/N - Positive/Negative edge.",
          "// L/H - Value is stable (0/1 +2cycle)",
          "// T/S - Transition/Stable (+ve/-ve or +2cycle)",
          "// X   - Don’t care; any value is accepted as a match.",
          "// transition() - Detect any value transition",
          "// sdl Debug: sdl -traceDump -location trace.txt",
-         "//",
-         "// Description: ${1:Description}",
-         "//",
-         "//=============================================================================="
+         "$0"
       ],
       "description": "insert header code"
    },
@@ -102,19 +93,19 @@
       "description": "Code snippet for display"
    },
    "item tick if": {
-      "prefix": ["tick-if"],
+      "prefix": ["`if","tick-if"],
       "body": [
-         "`if ${1:value}",
-         "   ${2:/* statements */}",
+         "`if \\$${1:value}",
+         "   ${2:/* statements protected by tcl [set value 1]*/}",
          "`endif"
       ],
       "description": "Code snippet for tick if"
    },
    "item tick ifdef": {
-      "prefix": ["tick-ifdef"],
+      "prefix": ["`ifdef","tick-ifdef"],
       "body": [
          "`ifdef ${1:name}",
-         "${2:/* statements */}",
+         "${2:/* statements protected by `define name */}",
          "`endif"
       ],
       "description": "Code snippet for tick ifdef"
