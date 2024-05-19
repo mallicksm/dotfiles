@@ -1,8 +1,24 @@
 {
+   "item header": {
+      "prefix": ["header"],
+      "body": [
+         "${LINE_COMMENT}==============================================================================",
+         "${LINE_COMMENT} Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
+         "${LINE_COMMENT} Author: ${VIM:\\$USER}",
+         "${LINE_COMMENT}",
+         "${LINE_COMMENT} Note:",
+         "${LINE_COMMENT}",
+         "${LINE_COMMENT} Description: ${1:Description}",
+         "${LINE_COMMENT}",
+         "${LINE_COMMENT}==============================================================================",
+         "$0"
+      ],
+      "description": "insert header code"
+   },
    "copyright": {
       "prefix": "c)",
       "body": [
-         "Copyright (c) ${CURRENT_YEAR} ${0:Author}. All Rights Reserved."
+         "Copyright (c) ${CURRENT_YEAR} ${VIM:\\$USER}. All Rights Reserved."
       ],
       "description": "Snippet to put copyright"
    },

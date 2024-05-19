@@ -1,24 +1,10 @@
 {
    "item header": {
-      "prefix": ["header"],
+      "prefix": ["mheader"],
       "body": [
-         "#===============================================================================",
-         "# Makefile",
-         "# Created: $CURRENT_MONTH_NAME_SHORT-$CURRENT_DATE-$CURRENT_YEAR",
-         "# Author: ${VIM:\\$USER}",
-         "#",
-         "# Note:",
-         "#   \\$(function arg2,arg2..) - % pat wildcard",
-         "#",
-         "# Description: ${1:Description}",
-         "#",
-         "#===============================================================================",
          "SHELL = bash",
-         ".ONESHELL:",
          ".SHELLFLAGS := -eu -o pipefail -c",
          ".DELETE_ON_ERROR:",
-         "MAKEFLAGS += --warn-undefined-variables",
-         "MAKEFLAGS += --no-builtin-rules",
          ".DEFAULT_GOAL := all",
          "$0"
       ],
