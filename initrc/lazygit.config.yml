@@ -4,3 +4,6 @@ os:
   copyToClipboardCmd: 'xclip'
 gui:
   nerdFontsVersion: "3"
+git:
+  paging:
+    pager: delta --dark --paging=never

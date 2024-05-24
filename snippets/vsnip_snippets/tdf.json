@@ -14,14 +14,14 @@
    },
    "item instance": {
       "prefix": ["instance"],
-      "body": ["INSTANCE inst1;"],
+      "body": ["INSTANCE ${1:inst1};", "   $0"],
       "description": "instance"
    },
    "item state": {
       "prefix": ["state"],
       "body": [
-         "STATE s0 {",
-         "   ${1:/* statements */}",
+         "STATE ${1:s0} {",
+         "   ${2:/* statements */}",
          "}"
       ],
       "description": "Code snippet for state"
@@ -71,12 +71,12 @@
       "description": "Code snippet for 'exec' statement"
    },
    "item tick define": {
-      "prefix": ["define"],
+      "prefix": ["`define"],
       "body": ["`define ${1:name} ${1:string}"],
       "description": "Code snippet for tick define"
    },
    "item tick include": {
-      "prefix": ["include"],
+      "prefix": ["`include"],
       "body": ["`include \"${1:global.tdf}\""],
       "description": "Code snippet for tick include"
    },
@@ -88,12 +88,13 @@
    "item display statement": {
       "prefix": ["display"],
       "body": [
+         "/* %h=hex, %d=dec, %[enum_type] */",
          "DISPLAY(\"${1:text %t %h}\", ${2:signal-name});"
       ],
       "description": "Code snippet for display"
    },
    "item tick if": {
-      "prefix": ["`if","tick-if"],
+      "prefix": ["`if", "tick-if"],
       "body": [
          "`if \\$${1:value}",
          "   ${2:/* statements protected by tcl [set value 1]*/}",
@@ -102,12 +103,23 @@
       "description": "Code snippet for tick if"
    },
    "item tick ifdef": {
-      "prefix": ["`ifdef","tick-ifdef"],
+      "prefix": ["`ifdef", "tick-ifdef"],
       "body": [
          "`ifdef ${1:name}",
          "${2:/* statements protected by `define name */}",
          "`endif"
       ],
       "description": "Code snippet for tick ifdef"
+   },
+   "item enum declaration": {
+      "prefix": ["enum"],
+      "body": [
+         "enum ${1:enum_type} {",
+         "${2:enum_name} = 0,",
+         "${3:enum_name} = 1",
+         "};",
+         "$0"
+      ],
+      "description": "Code snippet for 'enum declaration' statement"
    }
 }
