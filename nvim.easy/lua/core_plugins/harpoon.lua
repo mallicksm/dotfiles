@@ -29,28 +29,14 @@ return {
          })
 
          -- harpoon management edit(e) and add(a)
-         vim.keymap.set('n', '<localleader>m', function()
+         vim.keymap.set('n', '<localleader>l', function()
             harpoon.ui:toggle_quick_menu(harpoon:list())
          end, { desc = 'Harpoon: Marks list' })
 
-         vim.keymap.set('n', '<localleader>a', function()
+         vim.keymap.set('n', '<localleader>m', function()
             harpoon:list():append()
             print('Harpoon: appended ' .. vim.fn.expand('%:t'))
-         end, { desc = 'Harpoon: Append list' })
-
-         -- remember by position 4 files, left right down and up
-         vim.keymap.set('n', '<localleader>h', function()
-            harpoon:list():select(1)
-         end, { desc = 'Harpoon: Select left' })
-         vim.keymap.set('n', '<localleader>l', function()
-            harpoon:list():select(2)
-         end, { desc = 'Harpoon: Select right' })
-         vim.keymap.set('n', '<localleader>j', function()
-            harpoon:list():select(3)
-         end, { desc = 'Harpoon: Select down' })
-         vim.keymap.set('n', '<localleader>k', function()
-            harpoon:list():select(4)
-         end, { desc = 'Harpoon: Select up' })
+         end, { desc = 'Harpoon: Mark add' })
 
          -- Toggle previous & next buffers stored within Harpoon list
          vim.keymap.set('n', '<localleader>p', function()
