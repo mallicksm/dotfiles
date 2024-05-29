@@ -39,6 +39,7 @@ return {
                completion = cmp.config.window.bordered(),
                documentation = cmp.config.window.bordered(),
             },
+            completion = { completeopt = 'menu,menuone,noinsert' },
             mapping = cmp.mapping.preset.insert({
                ['<C-n>'] = cmp.mapping.select_next_item(),
                ['<C-p>'] = cmp.mapping.select_prev_item(),
@@ -49,8 +50,8 @@ return {
                ['<C-y>'] = cmp.mapping.confirm({ select = true }),
             }),
             sources = cmp.config.sources({
-               { name = 'nvim_lsp' },
                { name = 'vsnip' },
+               { name = 'nvim_lsp' },
                { name = 'path' },
                { name = 'buffer',  keyword_length = 5 },
             }, {}),
