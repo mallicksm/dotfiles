@@ -1,8 +1,5 @@
 return {
    'nvim-lualine/lualine.nvim',
-   dependencies = {
-      'kdheepak/tabline.nvim',
-   },
    config = function()
       -- LSP clients attached to buffer
       local clients_lsp = function()
@@ -16,6 +13,9 @@ return {
             table.insert(c, client.name)
          end
          return '\u{f085} ' .. table.concat(c, '\u{2016}')
+      end
+      local function inactive()
+         return [[inactive:]]
       end
 
       require('lualine').setup({
@@ -32,26 +32,31 @@ return {
             },
          },
          sections = {
-            lualine_x = { "fileformat", clients_lsp, "filetype" },
+            lualine_x = { "fileformat", clients_lsp  , "filetype" },
          },
          inactive_sections = {
-            lualine_c = { { "filename", path = 1 } },
+            lualine_c = {
+               {
+                  inactive,
+               },
+               {
+                  "filename",
+                  path = 1
+               }
+            },
          },
          tabline = {
-            lualine_a = { require 'tabline'.tabline_buffers },
+            lualine_a = {
+               {
+                  'tabs',
+                  mode = 2,
+               }
+            },
             lualine_b = {},
             lualine_c = {},
             lualine_x = {},
             lualine_y = {},
             lualine_z = {},
-         },
-      })
-      require 'tabline'.setup({
-         enable = true,
-         options = {
-            max_bufferline_percent = 100,
-            show_filename_only = true,
-            show_bufnr = true,
          },
       })
    end,
