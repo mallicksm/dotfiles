@@ -6,12 +6,8 @@ return {
       end,
    },
    {
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
       'williamboman/mason-lspconfig.nvim',
-      config = function()
-         require('mason-lspconfig').setup({
-            ensure_installed = { 'lua_ls', 'bashls' },
-         })
-      end,
    },
    {
       'neovim/nvim-lspconfig',
@@ -26,26 +22,47 @@ return {
       },
       config = function()
          --[[ setup capabilities for completions ]]
-         local lspconfig = require('lspconfig')
          -- LSP servers and clients are able to communicate to each other what features they support.
          --  By default, Neovim doesn't support everything that is in the LSP Specification.
          --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
          --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
          local capabilities = vim.lsp.protocol.make_client_capabilities()
          capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-         lspconfig.lua_ls.setup({ capabilities = capabilities })
-         lspconfig.bashls.setup({ capabilities = capabilities })
-         lspconfig.clangd.setup({ capabilities = capabilities })
-         lspconfig.verible.setup({
-            cmd = {
-               'verible-verilog-ls',
-               '--rules_config=~/dotfiles/formatters/verible-rules'
+
+         -- You can add other tools here that you want Mason to install
+         -- for you, so that they care available from within Neovim
+         local ensure_installed_servers = {
+            lua_ls = {},
+            bashls = {},
+         }
+         local external_servers = {
+            clangd = {},
+            verible = {
+               cmd = {
+                  'verible-verilog-ls',
+                  '--rules_config=~/dotfiles/formatters/verible-rules'
+               },
+               filetypes = { "verilog_systemverilog" },
+               capabilities = { capabilities },
+               root_dir = function()
+                  return vim.loop.cwd()
+               end,
             },
-            capabilities = capabilities,
-            filetypes = { "verilog_systemverilog" },
-            root_dir = function()
-               return vim.loop.cwd()
-            end,
+         }
+         local servers = vim.tbl_deep_extend('force', {}, external_servers, ensure_installed_servers)
+         require('mason-tool-installer').setup { ensure_installed = vim.tbl_keys(ensure_installed_servers or {}) }
+         require('mason-lspconfig').setup({
+            ensure_installed = vim.tbl_keys(servers or {}),
+            handlers = {
+               function(server_name)
+                  local server = servers[server_name] or {}
+                  -- This handles overriding only valuse explicitly passed
+                  -- by the server configuration above. Useful when disabling
+                  -- certain features of an LSP (for example, turning off formatting for tsserver)
+                  server.capabilites = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+                  require('lspconfig')[server_name].setup(server)
+               end,
+            }
          })
 
          vim.api.nvim_create_autocmd('LspAttach', {
