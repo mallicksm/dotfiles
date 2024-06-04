@@ -31,12 +31,20 @@ return {
 
          -- You can add other tools here that you want Mason to install
          -- for you, so that they care available from within Neovim
-         local ensure_installed_servers = {
+         local servers = {
             lua_ls = {},
             bashls = {},
          }
+         -- This is meant for outside Mason tools
          local external_servers = {
-            clangd = {},
+            clangd = {
+               cmd = { 'clangd' },
+               filetypes = { 'c', 'cpp' },
+               root_dir = require('lspconfig').util.root_pattern(
+                  'compile_commands.json'
+               ),
+               single_file_support = true,
+            },
             verible = {
                cmd = {
                   'verible-verilog-ls',
@@ -49,8 +57,7 @@ return {
                end,
             },
          }
-         local servers = vim.tbl_deep_extend('force', {}, external_servers, ensure_installed_servers)
-         require('mason-tool-installer').setup { ensure_installed = vim.tbl_keys(ensure_installed_servers or {}) }
+
          require('mason-lspconfig').setup({
             ensure_installed = vim.tbl_keys(servers or {}),
             handlers = {
@@ -61,6 +68,12 @@ return {
                   -- certain features of an LSP (for example, turning off formatting for tsserver)
                   server.capabilites = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
                   require('lspconfig')[server_name].setup(server)
+
+                  -- Let's configure the external servers
+                  -- This happens to work because this handler gets triggered by any filetype
+                  external_servers.capabilites = vim.tbl_deep_extend('force', {}, capabilities, external_servers.capabilities or {})
+                  require('lspconfig').clangd.setup(external_servers['clangd'])
+                  require('lspconfig').verible.setup(external_servers['verible'])
                end,
             }
          })
