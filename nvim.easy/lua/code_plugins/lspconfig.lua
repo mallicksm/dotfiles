@@ -31,15 +31,16 @@ return {
 
          -- You can add other tools here that you want Mason to install
          -- for you, so that they care available from within Neovim
-         local servers = {
+         local mason_servers = {
             lua_ls = {},
             bashls = {},
          }
-         -- This is meant for outside Mason tools
-         local external_servers = {
+         -- This is meant for outside Mason servers
+         local servers = {
             clangd = {
                cmd = { 'clangd' },
                filetypes = { 'c', 'cpp' },
+               capabilities = { capabilities },
                root_dir = require('lspconfig').util.root_pattern(
                   'compile_commands.json'
                ),
@@ -59,21 +60,21 @@ return {
          }
 
          require('mason-lspconfig').setup({
-            ensure_installed = vim.tbl_keys(servers or {}),
+            ensure_installed = vim.tbl_keys(mason_servers or {}),
             handlers = {
                function(server_name)
-                  local server = servers[server_name] or {}
                   -- This handles overriding only valuse explicitly passed
                   -- by the server configuration above. Useful when disabling
                   -- certain features of an LSP (for example, turning off formatting for tsserver)
-                  server.capabilites = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-                  require('lspconfig')[server_name].setup(server)
+                  local mason_server = mason_servers[server_name] or {}
+                  mason_server.capabilites = vim.tbl_deep_extend('force', {}, capabilities,
+                     mason_server.capabilities or {})
+                  require('lspconfig')[server_name].setup(mason_server)
 
                   -- Let's configure the external servers
                   -- This happens to work because this handler gets triggered by any filetype
-                  external_servers.capabilites = vim.tbl_deep_extend('force', {}, capabilities, external_servers.capabilities or {})
-                  require('lspconfig').clangd.setup(external_servers['clangd'])
-                  require('lspconfig').verible.setup(external_servers['verible'])
+                  require('lspconfig').clangd.setup(servers['clangd'])
+                  require('lspconfig').verible.setup(servers['verible'])
                end,
             }
          })
