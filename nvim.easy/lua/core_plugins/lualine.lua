@@ -49,6 +49,8 @@ return {
             lualine_a = {
                {
                   'tabs',
+                  tab_max_length = 60,
+                  max_length = 200,
                   mode = 2,
                }
             },
