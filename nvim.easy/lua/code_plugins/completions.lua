@@ -12,15 +12,26 @@ return {
          config = function()
             vim.g.vsnip_snippet_dir = '$HOME/dotfiles/snippets/vsnip_snippets'
             vim.g.vsnip_filetypes = {
-               systemverilog = { 'verilog_ixcom' },
+               verilogsystemverilog = { 'verilog_ixcom' },
                sh = { 'sh_expansion' },
                tcl = { 'tcl_expansion' },
                qel = { 'tcl' },
             }
-            vim.cmd [[
-               imap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>'
-               imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
-            ]]
+            -- usefull to jump between snippet anchors
+            vim.keymap.set({ "i", "s" }, "<Tab>", function()
+               if vim.fn["vsnip#jumpable"](1) == 1 then
+                  return '<Plug>(vsnip-jump-next)'
+               else
+                  return "<Tab>"
+               end
+            end, { expr = true, remap = true })
+            vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
+               if vim.fn["vsnip#jumpable"](-1) == 1 then
+                  return '<Plug>(vsnip-jump-prev)'
+               else
+                  return "<S-Tab>"
+               end
+            end, { expr = true, remap = true })
          end,
       },
    },
