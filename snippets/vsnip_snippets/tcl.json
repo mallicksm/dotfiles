@@ -238,10 +238,9 @@
    "'For' loop": {
       "prefix": "for",
       "body": [
-         "for {set ${1:varName} 0} {$${1:varName} < ${2:maxVal}} {incr ${1:varName}} {",
-         "   ${3:body}",
-         "}",
-         "$0"
+         "for {set ${1:varName} 0} {\\$${1:varName} < ${2:maxVal}} {incr ${1:varName}} {",
+         "   $0",
+         "}"
       ],
       "description": "For is a looping command, similar in structure to the C for statement. It returns an empty string."
    },
@@ -249,9 +248,8 @@
       "prefix": "foreach",
       "body": [
          "foreach ${1:varName} \"${2:list}\" {",
-         "   ${3:body}",
-         "}",
-         "$0"
+         "   $0",
+         "}"
       ],
       "description": "The foreach command implements a loop where the loop variable(s) take on values from one or more lists. In the simplest case there is one loop variable, varname, and one list, list, that is a list of values to assign to varname. The body argument is a Tcl script. For each element of list (in order from first to last), foreach assigns the contents of the element to varname as if the lindex command had been used to extract the element, then calls the Tcl interpreter to execute body."
    },
@@ -267,7 +265,11 @@
    },
    "Execute scripts conditionally - if": {
       "prefix": "if",
-      "body": ["if {${1:expr}} {", "   $2", "}", "$0"],
+      "body": [
+         "if {${1:expr}} {",
+         "   $0",
+         "}"
+      ],
       "description": "if statement"
    },
    "Execute scripts conditionally - if else": {
@@ -298,7 +300,11 @@
    },
    "Execute scripts conditionally - else": {
       "prefix": "else",
-      "body": ["else {", "  $1", "}", "$0"],
+      "body": [
+         "else {",
+         "  $0",
+         "}"
+      ],
       "description": "else statement"
    },
    "Execute scripts conditionally - elseif": {
@@ -489,9 +495,8 @@
       "prefix": "while",
       "body": [
          "while {${1:test}} {",
-         "  ${2:body}",
-         "}",
-         "$0"
+         "   $0",
+         "}"
       ],
       "description": "Evaluate test as an expression and if true, execute body until test evaluates to false or break is encountered."
    },
@@ -531,5 +536,24 @@
          "}"
       ],
       "description": "Code snippet for getopt block"
+   },
+   "item getopt opt sub-block": {
+      "prefix": ["get-opt"],
+      "body": [
+         "\"-h|--${1:help}\" {",
+         "   set args [lassign \\$args -]",
+         "   set opt(${1}) yes",
+         "}"
+      ],
+      "description": "Code opt sub-snippet for getopt block"
+   },
+   "item getopt val sub-block": {
+      "prefix": ["get-val"],
+      "body": [
+         "\"-n|--${1:name}\" {",
+         "   set args [lassign \\$args - opt(${1})]",
+         "}"
+      ],
+      "description": "Code val sub-snippet for getopt block"
    }
 }
