@@ -80,12 +80,15 @@ function install_zvim() {
 }
 #-------------------------------------------------------------------------------
 function zellij() {
+   if [[ $2 == "-f" ]]; then
+      force="yes"
+   fi
    # https://github.com/muttleyxd/clang-tools-static-binaries
    echo "Info: Installing zellij"
    if [[ $(curl --head --silent --fail git@github.com) && ($(uname -s) == "Linux") ]]; then
       src="https://github.com/zellij-org/zellij/releases/latest/download/zellij-$(uname -m)-unknown-linux-musl.tar.gz"
       target=~/.local/bin/zellij
-      [[ ! -f $target ]] && curl -L "$src" | tar -C "$(dirname $target)" -xz
+      [[ (! -f $target) || ($force == "yes") ]] && curl -L "$src" | tar -C "$(dirname $target)" -xz || echo "Info: Already Installed"
    elif [[ $(uname -s) == "Darwin" ]]; then
       brew install zellij
    else
@@ -151,4 +154,4 @@ if [[ "$corp" == "" ]]; then
    exit
 fi
 
-${1:-all}
+${1:-all} $@

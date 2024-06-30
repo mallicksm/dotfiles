@@ -22,6 +22,7 @@ helpstr["zm"]="\
       Options:
       -s|--create-session <session-name>         -Create a session with <session-name> (Not within zellij)
       -k|--kill-all-sessions                     -kill all sessions (Not within zellij)
+      -l|--layout                                -def(default)|pal
 "
 function zm () {
    declare -A opt=()
@@ -36,10 +37,17 @@ function zm () {
             opt[ZELLIJ_KILL_ALL_SESSIONS]="yes"
             shift 1
          ;;
+         -l|--layout)
+            opt[ZELLIJ_LAYOUT]="$2"
+            shift 2
+         ;;
          *) common_options "$1";shift 1
       esac
    done
    [[ "${opt[HELP]}" ]] && { echo "${helpstr[$FUNCNAME]}";return 0; }
+   if [[ -z "${opt[ZELLIJ_LAYOUT]}" ]]; then
+      opt[ZELLIJ_LAYOUT]=pal
+   fi
    if [[ ! -z $ZELLIJ ]]; then
       # working within zellij
       zellij action launch-or-focus-plugin zellij:session-manager --floating
@@ -59,7 +67,7 @@ function zm () {
    fi
    if [[ ! -z ${opt[ZELLIJ_SESSION_NAME]} ]]; then
       # user gave a new name, must create session
-      zellij --session ${opt[ZELLIJ_SESSION_NAME]} 
+      zellij --layout ${opt[ZELLIJ_LAYOUT]} --session ${opt[ZELLIJ_SESSION_NAME]} 
       return
    fi
    if [[ ($num_sessions -eq 0) && ( -z ${opt[ZELLIJ_SESSION_NAME]} ) ]]; then
@@ -81,4 +89,7 @@ function ze () {
 }
 function zs () { 
    zellij action launch-or-focus-plugin -f "zellij:session-manager"
+}
+function zt () { 
+   zellij action new-tab -l $ZELLIJ_CONFIG_DIR/layouts/pane_${1:-pal}.kdl
 }

@@ -2,7 +2,7 @@
    "item module": {
       "prefix": ["module"],
       "body": [
-         "module $TM_FILENAME_BASE i_$TM_FILENAME_BASE (",
+         "module $TM_FILENAME_BASE (",
          "   ${1:/* statements */};",
          ");",
          "\nendmodule // $TM_FILENAME_BASE"
