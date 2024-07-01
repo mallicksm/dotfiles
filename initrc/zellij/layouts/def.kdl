@@ -2,46 +2,27 @@ layout {
    default_tab_template {
       pane size=1 borderless=true {
          plugin location="file:~/dotfiles/initrc/zellij/plugins/zjstatus.wasm" {
+            border_enabled  "false"
             format_left   "{mode} #[fg=#a6ff2e,bold]{session}"
             format_center "{tabs}"
-            format_right  "{command_git_branch}{datetime}"
+            format_right  "{datetime}"
             format_space  ""
       
-            border_enabled  "false"
-      
-            mode_normal        "#[bg=blue]  {name} "
-            mode_locked        "#[bg=red]   {name} "
-            mode_resize        "#[bg=green] {name} "
-            mode_pane          "#[bg=green] {name} "
-            mode_tab           "#[bg=green] {name} "
-            mode_scroll        "#[bg=green] {name} "
-            mode_enter_search  "#[bg=green] {name} "
-            mode_search        "#[bg=green] {name} "
-            mode_rename_tab    "#[bg=green] {name} "
-            mode_rename_pane   "#[bg=green] {name} "
-            mode_session       "#[bg=green] {name} "
-            mode_move          "#[bg=green] {name} "
-            mode_prompt        "#[bg=green] {name} "
-            mode_tmux          "#[bg=green] {name} "
-      
+            // left
+            mode_normal "#[bg=blue] {name} "
+            mode_locked "#[bg=red]  {name} "
+
+            // center
             tab_normal "#[bg=#68775b,fg=#000000] #[bg=#68775b,fg=#000000,bold]{name} {sync_indicator}{fullscreen_indicator}{floating_indicator} #[bg=#000000,fg=#68775b]"
             tab_active "#[bg=#AFFF00,fg=#000000] #[bg=#AFFF00,fg=#000000,bold]{name} {sync_indicator}{fullscreen_indicator}{floating_indicator} #[bg=#000000,fg=#AFFF00]"
 
             tab_sync_indicator       " "
             tab_fullscreen_indicator "□ "
             tab_floating_indicator   " "
-      
-// Note: 
-//    ~/dotfiles/utils/bash_cd_func.sh writes /tmp/__CWD__ with $CWD after cd
-//    This script sources it and executes the prompt_git proc
-//    This script is used by zjstatus under in ~/dotfiles/initrc/zellij/layouts/def.kdl
-            command_git_branch_command     "/users/soummya/dotfiles/utils/zellij_git_prompt.sh branch"
-            command_git_branch_format      "#[fg=#84ce24,bold] {stdout} "
-            command_git_branch_interval    "30"
-            command_git_branch_rendermode  "dynamic"
 
-            datetime        "#[fg=#ff5e2e,bold] {format} "
-            datetime_format "%A, %b %d %Y %H:%M"
+            // right
+            datetime          "#[fg=#ff5e2e,bold] {format} "
+            datetime_format   "%A, %b %d %Y %H:%M"
             datetime_timezone "America/Los_Angeles"
          }
       }

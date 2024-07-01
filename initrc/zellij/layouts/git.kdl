@@ -9,8 +9,8 @@ layout {
             format_space  ""
       
             // left
-            mode_normal        "#[bg=blue]  {name} "
-            mode_locked        "#[bg=red]   {name} "
+            mode_normal "#[bg=blue] {name} "
+            mode_locked "#[bg=red]  {name} "
 
             // center
             tab_normal "#[bg=#68775b,fg=#000000] #[bg=#68775b,fg=#000000,bold]{name} {sync_indicator}{fullscreen_indicator}{floating_indicator} #[bg=#000000,fg=#68775b]"
@@ -35,8 +35,8 @@ layout {
             command_git_status_interval    "200"
             command_git_status_rendermode  "dynamic"
       
-            datetime        "#[fg=#ff5e2e,bold] {format} "
-            datetime_format "%A, %b %d %Y %H:%M"
+            datetime          "#[fg=#ff5e2e,bold] {format} "
+            datetime_format   "%A, %b %d %Y %H:%M"
             datetime_timezone "America/Los_Angeles"
          }
       }

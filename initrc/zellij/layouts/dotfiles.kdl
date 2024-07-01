@@ -3,7 +3,7 @@ layout {
       pane size=1 borderless=true {
          plugin location="file:~/dotfiles/initrc/zellij/plugins/zjstatus.wasm" {
             border_enabled  "false"
-            format_left   "#[fg=#a6ff2e,bold]{session}"
+            format_left   "{mode} #[fg=#a6ff2e,bold]{session}"
             format_center "{tabs}"
             format_right  "{datetime}"
             format_space  ""
@@ -31,21 +31,14 @@ layout {
          plugin location="zellij:status-bar"
       }
    }
-
-   tab name="Palladium" focus=true {
-      pane split_direction="vertical" {
-         pane split_direction="horizontal" focus=true {
+   cwd "~/dotfiles"
+   tab name="Dotfiles" focus=true {
+      pane split_direction="vertical" focus=true {
+         pane stacked=true {
+            pane name="bash_functions.sh" edit="~/dotfiles/bash_functions.sh"
+            pane name="dotfiles.sh" edit="~/dotfiles/dotfiles.sh"
          }
-         pane split_direction="horizontal" {
-            pane size="50%"
-            pane size="25%"
-            pane size="25%" {
-               pane split_direction="vertical" {
-                  pane
-                  pane
-               }
-            }
-         }
+         pane
       }
    }
 }
