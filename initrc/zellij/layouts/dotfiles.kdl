@@ -5,7 +5,7 @@ layout {
             border_enabled  "false"
             format_left   "{mode} #[fg=#a6ff2e,bold]{session}"
             format_center "{tabs}"
-            format_right  "{datetime}"
+            format_right  "{command_git_branch}{datetime}"
             format_space  ""
       
             // left
@@ -21,6 +21,11 @@ layout {
             tab_floating_indicator   " "
 
             // right
+            command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+            command_git_branch_format      "#[fg=#84ce24,bold] {stdout} "
+            command_git_branch_interval    "30"
+            command_git_branch_rendermode  "dynamic"
+
             datetime          "#[fg=#ff5e2e,bold] {format} "
             datetime_format   "%A, %b %d %Y %H:%M"
             datetime_timezone "America/Los_Angeles"
@@ -31,6 +36,7 @@ layout {
          plugin location="zellij:status-bar"
       }
    }
+
    cwd "~/dotfiles"
    tab name="Dotfiles" focus=true {
       pane split_direction="vertical" focus=true {

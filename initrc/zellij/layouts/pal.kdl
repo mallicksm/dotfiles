@@ -20,12 +20,8 @@ layout {
             tab_fullscreen_indicator "□ "
             tab_floating_indicator   " "
 
-// Note: 
-//    ~/dotfiles/utils/bash_cd_func.sh writes /tmp/__CWD__ with $CWD after cd
-//    This script sources it and executes the prompt_git proc
-//    This script is used by zjstatus under in ~/dotfiles/initrc/zellij/layouts/def.kdl
             // right
-            command_git_branch_command     "/users/soummya/dotfiles/utils/zellij_git_prompt.sh branch"
+            command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
             command_git_branch_format      "#[fg=#84ce24,bold] {stdout} "
             command_git_branch_interval    "30"
             command_git_branch_rendermode  "dynamic"
@@ -40,6 +36,7 @@ layout {
          plugin location="zellij:status-bar"
       }
    }
+
    tab name="Palladium" focus=true {
       pane split_direction="vertical" {
          pane split_direction="horizontal" focus=true {
