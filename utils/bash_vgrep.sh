@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-export RIPGREP_CONFIG_PATH=~/dotfiles/initrc/ripgrep
+export RIPGREP_CONFIG_PATH=~/dotfiles/initrc/ripgreprc
 # Note: rgrep
 function rgrep() {
    # https://sourcegraph.com/github.com/junegunn/fzf/-/blob/ADVANCED.md
