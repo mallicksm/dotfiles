@@ -1,5 +1,5 @@
 layout {
-   default_tab_template {
+   tab_template name="ztab" {
       pane size=1 borderless=true {
          plugin location="file:~/dotfiles/initrc/zellij/plugins/zjstatus.wasm" {
             border_enabled  "false"
@@ -37,7 +37,7 @@ layout {
       }
    }
 
-   tab name="Palladium" focus=true {
+   ztab name="Palladium" focus=true {
       pane split_direction="vertical" {
          pane split_direction="horizontal" focus=true {
          }
@@ -53,8 +53,8 @@ layout {
          }
       }
    }
-   tab name="Code" {
+   ztab name="Code" {
    }
-   tab name="Waves" {
+   ztab name="Waves" {
    }
 }

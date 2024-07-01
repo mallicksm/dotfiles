@@ -1,5 +1,5 @@
 layout {
-   default_tab_template {
+   tab_template name="ztab" {
       pane size=1 borderless=true {
          plugin location="file:~/dotfiles/initrc/zellij/plugins/zjstatus.wasm" {
             border_enabled  "false"
@@ -38,7 +38,7 @@ layout {
    }
 
    cwd "~/dotfiles"
-   tab name="Dotfiles" focus=true {
+   ztab name="Dotfiles" focus=true {
       pane split_direction="vertical" focus=true {
          pane stacked=true {
             pane name="bash_functions.sh" edit="~/dotfiles/bash_functions.sh"
