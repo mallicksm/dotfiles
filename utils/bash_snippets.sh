@@ -209,3 +209,8 @@ function modpath () {
       echo "usage: modpath [location] [d elete|b efore|a fter] [VARIABLE]"
    fi
 }
+#-------------------------------------------------------------------------------
+function sa() {
+   ./pal vcat_exec "$*"
+}
+
