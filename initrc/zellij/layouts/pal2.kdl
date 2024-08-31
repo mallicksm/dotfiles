@@ -39,17 +39,16 @@ layout {
 
    ztab name="Palladium" focus=true {
       pane split_direction="vertical" {
-         pane size="40%" {
-            pane name="Scratch"
+         pane split_direction="horizontal" focus=true {
          }
-         pane size="60%" split_direction="horizontal" {
-            pane size="70%" split_direction="vertical" {
-               pane name="vcat_debug"
-               pane name="utils"
-            }
-            pane size="30%" split_direction="vertical" {
-               pane name="Uart 3"
-               pane name="Uart 0"
+         pane split_direction="horizontal" {
+            pane size="50%"
+            pane size="25%"
+            pane size="25%" {
+               pane split_direction="vertical" {
+                  pane
+                  pane
+               }
             }
          }
       }
