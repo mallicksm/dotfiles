@@ -213,4 +213,6 @@ function modpath () {
 function sa() {
    ./pal vcat_exec "$*"
 }
-
+function sj() {
+   ./pal vcat_exec "ps aux | grep '^soummya'|grep -v 'soummya@'|grep -v export"
+}

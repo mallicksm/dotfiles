@@ -6,4 +6,9 @@ gui:
   nerdFontsVersion: "3"
 git:
   paging:
-    pager: delta --dark --paging=never
+    colorArg: always
+    pager: delta -s --dark --paging=never --24-bit-color=never
+keybinding:
+  universal:
+    prevBlock-alt: K
+    nextBlock-alt: J

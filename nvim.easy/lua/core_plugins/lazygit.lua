@@ -1,19 +1,9 @@
 return {
-  "kdheepak/lazygit.nvim",
-  cmd = {
-    "LazyGit",
-    "LazyGitConfig",
-    "LazyGitCurrentFile",
-    "LazyGitFilter",
-    "LazyGitFilterCurrentFile",
+  {
+    "voldikss/vim-floaterm",
+    keys = {
+      { "<leader>gl", "<cmd>FloatermNew --height=0.9 --width=0.9 --name=lazygit lazygit -ucf ~/.config/lazygit/config.yml<cr><cr>", desc = "LazyGit" },
+      { "<leader>gt", "<cmd>FloatermNew --height=0.9 --width=0.9<cr><cr>", desc = "ToggleTerm" },
+    }
   },
-  -- optional for floating window border decoration
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-  },
-  -- setting the keybinding for LazyGit with 'keys' is recommended in
-  -- order to load the plugin when the command is run for the first time
-  keys = {
-    { "<leader>gl", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-  }
 }

@@ -4,5 +4,5 @@ proc Server {channel clientaddr clientport} {
    close $channel
 }
 
-socket -server Server 5002
+socket -server Server 6002
 vwait forever
