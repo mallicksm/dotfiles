@@ -13,7 +13,10 @@
       "description": "Code snippet for 'header' statement"
    },
    "item cpreprocessor": {
-      "prefix": ["cpreprocessor", "cpreproc"],
+      "prefix": [
+         "cpreprocessor",
+         "cpreproc"
+      ],
       "body": [
          "#! armclang --target=arm-arm-non-eabi -march=armv8-a -E -x c"
       ],
@@ -24,7 +27,7 @@
       "body": [
          "LOAD ${2:0x00000800}",
          "{",
-         "   EXEC +0 ALIGHALL 8 (0x1024)",
+         "   EXEC +0 ALIGNALL 8 (0x1024)",
          "   {",
          "      startup.o (Startup, +FIRST)",
          "      * (+RO, +RW, +ZI)",
@@ -32,5 +35,89 @@
          "}"
       ],
       "description": "Code snippet for 'template' statement"
+   },
+   "load_region": {
+      "prefix": [
+         "load_region"
+      ],
+      "body": [
+         "${1:LR_Name} ${2|base_address, +offset|} ${3|ALIGN 0x100,RELOC,OVERLAY,PI|} ${4:length}",
+         "{",
+         "   ${0:exec_region}",
+         "}"
+      ],
+      "description": "Snippet for defining an load region in an ARM Linker Scatter file"
+   },
+   "exec_region": {
+      "prefix": [
+         "exec_region"
+      ],
+      "body": [
+         "${1:ER_Name} ${2|base_address, +offset|} ${3|ALIGN 0x100,PADVALUE 0xff,OVERLAY,PI|} ${4|max_size, length|}",
+         "{",
+         "   ${0:input_section}",
+         "}"
+      ],
+      "description": "Snippet for defining an load region in an ARM Linker Scatter file"
+   },
+   "input_section": {
+      "prefix": [
+         "input_section"
+      ],
+      "body": [
+         "${1:module_select_pattern} (${2|section_property,+FIRST,+LAST,+ENTRY,+RO,+RW,+ZI,+XO,RO-CODE,+RO-DATA,+RW_DATA,+RW-CODE|})"
+      ],
+      "description": "Snippet for defining an input section in an ARM Linker Scatter file"
+   },
+   "load_region_doc": {
+      "prefix": [
+         "lr_doc"
+      ],
+      "body": [
+         "; Uniquely define a load region and controls which parts of an elf file are placed here",
+         "; Included Components",
+         "; 1. Name of the Load region",
+         "; 2. Base Address (or +offset)",
+         "; 3. Attributes that specify the properties of the load region",
+         ";    a. ALIGN alignment",
+         ";    b. NOCOMPRESS",
+         ";    c. OVERLAY",
+         ";    d. PI",
+         ";    e. PROTECTED",
+         ";    f. RELOC",
+         "; 4. Optional maximum size specification",
+         "; 5. One or more execution regions",
+         ""
+      ],
+      "description": "snippet for load region documentation"
+   },
+   "exec_region_doc": {
+      "prefix": [
+         "er_doc"
+      ],
+      "body": [
+         "; Specifies the region of memory where parts of the image are placed",
+         "; Included Components",
+         "; 1. Name of the Exec region",
+         "; 2. Base Address (or +offset)",
+         "; 3. Attributes that specify the properties of the exec region",
+         ";    a. ALIGN alignment",
+         ";    b. ALIGNALL value",
+         ";    c. ANY_SIZE max_size",
+         ";    d. EMPTY [-]Length",
+         ";    e. FILL value",
+         ";    f. FIXED",
+         ";    g. NOCOMPRESS",
+         ";    h. OVERLAY",
+         ";    i. PADVALUE value",
+         ";    j. PI",
+         ";    k. SORTTYPE algorithm",
+         ";    l. UNINIT",
+         ";    m. ZEROPAD",
+         "; 4. Optional maximum size specification",
+         "; 5. One or more input selection descriptors",
+         ""
+      ],
+      "description": "snippet for exec region documentation"
    }
 }
