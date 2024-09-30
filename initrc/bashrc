@@ -30,4 +30,3 @@ export HISTIGNORE='pwd:exit:fg:bg:top:c:clear::b:.:..:...:....:z:h:history:ls:ll
 
 export EDITOR=vi
 export IGNOREEOF=1 # use exit to leave shell
-export CDPATH+=.:

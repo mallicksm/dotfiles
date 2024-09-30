@@ -17,6 +17,7 @@ return {
             formatters_by_ft = {
                lua = { 'stylua' },
                json = { 'prettier' },
+               python = {"black"},
                c = { 'clang_format' },
                verilog_systemverilog = { 'verible_verilog_format' },
             },
@@ -25,8 +26,8 @@ return {
       end,
       vim.keymap.set({ 'n', 'v' }, '<leader>mp', function()
          require('conform').format({
-            lsp_fallback = true,
-            async = false,
+            async = true,
+            lsp_format = 'fallback',
             timeout_ms = 1800,
          })
       end, { desc = 'Fmt: Format file' }),

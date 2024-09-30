@@ -1,12 +1,20 @@
 return {
    'folke/which-key.nvim',
    event = 'VimEnter',
-   config = function()
-      require('which-key').setup()
-      require('which-key').register {
-         ['<leader>d'] = { name = '[D]ap', _ = 'which_key_ignore' },
-         ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+   opts = {
+      icons = {
+         mappings = true,
+         keys = {}
       }
-   end,
+
+   },
+   -- Document existing key chains
+   spec = {
+      {"<leader>d", group = "[D]ap"},
+      {"<leader>d", hidden = true},
+      {"<leader>g", group = "[G]it"},
+      {"<leader>g", hidden = true},
+
+   }
 }
 -- vim: ts=3 sts=3 sw=3 et

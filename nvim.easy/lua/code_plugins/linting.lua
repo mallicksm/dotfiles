@@ -4,6 +4,7 @@ return {
    config = function()
       require('lint').linters_by_ft = {
          c = { 'clangtidy' },
+         python = { 'pylint' },
       }
       vim.keymap.set('n', '<leader>ml', function()
          require('lint').try_lint()

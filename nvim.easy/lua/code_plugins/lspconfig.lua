@@ -10,6 +10,7 @@ return {
       'williamboman/mason-lspconfig.nvim',
    },
    {
+      -- Main LSP Configuration
       'neovim/nvim-lspconfig',
       dependencies = {
          -- Useful status updates for LSP.
@@ -57,6 +58,14 @@ return {
                   return vim.loop.cwd()
                end,
             },
+            pyright = {
+               cmd = { "pyright-langserver", "--stdio" },
+               filetypes = { "python" },
+               root_dir = function()
+                  return vim.loop.cwd()
+               end,
+               single_file_support = true,
+            },
          }
 
          require('mason-lspconfig').setup({
@@ -75,6 +84,7 @@ return {
                   -- This happens to work because this handler gets triggered by any filetype
                   require('lspconfig').clangd.setup(servers['clangd'])
                   require('lspconfig').verible.setup(servers['verible'])
+                  require('lspconfig').pyright.setup(servers['pyright'])
                end,
             }
          })
