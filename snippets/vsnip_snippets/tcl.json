@@ -458,7 +458,9 @@
       ],
       "body": [
          "proc ${1:name} {${2:args}} {",
-         "   ${3:#statements}",
+         "   global env",
+         "   lassign \\$${2:args} ${3:var1} ${4:var2}",
+         "   ${0:#statements}",
          "}"
       ],
       "description": "The proc command creates a new Tcl procedure named name, replacing any existing command or procedure there may have been by that name. Whenever the new command is invoked, the contents of body will be executed by the Tcl interpreter."
@@ -470,19 +472,6 @@
          "$0"
       ],
       "description": "Writes the characters given by string to the channel give by channelId"
-   },
-   "Match a regular expression against a string": {
-      "prefix": "regexp",
-      "body": "regexp ${1:?switches?} {${2:exp}} ${3:string} ${4:?matchVar?} ${0:?subMatchVar subMatchVar ...?}",
-      "description": "Determines whether the regular expression exp matches part or all of string and returns 1 if it does, 0 if it does not, unless -inline is specified"
-   },
-   "Perform substitutions based on regular expression pattern matching": {
-      "prefix": "regsub",
-      "body": [
-         "regsub ${1:?switches?} {${2:exp}} ${3:string} {${4:subSpec}} ${5:?varName?}",
-         "$0"
-      ],
-      "description": "This command matches the regular expression exp against string, and either copies string to the variable whose name is given by varName or returns string if varName is not present."
    },
    "Rename or delete a command": {
       "prefix": "rename",
@@ -582,5 +571,32 @@
          "}"
       ],
       "description": "Code val sub-snippet for getopt block"
+   },
+   "forline": {
+      "prefix": ["forline"],
+      "body": [
+         "if {[catch {set fileId [open \"${1:filepath}\" r]} result]} {",
+         "   puts \"Error: unable to open file -\\$result\"",
+         "}",
+         "while {[gets \\$fileId line] >= 0} {",
+         "   ${0:# process \\$line}",
+         "}",
+         "close \\$fileId"
+      ]
+   },
+   "Match a regular expression against a string": {
+      "prefix": "regexp",
+      "body": [
+         "regexp${1| ,-all,-nocase|}{${2:exp}} ${3:string} -> ${0:subMatchVar subMatchVar ...}"
+      ],
+      "description": "Determines whether the regular expression exp matches part or all of string and returns 1 if it does, 0 if it does not, unless -inline is specified"
+   },
+   "Perform substitutions based on regular expression pattern matching": {
+      "prefix": "regsub",
+      "body": [
+         "regsub${1| ,-all,-nocase|}{${2:exp}} \\$${3:string} {${4:subSpec}} ${3}",
+         "$0"
+      ],
+      "description": "This command matches the regular expression exp against string, and either copies string to the variable whose name is given by varName or returns string if varName is not present."
    }
 }
