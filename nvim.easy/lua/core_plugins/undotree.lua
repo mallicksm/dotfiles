@@ -6,7 +6,7 @@ return {
             vim.cmd.UndotreeToggle()
          end,
          { desc = "Undotree toggle" })
-      local undodir = vim.fn.expand('~/.undodir')
+      local undodir = vim.fn.expand("$HOME") .. "/.undodir"
       if not (vim.uv or vim.loop).fs_stat(undodir) then
          vim.fn.mkdir(undodir, "p")
       end

@@ -7,7 +7,7 @@ return {
             formatters = {
                clang_format = {
                   command = 'clang-format',
-                  args = { '--style=file:' .. os.getenv('HOME') .. '/dotfiles/formatters/clang-format' },
+                  args = { '--style=file:' .. vim.fn.expand("$HOME") .. '/dotfiles/formatters/clang-format' },
                },
                verible_verilog_format = {
                   command = 'verible-verilog-format',

@@ -1,5 +1,6 @@
 return {
    {
+      "onsails/lspkind.nvim",
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
@@ -10,7 +11,7 @@ return {
          --[[ vimscript based simplistic snippet engine ]]
          'hrsh7th/vim-vsnip',
          config = function()
-            vim.g.vsnip_snippet_dir = '$HOME/dotfiles/snippets/vsnip_snippets'
+            vim.g.vsnip_snippet_dir = vim.fn.expand("$HOME") .. '/dotfiles/snippets/vsnip_snippets'
             vim.g.vsnip_filetypes = {
                verilogsystemverilog = { 'verilog_ixcom' },
                sh = { 'sh_expansion' },
@@ -40,17 +41,40 @@ return {
       event = 'InsertEnter',
       config = function()
          local cmp = require('cmp')
+         local lspkind = require('lspkind')
          cmp.setup({
+            view = {
+               entries = "custom"
+            },
+            formatting = {
+               fields = { "kind", "abbr", "menu" },
+               expandable_indicator = true,
+               format = lspkind.cmp_format({
+                  with_text = true,
+                  mode = "symbol_text",
+                  menu = ({
+                     vsnip = "[Vsnip]",
+                     nvim_lsp = "[LSP]",
+                     path = "[Path]",
+                     buffer = "[Buffer]",
+                     luasnip = "[LuaSnip]",
+                     nvim_lua = "[Lua]",
+                     latex_symbols = "[Latex]",
+                  })
+               })
+            },
             snippet = {
                expand = function(args)
                   vim.fn["vsnip#anonymous"](args.body)
                end,
             },
             window = {
-               completion = cmp.config.window.bordered(),
+               completion = cmp.config.window.bordered({
+                  winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+               }),
                documentation = cmp.config.window.bordered(),
             },
-            completion = { completeopt = 'menu,menuone,noinsert' },
+            completion = { completeopt = 'menu,menuone,preview,noinsert' },
             mapping = cmp.mapping.preset.insert({
                ['<C-n>'] = cmp.mapping.select_next_item(),
                ['<C-p>'] = cmp.mapping.select_prev_item(),

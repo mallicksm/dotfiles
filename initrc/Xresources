@@ -1,8 +1,8 @@
 ! Use a nice truetype font and size by default... 
-xterm*faceName: MesloLGSDZ Nerd Font Mono
+xterm*faceName: FiraCode Nerd Font Light
 xterm*renderFont: true
 !xterm*faceName: VeraMono
-xterm*faceSize: 11
+xterm*faceSize: 12
 ! VT Font Menu: Unreadable
 xterm*faceSize1: 8
 ! VT font Menu: Tiny
@@ -24,7 +24,7 @@ xterm*savelines: 16384
 xterm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
 
 ! start size
-XTerm*vt100*geometry: 120x50
+XTerm*vt100*geometry: 200x50
 
 ! right hand side scrollbar...
 xterm*rightScrollBar: true
@@ -44,7 +44,7 @@ xterm*VT100.Translations: #override \
    Ctrl <Key> 0: set-vt-font(d)
    
 !Theme Nine
-xterm*background: rgb:1a/1a/1a
+xterm*background: rgb:2d/2d/2d
 xterm*foreground: rgb:d6/d6/d6
 xterm*color0:     rgb:00/00/00
 xterm*color1:     rgb:9e/18/28

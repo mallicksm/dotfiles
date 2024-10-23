@@ -26,6 +26,10 @@ function vgrep () {
             opt[VERILOG]=1
             shift 1
          ;;
+         -r|--rtl)
+            opt[RTL]=1
+            shift 1
+         ;;
          -t|--tcl)
             opt[TCL]=1
             shift 1
@@ -85,6 +89,9 @@ function vgrep () {
    fi
    if [[ ${opt[VERILOG]} -eq 1 ]]; then
       v="--include=*.v --include=*.sv --include=*.vhd --include=*.svh"
+   fi
+   if [[ ${opt[RTL]} -eq 1 ]]; then
+      v="--include=*.v --include=*.sv --include=*.vhd --include=*.svh --exclude=postDFT --exclude-dir=guc_libs --exclude-dir=.zfs --exclude-dir=asic_ip"
    fi
    local t
    if [[ ${opt[TCL]} -eq 1 ]]; then

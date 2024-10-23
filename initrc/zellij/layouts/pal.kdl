@@ -58,4 +58,6 @@ layout {
    }
    ztab name="Waves" {
    }
+   ztab name="Lazygit" {
+   }
 }

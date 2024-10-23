@@ -88,8 +88,7 @@
    "item display statement": {
       "prefix": ["display"],
       "body": [
-         "/* %h=hex, %d=dec, %[enum_type] */",
-         "DISPLAY(\"${1:text %t %h}\", ${2:signal-name});"
+         "DISPLAY(F=${4:f}, \"${1:text}%10.0t %${3|h,d,[enum_type]|}\", ${2:signalName});"
       ],
       "description": "Code snippet for display"
    },

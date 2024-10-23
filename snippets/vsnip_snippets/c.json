@@ -314,23 +314,23 @@
    },
    "printf": {
       "prefix": "printf",
-      "body": ["printf(\"${1:%s}\\n\"$2)$0"],
+      "body": ["printf(\"${1:%s}\\n\"$2);"],
       "description": "printf() snippet"
    },
    "fprintf": {
       "prefix": "fprintf",
-      "body": ["fprintf(${1:stderr}, \"${2:%s}\\n\"$3)$0"],
+      "body": ["fprintf(${1:stderr}, \"${2:%s}\\n\"$3);"],
       "description": "fprintf() snippet"
    },
    "sprintf": {
       "prefix": "sprintf",
-      "body": ["sprintf(${1:buf}, \"${2:%s}\\n\"$3)$0"],
+      "body": ["sprintf(${1:buf}, \"${2:%s}\\n\"$3);"],
       "description": "sprintf() snippet"
    },
    "snprintf": {
       "prefix": "snprintf",
       "body": [
-         "snprintf(${1:buf}, ${2:max}, \"${3:%s}\\n\"$3)$0"
+         "snprintf(${1:buf}, ${2:max}, \"${3:%s}\\n\"$3);"
       ],
       "description": "snprintf() snippet"
    },
@@ -465,20 +465,6 @@
       "body": ["(sizeof ${1:arr} / sizeof $1[0])"],
       "description": "Calculate number of elements in an array"
    },
-   "item aligned": {
-      "prefix": ["aligned"],
-      "body": [
-         "__attribute((aligned(${1:16}))) ${2:char} ${3:var};"
-      ],
-      "description": "Code snippet for 'aligned' statement"
-   },
-   "item interrupt": {
-      "prefix": ["interrupt"],
-      "body": [
-         "__attribute((interrupt)) void ${1:isr_routine}(void);"
-      ],
-      "description": "Code snippet for 'interrupt' statement"
-   },
    "mrs": {
       "prefix": ["mrs"],
       "body": [
@@ -547,6 +533,12 @@
          "//   STLXR Ws Xt [&lk->locked], success when Ws=0",
          "// Implemented: Double loop to check for Ws=0 (inner) and ldaxr.Xt=0 (outer)",
          "localvar = __sync_swap(&memvar, 1);"
+      ]
+   },
+   "attribute": {
+      "prefix": ["attribute"],
+      "body": [
+         "__attribute__((${1|weak,aligned(16),section(\"romdata\"),always_inline,nomerge|})) "
       ]
    }
 }

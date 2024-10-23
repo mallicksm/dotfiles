@@ -161,5 +161,12 @@
       "prefix": "expr",
       "body": "expr ${0:1 + 1}",
       "description": "Calculate numbers with Bash."
+   },
+   "list": {
+      "prefix": "list",
+      "body": [
+      "${1:listname} = (\"${2:apple}\" \"${3:pear}\")"
+      ],
+      "description": "Create a list in bash"
    }
 }
