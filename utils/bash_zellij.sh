@@ -21,7 +21,8 @@ helpstr["zm"]="\
       ------
       Options:
       -s|--create-session <session-name>         -Create a session with <session-name> (Not within zellij)
-      -k|--kill-all-sessions                     -kill all sessions (Not within zellij)
+      -k|--kill-session                          -kill session (Not within zellij)
+      -K|--kill-all-sessions                     -kill all sessions (Not within zellij)
       -l|--layout                                -def(default)|pal
 "
 function zm () {
@@ -31,6 +32,10 @@ function zm () {
       case $1 in 
          -s|--create-session)
             opt[ZELLIJ_SESSION_NAME]="$2"
+            shift 2
+         ;;
+         -K|--kill-session)
+            opt[ZELLIJ_KILL_SESSION]="$2"
             shift 2
          ;;
          -k|--kill-all-sessions)
@@ -55,8 +60,8 @@ function zm () {
    fi
    num_sessions=$(zellij ls 2>/dev/null | wc -l)
    if [[ ${opt[ZELLIJ_KILL_ALL_SESSIONS]} == "yes" ]]; then
-      zellij ka -y || true
-      zellij da -y || true
+      zellij kill-all-sessions -y || true
+      zellij delete-all-sessions -y || true
       # if the above does not work, go turbo
       local zj=$(ps aux |grep soummya|grep 'zellij --server' |grep -v grep|head -n 1|awk '{print $2}')
       if [[ $zj != "" ]]; then
@@ -65,9 +70,14 @@ function zm () {
       rm -rf ~/.cache/zellij/
       return
    fi
+   if [[ ! -z ${opt[ZELLIJ_KILL_SESSION]} ]]; then
+      zellij kill-session ${opt[ZELLIJ_KILL_SESSION]} 
+      zellij delete-session --force ${opt[ZELLIJ_KILL_SESSION]} 
+      return
+   fi
    if [[ ! -z ${opt[ZELLIJ_SESSION_NAME]} ]]; then
       # user gave a new name, must create session
-      zellij --layout ${opt[ZELLIJ_LAYOUT]} --session ${opt[ZELLIJ_SESSION_NAME]} 
+      zellij --new-session-with-layout ${opt[ZELLIJ_LAYOUT]} --session ${opt[ZELLIJ_SESSION_NAME]} 
       return
    fi
    if [[ ($num_sessions -eq 0) && ( -z ${opt[ZELLIJ_SESSION_NAME]} ) ]]; then

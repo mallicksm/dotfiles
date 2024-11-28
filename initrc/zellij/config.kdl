@@ -9,12 +9,6 @@ keybinds clear-defaults=true {
      bind "F2" {
         ToggleFocusFullscreen; 
      }
-     // bind F11 to open monocle in a new floating pane and open any results in a new tiled/floating pane
-     bind "F3" {
-         LaunchOrFocusPlugin "file:~/dotfiles/initrc/zellij/plugins/monocle.wasm" {
-            floating true
-         };
-     }
      bind "F12" {
         Detach; 
      }

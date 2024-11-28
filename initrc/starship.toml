@@ -1,6 +1,7 @@
 add_newline = false
-scan_timeout = 100
-command_timeout = 500
+scan_timeout = 10
+command_timeout = 50
+timeout = 50
 
 format = """
 $hostname\
@@ -23,6 +24,7 @@ style = "bold yellow"
 deleted = '[✘$count](red)'
 modified = '[$count](bold yellow)'
 untracked = '[$count](red)'
+untracked_files = "disabled" #disabling because git is so slow
 staged = '[+$count](green)'
 up_to_date = "✓"
 ahead = '[⇡$count](bold green)'

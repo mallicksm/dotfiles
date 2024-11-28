@@ -135,7 +135,6 @@ function getstarship() {
       echo "Attention: no url access"
    fi
 }
-
 #-------------------------------------------------------------------------------
 function all() {
    linkrc

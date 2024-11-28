@@ -4,6 +4,7 @@ os:
   copyToClipboardCmd: 'xclip'
 gui:
   nerdFontsVersion: "3"
+  refreshInterval: 20000
 git:
   paging:
     colorArg: always
