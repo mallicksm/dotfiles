@@ -9,3 +9,10 @@ git:
   paging:
     colorArg: always
     pager: delta -s --dark --paging=never --24-bit-color=never
+  autoFetch: true
+  CommitMessage: "TOk-1123:"
+  fetchInterval: 300
+keybinding:
+  commits:
+    amendCommit: ["A"]
+    rewordCommit: ["R"]

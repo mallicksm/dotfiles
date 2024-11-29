@@ -26,7 +26,7 @@ helpstr["zm"]="\
       -l|--layout                                -def(default)|pal
 "
 function zm () {
-   declare -A opt=()
+   declare -A opt=([ZELLIJ_LAYOUT]=pal)
    args=()
    while (( $# )); do
       case $1 in 
@@ -50,9 +50,6 @@ function zm () {
       esac
    done
    [[ "${opt[HELP]}" ]] && { echo "${helpstr[$FUNCNAME]}";return 0; }
-   if [[ -z "${opt[ZELLIJ_LAYOUT]}" ]]; then
-      opt[ZELLIJ_LAYOUT]=pal
-   fi
    if [[ ! -z $ZELLIJ ]]; then
       # working within zellij
       zellij action launch-or-focus-plugin zellij:session-manager --floating
