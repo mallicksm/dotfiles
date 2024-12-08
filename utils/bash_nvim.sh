@@ -5,9 +5,6 @@ function vi () {
 function vimdiff () {
    XDG_CONFIG_HOME=~/dotfiles/ NVIM_APPNAME=nvim.easy nvim -d "$@" 
 }
-function lvim () {
-   XDG_CONFIG_HOME=~/dotfiles/ NVIM_APPNAME=nvim.lua nvim -p "$@"
-}
 function svim () {
    XDG_CONFIG_HOME=~/dotfiles/ NVIM_APPNAME=nvim nvim -p "$@"
 }
