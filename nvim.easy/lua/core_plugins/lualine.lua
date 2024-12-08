@@ -5,13 +5,18 @@ return {
       local clients_lsp = function()
          local bufnr = vim.api.nvim_get_current_buf()
          local clients = vim.lsp.get_clients({ buffer = bufnr })
-         if not clients or vim.tbl_isempty(clients) then
+         local c = {}
+
+         for _, client in pairs(clients) do
+            if client.attached_buffers and client.attached_buffers[bufnr] then
+               table.insert(c, client.name)
+            end
+         end
+
+         if vim.tbl_isempty(c) then
             return 'No LSP'
          end
-         local c = {}
-         for _, client in pairs(clients) do
-            table.insert(c, client.name)
-         end
+
          return '\u{f085} ' .. table.concat(c, '\u{2016}')
       end
       local function inactive()
