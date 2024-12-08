@@ -1,7 +1,7 @@
 " Install vim-plug if not found
-set runtimepath+=~/.nvim
-if empty(glob('~/.nvim/autoload/plug.vim'))
-   silent execute '!curl -fLo ~/.nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+set runtimepath+=~/.nvim.vim
+if empty(glob('~/.nvim.vim/autoload/plug.vim'))
+   silent execute '!curl -fLo ~/.nvim.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
@@ -10,9 +10,9 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
    \| PlugInstall --sync | source $MYVIMRC
    \| endif
 
-let $RTP = expand("~/dotfiles/nvim")
+let $RTP = expand("~/dotfiles/nvim.vim")
 
-call plug#begin('~/.nvim/plugged')
+call plug#begin('~/.nvim.vim/plugged')
 source $RTP/config/functions.vim
 source $RTP/config/whichkey.vim    " Central menu control
 source $RTP/config/tpope.vim

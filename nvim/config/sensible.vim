@@ -1,1 +1,0 @@
-../../vim/config/sensible.vim

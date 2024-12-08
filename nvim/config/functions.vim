@@ -1,1 +1,0 @@
-../../vim/config/functions.vim

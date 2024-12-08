@@ -5,8 +5,10 @@ function vi () {
 function vimdiff () {
    XDG_CONFIG_HOME=~/dotfiles/ NVIM_APPNAME=nvim.easy nvim -d "$@" 
 }
+
+# vimscript based original nvim installation
 function svim () {
-   XDG_CONFIG_HOME=~/dotfiles/ NVIM_APPNAME=nvim nvim -p "$@"
+   XDG_CONFIG_HOME=~/dotfiles/ NVIM_APPNAME=nvim.vim nvim -p "$@"
 }
 linediff() { 
    if [ -z "$1" ] || [ -z "$2" ]; then 
