@@ -5,8 +5,8 @@ return {
       local clients_lsp = function()
          local bufnr = vim.api.nvim_get_current_buf()
          local clients = vim.lsp.get_clients({ buffer = bufnr })
-         if next(clients) == nil then
-            return ''
+         if not clients or vim.tbl_isempty(clients) then
+            return 'No LSP'
          end
          local c = {}
          for _, client in pairs(clients) do
@@ -15,7 +15,8 @@ return {
          return '\u{f085} ' .. table.concat(c, '\u{2016}')
       end
       local function inactive()
-         return [[inactive:]]
+         local filename = vim.fn.expand('%:p') or '[no name]'
+         return 'inactive:' .. filename
       end
 
       require('lualine').setup({
@@ -32,17 +33,13 @@ return {
             },
          },
          sections = {
-            lualine_x = { "fileformat", clients_lsp  , "filetype" },
+            lualine_x = { "fileformat", clients_lsp, "filetype" },
          },
          inactive_sections = {
             lualine_c = {
                {
                   inactive,
                },
-               {
-                  "filename",
-                  path = 1
-               }
             },
          },
          tabline = {

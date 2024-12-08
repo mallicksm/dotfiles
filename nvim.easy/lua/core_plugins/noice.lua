@@ -71,6 +71,13 @@ return {
             },
          },
       })
+      -- Key binding to clear Noice messages
+      vim.keymap.set("n", "<leader>nc", function()
+         vim.cmd("Noice dismiss")
+      end, { noremap = true, silent = true, desc = "Clear Noice Messages" })
+      vim.keymap.set("n", "<leader>nm", function()
+         vim.cmd("Noice last")
+      end, { noremap = true, silent = true, desc = "View Noice Messages" })
    end
 }
 -- vim: ts=3 sts=3 sw=3 et
