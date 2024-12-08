@@ -21,7 +21,7 @@ function vi () {
    (
    export XDG_CONFIG_HOME=~/dotfiles/
    export NVIM_APPNAME=nvim.easy 
-   echo "executing: nvim ${opt[OPT]} ${args[@]}"
+   echo "Note: nvim ${opt[OPT]} ${args[@]}"
    nvim ${opt[OPT]} ${args[@]}
    )
 }
@@ -47,7 +47,7 @@ function vim () {
    (
    export XDG_CONFIG_HOME=~/dotfiles/
    export NVIM_APPNAME=nvim.vim 
-   echo "executing: nvim ${opt[OPT]} ${args[@]}"
+   echo "Note: nvim ${opt[OPT]} ${args[@]}"
    nvim ${opt[OPT]} ${args[@]}
    )
 }
