@@ -19,6 +19,23 @@ return {
                qel = { 'tcl' },
             }
             -- usefull to jump between snippet anchors
+            -- Expand
+            vim.keymap.set({ "i", "s" }, "<c-j>", function()
+               if vim.fn["vsnip#expandable"]() == 1 then
+                  return '<Plug>(vsnip-expand)'
+               else
+                  return "<c-j>"
+               end
+            end, { expr = true, remap = true })
+            -- Expand or jump
+            vim.keymap.set({ "i", "s" }, "<c-k>", function()
+               if vim.fn["vsnip#available"](1) == 1 then
+                  return '<Plug>(vsnip-expand-or-jump)'
+               else
+                  return "<c-k>"
+               end
+            end, { expr = true, remap = true })
+            -- Jump forward
             vim.keymap.set({ "i", "s" }, "<Tab>", function()
                if vim.fn["vsnip#jumpable"](1) == 1 then
                   return '<Plug>(vsnip-jump-next)'
@@ -26,6 +43,7 @@ return {
                   return "<Tab>"
                end
             end, { expr = true, remap = true })
+            -- Jump backword
             vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
                if vim.fn["vsnip#jumpable"](-1) == 1 then
                   return '<Plug>(vsnip-jump-prev)'
