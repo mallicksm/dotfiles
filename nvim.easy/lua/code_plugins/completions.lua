@@ -57,7 +57,6 @@ return {
                      nvim_lsp = "[LSP]",
                      path = "[Path]",
                      buffer = "[Buffer]",
-                     luasnip = "[LuaSnip]",
                      nvim_lua = "[Lua]",
                      latex_symbols = "[Latex]",
                   })
