@@ -1,42 +1,26 @@
 return {
-   'stevearc/aerial.nvim',
-   opts = {},
-   dependencies = {
-      "nvim-treesitter/nvim-treesitter", -- Treesitter for better symbol parsing
-      "nvim-tree/nvim-web-devicons",     -- Icons for better UI
-   },
+   'simrat39/symbols-outline.nvim',
    config = function()
-      require("aerial").setup({
-         -- Attach keymaps when aerial attaches to a buffer
-         on_attach = function(bufnr)
-            local map_opts = { buffer = bufnr, silent = true, noremap = true }
-            vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>",
-               vim.tbl_extend("force", map_opts, { desc = "Aerial: Jump to previous symbol" }))
-            vim.keymap.set("n", "}", "<cmd>AerialNext<CR>",
-               vim.tbl_extend("force", map_opts, { desc = "Aerial: Jump to next symbol" }))
-         end,
-         -- Additional configurations
-         backends = { "treesitter", "lsp", "markdown" }, -- Use these providers
-         filter_kind = false,                            -- Show all kinds of symbols, including variables
-         layout = {
-            default_direction = "prefer_right",          -- Prefer to open on the right
-            placement = "window",                        -- Open aerial in the same window
+      require("symbols-outline").setup({
+         auto_close = true,             -- Close the outline automatically when opening a file
+         autofold_depth = 1,            -- Automatically fold symbols to this depth
+         show_numbers = false,          -- Disable line numbers
+         show_relative_numbers = false, -- Disable relative line numbers
+         show_symbol_details = true,    -- Show additional details for each symbol
+         highlight_hovered_item = true, -- Highlight the symbol under the cursor
+         keymaps = {                    -- Custom keybindings for the outline
+            close = "<Esc>",            -- Close the outline
+            goto_location = "<CR>",     -- Go to the symbol location
+            focus_location = "o",       -- Focus the symbol without closing the outline
+            toggle_preview = "K",       -- Toggle preview of the symbol
+            rename_symbol = "r",        -- Rename a symbol
+            code_actions = "a",         -- Show code actions for a symbol
          },
-         icons = {
-            Method = "ƒ",
-            Function = "󰡱",
-            Class = "󰠱",
-            Interface = "",
-            Module = "",
-            Namespace = "󰦮",
-            Variable = "󰂡",
-         },
-         show_guides = true,       -- Show hierarchy guides
-         highlight_on_jump = true, -- Highlight symbol on jump
+         position = "right",            -- Position the outline on the right
+         width = 20,                    -- Set the outline window width
       })
 
-      -- Keymap to toggle aerial
-      vim.keymap.set("n", "<leader>o", "<cmd>AerialToggle!<CR>", { desc = "Aerial: Toggle outline" })
+      -- Keybinding to toggle the Symbols Outline
+      vim.keymap.set("n", "<leader>o", "<cmd>SymbolsOutline<CR>", { desc = "Symbols: Toggle outline" })
    end,
 }
--- vim: ts=3 sts=3 sw=3 et
