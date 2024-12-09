@@ -6,26 +6,37 @@ return {
       'nvim-telescope/telescope-ui-select.nvim',
    },
    config = function()
-      require('telescope').setup({
+      local telescope = require('telescope')
+      local actions = require('telescope.actions')
+      local builtin = require('telescope.builtin')
+      local themes = require('telescope.themes')
+
+      -- Telescope setup
+      telescope.setup({
          defaults = {
             mappings = {
-               i = { ['<esc>'] = require('telescope.actions').close },
+               i = {
+                  ['<esc>'] = actions.close, -- Close Telescope with <esc>
+               },
             },
          },
          extensions = {
             ['ui-select'] = {
-               require('telescope.themes').get_dropdown(),
+               themes.get_dropdown(), -- Dropdown theme for `ui-select`
             },
          },
       })
-      pcall(require('telescope').load_extension('ui-select'))
 
-      local builtin = require('telescope.builtin')
+      -- Load extensions
+      pcall(telescope.load_extension, 'ui-select')
+
+      -- Keymaps for common Telescope commands
       vim.keymap.set('n', '<localleader>e', function()
          builtin.find_files({
             prompt_title = 'Find Files (<esc> to quit)',
          })
       end, { desc = 'Telescope: [e]xplorer' })
+
       vim.keymap.set('n', '<localleader>g', function()
          builtin.live_grep({
             prompt_title = 'Grep Files (<esc> to quit)',

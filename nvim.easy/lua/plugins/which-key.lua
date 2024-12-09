@@ -5,16 +5,21 @@ return {
       icons = {
          mappings = true,
          keys = {}
+      },
+      spec = {
+         { "<leader>d", group = "[D]ap" },
+         { "<leader>g", group = "[G]it" },
+         { "<leader>n", group = "[N]oice" },
+         { "<leader>t", group = "[T]oggle" },
+         { "<leader>m", group = "[F]ormat" },
+         { "<leader>c", group = "[L]sp" },
+         { "<leader>r", group = "[L]sp" },
+         { "<leader>w", group = "[L]sp" },
       }
-
    },
-   -- Document existing key chains
-   spec = {
-      {"<leader>d", group = "[D]ap"},
-      {"<leader>d", hidden = true},
-      {"<leader>g", group = "[G]it"},
-      {"<leader>g", hidden = true},
-
-   }
+   config = function(_, opts)
+      -- Document existing key chains
+      require('which-key').setup(opts)
+   end,
 }
 -- vim: ts=3 sts=3 sw=3 et

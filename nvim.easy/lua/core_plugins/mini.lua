@@ -9,7 +9,23 @@ return {
          --  - va?  - ?    [v]isually [a]round [?]user determined
          --  - vaf  - f    [v]isually [a]round [f]unction
          --  - vaa  - a    [v]isually [a]round [a]rgument
-         require('mini.ai').setup({ n_lines = 500 })
+         require('mini.ai').setup(
+            {
+               n_lines = 500,
+               custom_textobjects = {
+                  l = function()
+                     local line_start = vim.fn.line('.')
+                     local line_end = line_start
+                     local col_start = 1
+                     local col_end = #vim.fn.getline(line_start) + 1
+                     return {
+                        from = { line = line_start, col = col_start },
+                        to = { line = line_end, col = col_end },
+                     }
+                  end,
+               },
+            }
+         )
 
          -- Add/delete/replace surroundings (brackets, quotes, etc.)
          -- Examples:
@@ -28,12 +44,15 @@ return {
                suffix_next = '',
             },
          })
-
-         -- bring back my autopairs without complications
          require('mini.pairs').setup({
             mappings = {
-            ["`"] = false,
-            }
+               ["`"] = false,
+            },
+            disable_filetypes = {
+               'TelescopePrompt',
+               'NvimTree',
+               'neo-tree'
+            },
          })
 
          -- ... and there is more!
