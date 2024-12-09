@@ -19,7 +19,7 @@ export FZF_CTRL_T_OPTS="
    --height 100% 
    --preview 'bat -n --color=always {}'
    --bind 'ctrl-/:change-preview-window(down|hidden|)'
-   --bind 'enter:become(vim {} < /dev/tty > /dev/tty)'
+   --bind 'enter:become(bash -c \"vi {} < /dev/tty > /dev/tty\")'
    --color header:italic
    --header 'Press CTRL-/ to toggle preview'"
 

@@ -25,6 +25,8 @@ function vi () {
    nvim ${opt[OPT]} ${args[@]}
    )
 }
+# make available to subshells
+export -f vi
 # vimscript based original nvim installation (nvim.vim)
 function vim () {
    # getopt
@@ -51,6 +53,8 @@ function vim () {
    nvim ${opt[OPT]} ${args[@]}
    )
 }
+# make available to subshells
+export -f vim
 linediff() { 
    if [ -z "$1" ] || [ -z "$2" ]; then 
       return; 
