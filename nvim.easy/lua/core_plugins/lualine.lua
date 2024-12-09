@@ -1,6 +1,8 @@
 return {
    'nvim-lualine/lualine.nvim',
    config = function()
+      local lualine = require('lualine')
+      local active_config = nil
       -- LSP clients attached to buffer
       local clients_lsp = function()
          local bufnr = vim.api.nvim_get_current_buf()
@@ -24,7 +26,7 @@ return {
          return 'inactive:' .. filename
       end
 
-      require('lualine').setup({
+      local default_config = {
          options = {
             theme = 'dracula',
             component_separators = { left = '\u{2016}', right = '\u{2016}' },
@@ -33,17 +35,20 @@ return {
                   "neo-tree",
                   "undotree",
                   "diff",
-                  "aerial",
+                  "Outline",
                },
             },
          },
          sections = {
+            lualine_b = { 'branch', 'diff' },
+            lualine_c = { { 'filename', path = 0 } },
             lualine_x = { "fileformat", clients_lsp, "filetype" },
          },
          inactive_sections = {
             lualine_c = {
                {
                   inactive,
+                  color = { fg = '#ffff00', gui = 'italic' }
                },
             },
          },
@@ -62,7 +67,23 @@ return {
             lualine_y = {},
             lualine_z = {},
          },
-      })
+      }
+      local alternate_config = {
+         sections = {
+            lualine_b = { 'branch' },
+            lualine_c = { { 'filename', path = 3 } },
+            lualine_x = {},
+         },
+      }
+      -- Function to toggle between configurations
+      local function toggle_lualine()
+         active_config = active_config == default_config and alternate_config or default_config
+         lualine.setup(active_config)
+      end
+
+      lualine.setup(default_config)
+
+      vim.keymap.set("n", "<localleader>l", toggle_lualine, { desc = "Toggle lualine" })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
