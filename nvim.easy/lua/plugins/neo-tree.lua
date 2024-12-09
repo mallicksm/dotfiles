@@ -9,27 +9,27 @@ return {
             require('nvim-web-devicons').setup({
                override_by_extension = {
                   ['f'] = {
-                     icon = '',
+                     icon = '?',
                      color = '#4285f4',
                      name = 'f',
                   },
                   ['tdf'] = {
-                     icon = '󰃰',
+                     icon = '?',
                      color = '#89e051',
                      name = 'tdf',
                   },
                   ['cmm'] = {
-                     icon = '⚒️',
+                     icon = '??',
                      color = '#89e051',
                      name = 'cmm',
                   },
                   ['qel'] = {
-                     icon = '󰛓',
+                     icon = '?',
                      color = '#e37933',
                      name = 'qel',
                   },
                   ['bash'] = {
-                     icon = '󱆃',
+                     icon = '?',
                      color = '#89e051',
                      cterm_color = '113',
                      name = 'bash',
@@ -42,13 +42,13 @@ return {
       '3rd/image.nvim',
    },
    config = function()
-      local ntwidth = 35
+      local ntwidth = 35 -- Neo-tree window width
       require('neo-tree').setup({
          window = {
             width = ntwidth,
             mappings = {
-               ['s'] = 'open_split',
-               ['v'] = 'open_vsplit',
+               ['s'] = 'open_split',  -- Open in split window
+               ['v'] = 'open_vsplit', -- Open in vertical split window
                ['y'] = {
                   function(state)
                      local node = state.tree:get_node()
@@ -62,7 +62,7 @@ return {
          },
          filesystem = {
             components = {
-               --[[ truncate neo-tree header ]]
+               -- Truncate Neo-tree header for filesystem
                name = function(config, node, state)
                   local name = require('neo-tree.sources.common.components').name(config, node, state)
                   if node:get_depth() == 1 then
@@ -71,19 +71,20 @@ return {
                      if pathlen > (ntwidth - 8) then
                         name.text = '..' .. string.sub(path, pathlen - (ntwidth - 8))
                      end
-                     name.text = name.text
                   end
                   return name
                end,
             },
             window = {
                mappings = {
-                  ['u'] = 'navigate_up',
-                  ['C'] = 'set_root',
+                  ['u'] = 'navigate_up', -- Navigate up one level
+                  ['C'] = 'set_root',    -- Set root directory
                },
             },
          },
       })
+
+      -- Keybinding: Toggle Neo-tree file browser
       vim.keymap.set('n', '<leader>e', function()
          require('neo-tree.command').execute({
             action = 'focus',
@@ -92,10 +93,12 @@ return {
             toggle = true,
             reveal_force_cwd = true,
          })
-         --[[ auto execute ot which is order by type ]]
+         -- Auto order files by type
          local state = require('neo-tree.sources.manager').get_state("filesystem")
          require('neo-tree.sources.common.commands').order_by_type(state)
       end, { desc = 'Neo-tree: File browser toggle' })
+
+      -- Keybinding: Toggle Neo-tree buffer browser
       vim.keymap.set('n', '<leader>b', function()
          require('neo-tree.command').execute({
             action = 'show',
@@ -108,3 +111,4 @@ return {
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
+
