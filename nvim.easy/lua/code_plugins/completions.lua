@@ -18,7 +18,7 @@ return {
          --[[ vimscript based simplistic snippet engine ]]
          'hrsh7th/vim-vsnip',
          config = function()
-            vim.g.vsnip_snippet_dir = vim.fn.expand("$HOME") .. '/dotfiles/snippets/vsnip_snippets'
+            vim.g.vsnip_snippet_dir = '~/dotfiles/snippets/vsnip_snippets'
             vim.g.vsnip_filetypes = {
                verilogsystemverilog = { 'verilog_ixcom' },
                sh = { 'sh_expansion' },
@@ -49,7 +49,8 @@ return {
             updateevents = "TextChanged,TextChangedI",
          }
 
-         require("luasnip.loaders.from_lua").load({ paths = { "~/dotfiles/snippets/lua_snippets" } })
+         local lua_snippet_dir = "~/dotfiles/snippets/lua_snippets/"
+         require("luasnip.loaders.from_lua").load({ paths = { lua_snippet_dir } })
          vim.opt.completeopt = { "menu", "menuone", "noselect" }
          cmp.setup({
             view = {
@@ -147,6 +148,32 @@ return {
                { name = 'buffer',   max_item_count = 3 }
             }),
          })
+         vim.keymap.set("n", "<leader>le", function()
+            -- Get the current filetype
+            local boilerplate = vim.fn.expand(lua_snippet_dir .. "boilerplate.lua")
+            local filetype = vim.bo.filetype
+            -- Construct the path to the snippet file based on the filetype
+            local snippet = vim.fn.expand(lua_snippet_dir .. filetype .. ".lua")
+            -- Check if the file exists
+            if vim.fn.filereadable(snippet) == 1 then
+               vim.cmd("split " .. snippet)
+            else
+               -- Notify the user and create a new snippet file
+               vim.notify("No snippet file found for filetype: " .. filetype .. ". Creating a new one.",
+                  vim.log.levels.INFO)
+               -- Ensure the directory exists
+               vim.fn.mkdir(vim.fn.expand(lua_snippet_dir), "p")
+               -- Copy the boilerplate file to the new snippet file if boilerplate exists
+               if vim.fn.filereadable(boilerplate) == 1 then
+                  vim.fn.system({ "cp", boilerplate, snippet })
+                  vim.notify("Copied boilerplate to " .. snippet, vim.log.levels.INFO)
+               else
+                  vim.notify("Boilerplate file not found: " .. boilerplate, vim.log.levels.ERROR)
+               end
+
+               vim.cmd("split " .. snippet)
+            end
+         end, { noremap = true, silent = true, desc = "Edit LuaSnip snippets for current filetype" })
       end,
    },
 }
