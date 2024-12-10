@@ -140,8 +140,8 @@ return {
                ),
             }),
             sources = cmp.config.sources({
-               { name = 'vsnip' },
                { name = 'luasnip' },
+               { name = 'vsnip' },
                { name = 'nvim_lsp', max_item_count = 8 },
                { name = 'path' },
                { name = 'buffer',   max_item_count = 3 }
