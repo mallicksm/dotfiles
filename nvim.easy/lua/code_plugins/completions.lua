@@ -18,39 +18,6 @@ return {
                tcl = { 'tcl_expansion' },
                qel = { 'tcl' },
             }
-            -- usefull to jump between snippet anchors
-            -- Expand
-            vim.keymap.set({ "i", "s" }, "<c-j>", function()
-               if vim.fn["vsnip#expandable"]() == 1 then
-                  return '<Plug>(vsnip-expand)'
-               else
-                  return "<c-j>"
-               end
-            end, { expr = true, remap = true })
-            -- Expand or jump
-            vim.keymap.set({ "i", "s" }, "<c-k>", function()
-               if vim.fn["vsnip#available"](1) == 1 then
-                  return '<Plug>(vsnip-expand-or-jump)'
-               else
-                  return "<c-k>"
-               end
-            end, { expr = true, remap = true })
-            -- Jump forward
-            vim.keymap.set({ "i", "s" }, "<Tab>", function()
-               if vim.fn["vsnip#jumpable"](1) == 1 then
-                  return '<Plug>(vsnip-jump-next)'
-               else
-                  return "<Tab>"
-               end
-            end, { expr = true, remap = true })
-            -- Jump backword
-            vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
-               if vim.fn["vsnip#jumpable"](-1) == 1 then
-                  return '<Plug>(vsnip-jump-prev)'
-               else
-                  return "<S-Tab>"
-               end
-            end, { expr = true, remap = true })
          end,
       },
    },
@@ -58,6 +25,10 @@ return {
       'hrsh7th/nvim-cmp',
       event = 'InsertEnter',
       config = function()
+         local feedkey = function(key, mode)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+         end
+
          local cmp = require('cmp')
          local lspkind = require('lspkind')
          cmp.setup({
@@ -100,6 +71,22 @@ return {
                ['<C-Space>'] = cmp.mapping.complete(),
                ['<C-e>'] = cmp.mapping.abort(),
                ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+               ['<C-j>'] = cmp.mapping(function(fallback)
+                  if vim.fn["vsnip#available"](1) == 1 then
+                     feedkey('<Plug>(vsnip-expand-or-jump)', "")
+                  else
+                     fallback()
+                     -- return "<c-j>"
+                  end
+               end, { "i", "s" }),
+               ['<C-k>'] = cmp.mapping(function(fallback)
+                  if vim.fn["vsnip#jumpable"](-1) == 1 then
+                     feedkey('<Plug>(vsnip-jump-prev)', "")
+                  else
+                     fallback()
+                     -- return "<c-k>"
+                  end
+               end, { "i", "s" }),
             }),
             sources = cmp.config.sources({
                { name = 'vsnip' },
