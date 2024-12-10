@@ -30,20 +30,27 @@ return {
    },
    {
       'hrsh7th/nvim-cmp',
+      lazy = false,
+      priority = 100,
       event = { 'InsertEnter', 'CmdlineEnter' },
       config = function()
          local feedkey = function(key, mode)
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
          end
 
+         local lspkind = require('lspkind')
+         lspkind.init {}
+
          local cmp = require('cmp')
          local luasnip = require('luasnip')
-         local lspkind = require('lspkind')
 
-         luasnip.config.setup {}
+         luasnip.config.set_config {
+            history = false,
+            updateevents = "TextChanged,TextChangedI",
+         }
 
          require("luasnip.loaders.from_lua").load({ paths = { "~/dotfiles/snippets/lua_snippets" } })
-
+         vim.opt.completeopt = { "menu", "menuone", "noselect" }
          cmp.setup({
             view = {
                entries = "custom"
@@ -87,10 +94,9 @@ return {
                }),
                documentation = cmp.config.window.bordered(),
             },
-            completion = { completeopt = 'menu,menuone,preview,noinsert' },
             mapping = cmp.mapping.preset.insert({
-               ['<C-n>'] = cmp.mapping.select_next_item(),
-               ['<C-p>'] = cmp.mapping.select_prev_item(),
+               ['<C-n>'] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+               ['<C-p>'] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
                ['<C-b>'] = cmp.mapping.scroll_docs(-4),
                ['<C-f>'] = cmp.mapping.scroll_docs(4),
                -- Manually trigger a completion from nvim-cmp.
@@ -98,25 +104,48 @@ return {
                --  completions whenever it has completion options available.
                ['<C-Space>'] = cmp.mapping.complete(),
                ['<C-e>'] = cmp.mapping.abort(),
-               ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+               ['<C-y>'] = cmp.mapping(
+                  cmp.mapping.confirm {
+                     behavior = cmp.ConfirmBehavior.Insert,
+                     select = true
+                  },
+                  { "i", "c" }
+               ),
                ['<C-l>'] = cmp.mapping(function(fallback)
                   if vim.fn["vsnip#jumpable"](1) == 1 then
                      feedkey('<Plug>(vsnip-jump-next)', "")
-                  elseif luasnip.expand_or_locally_jumpable() then
+                  elseif luasnip.expand_or_jumpable() then
                      luasnip.expand_or_jump()
                   else
                      fallback()
                   end
-               end, { "i", "s" }),
+               end, { "i", "s" }
+               ),
                ['<C-h>'] = cmp.mapping(function(fallback)
                   if vim.fn["vsnip#jumpable"](-1) == 1 then
                      feedkey('<Plug>(vsnip-jump-prev)', "")
-                  elseif luasnip.locally_jumpable() then
+                  elseif luasnip.jumpable(-1) then
                      luasnip.jump(-1)
                   else
                      fallback()
                   end
                end, { "i", "s" }),
+               ['<C-k>'] = cmp.mapping(function(fallback)
+                  if luasnip.choice_active() then
+                     luasnip.change_choice()
+                  else
+                     fallback()
+                  end
+               end, { "i", "s" }
+               ),
+               ['<C-j>'] = cmp.mapping(function(fallback)
+                  if luasnip.choice_active() then
+                     luasnip.change_choice(-1)
+                  else
+                     fallback()
+                  end
+               end, { "i", "s" }
+               ),
             }),
             sources = cmp.config.sources({
                { name = 'vsnip' },
