@@ -114,7 +114,7 @@ return {
                ['<C-l>'] = cmp.mapping(function(fallback)
                   if vim.fn["vsnip#jumpable"](1) == 1 then
                      feedkey('<Plug>(vsnip-jump-next)', "")
-                  elseif luasnip.expand_or_jumpable() then
+                  elseif luasnip.expand_or_locally_jumpable() then
                      luasnip.expand_or_jump()
                   else
                      fallback()
@@ -124,23 +124,15 @@ return {
                ['<C-h>'] = cmp.mapping(function(fallback)
                   if vim.fn["vsnip#jumpable"](-1) == 1 then
                      feedkey('<Plug>(vsnip-jump-prev)', "")
-                  elseif luasnip.jumpable(-1) then
+                  elseif luasnip.locally_jumpable(-1) then
                      luasnip.jump(-1)
                   else
                      fallback()
                   end
                end, { "i", "s" }),
-               ['<C-k>'] = cmp.mapping(function(fallback)
-                  if luasnip.choice_active() then
-                     luasnip.change_choice()
-                  else
-                     fallback()
-                  end
-               end, { "i", "s" }
-               ),
                ['<C-j>'] = cmp.mapping(function(fallback)
                   if luasnip.choice_active() then
-                     luasnip.change_choice(-1)
+                     luasnip.change_choice()
                   else
                      fallback()
                   end
