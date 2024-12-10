@@ -1,11 +1,18 @@
 return {
    {
+      -- associated nvim-cmp source
       "onsails/lspkind.nvim",
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
    },
    {
+      -- luasnip Snippet Engine
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+   },
+   {
+      -- vsnip Snippet Engine
       'hrsh7th/cmp-vsnip',
       dependencies = {
          --[[ vimscript based simplistic snippet engine ]]
@@ -24,27 +31,6 @@ return {
    {
       'hrsh7th/nvim-cmp',
       event = { 'InsertEnter', 'CmdlineEnter' },
-      dependencies = {
-         -- Snippet Engine & its associated nvim-cmp source
-         {
-            'L3MON4D3/LuaSnip',
-            dependencies = {
-               -- `friendly-snippets` contains a variety of premade snippets.
-               --    See the README about individual language/framework/plugin snippets:
-               --    https://github.com/rafamadriz/friendly-snippets
-               {
-                  'rafamadriz/friendly-snippets',
-                  config = function()
-                     require('luasnip.loaders.from_vscode').lazy_load()
-                     require("luasnip.loaders.from_lua").load({ paths = { "~/dotfiles/snippets/lua_snippets/*.lua" } })
-                  end,
-               },
-            },
-
-         },
-         'saadparwaiz1/cmp_luasnip',
-      },
-
       config = function()
          local feedkey = function(key, mode)
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
@@ -55,6 +41,8 @@ return {
          local lspkind = require('lspkind')
 
          luasnip.config.setup {}
+
+         require("luasnip.loaders.from_lua").load({ paths = { "~/dotfiles/snippets/lua_snippets/" } })
 
          cmp.setup({
             view = {
@@ -81,10 +69,10 @@ return {
                expand = function(args)
                   if vim.fn.exists('*vsnip#anonymous') == 1 then
                      vim.fn["vsnip#anonymous"](args.body) -- Expand with Vsnip
-                     -- elseif luasnip.expandable() then
+                  elseif luasnip.expandable() then
+                     luasnip.lsp_expand(args.body)        -- Expand with LuaSnip
                   else
-                     luasnip.lsp_expand(args.body) -- Expand with LuaSnip
-                     -- print("No snippet engine available!")
+                     print("No snippet engine available!")
                   end
                end,
             },
