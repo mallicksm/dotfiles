@@ -4,7 +4,7 @@ local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
 
-return {
+ls.add_snippets("all", {
 	s("cheader", {
 		t({ "also loaded!!", "" }),
 		i(1),
@@ -14,4 +14,4 @@ return {
 	s("autotrig", {
 		t("autotriggered, if enabled")
 	})
-}
+})
