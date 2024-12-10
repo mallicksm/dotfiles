@@ -42,7 +42,7 @@ return {
 
          luasnip.config.setup {}
 
-         require("luasnip.loaders.from_lua").load({ paths = { "~/dotfiles/snippets/lua_snippets/" } })
+         require("luasnip.loaders.from_lua").load({ paths = { "~/dotfiles/snippets/lua_snippets" } })
 
          cmp.setup({
             view = {
