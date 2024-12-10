@@ -1,6 +1,6 @@
 return {
    {
-      -- associated nvim-cmp source
+      -- nvim-cmp source
       "onsails/lspkind.nvim",
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
@@ -49,12 +49,17 @@ return {
                entries = "custom"
             },
             formatting = {
-               fields = { "kind", "abbr", "menu" },
+               fields = {
+                  "abbr",
+                  "kind",
+                  "menu"
+               },
                expandable_indicator = true,
                format = lspkind.cmp_format({
-                  with_text = true,
-                  mode = "symbol_text",
-                  menu = ({
+                  mode          = "symbol_text",
+                  maxwidth      = 50,
+                  ellipsis_char = "...",
+                  menu          = {
                      vsnip = "[Vsnip]",
                      luasnip = "[Luasnip]",
                      nvim_lsp = "[LSP]",
@@ -62,7 +67,7 @@ return {
                      buffer = "[Buffer]",
                      nvim_lua = "[Lua]",
                      latex_symbols = "[Latex]",
-                  })
+                  }
                })
             },
             snippet = {
@@ -97,6 +102,8 @@ return {
                ['<C-l>'] = cmp.mapping(function(fallback)
                   if vim.fn["vsnip#jumpable"](1) == 1 then
                      feedkey('<Plug>(vsnip-jump-next)', "")
+                  elseif luasnip.expand_or_locally_jumpable() then
+                     luasnip.expand_or_jump()
                   else
                      fallback()
                   end
@@ -104,6 +111,8 @@ return {
                ['<C-h>'] = cmp.mapping(function(fallback)
                   if vim.fn["vsnip#jumpable"](-1) == 1 then
                      feedkey('<Plug>(vsnip-jump-prev)', "")
+                  elseif luasnip.locally_jumpable() then
+                     luasnip.jump(-1)
                   else
                      fallback()
                   end
