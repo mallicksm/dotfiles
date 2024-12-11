@@ -39,7 +39,6 @@ return {
          end,
       },
       'MunifTanjim/nui.nvim',
-      '3rd/image.nvim',
    },
    config = function()
       local ntwidth = 35 -- Neo-tree window width

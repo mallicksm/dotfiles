@@ -8,7 +8,15 @@ return {
    },
    {
       -- luasnip Snippet Engine
-      'L3MON4D3/LuaSnip',
+      {
+         'L3MON4D3/LuaSnip',
+         lazy = true,
+         opts = {
+            history = true,
+            delete_check_events = "TextChanged",
+            updateevents = "TextChanged,TextChangedI",
+         },
+      },
       'saadparwaiz1/cmp_luasnip',
    },
    {
@@ -44,11 +52,6 @@ return {
          local cmp = require('cmp')
          local luasnip = require('luasnip')
 
-         luasnip.config.set_config {
-            history = false,
-            updateevents = "TextChanged,TextChangedI",
-         }
-
          local lua_snippet_dir = "~/dotfiles/snippets/lua_snippets/"
          require("luasnip.loaders.from_lua").load({ paths = { lua_snippet_dir } })
          vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -65,7 +68,7 @@ return {
                expandable_indicator = true,
                format = lspkind.cmp_format({
                   mode          = "symbol_text",
-                  maxwidth      = 50,
+                  maxwidth      = 80,
                   ellipsis_char = "...",
                   menu          = {
                      vsnip = "[Vsnip]",
@@ -146,6 +149,22 @@ return {
                { name = 'nvim_lsp', max_item_count = 8 },
                { name = 'path' },
                { name = 'buffer',   max_item_count = 3 }
+            }),
+         })
+         -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+         cmp.setup.cmdline({ '/', '?' }, {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = {
+               { name = 'buffer' }
+            }
+         })
+         -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+         cmp.setup.cmdline(':', {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({
+               { name = 'path' }
+            }, {
+               { name = 'cmdline' }
             }),
          })
          vim.keymap.set("n", "<leader>le", function()
