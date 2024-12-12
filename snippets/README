@@ -1,4 +1,3 @@
 Snippet Directories
 1. lua_snippets        - Fully experimental very difficult to create but very capable
-2. vscode_snippets     - for luasnip, requires package.json and is difficult to maintain
 3. vsnip_snippets      - most flexible and setup in completions.lua and easy to create
