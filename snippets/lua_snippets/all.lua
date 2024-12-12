@@ -1,10 +1,7 @@
 local ls = require("luasnip")
 require("luasnip.session.snippet_collection").clear_snippets(vim.bo.filetype)
-local s = ls.snippet
-local t = ls.text_node
-local i = ls.insert_node
-local c = ls.choice_node
-local fmt = require("luasnip.extras.fmt").fmt
+local s, i, t, c = ls.snippet, ls.insert_node, ls.text_node, ls.choice_node
+local fmt = require("luasnip.extras.fmt").fmta
 
 ls.add_snippets("all", {
    s("block", {

@@ -1,81 +1,73 @@
 local ls = require("luasnip")
 require("luasnip.session.snippet_collection").clear_snippets(vim.bo.filetype)
-local s = ls.snippet
-local t = ls.text_node
-local c = ls.choice_node
-local i = ls.insert_node
-local fmt = require("luasnip.extras.fmt").fmt
+local s, i, t, c = ls.snippet, ls.insert_node, ls.text_node, ls.choice_node
+local fmt = require("luasnip.extras.fmt").fmta
 
 ls.add_snippets("c", {
    -- Snippet for the main function
    s("main", fmt([[
-      int main({}) {{
-         {}
+      int main(<cond>) {
+         <body>
          return 0;
-      }}
+      }
    ]], {
-      c(1, {
+      cond = c(1, {
          t("void"),                  -- Option for void
          t("int argc, char *argv[]") -- Option for argc, argv
       }),
-      i(0)                           -- Placeholder for the body of the function
+      body = i(0)                    -- Placeholder for the body of the function
    }, {
       name = "Main function with 2 argument styles"
    })),
 
    -- Single 'if' snippet with options for 'else' and 'else if'
    s("if", fmt([[
-      if ({}) {{
-         {}
-      }}{}
+      if (<cond>) {
+         <body>
+      }<else_part>
    ]], {
-      i(2, "1"), -- Placeholder for the condition
-      i(3),      -- Placeholder for the 'if' body
-      c(1, {
-         t(""),  -- No additional block
+      cond = i(2, "1"), -- Placeholder for the condition
+      body = i(3),      -- Placeholder for the 'if' body
+      else_part = c(1, {
+         t(""),         -- No additional block
          fmt([[
-          else {{
-            {}
-         }}
-         ]], { i(1) }), -- 'else' block
+          else {
+            <body>
+         }
+         ]], { body = i(1) }), -- 'else' block
          fmt([[
-          else if ({}) {{
-            {}
-         }}
-         ]], { i(1, "1"), i(2) }) -- 'else if' block
+          else if (<cond>) {
+            <body>
+         }
+         ]], { cond = i(1, "1"), body = i(2) }) -- 'else if' block
       })
    })),
    s("#if", fmt([[
-   #if ({})
-   {}
-   {}
+   <cond>
+   <body>
+   <else_part>
    #endif
    ]], {
-      c(1, {
-         t("FEATURE > 2"),                    -- First condition
-         t("FEATURE_A > 2 || FEATURE_B > 3"), -- Second condition
-         i(nil, "Custom condition"),          -- Custom condition for user input
+
+      -- Single '#if' snippet with options for 'else' and 'else if'
+      cond = c(2, {
+         fmt("#ifdef <cond>", { cond = i(1, "FEATURE_A") }),                     -- Option 1: #ifdef FEATURE_A
+         fmt("#ifndef <cond>", { cond = i(1, "FEATURE_A") }),                    -- Option 1: #ifdef FEATURE_A
+         fmt("#if defined(<cond>)", { cond = i(1, "FEATURE_A") }),               -- Option 2: #if defined(FEATURE_A)
+         fmt("#if (<cond>)", { cond = i(1, "FEATURE_A > 2") }),                  -- Option 3: #if (FEATURE_A > 2)
+         fmt("#if (<cond>)", { cond = i(1, "FEATURE_A > 2 || FEATURE_B > 3") }), -- Option 4: #if (FEATURE_A > 2 || FEATURE_B > 3)
       }),
-      i(2, "// Code for the if block"),       -- Placeholder for the if block
-      c(3, {
-         t(""),                               -- No elif or else block
+      body = i(3, "// code"),                                                 -- Placeholder for the conditional block
+      else_part = c(1, {
+         t(""),                                                                  -- No #else or #elif block
          fmt([[
          #else
-         {}
-         ]], {
-            i(1, "// Code for the else block") -- Placeholder for the else block
-         }),
+         <body>
+         ]], { body = i(1, "// code") }), -- Option for #else block
          fmt([[
-         #elif ({})
-         {}
-         ]], {
-            c(1, {
-               t("FEATURE > 2"),                    -- First condition for elif
-               t("FEATURE_A > 2 || FEATURE_B > 3"), -- Second condition for elif
-               i(nil, "Custom elif condition"),     -- Custom condition for user input
-            }),
-            i(2, "// Code for the elif block")      -- Placeholder for the elif block
-         }),
+         #elif (<cond>)
+         <body>
+         ]], { cond = i(1, "FEATURE_X"), body = i(2, "// code") }), -- Option for #elif block
       }),
    })),
 })

@@ -72,24 +72,6 @@
       "body": ["#define _GNU_SOURCE"],
       "description": "Enable GNU extensions (functions)"
    },
-   "#ifdef": {
-      "prefix": "#ifdef",
-      "body": [
-         "#ifdef ${1:MACRO}",
-         "$0",
-         "#endif /* ifdef $1 */"
-      ],
-      "description": "#ifdef snippet"
-   },
-   "#ifndef": {
-      "prefix": "#ifndef",
-      "body": [
-         "#ifndef ${1:MACRO}",
-         "$0",
-         "#endif /* ifndef $1 */"
-      ],
-      "description": "#ifndef snippet"
-   },
    "include once": {
       "prefix": "#once",
       "body": [
