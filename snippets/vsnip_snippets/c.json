@@ -72,11 +72,6 @@
       "body": ["#define _GNU_SOURCE"],
       "description": "Enable GNU extensions (functions)"
    },
-   "#if": {
-      "prefix": "#if",
-      "body": ["#if ${1:0}", "$0", "#endif /* if $1 */"],
-      "description": "#if snippet"
-   },
    "#ifdef": {
       "prefix": "#ifdef",
       "body": [
@@ -129,36 +124,6 @@
       "prefix": "#warn",
       "body": ["#warning \"$0\""],
       "description": "#warning snippet"
-   },
-   "if": {
-      "prefix": "if",
-      "body": ["if (${1:true}) {$0", "}"],
-      "description": "'if' snippet"
-   },
-   "if else": {
-      "prefix": "ifelse",
-      "body": ["if (${1:true}) {$2", "} else {$0", "}"],
-      "description": "'if' with 'else'"
-   },
-   "else": {
-      "prefix": "else",
-      "body": ["else {$0", "}"],
-      "description": "'else' snippet"
-   },
-   "else if": {
-      "prefix": "elseif",
-      "body": ["else if (${1:true}) {$0", "}"],
-      "description": "else-if snippet"
-   },
-   "if 1L": {
-      "prefix": "ifi",
-      "body": ["if (${1:true})$0"],
-      "description": "1-line-if"
-   },
-   "elif 1L": {
-      "prefix": "elseifi",
-      "body": ["else if (${1:true})$0"],
-      "description": "1-line-else-if"
    },
    "switch": {
       "prefix": "switch",

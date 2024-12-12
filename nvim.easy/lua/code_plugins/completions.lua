@@ -151,6 +151,7 @@ return {
                { name = 'buffer',   max_item_count = 3 }
             }),
          })
+
          -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
          cmp.setup.cmdline({ '/', '?' }, {
             mapping = cmp.mapping.preset.cmdline(),
@@ -158,6 +159,7 @@ return {
                { name = 'buffer' }
             }
          })
+
          -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
          cmp.setup.cmdline(':', {
             mapping = cmp.mapping.preset.cmdline(),
@@ -167,6 +169,8 @@ return {
                { name = 'cmdline' }
             }),
          })
+
+         -- Shortcut edit snippet file for the current filetype
          vim.keymap.set("n", "<leader>le", function()
             -- Get the current filetype
             local boilerplate = vim.fn.expand(lua_snippet_dir .. "boilerplate.lua")
@@ -193,6 +197,23 @@ return {
                vim.cmd("split " .. snippet)
             end
          end, { noremap = true, silent = true, desc = "Edit LuaSnip snippets for current filetype" })
+
+         -- Function to load snippets based on filetype
+         local function load_snippets_for_ft(ft)
+            local snippet = vim.fn.expand(lua_snippet_dir .. ft .. ".lua")
+            if vim.fn.filereadable(snippet) == 1 then
+               loadfile(snippet)()
+               vim.notify(string.format("Snippets reloaded for filetype: %s", ft), vim.log.levels.INFO)
+            else
+               vim.notify(string.format("No snippets found for filetype: %s", ft), vim.log.levels.WARN)
+            end
+         end
+
+         -- Shortcut to reload snippets for the current filetype
+         vim.keymap.set("n", "<leader>ls", function()
+            local ft = vim.bo.filetype
+            load_snippets_for_ft(ft)
+         end, { noremap = true, silent = true, desc = "Reload snippets for current filetype" })
       end,
    },
 }
