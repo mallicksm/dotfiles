@@ -3,7 +3,7 @@ local cmp = require('cmp')
 local directory_source = {}
 
 -- Directory to read files from
-local directory_path = "~/dotfiles/nvim.easy/nvim_notes"
+local directory_path = "~/dotfiles/nvim_notes"
 
 -- Complete function for nvim-cmp
 directory_source.complete = function(_, _, callback)
