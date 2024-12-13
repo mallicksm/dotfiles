@@ -57,8 +57,8 @@ return {
          require("luasnip.loaders.from_lua").load({ paths = { lua_snippet_dir } })
          vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
-         -- Load custom source
-         cmp.register_source('directory', require('user_plugins.directory'))
+         -- Load custom source nvim_notes
+         cmp.register_source('directory', require('user_plugins.nvim_notes'))
 
          cmp.setup({
             view = {
@@ -100,7 +100,9 @@ return {
                completion = cmp.config.window.bordered({
                   winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
                }),
-               documentation = cmp.config.window.bordered(),
+               documentation = cmp.config.window.bordered({
+                  winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
+               }),
             },
             mapping = cmp.mapping.preset.insert({
                ['<C-n>'] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },

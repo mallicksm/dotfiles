@@ -10,4 +10,5 @@ Content for file1
 int i = 0;
 ```
 @Note apple is fine
-also fine
+@Arguments apple is fine
+@Parameters apple is fine
