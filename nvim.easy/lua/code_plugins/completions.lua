@@ -5,6 +5,7 @@ return {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-cmdline',
    },
    {
       -- luasnip Snippet Engine
@@ -55,6 +56,10 @@ return {
          local lua_snippet_dir = "~/dotfiles/snippets/lua_snippets/"
          require("luasnip.loaders.from_lua").load({ paths = { lua_snippet_dir } })
          vim.opt.completeopt = { "menu", "menuone", "noselect" }
+
+         -- Load custom source
+         cmp.register_source('directory', require('user_plugins.directory'))
+
          cmp.setup({
             view = {
                entries = "custom"
@@ -67,10 +72,8 @@ return {
                },
                expandable_indicator = true,
                format = lspkind.cmp_format({
-                  mode          = "symbol_text",
-                  maxwidth      = 80,
-                  ellipsis_char = "...",
-                  menu          = {
+                  mode = "symbol_text",
+                  menu = {
                      vsnip = "[Vsnip]",
                      luasnip = "[Luasnip]",
                      nvim_lsp = "[LSP]",
@@ -78,6 +81,7 @@ return {
                      buffer = "[Buffer]",
                      nvim_lua = "[Lua]",
                      latex_symbols = "[Latex]",
+                     directory = "[Dir]",
                   }
                })
             },
@@ -146,6 +150,7 @@ return {
             sources = cmp.config.sources({
                { name = 'luasnip' },
                { name = 'vsnip' },
+               { name = 'directory' },
                { name = 'nvim_lsp', max_item_count = 8 },
                { name = 'path' },
                { name = 'buffer',   max_item_count = 3 }
@@ -163,11 +168,19 @@ return {
          -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
          cmp.setup.cmdline(':', {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources({
-               { name = 'path' }
-            }, {
-               { name = 'cmdline' }
-            }),
+            sources = cmp.config.sources(
+               {
+                  {
+                     name = 'path',
+                     max_item_count = 10,
+                  }
+               }, {
+                  {
+                     name = 'cmdline',
+                     max_item_count = 5,
+                     keyword_length = 3,
+                  },
+               }),
          })
 
          -- Shortcut edit snippet file for the current filetype
