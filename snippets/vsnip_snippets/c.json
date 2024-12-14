@@ -74,16 +74,6 @@
       "body": ["default:$0"],
       "description": "'default' branch"
    },
-   "while": {
-      "prefix": "while",
-      "body": ["while (${1:true}) {$0", "}"],
-      "description": "'while' loop snippet"
-   },
-   "do...while": {
-      "prefix": "do",
-      "body": ["do {$0", "} while (${1:false});"],
-      "description": "do...while loop snippet"
-   },
    "Function ...": {
       "prefix": "fun",
       "body": ["${2:void} ${1:fun}(${3:void})$0"],

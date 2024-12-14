@@ -80,7 +80,7 @@ ls.add_snippets("c", {
       <final>
       ]], {
          loop_header = c(1, {
-            fmt("int <var> = 0;<var> << <limit>;<var>++", {
+            fmt("int <var> = 0; <var> << <limit>; <var>++", {
                var = i(1, "i"),
                limit = i(2, "n")
             }, { repeat_duplicates = true }),
@@ -90,6 +90,34 @@ ls.add_snippets("c", {
                iter = i(3)
             }),
          }),
+         body = i(2),
+         final = i(nil, { "" })
+      }
+   )),
+
+   -- 'do' snippet with options for standard form and free form
+   s("do", fmt(
+   [[
+   do {
+      <body>
+   } while (<cond>);
+   <final>
+   ]], {
+         cond = i(1),
+         body = i(2),
+         final = i(nil, { "" })
+      }
+   )),
+
+   -- 'while' snippet with options for standard form and free form
+   s("while", fmt(
+   [[
+   while (<cond>) {
+      <body>
+   }
+   <final>
+   ]], {
+         cond = i(1),
          body = i(2),
          final = i(nil, { "" })
       }
