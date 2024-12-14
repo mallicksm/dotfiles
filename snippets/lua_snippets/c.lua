@@ -70,4 +70,28 @@ ls.add_snippets("c", {
          ]], { cond = i(1, "FEATURE_X"), body = i(2, "// code") }), -- Option for #elif block
       }),
    })),
+
+   -- 'for' snippet with options for standard form and free form
+   s("for", fmt(
+      [[
+      for (<loop_header>) {
+         <body>
+      }
+      <final>
+      ]], {
+         loop_header = c(1, {
+            fmt("int <var> = 0;<var> << <limit>;<var>++", {
+               var = i(1, "i"),
+               limit = i(2, "n")
+            }, { repeat_duplicates = true }),
+            fmt("<init>;<cond>;<iter>", {
+               init = i(1),
+               cond = i(2),
+               iter = i(3)
+            }),
+         }),
+         body = i(2),
+         final = i(nil, { "" })
+      }
+   ))
 })
