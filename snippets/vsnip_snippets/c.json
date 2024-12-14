@@ -1,42 +1,4 @@
 {
-   "Comment block": {
-      "prefix": "/",
-      "body": ["/*$0 */"],
-      "description": "Convenient comment block"
-   },
-   "Multiline comment": {
-      "prefix": "//",
-      "body": ["/*$0", " */"],
-      "description": "Convenient multiline comment"
-   },
-   "Starter Template": {
-      "prefix": "st",
-      "body": [
-         "#include <stdbool.h>",
-         "#include <stdio.h>",
-         "#include <stdlib.h>",
-         "",
-         "int main(int argc, char *argv[])",
-         "{$0",
-         "",
-         "   return EXIT_SUCCESS;",
-         "}"
-      ],
-      "description": "Standard starter template for a tiny C program"
-   },
-   "Preprocessor Starter Template": {
-      "prefix": "#st",
-      "body": [
-         "#include <assert.h>",
-         "#include <errno.h>",
-         "#include <stdbool.h>",
-         "#include <stddef.h>",
-         "#include <stdint.h>",
-         "#include <stdio.h>",
-         "#include <stdlib.h>"
-      ],
-      "description": "Preprocessor starter template for a C project"
-   },
    "#include <...>": {
       "prefix": "#inc",
       "body": ["#include <$0>"],
