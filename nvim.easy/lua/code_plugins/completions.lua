@@ -54,7 +54,9 @@ return {
          local luasnip = require('luasnip')
 
          local lua_snippet_dir = "~/dotfiles/snippets/lua_snippets/"
+         local vscode_snippet_dir = "~/dotfiles/snippets/vscode_snippets/"
          require("luasnip.loaders.from_lua").load({ paths = { lua_snippet_dir } })
+         require("luasnip.loaders.from_vscode").load({ paths = { vscode_snippet_dir } })
          vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
          -- Load custom source nvim_notes
