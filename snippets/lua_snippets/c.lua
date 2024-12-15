@@ -1,6 +1,7 @@
 local ls = require("luasnip")
 require("luasnip.session.snippet_collection").clear_snippets(vim.bo.filetype)
 local s, i, t, c, f = ls.snippet, ls.insert_node, ls.text_node, ls.choice_node, ls.function_node
+local d, sn = ls.dynamic_node, ls.snippet_node
 local fmt = require("luasnip.extras.fmt").fmta
 local utils = require("user_plugins/snippet_utils")
 
@@ -95,9 +96,9 @@ ls.add_snippets("c", {
       }
    )),
 
-   -- 'do' snippet with options for standard form and free form
+   -- 'do' snippet
    s("do", fmt(
-   [[
+      [[
    do {
       <body>
    } while (<cond>);
@@ -109,9 +110,9 @@ ls.add_snippets("c", {
       }
    )),
 
-   -- 'while' snippet with options for standard form and free form
+   -- 'while' snippet
    s("while", fmt(
-   [[
+      [[
    while (<cond>) {
       <body>
    }
@@ -121,5 +122,18 @@ ls.add_snippets("c", {
          body = i(2),
          final = i(nil, { "" })
       }
-   ))
+   )),
+
+   -- '#include' snippet with options "" or <>
+   s("inc", fmt("#include <open><header><close>", {
+      open = c(1, { t("<"), t('"'), }),
+      header = i(2, "stdio.h"),
+      close = d(3, function(args)
+         if args[1][1] == "<" then
+            return sn(nil, t(">"))
+         else
+            return sn(nil, t('"'))
+         end
+      end, { 1 }),
+   }))
 })

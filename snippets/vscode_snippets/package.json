@@ -7,11 +7,11 @@
         "snippets": [
             {
                 "language": "c",
-                "path": "./snippets/c/c.json"
+                "path": "./c.json"
             },
             {
                 "language": "cdoc",
-                "path": "./snippets/c/cdoc.json"
+                "path": "./cdoc.json"
             }
         ]
     }
