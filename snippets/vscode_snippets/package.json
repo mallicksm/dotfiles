@@ -8,6 +8,22 @@
             {
                 "language": "c",
                 "path": "./c.json"
+            },
+            {
+                "language": "tcl",
+                "path": "./tcl.json"
+            },
+            {
+                "language": "tdf",
+                "path": "./tdf.json"
+            },
+            {
+                "language": "trace32",
+                "path": "./trace32.json"
+            },
+            {
+                "language": "verilog_systemverilog",
+                "path": "./verilog_systemverilog.json"
             }
         ]
     }
