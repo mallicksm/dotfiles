@@ -24,6 +24,34 @@
             {
                 "language": "verilog_systemverilog",
                 "path": "./verilog_systemverilog.json"
+            },
+            {
+                "language": "asm",
+                "path": "./asm.json"
+            },
+            {
+                "language": "json",
+                "path": "./json.json"
+            },
+            {
+                "language": "lua",
+                "path": "./lua.json"
+            },
+            {
+                "language": "make",
+                "path": "./make.json"
+            },
+            {
+                "language": "python",
+                "path": "./python.json"
+            },
+            {
+                "language": "scat",
+                "path": "./scat.json"
+            },
+            {
+                "language": "sh",
+                "path": "./sh.json"
             }
         ]
     }
