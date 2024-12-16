@@ -26,10 +26,6 @@ return {
       priority = 100,
       event = { 'InsertEnter', 'CmdlineEnter' },
       config = function()
-         local feedkey = function(key, mode)
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-         end
-
          local lspkind = require('lspkind')
          lspkind.init {}
 
