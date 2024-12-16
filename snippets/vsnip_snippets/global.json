@@ -1,9 +1,0 @@
-{
-   "copyright": {
-      "prefix": "copyright",
-      "body": [
-         "Copyright (c) ${CURRENT_YEAR} ${VIM:\\$USER}. All Rights Reserved."
-      ],
-      "description": "Snippet to put copyright"
-   }
-}
