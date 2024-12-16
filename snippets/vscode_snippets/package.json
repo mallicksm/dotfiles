@@ -52,6 +52,18 @@
             {
                 "language": "sh",
                 "path": "./sh.json"
+            },
+            {
+                "language": "cpp",
+                "path": "./cpp.json"
+            },
+            {
+                "language": "markdown",
+                "path": "./markdown.json"
+            },
+            {
+                "language": "vhdl",
+                "path": "./vhdl.json"
             }
         ]
     }

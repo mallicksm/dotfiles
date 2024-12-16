@@ -75,5 +75,42 @@
          "end"
       ],
       "description": "Code snippet for begin statement"
+   },
+   "item map-delays": {
+      "prefix": ["map-delays"],
+      "body": [
+         "`ifdef MAP_DELAYS",
+         "   initial \\$ixc_ctrl(\"map_delays\");",
+         "   reg out1;",
+         "   always begin #1; out1 = ~(i1 & i0); end",
+         "`else",
+         "   wire out1_before_delay;",
+         "   assign out1_before_delay = ~(i1 & i0);",
+         "   Q_FDP0B u_d_prev(.Q(out1), .D(out1_before_delay));",
+         "`endif"
+      ],
+      "description": "Code snippet for 'map-delays' statement"
+   },
+   "item map-bc": {
+      "prefix": ["map-bc"],
+      "body": [
+         "`ifdef IXCOM_COMPILE",
+         "    _ixc_clkgen ixc_clkgen();",
+         "    initial \\$ixc_ctrl(\"map_bc\");",
+         "    initial \\$ixc_ctrl(\"tb_import\",\"\\$display\");",
+         "    initial \\$ixc_ctrl(\"tb_import\",\"\\$stop\");",
+         "`endif"
+      ]
+   },
+   "item tran": {
+      "prefix": ["tran"],
+      "body": [
+         "// usage: xtran #(.W(4)) i_xtran (busA[3:0], busB[3:0]) ",
+         "module xtran(T,T)",
+         "   parameter W = 1;",
+         "   inout [W-1:0] T;",
+         "endmodule: xtran"
+      ],
+      "description": "Code snippet for 'xtran' statement"
    }
 }

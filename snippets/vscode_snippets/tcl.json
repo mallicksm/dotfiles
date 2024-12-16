@@ -598,5 +598,10 @@
          "$0"
       ],
       "description": "This command matches the regular expression exp against string, and either copies string to the variable whose name is given by varName or returns string if varName is not present."
+   },
+   "item procname": {
+      "prefix": ["procname"],
+      "body": ["[lindex [info level 0] 0]"],
+      "description": "Code snippet for 'procname' statement"
    }
 }
