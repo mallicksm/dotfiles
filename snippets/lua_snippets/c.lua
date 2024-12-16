@@ -156,6 +156,12 @@ ls.add_snippets("c", {
       final = i(nil, { "" })
    })),
 
+   -- prototype for printf
+   s("printf", fmt('printf("<a>\\n"<b>);', {
+      a = i(1, { "%s" }),
+      b = i(2, ", value")
+   })),
+
    -- Prototype snippet for a highlighted function definition
    s("proto", fmt("<>;", {
       f(function(_, snip)
