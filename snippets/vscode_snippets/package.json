@@ -1,5 +1,5 @@
 {
-    "name": "friendly-snippets",
+    "name": "vscode_snippets",
     "engines": {
         "vscode": "^1.11.0"
     },
@@ -8,10 +8,6 @@
             {
                 "language": "c",
                 "path": "./c.json"
-            },
-            {
-                "language": "cdoc",
-                "path": "./cdoc.json"
             }
         ]
     }
