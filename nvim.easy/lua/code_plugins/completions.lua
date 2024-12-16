@@ -67,7 +67,7 @@ return {
             },
             snippet = {
                expand = function(args)
-                  luasnip.lsp_expand(args.body)    -- Expand with LuaSnip
+                  luasnip.lsp_expand(args.body) -- Expand with LuaSnip
                end,
             },
             window = {
@@ -182,8 +182,9 @@ return {
             end
          end, { noremap = true, silent = true, desc = "Edit LuaSnip snippets for current filetype" })
 
-         -- Function to load snippets based on filetype
-         local function load_snippets_for_ft(ft)
+         vim.keymap.set("n", "<leader>ls", function()
+            -- Shortcut to reload snippets for the current filetype
+            local ft = vim.bo.filetype
             local snippet = vim.fn.expand(lua_snippet_dir .. ft .. ".lua")
             if vim.fn.filereadable(snippet) == 1 then
                loadfile(snippet)()
@@ -191,12 +192,6 @@ return {
             else
                vim.notify(string.format("No snippets found for filetype: %s", ft), vim.log.levels.WARN)
             end
-         end
-
-         -- Shortcut to reload snippets for the current filetype
-         vim.keymap.set("n", "<leader>ls", function()
-            local ft = vim.bo.filetype
-            load_snippets_for_ft(ft)
          end, { noremap = true, silent = true, desc = "Reload snippets for current filetype" })
       end,
    },
