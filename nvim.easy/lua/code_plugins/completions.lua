@@ -13,9 +13,8 @@ return {
          'L3MON4D3/LuaSnip',
          lazy = true,
          opts = {
-            history = true,
             delete_check_events = "TextChanged",
-            updateevents = "TextChanged,TextChangedI",
+            update_events = { "TextChanged", "TextChangedI" },
          },
       },
       'saadparwaiz1/cmp_luasnip',
@@ -60,7 +59,6 @@ return {
                      path = "[Path]",
                      buffer = "[Buffer]",
                      nvim_lua = "[Lua]",
-                     latex_symbols = "[Latex]",
                      directory = "[Dir]",
                   }
                })
@@ -154,8 +152,9 @@ return {
                }),
          })
 
-         -- Shortcut edit snippet file for the current filetype
+         -- Completion keymaps
          vim.keymap.set("n", "<leader>le", function()
+         -- Shortcut edit snippet file for the current filetype
             -- Get the current filetype
             local boilerplate = vim.fn.expand(lua_snippet_dir .. "boilerplate.lua")
             local filetype = vim.bo.filetype
@@ -193,6 +192,10 @@ return {
                vim.notify(string.format("No snippets found for filetype: %s", ft), vim.log.levels.WARN)
             end
          end, { noremap = true, silent = true, desc = "Reload snippets for current filetype" })
+
+         vim.keymap.set("v", "<Tab>",
+            -- shortcut to capture selected text for TM_SELECTED_TEXT snippet
+            [[<Esc><cmd>lua require("luasnip.util.select").pre_yank("z")<Cr>gv"zy<cmd>lua require('luasnip.util.select').post_yank("z")<Cr>]])
       end,
    },
 }

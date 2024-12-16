@@ -135,5 +135,32 @@ ls.add_snippets("c", {
             return sn(nil, t('"'))
          end
       end, { 1 }),
+   })),
+
+   -- switch statement
+   s("switch", fmt([[
+   switch (<cond>) {
+      case <const>:
+         <case_part>;
+         break;
+      default:
+         <default_part>;
+         break;
+   }
+   <final>
+   ]], {
+      cond = i(1, "expression"),           -- Placeholder for the switch expression
+      const = i(2, "constant"),            -- Placeholder for the case constant
+      case_part = i(3, "case_part"),       -- Placeholder for the case printf message
+      default_part = i(4, "default_part"), -- Placeholder for the default printf message
+      final = i(nil, { "" })
+   })),
+
+   -- Prototype snippet for a highlighted function definition
+   s("proto", fmt("<>;", {
+      f(function(_, snip)
+         return snip.env.TM_SELECTED_TEXT or ""
+      end)
    }))
+
 })

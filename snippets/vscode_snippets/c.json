@@ -9,21 +9,6 @@
       "body": ["#define ${1:MACRO}($2) ($3)"],
       "description": "Function-like macro snippet"
    },
-   "switch": {
-      "prefix": "switch",
-      "body": ["switch (${1:expression}) {$0", "}"],
-      "description": "'switch' snippet"
-   },
-   "case": {
-      "prefix": "case",
-      "body": ["case ${1:0}:$0"],
-      "description": "'case' branch"
-   },
-   "default": {
-      "prefix": "default",
-      "body": ["default:$0"],
-      "description": "'default' branch"
-   },
    "Function ...": {
       "prefix": "fun",
       "body": ["${2:void} ${1:fun}(${3:void})$0"],
@@ -54,11 +39,6 @@
       "body": ["typedef union $1 ${1:Cell};"],
       "description": "Implicit union typedef"
    },
-   "struct": {
-      "prefix": "struct",
-      "body": ["struct ${1:MyStruct} {$0", "};"],
-      "description": "'struct' snippet"
-   },
    "struct type": {
       "prefix": "typestruct",
       "body": [
@@ -67,11 +47,6 @@
          "};"
       ],
       "description": "Define a type with struct"
-   },
-   "union": {
-      "prefix": "union",
-      "body": ["union ${1:MyUnion} {$0", "};"],
-      "description": "'union' snippet"
    },
    "union type": {
       "prefix": "typeunion",
@@ -82,170 +57,25 @@
       ],
       "description": "Define a type with union"
    },
+   "union": {
+      "prefix": "union",
+      "body": ["union ${1:MyUnion} {$0", "};"],
+      "description": "'union' snippet"
+   },
+   "struct": {
+      "prefix": "struct",
+      "body": ["struct ${1:MyStruct} {$0", "};"],
+      "description": "'struct' snippet"
+   },
    "enum": {
       "prefix": "enum",
       "body": ["enum $1{ $0 };"],
       "description": "Define an enumeration"
    },
-   "fputs": {
-      "prefix": "fputs",
-      "body": [
-         "fputs(\"${2:This is a simpler printf.\\n}\", ${1:stdout})$0"
-      ],
-      "description": "puts() snippet"
-   },
    "printf": {
       "prefix": "printf",
       "body": ["printf(\"${1:%s}\\n\"$2);"],
       "description": "printf() snippet"
-   },
-   "fprintf": {
-      "prefix": "fprintf",
-      "body": ["fprintf(${1:stderr}, \"${2:%s}\\n\"$3);"],
-      "description": "fprintf() snippet"
-   },
-   "sprintf": {
-      "prefix": "sprintf",
-      "body": ["sprintf(${1:buf}, \"${2:%s}\\n\"$3);"],
-      "description": "sprintf() snippet"
-   },
-   "snprintf": {
-      "prefix": "snprintf",
-      "body": [
-         "snprintf(${1:buf}, ${2:max}, \"${3:%s}\\n\"$3);"
-      ],
-      "description": "snprintf() snippet"
-   },
-   "scanf": {
-      "prefix": "scanf",
-      "body": ["scanf(\"${1:%d}\"$2)$0"],
-      "description": "scanf() snippet"
-   },
-   "fscanf": {
-      "prefix": "fscanf",
-      "body": ["fscanf(${1:stdin}, \"${2:%d}\"$3)$0"],
-      "description": "fscanf() snippet"
-   },
-   "sscanf": {
-      "prefix": "sscanf",
-      "body": ["sscanf(${1:buf}, \"${2:%d}\"$3)$0"],
-      "description": "sscanf() snippet"
-   },
-   "malloc": {
-      "prefix": "malloc",
-      "body": ["malloc(sizeof(${1:int[69]})$2)$0"],
-      "description": "malloc() snippet"
-   },
-   "calloc": {
-      "prefix": "calloc",
-      "body": ["calloc(${1:1}, sizeof(${2:int})$3)$0"],
-      "description": "calloc() snippet"
-   },
-   "realloc": {
-      "prefix": "realloc",
-      "body": [
-         "realloc(${1:ptr}, sizeof(${2:int[69]})$3)$0"
-      ],
-      "description": "realloc() snippet"
-   },
-   "reallocarray": {
-      "prefix": "reallocarray",
-      "body": [
-         "reallocarray(${1:ptr}, ${2:69}, sizeof(${3:int})$4)$0"
-      ],
-      "description": "reallocarray() snippet"
-   },
-   "free": {
-      "prefix": "free",
-      "body": ["free(${1:NULL});"],
-      "description": "free() snippet"
-   },
-   "assert": {
-      "prefix": "assert",
-      "body": ["assert($0);"],
-      "description": "assert() snippet"
-   },
-   "static_assert": {
-      "prefix": "static_assert",
-      "body": [
-         "static_assert(${1:false}, \"${2:Oopsie}\");"
-      ],
-      "description": "static_assert() snippet"
-   },
-   "err": {
-      "prefix": "err",
-      "body": ["err(${1:EXIT_FAILURE}, \"${2:%s}\"$0);"],
-      "description": "err() snippet"
-   },
-   "errx": {
-      "prefix": "errx",
-      "body": ["errx(${1:EXIT_FAILURE}, \"${2:%s}\"$0);"],
-      "description": "errx() snippet"
-   },
-   "warn": {
-      "prefix": "warn",
-      "body": ["warn(\"${1:%s}\"$0);"],
-      "description": "warn() snippet"
-   },
-   "warnx": {
-      "prefix": "warnx",
-      "body": ["warnx(\"${1:%s}\"$0);"],
-      "description": "warnx() snippet"
-   },
-   "fputs() errcheck": {
-      "prefix": "chkio_eof",
-      "body": [
-         "if (${1:status} == EOF$2) {",
-         "   ${3:err(EXIT_FAILURE, \"IO is hard\");}",
-         "}"
-      ],
-      "description": "Error checking for int IO functions"
-   },
-   "fgets() errcheck": {
-      "prefix": "chkio_null",
-      "body": [
-         "if (!${1:status}) {",
-         "   ${2:err(EXIT_FAILURE, \"IO is very hard\");}",
-         "}"
-      ],
-      "description": "Error checking for pointer-type IO functions"
-   },
-   "fseek() errcheck": {
-      "prefix": "chkio_mi",
-      "body": [
-         "if (${1:status} == -1$2) {",
-         "   ${3:err(EXIT_FAILURE, \"IO is super hard\");}",
-         "}"
-      ],
-      "description": "Error checking for fseek(), getline() like functions"
-   },
-   "printf() errcheck": {
-      "prefix": "chkio_neg",
-      "body": [
-         "if (${1:status} < 0$2) {",
-         "   ${3:err(EXIT_FAILURE, \"Ran out of ink\");}",
-         "}"
-      ],
-      "description": "Error checking for printf()-like functions"
-   },
-   "malloc() errcheck": {
-      "prefix": "chkmem",
-      "body": [
-         "if (!${1:status}) {",
-         "   ${2:err(EXIT_FAILURE, \"Your memory is doomed\");}",
-         "}"
-      ],
-      "description": "Error checking for malloc()-like"
-   },
-   "Print a variable": {
-      "prefix": "printv",
-      "body": ["printf(\"$1 = %${2:d}\\n\", ${1:var}$3);"],
-      "description": "Call printf() to log value of a variable"
-   },
-   "Array length": {
-      "prefix": "arrlen",
-      "body": ["(sizeof ${1:arr} / sizeof $1[0])"],
-      "description": "Calculate number of elements in an array"
    },
    "mrs": {
       "prefix": ["mrs"],
