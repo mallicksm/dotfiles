@@ -19,6 +19,9 @@ return {
                'neo-tree'
             },
          })
+
+         -- <leader>K for more info on cWORD mini.comment
+         require('mini.comment').setup()
          --  Check out: https://github.com/echasnovski/mini.nvim
       end,
    },
