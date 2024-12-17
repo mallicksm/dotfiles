@@ -146,7 +146,7 @@ return {
                }, {
                   {
                      name = 'cmdline',
-                     max_item_count = 5,
+                     max_item_count = 20,
                      keyword_length = 3,
                   },
                }),

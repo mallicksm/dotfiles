@@ -167,6 +167,16 @@ ls.add_snippets("c", {
       f(function(_, snip)
          return snip.env.TM_SELECTED_TEXT or ""
       end)
-   }))
+   })),
 
+   s("struct", fmt([[
+   struct <struct_name> {
+       <body>
+   };
+   <final>
+   ]], {
+      struct_name = i(1, "struct_name"), -- Struct name placeholder
+      body = i(2, "int i;"),               -- Fields inside the struct
+      final = i(nil),                    -- Initialization values
+   }))
 })

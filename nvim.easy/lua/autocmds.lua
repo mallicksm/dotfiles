@@ -30,6 +30,22 @@ vim.api.nvim_create_autocmd("BufReadPost", {
    end,
 })
 
+vim.keymap.set("n", "<leader>K", function()
+    local word = vim.fn.expand("<cWORD>") -- Include words with hyphens (like `foo-bar`)
+
+    -- Try to open a man page for the word
+    local man_command = vim.fn.executable("man") == 1 and vim.fn.system("man -w " .. word)
+    if man_command and vim.v.shell_error == 0 then
+        vim.cmd("Man " .. word)
+    else
+        -- Fallback to Vim help if no man page exists
+        local ok = pcall(vim.cmd, "help " .. word)
+        if not ok then
+            vim.notify("No man page or help available for: " .. word, vim.log.levels.WARN)
+        end
+    end
+end, { noremap = true, silent = true, desc = "Man page or help for word under cursor" })
+
 -- [[ Basic user functions ]]
 -- The first argument is the name of the command (which must start with an uppercase letter).
 vim.api.nvim_create_user_command("Filename",
