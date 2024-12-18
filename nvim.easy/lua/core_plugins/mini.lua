@@ -45,11 +45,26 @@ return {
          ------------------------------------------------
          require('mini.comment').setup()
 
+         ------------------------------------------------
+         -- <leader>K for more info on cWORD mini.starter
+         ------------------------------------------------
+         require('mini.starter').setup({
+            evaluate_single = true,
+            header = table.concat({
+               "██████ ███████╗██╗   ██╗██╗███╗   ███╗",
+               "██╔══  ╚══███╔╝██║   ██║██║████╗ ████║",
+               "█████    ███╔╝ ██║   ██║██║██╔████╔██║",
+               "██╔══   ███╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║",
+               "██████ ███████╗ ╚████╔╝ ██║██║ ╚═╝ ██║",
+               "╚════╝ ╚══════╝  ╚═══╝  ╚═╝╚═╝     ╚═╝",
+            }, "\n"
+            ),
+         })
+
          ---------------------------------------------------
          -- <leader>K for more info on cWORD mini.hipatterns
          ---------------------------------------------------
-         local hipatterns = require('mini.hipatterns')
-         hipatterns.setup({
+         require('mini.hipatterns').setup({
             highlighters = {
                -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
                fixme     = { pattern = '%f[%w]()FFIXME()%f[%W]', group = 'MiniHipatternsFixme' },
@@ -58,8 +73,9 @@ return {
                note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
 
                -- Highlight hex color strings (`#rrggbb`) using that color
-               hex_color = hipatterns.gen_highlighter.hex_color(),
+               hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
             },
+
          })
          --  Check out: https://github.com/echasnovski/mini.nvim
       end,
