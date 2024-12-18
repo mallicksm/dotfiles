@@ -17,9 +17,19 @@ return {
          })
 
          -------------------------------------------------------------
+         -- <leader>K for more info on cWORD MiniExtra
+         -------------------------------------------------------------
+         require('mini.extra').setup()
+
+         -------------------------------------------------------------
          -- <leader>K for more info on cWORD MiniAi-textobject-builtin
          -------------------------------------------------------------
-         require('mini.ai').setup()
+         require('mini.ai').setup({
+            custom_textobjects = {
+               B = require('mini.extra').gen_ai_spec.buffer(),
+               L = require('mini.extra').gen_ai_spec.line()
+            }
+         })
 
          -------------------------------------------------------
          -- <leader>K for more info on cWORD MiniSurround.config
@@ -67,7 +77,7 @@ return {
          require('mini.hipatterns').setup({
             highlighters = {
                -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-               fixme     = { pattern = '%f[%w]()FFIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+               fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
                hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
                todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
                note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
