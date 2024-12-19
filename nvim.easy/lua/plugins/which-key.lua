@@ -15,24 +15,22 @@ return {
          { "<leader>c", group = "[L]sp" },
          { "<leader>r", group = "[L]sp" },
          { "<leader>w", group = "[L]sp" },
-      }
-   },
-   config = function(_, opts)
-      -- Document existing key chains
-      require('which-key').setup(opts)
-      require('which-key').add({
+         { "<Esc>",     hidden = true },
          { "<leader>h", hidden = true },
          { "<leader>l", hidden = true }, -- fix for checkhealth which-key
          { "<leader>j", hidden = true },
          { "<leader>k", hidden = true },
-         { "<Esc>", hidden = true },
-         { "sh", hidden = true }, -- fix for checkhealth which-key
-         { "gc", hidden = true }, -- fix for checkhealth which-key
-         { "sr", hidden = true }, -- fix for checkhealth which-key
-         { "sf", hidden = true }, -- fix for checkhealth which-key
-         { "sF", hidden = true }, -- fix for checkhealth which-key
-         { "sd", hidden = true }, -- fix for checkhealth which-key
-      })
+         { "sh",        hidden = true }, -- fix for checkhealth which-key
+         { "gc",        hidden = true }, -- fix for checkhealth which-key
+         { "sr",        hidden = true }, -- fix for checkhealth which-key
+         { "sf",        hidden = true }, -- fix for checkhealth which-key
+         { "sF",        hidden = true }, -- fix for checkhealth which-key
+         { "sd",        hidden = true }, -- fix for checkhealth which-key
+      },
+   },
+   config = function(_, opts)
+      -- Document existing key chains
+      require('which-key').setup(opts)
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
