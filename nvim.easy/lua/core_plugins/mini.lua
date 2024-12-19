@@ -56,7 +56,7 @@ return {
          require('mini.comment').setup()
 
          ------------------------------------------------
-         -- <leader>K for more info on cWORD mini.starter
+         -- <leader>K for more info on cWORD MiniStarter-example-config
          ------------------------------------------------
          require('mini.starter').setup({
             evaluate_single = true,
@@ -69,6 +69,20 @@ return {
                "╚════╝ ╚══════╝  ╚═══╝  ╚═╝╚═╝     ╚═╝",
             }, "\n"
             ),
+            items = {
+               { name = 'recent Files', action = 'Telescope oldfiles',   section = 'Search' },
+               { name = 'find Files',   action = 'Telescope find_files', section = 'Search' },
+               { name = 'search Text',  action = 'Telescope live_grep',  section = 'Search' },
+               { name = 'git Status',   action = 'Telescope git_status', section = 'Git' },
+               { name = 'lazygit',      action = 'OpenLazyGit',          section = 'Git' },
+               { name = 'edit Config',  action = 'edit $MYVIMRC',        section = 'Config' },
+               { name = 'new File',     action = 'enew',                 section = 'Actions' },
+               { name = 'quit',         action = 'qa',                   section = 'Actions' },
+            },
+            content_hooks = {
+               require('mini.starter').gen_hook.adding_bullet('● '), -- Adds ● before each item
+               require('mini.starter').gen_hook.aligning('center', 'center') -- Centers items on the screen
+            },
          })
 
          ---------------------------------------------------

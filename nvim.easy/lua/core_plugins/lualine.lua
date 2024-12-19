@@ -83,7 +83,7 @@ return {
 
       lualine.setup(default_config)
 
-      vim.keymap.set("n", "<localleader>l", toggle_lualine, { desc = "Toggle lualine" })
+      vim.keymap.set("n", "\\\\", toggle_lualine, { desc = "Toggle 'lualine'" })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
