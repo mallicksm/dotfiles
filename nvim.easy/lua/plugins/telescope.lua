@@ -37,11 +37,11 @@ return {
          })
       end, { desc = 'Telescope: [e]xplorer' })
 
-      vim.keymap.set('n', '<localleader>g', function()
+      vim.keymap.set('n', '<leader>og', function()
          builtin.live_grep({
             prompt_title = 'Grep Files (<esc> to quit)',
          })
-      end, { desc = 'Telescope: [g]rep live' })
+      end, { desc = 'Option: Telescope: [g]rep live' })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
