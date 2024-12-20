@@ -71,14 +71,20 @@ return {
             }, "\n"
             ),
             items = {
-               { name = 'recent Files', action = 'Telescope oldfiles',   section = 'Search' },
-               { name = 'find Files',   action = 'Telescope find_files', section = 'Search' },
-               { name = 'search Text',  action = 'Telescope live_grep',  section = 'Search' },
-               { name = 'git Status',   action = 'Telescope git_status', section = 'Git' },
-               { name = 'lazygit',      action = 'OpenLazyGit',          section = 'Git' },
-               { name = 'edit Config',  action = 'edit $MYVIMRC',        section = 'Config' },
-               { name = 'new File',     action = 'enew',                 section = 'Actions' },
-               { name = 'quit',         action = 'qa',                   section = 'Actions' },
+               { name = 'recent Files', action = 'Telescope oldfiles',                       section = 'Search' },
+               { name = 'find Files',   action = 'Telescope find_files',                     section = 'Search' },
+               { name = 'search Text',  action = 'Telescope live_grep',                      section = 'Search' },
+               { name = 'git Status',   action = 'Telescope git_status',                     section = 'Git' },
+               { name = 'lazygit',      action = function() require("snacks").lazygit() end, section = 'Git' },
+               {
+                  name = "nvim config Files",
+                  action = function()
+                     require("telescope.builtin").find_files({ cwd = "~/dotfiles/nvim.easy" })
+                  end,
+                  section = "Config",
+               },
+               { name = 'new File', action = 'enew', section = 'Actions' },
+               { name = 'quit',     action = 'qa',   section = 'Actions' },
             },
             content_hooks = {
                require('mini.starter').gen_hook.adding_bullet('● '), -- Adds ● before each item

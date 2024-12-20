@@ -25,11 +25,6 @@ return {
       end,
    },
    vim.keymap.set('n', '\\g', ':Gitsigns toggle_current_line_blame<cr>', { desc = "Toggle 'Git line blame'" }),
-   vim.keymap.set('n', '<leader>gB', ':Gitsigns preview_hunk<cr>', { desc = 'GitSigns: Setup: Toggle Preview Hunk' }),
-   vim.keymap.set('n', '<leader>gj', ':Gitsigns next_hunk<cr>', { desc = 'GitSigns: Hunk: next' }),
-   vim.keymap.set('n', '<leader>gk', ':Gitsigns prev_hunk<cr>', { desc = 'GitSigns: Hunk: previous' }),
-   vim.keymap.set('n', '<leader>gs', ':Gitsigns stage_hunk<cr>', { desc = 'GitSigns: Hunk: stage' }),
-   vim.keymap.set('n', '<leader>gu', ':Gitsigns undo_stage_hunk<cr>', { desc = 'GitSigns: Hunk: unstage' }),
-   vim.keymap.set('n', '<leader>gS', ':Gitsigns stage_buffer<cr>', { desc = 'GitSigns: Hunk: Stage buffer' }),
+   vim.keymap.set('n', '<leader>gs', ':Gitsigns stage_buffer<cr>', { desc = 'GitSigns: Hunk: Stage buffer' }),
 }
 -- vim: ts=3 sts=3 sw=3 et

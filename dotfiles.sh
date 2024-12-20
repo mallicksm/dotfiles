@@ -41,11 +41,6 @@ function linkrc () {
             rm -rf ~/.config/alacritty/alacritty.{yml,toml} && linkup $cdir/initrc/$dotfile ~/.config/alacritty/alacritty.yml
             linkup $cdir/initrc/alacritty.toml  ~/.config/alacritty/alacritty.toml
             ;;
-         lazygit.config.yml)
-            info "Note: linking to ~/.config/lazygit/config.yml"
-            mkdir -p ~/.config/lazygit
-            rm -rf ~/.config/lazygit/config.yml && linkup $cdir/initrc/$dotfile $_
-            ;;
          svn.*)
             info "Note: copying $dotfile to ~/.subversion/"
             command mkdir -p ~/.subversion
@@ -135,6 +130,7 @@ function getstarship() {
       echo "Attention: no url access"
    fi
 }
+
 #-------------------------------------------------------------------------------
 function all() {
    linkrc
