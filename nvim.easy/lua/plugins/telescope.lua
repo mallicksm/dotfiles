@@ -41,7 +41,7 @@ return {
          builtin.live_grep({
             prompt_title = 'Grep Files (<esc> to quit)',
          })
-      end, { desc = 'Option: Telescope: [g]rep live' })
+      end, { desc = 'Telescope: live grep live' })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et

@@ -15,6 +15,8 @@ return {
          { "<leader>c", group = "[L]sp" },
          { "<leader>r", group = "[L]sp" },
          { "<leader>w", group = "[L]sp" },
+         { "<leader>o", group = "[O]ptions" },
+         { "<leader>b", group = "[B]uffer delete" },
          { "<Esc>",     hidden = true },
          { "<leader>h", hidden = true },
          { "<leader>l", hidden = true }, -- fix for checkhealth which-key

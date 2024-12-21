@@ -18,9 +18,9 @@ return {
          -- <leader>K for more info on cWORD snacks-lazygit-table-of-contents
       { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazygit: for current file" },
       { "<leader>gl", function() Snacks.lazygit.log() end,      desc = "Lazygit: log" },
-      { "<leader>ol", function() Snacks.lazygit() end,          desc = "Option: Lazygit: tui" },
+      { "<leader>ol", function() Snacks.lazygit() end,          desc = "Snacks: Lazygit: tui" },
          -- <leader>K for more info on cWORD snacks-terminal-table-of-contents
-      { "<leader>ot", function() Snacks.terminal() end,         desc = "Option: Terminal: bash" },
+      { "<leader>ot", function() Snacks.terminal() end,         desc = "Snacks: Terminal: bash" },
          -- <leader>K for more info on cWORD snacks-bufdelete-table-of-contents
       { "<leader>bd", function() Snacks.bufdelete() end,        desc = "Delete Buffer" },
       {
@@ -37,7 +37,7 @@ return {
                vim.notify("Dimming enabled", vim.log.levels.INFO)
             end
          end,
-         desc = "Option: focus/dim"
+         desc = "Toggle 'focus/dim'"
       },
    },
 }

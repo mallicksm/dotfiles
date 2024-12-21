@@ -21,6 +21,6 @@ return {
       })
 
       -- Keybinding to toggle the Symbols Outline
-      vim.keymap.set("n", "\\o", "<cmd>SymbolsOutline<CR>", { desc = "Toggle 'outline'" })
+      vim.keymap.set("n", "<leader>oo", "<cmd>SymbolsOutline<CR>", { desc = "Outline: file outline" })
    end,
 }

@@ -91,6 +91,13 @@ return {
                require('mini.starter').gen_hook.aligning('center', 'center') -- Centers items on the screen
             },
          })
+         vim.keymap.set("n", "\\t", function()
+            local lazy_stats = require("lazy").stats()
+            local startup_time = lazy_stats.startuptime
+            local plugin_count = lazy_stats.count
+            vim.notify("Neovim started in " .. startup_time .. "ms with " .. plugin_count .. " plugins.",
+               vim.log.levels.INFO)
+         end, { noremap = true, silent = true, desc = "Toggle 'startup time'" })
 
          ---------------------------------------------------
          -- <leader>K for more info on cWORD mini.hipatterns

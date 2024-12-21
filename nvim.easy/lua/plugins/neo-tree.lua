@@ -98,7 +98,7 @@ return {
       end, { desc = 'Neo-tree: File browser toggle' })
 
       -- Keybinding: Toggle Neo-tree buffer browser
-      vim.keymap.set('n', '<leader>b', function()
+      vim.keymap.set('n', '<leader>ob', function()
          require('neo-tree.command').execute({
             action = 'show',
             source = 'buffers',
@@ -106,7 +106,7 @@ return {
             toggle = true,
             reveal_force_cwd = true,
          })
-      end, { desc = 'Neo-tree: Buffer browser toggle' })
+      end, { desc = "Neo-Tree: Buffer list" })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
