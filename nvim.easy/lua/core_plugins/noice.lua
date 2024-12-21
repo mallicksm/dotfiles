@@ -48,24 +48,14 @@ return {
          },
          routes = {
             {
-               --[[ suppress all "written" messages ]]
-               filter = {
-                  event = "msg_show",
-                  any = {
-                     { find = "written" },
-                  },
-               },
-               opts = { skip = true },
-            },
-            {
-               --[[ only Push "User: " output to messages ]]
+               --[[ only Push "User: " output to popup ]]
                filter = {
                   event = "msg_show",
                   any = {
                      { find = "User: " },
                   },
                },
-               view = "messages",
+               view = "popup",
             },
             {
                --[[ redirect annoying messages to mini ]]
@@ -75,6 +65,7 @@ return {
                      { find = '%d+L, %d+B' },
                      { find = '; after #%d+' },
                      { find = '; before #%d+' },
+                     { find = 'yanked' },
                   },
                },
                view = "mini",
@@ -86,7 +77,7 @@ return {
          vim.cmd("Noice dismiss")
       end, { noremap = true, silent = true, desc = "Clear Noice Messages" })
       vim.keymap.set("n", "<leader>nm", function()
-         vim.cmd("Noice last")
+         vim.cmd("NoiceAll")
       end, { noremap = true, silent = true, desc = "View Noice Messages" })
    end
 }
