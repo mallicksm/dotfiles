@@ -15,17 +15,17 @@ return {
       lazy = false,
       keys = {
          -- Key mapping for LazyGit
-         -- {
-         --    "<leader>gl",
-         --    open_lazygit,
-         --    desc = "LazyGit",
-         -- },
+         {
+            "<leader>gl",
+            open_lazygit,
+            desc = "LazyGit",
+         },
          -- Key mapping for a generic floating terminal
-         -- {
-         --    "<leader>gt",
-         --    open_term,
-         --    desc = "ToggleTerm"
-         -- },
+         {
+            "<leader>gt",
+            open_term,
+            desc = "ToggleTerm"
+         },
       }
    },
 }
