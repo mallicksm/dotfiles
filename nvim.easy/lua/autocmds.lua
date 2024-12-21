@@ -20,19 +20,33 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 vim.keymap.set("n", "<leader>K", function()
-    local word = vim.fn.expand("<cWORD>") -- Include words with hyphens (like `foo-bar`)
-
-    -- Try to open a man page for the word
-    local man_command = vim.fn.executable("man") == 1 and vim.fn.system("man -w " .. word)
-    if man_command and vim.v.shell_error == 0 then
-        vim.cmd("Man " .. word)
-    else
-        -- Fallback to Vim help if no man page exists
-        local ok = pcall(vim.cmd, "help " .. word)
-        if not ok then
+   local word = vim.fn.expand("<cWORD>") -- Include words with hyphens (like `foo-bar`)
+   -- Function to check if the word is a URL
+   local function is_url(text)
+      return text:match("^https?://") ~= nil
+   end
+   if is_url(word) then
+      -- Open the URL with xdg-open
+      local open_command = "xdg-open " .. vim.fn.shellescape(word)
+      if vim.fn.executable("xdg-open") == 1 then
+         vim.fn.system(open_command)
+         vim.notify("Opening URL: " .. word, vim.log.levels.INFO)
+      else
+         vim.notify("xdg-open not found on your system", vim.log.levels.ERROR)
+      end
+   else
+      -- Try to open a man page for the word
+      local man_command = vim.fn.executable("man") == 1 and vim.fn.system("man -w " .. word)
+      if man_command and vim.v.shell_error == 0 then
+         vim.cmd("Man " .. word)
+      else
+         -- Fallback to Vim help if no man page exists
+         local ok = pcall(function() vim.cmd("help " .. word) end)
+         if not ok then
             vim.notify("No man page or help available for: " .. word, vim.log.levels.WARN)
-        end
-    end
+         end
+      end
+   end
 end, { noremap = true, silent = true, desc = "Man page or help for word under cursor" })
 
 -- [[ Basic user functions ]]

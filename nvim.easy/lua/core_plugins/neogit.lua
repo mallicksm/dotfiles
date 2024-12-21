@@ -1,7 +1,7 @@
 return {
    {
       'NeogitOrg/neogit',
-      lazy = true,
+      lazy = false,
       branch = 'master',
       dependencies = {
          'nvim-lua/plenary.nvim',

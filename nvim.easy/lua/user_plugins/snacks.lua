@@ -10,13 +10,21 @@ return {
          },
       }
    },
+   config = function(_, opts)
+      require('snacks').setup(opts)
+      _G.Snacks = require("snacks")
+   end,
    keys = {
+         -- <leader>K for more info on cWORD snacks-lazygit-table-of-contents
       { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazygit: for current file" },
       { "<leader>gl", function() Snacks.lazygit.log() end,      desc = "Lazygit: log" },
       { "<leader>ol", function() Snacks.lazygit() end,          desc = "Option: Lazygit: tui" },
+         -- <leader>K for more info on cWORD snacks-terminal-table-of-contents
       { "<leader>ot", function() Snacks.terminal() end,         desc = "Option: Terminal: bash" },
+         -- <leader>K for more info on cWORD snacks-bufdelete-table-of-contents
       { "<leader>bd", function() Snacks.bufdelete() end,        desc = "Delete Buffer" },
       {
+         -- <leader>K for more info on cWORD snacks-dim-table-of-contents
          "\\f",
          function()
             if dim_enabled then
@@ -31,6 +39,6 @@ return {
          end,
          desc = "Option: focus/dim"
       },
-   }
+   },
 }
 -- vim: ts=3 sts=3 sw=3 et
