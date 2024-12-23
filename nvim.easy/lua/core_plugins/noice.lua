@@ -1,3 +1,11 @@
+-- Key binding to clear Noice messages
+vim.keymap.set("n", "<leader>nc", function()
+   vim.cmd("Noice dismiss")
+end, { noremap = true, silent = true, desc = "Clear Noice Messages" })
+
+vim.keymap.set("n", "<leader>nm", function()
+   vim.cmd("NoiceAll")
+end, { noremap = true, silent = true, desc = "View Noice Messages" })
 return {
    -- lazy.nvim
    "folke/noice.nvim",
@@ -21,15 +29,6 @@ return {
                ["vim.lsp.util.open_floating_preview"] = true, -- Route LSP floating windows through Noice
             },
          },
-         views = {
-            popup = {
-               border = {
-                  style = "rounded", -- Rounded border style
-                  padding = { 1, 1 },
-               },
-            },
-         },
-
          -- you can enable a preset for easier configuration
          presets = {
             bottom_search = true,         -- use a classic bottom cmdline for search
@@ -72,13 +71,6 @@ return {
             },
          },
       })
-      -- Key binding to clear Noice messages
-      vim.keymap.set("n", "<leader>nc", function()
-         vim.cmd("Noice dismiss")
-      end, { noremap = true, silent = true, desc = "Clear Noice Messages" })
-      vim.keymap.set("n", "<leader>nm", function()
-         vim.cmd("NoiceAll")
-      end, { noremap = true, silent = true, desc = "View Noice Messages" })
    end
 }
 -- vim: ts=3 sts=3 sw=3 et
