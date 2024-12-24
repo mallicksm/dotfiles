@@ -1,1 +1,1 @@
-export LG_CONFIG_FILE=/users/soummya/dotfiles/initrc/lazygit.config.yml
+export LG_CONFIG_FILE=$HOME/dotfiles/initrc/lazygit.config.yml
