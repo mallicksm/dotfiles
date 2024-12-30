@@ -16,8 +16,8 @@ return {
    end,
    keys = {
          -- <leader>K for more info on cWORD snacks-lazygit-table-of-contents
-      { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Lazygit: for current file" },
-      { "<leader>gl", function() Snacks.lazygit.log() end,      desc = "Lazygit: log" },
+      { "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Snacks: git log for current file" },
+      { "<leader>gl", function() Snacks.lazygit.log() end,      desc = "Snacks: git log" },
       { "<leader>ol", function() Snacks.lazygit() end,          desc = "Snacks: Lazygit: tui" },
          -- <leader>K for more info on cWORD snacks-terminal-table-of-contents
       { "<leader>ot", function() Snacks.terminal() end,         desc = "Snacks: Terminal: bash" },

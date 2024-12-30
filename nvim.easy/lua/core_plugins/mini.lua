@@ -1,3 +1,12 @@
+-- Add custom key mapping for toggling background
+vim.keymap.set('n', '\\B', function()
+   if vim.o.background == 'dark' then
+      vim.o.background = 'light'
+   else
+      vim.o.background = 'dark'
+   end
+end, { desc = "Toggle 'background color'" })
+
 return {
    { -- Collection of various small independent plugins/modules
       'echasnovski/mini.nvim',
@@ -12,10 +21,18 @@ return {
             },
             mappings = {
                -- Window navigation with <C-hjkl>, resize with <C-arrow>
-               windows = true,
+               -- windows = true,
             },
          })
-
+         -- only adopt C Arrow for resize
+         vim.keymap.set('n', '<C-Left>', '"<Cmd>vertical resize -" . v:count1 . "<CR>"',
+            { expr = true, replace_keycodes = false, desc = 'Decrease window width' })
+         vim.keymap.set('n', '<C-Down>', '"<Cmd>resize -"          . v:count1 . "<CR>"',
+            { expr = true, replace_keycodes = false, desc = 'Decrease window height' })
+         vim.keymap.set('n', '<C-Up>', '"<Cmd>resize +"          . v:count1 . "<CR>"',
+            { expr = true, replace_keycodes = false, desc = 'Increase window height' })
+         vim.keymap.set('n', '<C-Right>', '"<Cmd>vertical resize +" . v:count1 . "<CR>"',
+            { expr = true, replace_keycodes = false, desc = 'Increase window width' })
          -------------------------------------------------------------
          -- <leader>K for more info on cWORD MiniExtra
          -------------------------------------------------------------

@@ -24,7 +24,7 @@ return {
          vim.cmd.hi('GitSignsCurrentLineBlame guifg=yellow')
       end,
    },
-   vim.keymap.set('n', '\\g', ':Gitsigns toggle_current_line_blame<cr>', { desc = "Toggle 'Git line blame'" }),
+   vim.keymap.set('n', '\\b', ':Gitsigns toggle_current_line_blame<cr>', { desc = "Toggle 'Git line blame'" }),
    vim.keymap.set('n', '<leader>gs', ':Gitsigns stage_buffer<cr>', { desc = 'GitSigns: Hunk: Stage buffer' }),
    vim.keymap.set('n', '<leader>gj', ':Gitsigns next_hunk<cr>', { desc = 'GitSigns: Hunk: next' }),
    vim.keymap.set('n', '<leader>gk', ':Gitsigns prev_hunk<cr>', { desc = 'GitSigns: Hunk: previous' }),
