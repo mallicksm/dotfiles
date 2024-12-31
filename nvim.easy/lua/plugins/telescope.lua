@@ -31,15 +31,15 @@ return {
       pcall(telescope.load_extension, 'ui-select')
 
       -- Keymaps for common Telescope commands
-      vim.keymap.set('n', '<localleader>e', function()
+      vim.keymap.set('n', '<leader>E', function()
          builtin.find_files({
             prompt_title = 'Find Files (<esc> to quit)',
          })
       end, { desc = 'Telescope: [e]xplorer' })
 
-      vim.keymap.set('n', '<leader>og', function()
+      vim.keymap.set('n', '<leader>G', function()
          builtin.live_grep({
-            prompt_title = 'Grep Files (<esc> to quit)',
+            prompt_title = 'LiveGrep Files (<esc> to quit)',
          })
       end, { desc = 'Telescope: live grep live' })
    end,
