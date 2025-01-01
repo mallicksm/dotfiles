@@ -35,13 +35,19 @@ return {
          builtin.find_files({
             prompt_title = 'Find Files (<esc> to quit)',
          })
-      end, { desc = 'Telescope: [e]xplorer' })
+      end, { desc = 'Telescope: [E]xplorer' })
+
+      vim.keymap.set('n', '<leader>R', function()
+         builtin.oldfiles({
+            prompt_title = 'Recent Files (<esc> to quit)',
+         })
+      end, { desc = 'Telescope: [R]ecent files' })
 
       vim.keymap.set('n', '<leader>G', function()
          builtin.live_grep({
-            prompt_title = 'LiveGrep Files (<esc> to quit)',
+            prompt_title = 'Liverep Files (<esc> to quit)',
          })
-      end, { desc = 'Telescope: live grep live' })
+      end, { desc = 'Telescope: live [G]rep live' })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et

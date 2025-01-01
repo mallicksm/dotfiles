@@ -75,6 +75,8 @@ return {
          ------------------------------------------------
          -- <leader>K for more info on cWORD MiniStarter-example-config
          ------------------------------------------------
+         local builtin = require("telescope.builtin")
+         local harpoon = require('harpoon')
          require('mini.starter').setup({
             evaluate_single = true,
             -- https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=LAZYVIM
@@ -88,11 +90,50 @@ return {
             }, "\n"
             ),
             items = {
-               { name = 'recent Files', action = 'Telescope oldfiles',                       section = 'Search' },
-               { name = 'find Files',   action = 'Telescope find_files',                     section = 'Search' },
-               { name = 'search Text',  action = 'Telescope live_grep',                      section = 'Search' },
-               { name = 'git Status',   action = 'Telescope git_status',                     section = 'Git' },
-               { name = 'lazygit',      action = function() require("snacks").lazygit() end, section = 'Git' },
+               {
+                  name = 'recent Files',
+                  action = function()
+                     builtin.oldfiles({
+                        prompt_title = "Recent Files (<esc> to quit)"
+                     })
+                  end,
+                  section = 'Search'
+               },
+               {
+                  name = 'find Files',
+                  action = function()
+                     builtin.find_files({
+                        prompt_title = "Find Files (<esc> to quit)"
+                     })
+                  end,
+                  section = 'Search'
+               },
+               {
+                  name = 'live grep',
+                  action = function()
+                     builtin.live_grep({
+                        prompt_title = "LiveGrep Files (<esc> to quit)"
+                     })
+                  end,
+                  section = 'Search'
+               },
+               {
+                  name = 'harpoon',
+                  action = function()
+                     harpoon.ui:toggle_quick_menu(harpoon:list())
+                  end,
+                  section = 'Search'
+               },
+               {
+                  name = 'git Status',
+                  action = 'Telescope git_status',
+                  section = 'Git'
+               },
+               {
+                  name = 'lazygit',
+                  action = function() require("snacks").lazygit() end,
+                  section = 'Git'
+               },
                {
                   name = "nvim config Files",
                   action = function()
