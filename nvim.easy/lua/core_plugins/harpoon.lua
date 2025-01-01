@@ -66,7 +66,7 @@ return {
          end
 
          vim.keymap.set("n", "<leader>H", function() toggle_telescope(harpoon:list()) end,
-            { desc = "Telescope: harpoon list" })
+            { desc = "Telescope: [H]arpoon list" })
       end,
    },
 }
