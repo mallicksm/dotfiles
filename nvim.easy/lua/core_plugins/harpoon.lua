@@ -35,15 +35,15 @@ return {
          end, { desc = 'Harpoon: Mark add' })
 
          -- Toggle previous & next buffers stored within Harpoon list
-         vim.keymap.set('n', '<leader>P', function()
+         vim.keymap.set('n', '<C-p>', function()
             harpoon:list():prev()
          end, { desc = 'Harpoon: previous' })
-         vim.keymap.set('n', '<leader>N', function()
+         vim.keymap.set('n', '<C-n>', function()
             harpoon:list():next()
          end, { desc = 'Harpoon: next' })
 
          -- harpoon list
-         vim.keymap.set('n', '<C-e>', function()
+         vim.keymap.set('n', '<C-h>', function()
             harpoon.ui:toggle_quick_menu(harpoon:list())
          end, { desc = 'Harpoon: Marks list' })
 
