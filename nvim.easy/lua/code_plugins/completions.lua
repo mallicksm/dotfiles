@@ -31,8 +31,6 @@ return {
          local cmp = require('cmp')
          local luasnip = require('luasnip')
 
-         local lua_snippet_dir = "~/dotfiles/snippets/lua_snippets/"
-         local vscode_snippet_dir = "~/dotfiles/snippets/vscode_snippets/"
          require("luasnip.loaders.from_lua").load({ paths = { lua_snippet_dir } })
          require("luasnip.loaders.from_vscode").load({ paths = { vscode_snippet_dir } })
          vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -152,50 +150,6 @@ return {
                }),
          })
 
-         -- Completion keymaps
-         vim.keymap.set("n", "<leader>le", function()
-         -- Shortcut edit snippet file for the current filetype
-            -- Get the current filetype
-            local boilerplate = vim.fn.expand(lua_snippet_dir .. "boilerplate.lua")
-            local filetype = vim.bo.filetype
-            -- Construct the path to the snippet file based on the filetype
-            local snippet = vim.fn.expand(lua_snippet_dir .. filetype .. ".lua")
-            -- Check if the file exists
-            if vim.fn.filereadable(snippet) == 1 then
-               vim.cmd("split " .. snippet)
-            else
-               -- Notify the user and create a new snippet file
-               vim.notify("No snippet file found for filetype: " .. filetype .. ". Creating a new one.",
-                  vim.log.levels.INFO)
-               -- Ensure the directory exists
-               vim.fn.mkdir(vim.fn.expand(lua_snippet_dir), "p")
-               -- Copy the boilerplate file to the new snippet file if boilerplate exists
-               if vim.fn.filereadable(boilerplate) == 1 then
-                  vim.fn.system({ "cp", boilerplate, snippet })
-                  vim.notify("Copied boilerplate to " .. snippet, vim.log.levels.INFO)
-               else
-                  vim.notify("Boilerplate file not found: " .. boilerplate, vim.log.levels.ERROR)
-               end
-
-               vim.cmd("split " .. snippet)
-            end
-         end, { noremap = true, silent = true, desc = "Edit LuaSnip snippets for current filetype" })
-
-         vim.keymap.set("n", "<leader>ls", function()
-            -- Shortcut to reload snippets for the current filetype
-            local ft = vim.bo.filetype
-            local snippet = vim.fn.expand(lua_snippet_dir .. ft .. ".lua")
-            if vim.fn.filereadable(snippet) == 1 then
-               loadfile(snippet)()
-               vim.notify(string.format("Snippets reloaded for filetype: %s", ft), vim.log.levels.INFO)
-            else
-               vim.notify(string.format("No snippets found for filetype: %s", ft), vim.log.levels.WARN)
-            end
-         end, { noremap = true, silent = true, desc = "Reload snippets for current filetype" })
-
-         vim.keymap.set("v", "<Tab>",
-            -- shortcut to capture selected text for TM_SELECTED_TEXT snippet
-            [[<Esc><cmd>lua require("luasnip.util.select").pre_yank("z")<Cr>gv"zy<cmd>lua require('luasnip.util.select').post_yank("z")<Cr>]])
       end,
    },
 }

@@ -1,12 +1,4 @@
 -- Add custom key mapping for toggling background
-vim.keymap.set('n', '\\B', function()
-   if vim.o.background == 'dark' then
-      vim.o.background = 'light'
-   else
-      vim.o.background = 'dark'
-   end
-end, { desc = "Toggle 'background color'" })
-
 return {
    { -- Collection of various small independent plugins/modules
       'echasnovski/mini.nvim',
@@ -24,15 +16,6 @@ return {
                -- windows = true,
             },
          })
-         -- only adopt C Arrow for resize
-         vim.keymap.set('n', '<C-Left>', '"<Cmd>vertical resize -" . v:count1 . "<CR>"',
-            { expr = true, replace_keycodes = false, desc = 'Decrease window width' })
-         vim.keymap.set('n', '<C-Down>', '"<Cmd>resize -"          . v:count1 . "<CR>"',
-            { expr = true, replace_keycodes = false, desc = 'Decrease window height' })
-         vim.keymap.set('n', '<C-Up>', '"<Cmd>resize +"          . v:count1 . "<CR>"',
-            { expr = true, replace_keycodes = false, desc = 'Increase window height' })
-         vim.keymap.set('n', '<C-Right>', '"<Cmd>vertical resize +" . v:count1 . "<CR>"',
-            { expr = true, replace_keycodes = false, desc = 'Increase window width' })
          -------------------------------------------------------------
          -- <leader>K for more info on cWORD MiniExtra
          -------------------------------------------------------------
@@ -149,14 +132,6 @@ return {
                require('mini.starter').gen_hook.aligning('center', 'center') -- Centers items on the screen
             },
          })
-         vim.keymap.set("n", "\\t", function()
-            local lazy_stats = require("lazy").stats()
-            local startup_time = lazy_stats.startuptime
-            local plugin_count = lazy_stats.count
-            vim.notify("Neovim started in " .. startup_time .. "ms with " .. plugin_count .. " plugins.",
-               vim.log.levels.INFO)
-         end, { noremap = true, silent = true, desc = "Toggle 'startup time'" })
-
          ---------------------------------------------------
          -- <leader>K for more info on cWORD mini.hipatterns
          ---------------------------------------------------

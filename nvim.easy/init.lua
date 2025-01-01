@@ -26,8 +26,10 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
+_G.lua_snippet_dir = "~/dotfiles/snippets/lua_snippets/"
+_G.vscode_snippet_dir = "~/dotfiles/snippets/vscode_snippets/"
 require('options')
-require('keymaps')
 require('autocmds')
 require('bootstrap')
+require('keymaps')
 -- vim: ts=3 sts=3 sw=3 et

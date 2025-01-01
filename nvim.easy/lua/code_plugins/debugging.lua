@@ -47,8 +47,6 @@ return {
       require('dap').listeners.before.event_exited.dapui_config = function()
          require('dapui').close()
       end
-      vim.keymap.set('n', '<leader>db', require('dap').toggle_breakpoint, { desc = 'DAP: toggle breakpoint' })
-      vim.keymap.set('n', '<leader>dc', require('dap').continue, { desc = 'DAP: continue' })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et

@@ -19,8 +19,5 @@ return {
          position = "right",            -- Position the outline on the right
          width = 20,                    -- Set the outline window width
       })
-
-      -- Keybinding to toggle the Symbols Outline
-      vim.keymap.set("n", "<leader>oo", "<cmd>SymbolsOutline<CR>", { desc = "Outline: file outline" })
    end,
 }

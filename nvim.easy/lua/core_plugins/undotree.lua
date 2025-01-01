@@ -1,11 +1,6 @@
 return {
    "mbbill/undotree",
    config = function()
-      vim.keymap.set("n", "\\u", function()
-            print "Create ~/undotree_debug.log to debug"
-            vim.cmd.UndotreeToggle()
-         end,
-         { desc = "Toggle 'Undotree'" })
       local undodir = vim.fn.expand("$HOME") .. "/.undodir"
       if not (vim.uv or vim.loop).fs_stat(undodir) then
          vim.fn.mkdir(undodir, "p")

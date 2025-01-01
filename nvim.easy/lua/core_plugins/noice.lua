@@ -1,11 +1,4 @@
 -- Key binding to clear Noice messages
-vim.keymap.set("n", "<leader>nc", function()
-   vim.cmd("Noice dismiss")
-end, { noremap = true, silent = true, desc = "Clear Noice Messages" })
-
-vim.keymap.set("n", "<leader>nm", function()
-   vim.cmd("NoiceAll")
-end, { noremap = true, silent = true, desc = "View Noice Messages" })
 return {
    -- lazy.nvim
    "folke/noice.nvim",

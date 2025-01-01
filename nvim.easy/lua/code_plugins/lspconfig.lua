@@ -70,6 +70,7 @@ return {
 
          require('mason-lspconfig').setup({
             ensure_installed = vim.tbl_keys(mason_servers),
+            automatic_installation = false,
             handlers = {
                function(server_name)
                   require('lspconfig')[server_name].setup({
@@ -95,12 +96,17 @@ return {
                   '--rules_config=~/dotfiles/formatters/verible-rules',
                },
                filetypes = { "verilog_systemverilog" },
-               root_dir = vim.loop.cwd,
+               root_dir = function(fname)
+                  return vim.fs.dirname(vim.fs.find({ ".git" }, { upward = true, path = fname })[1])
+               end,
+
             },
             pyright = {
                cmd = { "pyright-langserver", "--stdio" },
                filetypes = { "python" },
-               root_dir = vim.loop.cwd,
+               root_dir = function(fname)
+                  return vim.fs.dirname(vim.fs.find({ ".git" }, { upward = true, path = fname })[1])
+               end,
                single_file_support = true,
             },
          }

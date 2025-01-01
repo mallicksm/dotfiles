@@ -82,31 +82,6 @@ return {
             },
          },
       })
-
-      -- Keybinding: Toggle Neo-tree file browser
-      vim.keymap.set('n', '<leader>e', function()
-         require('neo-tree.command').execute({
-            action = 'focus',
-            source = 'filesystem',
-            position = 'left',
-            toggle = true,
-            reveal_force_cwd = true,
-         })
-         -- Auto order files by type
-         local state = require('neo-tree.sources.manager').get_state("filesystem")
-         require('neo-tree.sources.common.commands').order_by_type(state)
-      end, { desc = 'Neo-tree: File browser toggle' })
-
-      -- Keybinding: Toggle Neo-tree buffer browser
-      vim.keymap.set('n', '<leader>ob', function()
-         require('neo-tree.command').execute({
-            action = 'show',
-            source = 'buffers',
-            position = 'right',
-            toggle = true,
-            reveal_force_cwd = true,
-         })
-      end, { desc = "Neo-Tree: Buffer list" })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et

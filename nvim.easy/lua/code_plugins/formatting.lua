@@ -24,13 +24,6 @@ return {
             notify_on_error = false,
          })
       end,
-      vim.keymap.set({ 'n', 'v' }, '<leader>mp', function()
-         require('conform').format({
-            async = true,
-            lsp_format = 'fallback',
-            timeout_ms = 1800,
-         })
-      end, { desc = 'Fmt: Format file' }),
    },
 }
 -- vim: ts=3 sts=3 sw=3 et
