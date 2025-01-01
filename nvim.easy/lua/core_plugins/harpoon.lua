@@ -43,7 +43,7 @@ return {
          end, { desc = 'Harpoon: next' })
 
          -- harpoon list
-         vim.keymap.set('n', '<C-h>', function()
+         vim.keymap.set('n', '<leader><C-h>', function()
             harpoon.ui:toggle_quick_menu(harpoon:list())
          end, { desc = 'Harpoon: Marks list' })
 

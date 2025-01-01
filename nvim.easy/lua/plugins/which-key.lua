@@ -28,6 +28,10 @@ return {
          { "sf",        hidden = true }, -- fix for checkhealth which-key
          { "sF",        hidden = true }, -- fix for checkhealth which-key
          { "sd",        hidden = true }, -- fix for checkhealth which-key
+         { "<leader>e", hidden = true }, -- hide all wellknown leaders
+         { "<leader>q", hidden = true },
+         { "<leader>x", hidden = true },
+         { "<leader>K", hidden = true },
       },
    },
    config = function(_, opts)

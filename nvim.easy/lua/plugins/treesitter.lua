@@ -1,3 +1,6 @@
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.foldlevelstart = 99
 return {
    'nvim-treesitter/nvim-treesitter',
    build = ':TSUpdate',
