@@ -2,8 +2,6 @@
 --  See `:help vim.keymap.set()`
 
 -- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Rapid quit keymap
@@ -126,8 +124,8 @@ vim.keymap.set('n', '<leader><C-h>', function()
 end, { desc = 'Harpoon: Marks list' })
 
 -- basic telescope configuration
-local conf = require("telescope.config").values
-local function toggle_telescope(harpoon_files)
+function _G.toggle_telescope(harpoon_files)
+   local conf = require("telescope.config").values
    local file_paths = {}
    for _, item in ipairs(harpoon_files.items) do
       table.insert(file_paths, item.value)
@@ -262,6 +260,13 @@ vim.keymap.set('n', '<leader>G', function()
       prompt_title = 'Liverep Files (<esc> to quit)',
    })
 end, { desc = 'Telescope: live [G]rep live' })
+
+vim.keymap.set('n', '<leader>B', function()
+   builtin.buffers({
+      prompt_title = 'Buffers (<esc> to quit)',
+   })
+end, { desc = 'Telescope: Open [B]uffers' })
+
 --------------------------------------------------------------------------------
 -- neo-tree keymaps
 --------------------------------------------------------------------------------
@@ -301,4 +306,38 @@ vim.keymap.set('n', '\\f', function()
       vim.notify("Dimming enabled", vim.log.levels.INFO)
    end
 end, { desc = "Toggle 'focus/dim'" })
+
+--------------------------------------------------------------------------------
+-- neo-tree keymaps
+--------------------------------------------------------------------------------
+vim.keymap.set("n", "<leader>K", function()
+   local word = vim.fn.expand("<cWORD>") -- Include words with hyphens (like `foo-bar`)
+   -- Function to check if the word is a URL
+   local function is_url(text)
+      return text:match("^https?://") ~= nil
+   end
+   if is_url(word) then
+      -- Open the URL with xdg-open
+      local open_command = "xdg-open " .. vim.fn.shellescape(word)
+      if vim.fn.executable("xdg-open") == 1 then
+         vim.fn.system(open_command)
+         vim.notify("Opening URL: " .. word, vim.log.levels.INFO)
+      else
+         vim.notify("xdg-open not found on your system", vim.log.levels.ERROR)
+      end
+   else
+      -- Try to open a man page for the word
+      local man_command = vim.fn.executable("man") == 1 and vim.fn.system("man -w " .. word)
+      if man_command and vim.v.shell_error == 0 then
+         vim.cmd("Man " .. word)
+      else
+         -- Fallback to Vim help if no man page exists
+         local ok = pcall(function() vim.cmd("help " .. word) end)
+         if not ok then
+            vim.notify("No man page or help available for: " .. word, vim.log.levels.WARN)
+         end
+      end
+   end
+end, { noremap = true, silent = true, desc = "Man page or help for word under cursor" })
+
 -- vim: ts=3 sts=3 sw=3 et

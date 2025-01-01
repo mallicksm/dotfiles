@@ -64,4 +64,5 @@ vim.opt.inccommand = 'split'
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 0
 
+vim.opt.hlsearch = true
 -- vim: ts=3 sts=3 sw=3 et
