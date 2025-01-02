@@ -180,7 +180,7 @@ vim.keymap.set('n', '<C-Right>', '"<Cmd>vertical resize +" . v:count1 . "<CR>"',
 --------------------------------------------------------------------------------
 -- neogit keymaps
 --------------------------------------------------------------------------------
-vim.keymap.set('n', '<leader>gg', ':Neogit kind=auto<cr>', { desc = 'Neogit: Git status CLI' })
+vim.keymap.set('n', '<leader>gG', ':Neogit kind=auto<cr>', { desc = 'Neogit: Git status CLI' })
 vim.keymap.set('n', '<leader>gd', function()
    if next(require('diffview.lib').views) == nil then
       vim.cmd('DiffviewOpen -uno')
@@ -273,7 +273,7 @@ vim.keymap.set('n', '<leader>B', function()
 end, { desc = 'Telescope: Open [B]uffers' })
 
 --------------------------------------------------------------------------------
--- neo-tree keymaps
+-- Snacks keymaps
 --------------------------------------------------------------------------------
 -- <leader>K for more info on cWORD snacks-lazygit-table-of-contents
 vim.keymap.set('n', '<leader>gf', function()
@@ -284,12 +284,12 @@ vim.keymap.set('n', '<leader>gl', function()
    Snacks.lazygit.log()
 end, { desc = "Snacks: git log" })
 
-vim.keymap.set('n', '<leader>ol', function()
+vim.keymap.set('n', '<leader>gg', function()
    Snacks.lazygit()
 end, { desc = "Snacks: Lazygit: tui" })
 
 -- <leader>K for more info on cWORD snacks-terminal-table-of-contents
-vim.keymap.set('n', '<leader>ot', function()
+vim.keymap.set('n', '<leader>T', function()
    Snacks.terminal()
 end, { desc = "Snacks: Terminal: bash" })
 
@@ -313,7 +313,7 @@ vim.keymap.set('n', '\\f', function()
 end, { desc = "Toggle 'focus/dim'" })
 
 --------------------------------------------------------------------------------
--- neo-tree keymaps
+-- generic keymaps
 --------------------------------------------------------------------------------
 vim.keymap.set("n", "<leader>K", function()
    local word = vim.fn.expand("<cWORD>") -- Include words with hyphens (like `foo-bar`)
