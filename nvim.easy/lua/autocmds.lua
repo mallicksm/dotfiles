@@ -41,7 +41,7 @@ vim.api.nvim_create_user_command("Rg",
    function()
       local builtin = require 'telescope.builtin'
       builtin.live_grep({
-         prompt_title = 'Live Grep in Open Files <ESC> to quit',
+         prompt_title = 'Live Grep in Open Files (<esc> to quit)',
       })
    end, { nargs = 0 })
 
@@ -49,4 +49,68 @@ vim.api.nvim_create_user_command("Git",
    function()
       vim.cmd('Neogit kind=auto')
    end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("Utilities", function()
+   local actions = require('telescope.actions')
+   local action_state = require('telescope.actions.state')
+   local pickers = require('telescope.pickers')
+   local finders = require('telescope.finders')
+   local conf = require('telescope.config').values
+
+   pickers.new({}, {
+      prompt_title = "Choose an Option",
+      finder = finders.new_table({
+         results = {
+            { "Options",      "vim_options" },
+            { "Registers",    "registers" },
+            { "Colorscheme",  "colorscheme" },
+            { "Helptags",     "help_tags" },
+            { "Manpages",     "man_pages" },
+            { "Autocommands", "autocommands" },
+         },
+         entry_maker = function(entry)
+            return {
+               value = entry,
+               display = entry[1],
+               ordinal = entry[1],
+            }
+         end,
+      }),
+      sorter = conf.generic_sorter({}),
+      attach_mappings = function()
+         actions.select_default:replace(function(prompt_bufnr)
+            local selection = action_state.get_selected_entry()
+            actions.close(prompt_bufnr)
+            local builtin = require('telescope.builtin')
+            if selection.value[2] == "vim_options" then
+               builtin.vim_options({
+                  prompt_title = 'Vim Options (<esc> to quit)',
+               })
+            elseif selection.value[2] == "registers" then
+               builtin.registers({
+                  prompt_title = 'Vim Registers (<esc> to quit)',
+               })
+            elseif selection.value[2] == "colorscheme" then
+               builtin.colorscheme({
+                  prompt_title = 'Colorschemes (<esc> to quit)',
+                  enable_preview = true
+               })
+            elseif selection.value[2] == "help_tags" then
+               builtin.help_tags({
+                  prompt_title = 'Helptags (<esc> to quit)',
+               })
+            elseif selection.value[2] == "man_pages" then
+               builtin.man_pages({
+                  prompt_title = 'Manpages (<esc> to quit)',
+               })
+            elseif selection.value[2] == "autocommands" then
+               builtin.autocommands({
+                  prompt_title = 'Autocommands (<esc> to quit)',
+               })
+            end
+         end)
+         return true
+      end,
+   }):find()
+end, { nargs = 0 })
 -- vim: ts=3 sts=3 sw=3 et
