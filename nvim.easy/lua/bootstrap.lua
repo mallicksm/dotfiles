@@ -12,8 +12,6 @@ require('lazy').setup({
       { import = 'plugins' },
       { import = 'core_plugins' },
       { import = 'code_plugins' },
-      { import = 'user_plugins.snacks' },
-      { import = 'user_plugins.render-markdown' },
    }
 })
 -- vim: ts=3 sts=3 sw=3 et
