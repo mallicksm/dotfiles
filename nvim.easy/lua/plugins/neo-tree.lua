@@ -9,31 +9,32 @@ return {
             require('nvim-web-devicons').setup({
                override_by_extension = {
                   ['f'] = {
-                     icon = '?',
+                     icon = '',
                      color = '#4285f4',
                      name = 'f',
                   },
                   ['tdf'] = {
-                     icon = '?',
+                     icon = "\u{eb65}",
                      color = '#89e051',
                      name = 'tdf',
                   },
                   ['cmm'] = {
-                     icon = '??',
+                     icon = '⚒️',
                      color = '#89e051',
                      name = 'cmm',
                   },
                   ['qel'] = {
-                     icon = '?',
+                     icon = '󰛓',
                      color = '#e37933',
                      name = 'qel',
                   },
                   ['bash'] = {
-                     icon = '?',
+                     icon = "\u{f1183}",
                      color = '#89e051',
                      cterm_color = '113',
                      name = 'bash',
                   },
+
                },
             })
          end,
