@@ -2,7 +2,6 @@ return {
    'nvim-lualine/lualine.nvim',
    config = function()
       local lualine = require('lualine')
-      local active_config = nil
       -- LSP clients attached to buffer
       local clients_lsp = function()
          local bufnr = vim.api.nvim_get_current_buf()
@@ -76,14 +75,13 @@ return {
          },
       }
       -- Function to toggle between configurations
-      local function toggle_lualine()
+      local active_config = default_config
+      function _G.toggle_lualine()
          active_config = active_config == default_config and alternate_config or default_config
          lualine.setup(active_config)
       end
 
       lualine.setup(default_config)
-
-      vim.keymap.set("n", "\\\\", toggle_lualine, { desc = "Toggle 'lualine'" })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
