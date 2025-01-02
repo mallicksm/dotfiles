@@ -2,7 +2,7 @@ local ls = require("luasnip")
 require("luasnip.session.snippet_collection").clear_snippets(vim.bo.filetype)
 local s, i, t, c, f = ls.snippet, ls.insert_node, ls.text_node, ls.choice_node, ls.function_node
 local fmt = require("luasnip.extras.fmt").fmta
-local utils = require("user_plugins/snippet_utils")
+local utils = require("user_plugins.snippet_utils")
 
 ls.add_snippets("all", {
    -- snippet for file header

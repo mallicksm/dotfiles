@@ -61,11 +61,11 @@ vim.api.nvim_create_user_command("Utilities", function()
       prompt_title = "Choose an Option",
       finder = finders.new_table({
          results = {
-            { "Options",      "vim_options" },
-            { "Registers",    "registers" },
+            { "Vim Options",      "vim_options" },
+            { "Vim Registers",    "registers" },
             { "Colorscheme",  "colorscheme" },
-            { "Helptags",     "help_tags" },
-            { "Manpages",     "man_pages" },
+            { "Vim Helptags",     "help_tags" },
+            { "Unix Manpages",     "man_pages" },
             { "Autocommands", "autocommands" },
          },
          entry_maker = function(entry)

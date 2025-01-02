@@ -176,7 +176,7 @@ ls.add_snippets("c", {
    <final>
    ]], {
       struct_name = i(1, "struct_name"), -- Struct name placeholder
-      body = i(2, "int i;"),               -- Fields inside the struct
+      body = i(2, "int i;"),             -- Fields inside the struct
       final = i(nil),                    -- Initialization values
    }))
 })

@@ -209,11 +209,11 @@ vim.keymap.set("n", "<leader>oo", "<cmd>SymbolsOutline<CR>", { desc = "Outline: 
 --------------------------------------------------------------------------------
 -- undotree keymaps
 --------------------------------------------------------------------------------
-vim.keymap.set("n", "\\u", function()
+vim.keymap.set("n", "<leader>ou", function()
       print "Create ~/undotree_debug.log to debug"
       vim.cmd.UndotreeToggle()
    end,
-   { desc = "Toggle 'Undotree'" })
+   { desc = "Undotree" })
 
 --------------------------------------------------------------------------------
 -- neo-tree keymaps
