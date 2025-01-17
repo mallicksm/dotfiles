@@ -10,6 +10,6 @@ layout {
    }
 
    tab name="Solo" {
-      pane
+      pane command="bash"
    }
 }
