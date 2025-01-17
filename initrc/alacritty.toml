@@ -120,6 +120,7 @@ save_to_clipboard = true
 
 [window]
 opacity = 0.985
+option_as_alt = "Both"
 
 [window.dimensions]
 columns = 140

@@ -35,11 +35,10 @@ function linkrc () {
             rm -rf ~/.starship.toml && cp -f $cdir/initrc/$dotfile ~/.starship.toml
             [[ -f ~/$corp/corp_starship.txt ]] && cat ~/$corp/corp_starship.txt >> ~/.starship.toml
             ;;
-         alacritty.yml)
+         alacritty.toml)
             info "Note: linking to ~/.config/alacritty/$dotfile"
             mkdir -p ~/.config/alacritty
-            rm -rf ~/.config/alacritty/alacritty.{yml,toml} && linkup $cdir/initrc/$dotfile ~/.config/alacritty/alacritty.yml
-            linkup $cdir/initrc/alacritty.toml  ~/.config/alacritty/alacritty.toml
+            rm -rf ~/.config/alacritty/alacritty.yml && linkup $cdir/initrc/$dotfile ~/.config/alacritty/alacritty.toml
             ;;
          svn.*)
             info "Note: copying $dotfile to ~/.subversion/"
