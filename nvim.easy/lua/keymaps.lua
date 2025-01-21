@@ -69,6 +69,7 @@ vim.keymap.set("v", "<Tab>",
 --------------------------------------------------------------------------------
 vim.keymap.set('n', '<leader>db', require('dap').toggle_breakpoint, { desc = 'DAP: toggle breakpoint' })
 vim.keymap.set('n', '<leader>dc', require('dap').continue, { desc = 'DAP: continue' })
+vim.keymap.set('n', '<leader>dr', require('dap').restart, { desc = 'DAP: restart' })
 
 --------------------------------------------------------------------------------
 -- formatting shortcuts

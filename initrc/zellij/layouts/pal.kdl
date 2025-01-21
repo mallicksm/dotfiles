@@ -12,10 +12,7 @@ layout {
    tab name="Palladium" focus=true {
       pane split_direction="vertical" {
          pane size="50%" {
-            pane stacked=true {
-               pane
-               pane
-            }
+            pane
          }
          pane size="50%" split_direction="horizontal" {
             pane size="70%"  {
@@ -38,15 +35,9 @@ layout {
       }
    }
    tab name="Waves" {
-      pane stacked=true {
-         pane
-         pane
-      }
+      pane
    }
    tab name="Lazygit" {
-      pane stacked=true {
-         pane command="lazygit"
-         pane
-      }
+      pane command="lazygit" start_suspended=true
    }
 }
