@@ -34,11 +34,11 @@ function zm () {
             opt[ZELLIJ_SESSION_NAME]="$2"
             shift 2
          ;;
-         -K|--kill-session)
+         -k|--kill-session)
             opt[ZELLIJ_KILL_SESSION]="$2"
             shift 2
          ;;
-         -k|--kill-all-sessions)
+         -K|--kill-all-sessions)
             opt[ZELLIJ_KILL_ALL_SESSIONS]="yes"
             shift 1
          ;;

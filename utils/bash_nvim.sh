@@ -22,6 +22,11 @@ function vi () {
    export XDG_CONFIG_HOME=~/dotfiles/
    export NVIM_APPNAME=nvim.easy 
    echo "Note: nvim ${opt[OPT]} ${args[@]}"
+   if [[ -n "${args[0]}" && -f "${args[0]}" ]]; then
+      if [[ $(wc -l < "${args[0]}") -gt 1000000 ]]; then
+         export NVIM_APPNAME=nvim.bare 
+      fi
+   fi
    nvim ${opt[OPT]} ${args[@]}
    )
 }
