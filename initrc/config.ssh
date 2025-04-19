@@ -17,3 +17,4 @@ Host *
    ServerAliveCountMax 3600
    ServerAliveInterval 240
    StrictHostKeyChecking no
+Include ~/corp/corp_hosts.txt

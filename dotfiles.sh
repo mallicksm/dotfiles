@@ -21,9 +21,7 @@ function linkrc () {
          # special cases
          config.ssh)
             info "Note: creating ~/.ssh/config from $dotfile"
-            rm -rf ~/.ssh/config && cp -f $cdir/initrc/$dotfile ~/.ssh/config
-            [[ -f ~/corp/corp_hosts.txt ]] && cat ~/corp/corp_hosts.txt >> ~/.ssh/config
-            chmod 600 ~/.ssh/config 
+            rm -rf ~/.ssh/config && linkup $cdir/initrc/config.ssh ~/.ssh/config
             ;;
          starship.toml)
             info "Note: creating ~/.starship.toml from $dotfile"
@@ -34,11 +32,6 @@ function linkrc () {
             info "Note: linking to ~/.config/alacritty/$dotfile"
             mkdir -p ~/.config/alacritty
             rm -rf ~/.config/alacritty/alacritty.yml && linkup $cdir/initrc/$dotfile ~/.config/alacritty/alacritty.toml
-            ;;
-         svn.*)
-            info "Note: copying $dotfile to ~/.subversion/"
-            command mkdir -p ~/.subversion
-            linkup ${cdir}/initrc/${dotfile} ~/.subversion/${dotfile#*.}
             ;;
          cc)
             info "Note: copying $dotfile to ~/.local/bin/c99/"
