@@ -14,7 +14,7 @@ cdir=$(dirname $(realpath $0))
 #-------------------------------------------------------------------------------
 # linkrc -link dotfiles
 function linkrc () {
-   [[ -f ~/$corp/corp_settings.sh ]] && ln -fs ~/$corp/corp_settings.sh ~/corp_settings.sh
+   [[ -f ~/corp/corp_settings.sh ]] && ln -fs ~/corp/corp_settings.sh ~/corp_settings.sh
    mydotfiles=$(command ls -1 $cdir/initrc/)
    for dotfile in ${mydotfiles[@]} ;do
       case $dotfile in
@@ -22,18 +22,13 @@ function linkrc () {
          config.ssh)
             info "Note: creating ~/.ssh/config from $dotfile"
             rm -rf ~/.ssh/config && cp -f $cdir/initrc/$dotfile ~/.ssh/config
-            [[ -f ~/$corp/corp_hosts.txt ]] && cat ~/$corp/corp_hosts.txt >> ~/.ssh/config
+            [[ -f ~/corp/corp_hosts.txt ]] && cat ~/corp/corp_hosts.txt >> ~/.ssh/config
             chmod 600 ~/.ssh/config 
-            ;;
-         gitconfig)
-            info "Note: creating ~/.gitconfig from $dotfile"
-            rm -rf ~/.gitconfig && cp -f $cdir/initrc/$dotfile ~/.gitconfig
-            [[ -f ~/$corp/corp_gitconfig.txt ]] && cat ~/$corp/corp_gitconfig.txt >> ~/.gitconfig
             ;;
          starship.toml)
             info "Note: creating ~/.starship.toml from $dotfile"
             rm -rf ~/.starship.toml && cp -f $cdir/initrc/$dotfile ~/.starship.toml
-            [[ -f ~/$corp/corp_starship.txt ]] && cat ~/$corp/corp_starship.txt >> ~/.starship.toml
+            [[ -f ~/corp/corp_starship.txt ]] && cat ~/corp/corp_starship.txt >> ~/.starship.toml
             ;;
          alacritty.toml)
             info "Note: linking to ~/.config/alacritty/$dotfile"
@@ -140,8 +135,8 @@ function all() {
    install_zvim
 }
 
-echo "Executing ~/$corp/dotfiles.sh if any.."
-[[ -f ~/$corp/dotfiles.sh ]] && source ~/$corp/dotfiles.sh
+echo "Executing ~/corp/dotfiles.sh if any.."
+[[ -f ~/corp/dotfiles.sh ]] && source ~/corp/dotfiles.sh
 
 if [[ "$corp" == "" ]]; then
    echo "Please export corp=xxx"

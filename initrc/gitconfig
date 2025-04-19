@@ -6,9 +6,9 @@
 #  sharedrepository = 0660                    # Sets reasonable permissions
    pager = delta
 [alias]
-   di = difftool -y --tool tkdiff
-   dm = difftool -y --tool meld
-   dv = difftool -y --tool vimdiff
+   di = difftool --no-prompt --tool=tkdiff
+   dm = difftool --no-prompt --tool=meld
+   dv = difftool --no-prompt --tool=vimdiff
    dd = difftool --dir-diff -y --tool meld
    df = diff --name-status
    ci = commit
@@ -64,18 +64,30 @@
    line-numbers = true
 [merge]
    conflictstyle = diff3
+   tool = meld
 [diff]
    colorMoved = default
    tool = meld
+[difftool "vimdiff"]
+   cmd = XDG_CONFIG_HOME=~/dotfiles NVIM_APPNAME=nvim.easy nvim -d "$REMOTE" "$LOCAL"
+[difftool "tkdiff"]
+   cmd = tkdiff "$REMOTE" "$LOCAL"
+[difftool "meld"]
+   cmd = meld "$REMOTE" "$LOCAL"
 [push]
    default = current
 [pull]
-	rebase = false
+   rebase = false
 [init]
    templatedir = ~/.local/share/git-core/templates
-	defaultBranch = master
+   defaultBranch = master
 [credential "https://github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
+   helper = 
+   helper = !/usr/bin/gh auth git-credential
 [http]
-	sslVerify = false
+   sslVerify = false
+[user]
+   name = mallicksm
+   email = mallicksm@gmail.com
+[include]
+   path = ~/corp/corp_gitconfig.txt
