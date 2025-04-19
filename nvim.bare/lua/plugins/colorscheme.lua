@@ -15,7 +15,7 @@ return {
          dim_inactive = false,
          transparent_mode = false,
       })
-      vim.cmd.colorscheme('gruvbox')
+      vim.cmd.colorscheme('koehler')
       vim.api.nvim_set_hl(0, "NoiceVirtualText", { fg = "#8492ad" })
    end,
 }
