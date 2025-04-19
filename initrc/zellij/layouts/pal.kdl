@@ -29,9 +29,9 @@ layout {
    }
    tab name="Code" {
       pane stacked=true {
-         pane cwd="../emu_c_tests/smr5_cli" 
-         pane cwd="../emu_c_tests/a78_cli" 
-         pane cwd="../emu_c_tests/smr5_fd" 
+         pane cwd="../emu_c_tests/sm_smr5_cli" 
+         pane cwd="../emu_c_tests/sm_a78_cli" 
+         pane cwd="../emu_c_tests/sm_smr5_fd" 
       }
    }
    tab name="Waves" {
