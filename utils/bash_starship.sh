@@ -1,5 +1,5 @@
 # Starship configuration
-export STARSHIP_CONFIG=$HOME/.starship.toml
+export STARSHIP_CONFIG=$HOME/corp/starship.toml
 export STARSHIP_LOG=error
 function set_win_title(){
    # set title

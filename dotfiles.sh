@@ -14,42 +14,36 @@ cdir=$(dirname $(realpath $0))
 #-------------------------------------------------------------------------------
 # linkrc -link dotfiles
 function linkrc () {
-   [[ -f ~/corp/corp_settings.sh ]] && ln -fs ~/corp/corp_settings.sh ~/corp_settings.sh
+   linkup ~/corp/corp_settings.sh ~/corp_settings.sh
+
+   declare -A link_map=(
+      [config.ssh]="~/.ssh/config"
+      [alacritty.toml]="~/.config/alacritty/alacritty.toml"
+      [z.sh]="/dev/null"
+      [cc]="~/.local/bin/c99/cc"
+   )
+
    mydotfiles=$(command ls -1 $cdir/initrc/)
    for dotfile in ${mydotfiles[@]} ;do
-      case $dotfile in
-         # special cases
-         config.ssh)
-            info "Note: creating ~/.ssh/config from $dotfile"
-            rm -rf ~/.ssh/config && linkup $cdir/initrc/config.ssh ~/.ssh/config
-            ;;
-         starship.toml)
-            info "Note: creating ~/.starship.toml from $dotfile"
-            rm -rf ~/.starship.toml && cp -f $cdir/initrc/$dotfile ~/.starship.toml
-            [[ -f ~/corp/corp_starship.txt ]] && cat ~/corp/corp_starship.txt >> ~/.starship.toml
-            ;;
-         alacritty.toml)
-            info "Note: linking to ~/.config/alacritty/$dotfile"
-            mkdir -p ~/.config/alacritty
-            rm -rf ~/.config/alacritty/alacritty.yml && linkup $cdir/initrc/$dotfile ~/.config/alacritty/alacritty.toml
-            ;;
-         cc)
-            info "Note: copying $dotfile to ~/.local/bin/c99/"
-            mkdir -p ~/.local/bin/c99 && cp ${cdir}/initrc/${dotfile} ~/.local/bin/c99/
-            ;;
-         z.sh|dircolors)
-            # skip
-            ;;
-         *)
-            # link
-            linkup $cdir/initrc/$dotfile ~/.$dotfile
-            ;;
-      esac
+      dest="${link_map[$dotfile]:-$HOME/.$dotfile}"
+      info "Linking $dotfile → $dest"
+      linkup "$cdir/initrc/$dotfile" "$dest"
    done
 }
 function linkup() {
    s=$1 # Source
    d=$2 # Destination
+
+   if [[ "$d" == "/dev/null" ]]; then
+      echo "Info: Skipping link for $s → $d"
+      return
+   fi
+   parent_dir=$(dirname "$d")
+   # Create parent directories if they don't exist
+   if [ ! -d "$parent_dir" ]; then
+      echo "Info: Creating directories up to $parent_dir"
+      mkdir -p "$parent_dir"
+   fi
    rm -rf $d
    evalstr="ln -fs $s $d"
    echo "Info: $evalstr"
