@@ -32,84 +32,30 @@ TERM = "xterm-256color"
 
 [font]
 size = 14.0
+bold =        { family = "Firacode Nerd Font", style = "Bold"}
+bold_italic = { family = "Firacode Nerd Font", style = "Bold Italic"}
+italic =      { family = "Firacode Nerd Font", style = "Italic"}
+normal =      { family = "Firacode Nerd Font", style = "Regular"}
+offset =      { x = 0, y = 0}
 
-[font.bold]
-family = "FiraCode Nerd Font"
-style = "Bold"
-
-[font.bold_italic]
-family = "FiraCode Nerd Font"
-style = "Bold Italic"
-
-[font.italic]
-family = "FiraCode Nerd Font"
-style = "Italic"
-
-[font.normal]
-family = "FiraCode Nerd Font"
-style = "Regular"
-
-[font.offset]
-x = 0
-y = 0
-
-[[keyboard.bindings]]
-action = "Paste"
-key = "U"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "PasteSelection"
-key = "V"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "Copy"
-key = "C"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "Quit"
-key = "Q"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "SpawnNewInstance"
-key = "N"
-mods = "Control|Shift"
-
-[[keyboard.bindings]]
-action = "ToggleFullscreen"
-key = "Return"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "ResetFontSize"
-key = "Key0"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "IncreaseFontSize"
-key = "Equals"
-mods = "Control"
-
-[[keyboard.bindings]]
-action = "DecreaseFontSize"
-key = "Minus"
-mods = "Control"
-
-[[mouse.bindings]]
-action = "Paste"
-mouse = "Middle"
-
-[[mouse.bindings]]
-action = "PasteSelection"
-mouse = "Middle"
-mods = "Shift"
-
-[[mouse.bindings]]
-action = "ExpandSelection"
-mouse = "Right"
+[keyboard]
+bindings = [
+{ key = "H",      mods = "Alt|Option", action = "ReceiveChar" },
+{ key = "L",      mods = "Alt|Option", action = "ReceiveChar" },
+{ key = "U",      mods = "Control|Shift", action = "Paste" },
+{ key = "V",      mods = "Control|Shift", action = "PasteSelection" },
+{ key = "C",      mods = "Control|Shift", action = "Copy" },
+{ key = "N",      mods = "Control|Shift", action = "SpawnNewInstance" },
+{ key = "Return", mods = "Control",       action = "ToggleFullScreen" },
+{ key = "Key0",   mods = "Control",       action = "ResetFontSize" },
+{ key = "Equals", mods = "Control",       action = "IncreaseFontSize" },
+{ key = "Minus",  mods = "Control",       action = "DecreaseFontSize" },
+]
+[mouse]
+bindings = [
+{ mouse = "Middle", mods = "Shift", action = "PasteSelection" },
+{ mouse = "Right", mods = "Shift", action = "ExpandSelection" },
+]
 
 [scrolling]
 history = 10000
@@ -120,12 +66,6 @@ save_to_clipboard = true
 
 [window]
 opacity = 0.985
-option_as_alt = "Both"
-
-[window.dimensions]
-columns = 140
-lines = 72
-
-[window.padding]
-x = 5
-y = 5
+# option_as_alt = "Both"
+padding = { x = 5, y = 5}
+dimensions = { columns = 140, lines = 72}
