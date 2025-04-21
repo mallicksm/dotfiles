@@ -5,6 +5,7 @@
    preloadindex = true                        # Caches indeix and makes git status faster
 #  sharedrepository = 0660                    # Sets reasonable permissions
    pager = delta
+   hooksPath = .githooks
 [alias]
    di = difftool --no-prompt --tool=tkdiff
    dm = difftool --no-prompt --tool=meld
