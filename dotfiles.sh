@@ -20,7 +20,9 @@ function linkrc () {
       [config.ssh]="~/.ssh/config"
       [alacritty.toml]="~/.config/alacritty/alacritty.toml"
       [z.sh]="/dev/null"
+      [zellij]="/dev/null"
       [cc]="~/.local/bin/c99/cc"
+      [kitty]="~/.config/kitty"
    )
 
    mydotfiles=$(command ls -1 $cdir/initrc/)
