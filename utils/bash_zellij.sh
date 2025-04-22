@@ -23,10 +23,10 @@ helpstr["zm"]="\
       -s|--create-session <session-name>         -Create a session with <session-name> (Not within zellij)
       -k|--kill-session                          -kill session (Not within zellij)
       -K|--kill-all-sessions                     -kill all sessions (Not within zellij)
-      -l|--layout                                -def(default)|pal
+      -l|--layout                                -def(default)|def
 "
 function zm () {
-   declare -A opt=([ZELLIJ_LAYOUT]=pal)
+   declare -A opt=([ZELLIJ_LAYOUT]=def)
    args=()
    while (( $# )); do
       case $1 in 
@@ -98,5 +98,5 @@ function zs () {
    zellij action launch-or-focus-plugin -f "zellij:session-manager"
 }
 function zt () { 
-   zellij action new-tab -l $ZELLIJ_CONFIG_DIR/layouts/pane_${1:-pal}.kdl
+   zellij action new-tab -l $ZELLIJ_CONFIG_DIR/layouts/pane_${1:-def}.kdl
 }
