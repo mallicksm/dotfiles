@@ -17,12 +17,12 @@ function linkrc () {
    linkup ~/corp/corp_settings.sh ~/corp_settings.sh
 
    declare -A link_map=(
-      [config.ssh]="~/.ssh/config"
-      [alacritty.toml]="~/.config/alacritty/alacritty.toml"
+      [config.ssh]="$HOME/.ssh/config"
+      [alacritty.toml]="$HOME/.config/alacritty/alacritty.toml"
       [z.sh]="/dev/null"
       [zellij]="/dev/null"
-      [cc]="~/.local/bin/c99/cc"
-      [kitty]="~/.config/kitty"
+      [cc]="$HOME/.local/bin/c99/cc"
+      [kitty]="$HOME/.config/kitty"
    )
 
    mydotfiles=$(command ls -1 $cdir/initrc/)
@@ -41,15 +41,10 @@ function linkup() {
       return
    fi
    parent_dir=$(dirname "$d")
-   # Create parent directories if they don't exist
-   if [ ! -d "$parent_dir" ]; then
-      echo "Info: Creating directories up to $parent_dir"
-      mkdir -p "$parent_dir"
-   fi
-   rm -rf $d
-   evalstr="ln -fs $s $d"
-   echo "Info: $evalstr"
-   eval $evalstr
+   mkdir -p "$parent_dir"
+   rm -f "$d"
+   ln -fs "$s" "$d"
+   echo "ln -fs \"$s\" \"$d\""
 }
 
 #-------------------------------------------------------------------------------
