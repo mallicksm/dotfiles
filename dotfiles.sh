@@ -19,6 +19,7 @@ function linkrc () {
    declare -A link_map=(
       [alacritty.toml]="$HOME/.config/alacritty/alacritty.toml"
       [kitty]="$HOME/.config/kitty"
+      [gitk]="$HOME/.config/git/gitk"
       [config.ssh]="$HOME/.ssh/config"
       [cc]="$HOME/.local/bin/c99/cc"
       [z.sh]="/dev/null"
