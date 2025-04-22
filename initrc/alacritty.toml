@@ -66,6 +66,6 @@ save_to_clipboard = true
 
 [window]
 opacity = 0.985
-# option_as_alt = "Both"
+option_as_alt = "Both"
 padding = { x = 5, y = 5}
 dimensions = { columns = 140, lines = 72}
