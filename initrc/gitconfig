@@ -63,11 +63,9 @@
    light = false      
    side-by-side = true
    line-numbers = true
+   file-style = bold yellow
 [merge]
    conflictstyle = diff3
-   tool = meld
-[diff]
-   colorMoved = default
    tool = meld
 [difftool "vimdiff"]
    cmd = XDG_CONFIG_HOME=~/dotfiles NVIM_APPNAME=nvim.easy nvim -d "$REMOTE" "$LOCAL"

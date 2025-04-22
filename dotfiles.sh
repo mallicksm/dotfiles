@@ -17,12 +17,12 @@ function linkrc () {
    linkup ~/corp/corp_settings.sh ~/corp_settings.sh
 
    declare -A link_map=(
-      [config.ssh]="$HOME/.ssh/config"
       [alacritty.toml]="$HOME/.config/alacritty/alacritty.toml"
+      [kitty]="$HOME/.config/kitty"
+      [config.ssh]="$HOME/.ssh/config"
+      [cc]="$HOME/.local/bin/c99/cc"
       [z.sh]="/dev/null"
       [zellij]="/dev/null"
-      [cc]="$HOME/.local/bin/c99/cc"
-      [kitty]="$HOME/.config/kitty"
    )
 
    mydotfiles=$(command ls -1 $cdir/initrc/)
