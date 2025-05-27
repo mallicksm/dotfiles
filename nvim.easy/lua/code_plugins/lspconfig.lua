@@ -93,13 +93,12 @@ return {
             verible = {
                cmd = {
                   'verible-verilog-ls',
-                  '--rules_config=~/dotfiles/formatters/verible-rules',
+                  '--rules_config=' .. vim.fn.expand('~/dotfiles/formatters/verible-rules'),
                },
                filetypes = { "verilog_systemverilog" },
                root_dir = function(fname)
                   return vim.fs.dirname(vim.fs.find({ ".git" }, { upward = true, path = fname })[1])
                end,
-
             },
             pyright = {
                cmd = { "pyright-langserver", "--stdio" },
