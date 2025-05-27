@@ -29,6 +29,7 @@ return {
                json = { 'prettier' }, -- npm install prettier
                python = { 'black' }, -- pip install black
                c = { 'clang_format' }, -- gcc13 + clang11
+               cpp = { 'clang_format' }, -- gcc13 + clang11
                verilog_systemverilog = { 'verible_verilog_format' }, -- https://github.com/chipsalliance/verible/releases
             },
             notify_on_error = false,
