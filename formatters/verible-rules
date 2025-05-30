@@ -2,3 +2,5 @@ parameter-name-style=localparam_style:ALL_CAPS
 -always-comb
 -explicit-parameter-storage-type
 -unpacked-dimensions-range-ordering
+-no-tabs
+-line-length=180
