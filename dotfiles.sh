@@ -108,6 +108,39 @@ function getstarship() {
       echo "Attention: no url access"
    fi
 }
+function getfzf() {
+   [[ ! -f ~/.fzf ]] && git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+}
+function getfonts() {
+   # Create fonts directory if needed
+   mkdir -p ~/.local/share/fonts
+
+# Download and unzip
+   curl -fLo ~/.local/share/fonts/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip
+   unzip ~/.local/share/fonts/FiraCode.zip -d ~/.local/share/fonts/FiraCode
+   rm ~/.local/share/fonts/FiraCode.zip
+}
+getnpm() {
+   local NODE_VERSION="v20.12.2"
+   local ARCH="linux-x64"
+   local INSTALL_DIR="$HOME/.local/node"
+   local TARBALL="node-$NODE_VERSION-$ARCH.tar.xz"
+   local URL="https://nodejs.org/dist/$NODE_VERSION/$TARBALL"
+
+   echo "📦 Downloading Node.js $NODE_VERSION for $ARCH..."
+   curl -LO "$URL" || { echo "❌ Failed to download Node.js"; return 1; }
+
+   echo "📂 Extracting to $INSTALL_DIR..."
+   mkdir -p "$INSTALL_DIR"
+   tar -xf "$TARBALL" --strip-components=1 -C "$INSTALL_DIR" || { echo "❌ Failed to extract"; return 1; }
+
+   echo "🧹 Cleaning up..."
+   rm "$TARBALL"
+
+   echo "✅ Node and npm installed locally in $INSTALL_DIR"
+   "$INSTALL_DIR/bin/node" -v
+   "$INSTALL_DIR/bin/npm" -v
+}
 
 #-------------------------------------------------------------------------------
 function all() {
@@ -117,6 +150,7 @@ function all() {
    getstarship
    zellij
    install_zvim
+   getfzf
 }
 
 echo "Executing ~/corp/dotfiles.sh if any.."
