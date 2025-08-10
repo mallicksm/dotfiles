@@ -2,6 +2,7 @@
 Host github.sm
    Hostname github.com
    IdentityFile ~/.ssh/github.sm
+   ForwardX11 no
    IdentitiesOnly yes
    IdentityAgent none
 Host github.com
@@ -10,9 +11,6 @@ Host github.com
    ForwardX11 no
    IdentitiesOnly yes
    IdentityAgent none
-Host bitbucket.org
-   IdentityFile ~/.ssh/bitbucket_rsa
-   ForwardX11 no
 
 Host *
    ForwardAgent yes
