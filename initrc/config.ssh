@@ -2,16 +2,16 @@
 Host github.sm
    Hostname github.com
    IdentityFile ~/.ssh/github.sm
-Host github.com
+   IdentitiesOnly yes
+Host github.work
+   Hostname github.com
    IdentityFile ~/.ssh/github-upscale
    ForwardX11 no
-
 Host bitbucket.org
    IdentityFile ~/.ssh/bitbucket_rsa
    ForwardX11 no
 
 Host *
-   IdentityFile ~/.ssh/id_rsa
    ForwardAgent yes
    ForwardX11 yes
    Compression yes
