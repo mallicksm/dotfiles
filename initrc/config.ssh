@@ -13,6 +13,7 @@ Host github.com
    IdentityAgent none
 
 Host *
+   IdentityFile ~/.ssh/id_ed25519
    ForwardAgent yes
    ForwardX11 yes
    Compression yes
