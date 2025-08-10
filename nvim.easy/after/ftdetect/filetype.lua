@@ -16,6 +16,7 @@ vim.filetype.add({
       f = "f",
       scat = "scat",
       h = "c",
+      csr = "semifore",
    },
    -- Detect and apply filetypes based on the entire filename
    filename = {

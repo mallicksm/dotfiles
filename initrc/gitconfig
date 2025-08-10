@@ -78,7 +78,7 @@
 [pull]
    rebase = false
 [init]
-   templatedir = ~/.local/share/git-core/templates
+	templateDir = 
    defaultBranch = master
 [credential "https://github.com"]
    helper = 
@@ -90,3 +90,5 @@
    email = mallicksm@gmail.com
 [include]
    path = ~/corp/corp_gitconfig.txt
+[safe]
+	directory = /project/ai/bugatti/users

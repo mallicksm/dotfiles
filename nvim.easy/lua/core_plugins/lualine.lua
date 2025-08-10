@@ -41,7 +41,18 @@ return {
          sections = {
             lualine_b = { 'branch', 'diff' },
             lualine_c = { { 'filename', path = 0 } },
-            lualine_x = { "fileformat", clients_lsp, "filetype" },
+            lualine_x = {
+               "fileformat",
+               clients_lsp,
+               function()
+                  local ft = vim.bo.filetype
+                  if ft == "verilog_systemverilog" then
+                     return "sv"
+                  else
+                     return ft
+                  end
+               end
+            },
          },
          inactive_sections = {
             lualine_c = {

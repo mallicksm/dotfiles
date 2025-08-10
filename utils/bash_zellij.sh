@@ -50,7 +50,7 @@ function zm () {
       esac
    done
    [[ "${opt[HELP]}" ]] && { echo "${helpstr[$FUNCNAME]}";return 0; }
-   if [[ ! -z $ZELLIJ ]]; then
+   if [[ (! -z $ZELLIJ) && ($ZELLIJ -ne 0) ]]; then
       # working within zellij
       zellij action launch-or-focus-plugin zellij:session-manager --floating
       return

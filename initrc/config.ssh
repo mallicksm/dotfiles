@@ -3,7 +3,7 @@ Host github.sm
    Hostname github.com
    IdentityFile ~/.ssh/github.sm
 Host github.com
-   IdentityFile ~/.ssh/bitbucket_rsa
+   IdentityFile ~/.ssh/github-upscale
    ForwardX11 no
 
 Host bitbucket.org

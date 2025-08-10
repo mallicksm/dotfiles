@@ -216,3 +216,50 @@ function sa() {
 function sj() {
    ./pal vcat_exec "ps aux | grep '^soummya'|grep -v 'soummya@'|grep -v export"
 }
+#-------------------------------------------------------------------------------
+build_from_recipe() {
+   local name="$1"
+   local version_var="${name^^}_VERSION"
+   local version="${!version_var}"
+
+   echo "→ URL: ${build_recipes[$name.url]}"
+
+   # Download
+   eval "curl -LO ${build_recipes[$name.url]}"
+   eval "tar xf $(basename ${build_recipes[$name.url]})"
+
+   cd "$version" || { echo "❌ Failed to enter $version"; exit 1; }
+
+   # Configure
+   echo "→ Configuring: ./configure ${build_recipes[$name.config_cmd]} > configure.log"
+   eval "${build_recipes[$name.config_cmd]}" > configure.log
+
+   # Build 
+   echo "→ Compiling: make -j$(nproc) > build.log"
+   make -j$(nproc) > build.log
+
+   # install
+   echo "→ Installing: ${build_recipes[$name.install_cmd]} > install.log"
+   eval "${build_recipes[$name.install_cmd]}" > install.log
+
+   cd ..
+}
+build_all_tools() {
+   declare -A seen
+   for key in "${!build_recipes[@]}"; do
+      name="${key%%.*}"
+      seen["$name"]=1
+   done
+
+   for name in "${!seen[@]}"; do
+      version_var="${name^^}_VERSION"
+      version="${!version_var}"
+      echo ""
+      echo "🔧 Building $name ($version)..."
+      start_time=$(date +%s)
+      build_from_recipe "$name"
+      end_time=$(date +%s)
+      elapsed=$((end_time - start_time))
+      echo "✅ Finished building $name in $elapsed seconds"
+   done
+}
