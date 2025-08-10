@@ -1,4 +1,6 @@
 # dotfiles
+Checkout ~/.ssh/config for disambiguation instructions
+
 Contains bash, vim and nvim configurations
 initrc/   - bash config
 install/  - non-root install scripts
