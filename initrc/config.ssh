@@ -3,7 +3,7 @@ Host github.sm
    Hostname github.com
    IdentityFile ~/.ssh/github.sm
    IdentitiesOnly yes
-Host github.work
+Host github.com
    Hostname github.com
    IdentityFile ~/.ssh/github-upscale
    ForwardX11 no
