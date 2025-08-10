@@ -3,10 +3,13 @@ Host github.sm
    Hostname github.com
    IdentityFile ~/.ssh/github.sm
    IdentitiesOnly yes
+   IdentityAgent none
 Host github.com
    Hostname github.com
    IdentityFile ~/.ssh/github-upscale
    ForwardX11 no
+   IdentitiesOnly yes
+   IdentityAgent none
 Host bitbucket.org
    IdentityFile ~/.ssh/bitbucket_rsa
    ForwardX11 no
