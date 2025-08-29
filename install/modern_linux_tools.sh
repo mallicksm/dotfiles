@@ -38,3 +38,17 @@ download https://github.com/dandavison/delta/releases/download/0.15.1/$DELTA.tar
 tar -xvf $DELTA.tar.gz
 cp $DELTA/delta $PREFIX/bin
 
+FD=fd-v10.3.0-x86_64-unknown-linux-musl
+curl -LO https://github.com/sharkdp/fd/releases/download/v10.3.0/$FD.tar.gz
+tar xzf $FD.tar.gz
+cp $FD/fd $PREFIX/bin
+
+RG=ripgrep-14.1.1-x86_64-unknown-linux-musl
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/$RG.tar.gz
+tar xzf $RG.tar.gz
+cp $RG/rg $PREFIX/bin
+
+LG=lazygit_0.54.2_Linux_x86_64
+curl -LO https://github.com/jesseduffield/lazygit/releases/download/v0.54.2/$LG.tar.gz
+tar xzf $LG.tar.gz
+install -m 0755 lazygit "$PREFIX/bin/lazygit"

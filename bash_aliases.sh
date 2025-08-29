@@ -36,3 +36,4 @@ alias .......='cd ../../../../../../'
 alias ..6='cd ../../../../../../'
 alias tree="tree -C -I "__pycache__" -I "obj_dir" -L 4"
 alias mtop="command top -o cpu -s 1"
+alias meld="flatpak run org.gnome.meld"

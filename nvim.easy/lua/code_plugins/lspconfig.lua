@@ -99,6 +99,16 @@ return {
                root_dir = function(fname)
                   return vim.fs.dirname(vim.fs.find({ ".git" }, { upward = true, path = fname })[1])
                end,
+               on_new_config = function(cfg, root)
+                  local fl = root .. "/filelist.f"
+                  if vim.loop.fs_stat(fl) then
+                     table.insert(cfg.cmd, "--file_list_path=" .. fl)
+                     vim.notify("[verible] using file_list_path: " .. fl)
+                  else
+                     vim.notify("[verible] no filelist.f in " .. root)
+                  end
+               end,
+
             },
             pyright = {
                cmd = { "pyright-langserver", "--stdio" },
