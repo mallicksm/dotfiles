@@ -17,7 +17,7 @@
    st = status --untracked-files=no --short
    url = remote set-url origin
    root = rev-parse --show-toplevel           # Shows root of current repo
-   ls = log --format=format:'%C(bold blue)%h%C(red)\t%ad %C(green)%cn %C(red)%d %C(magenta)(a:%an)\n\t\t%C(cyan)-- %s%C(reset)\n' --decorate --graph --date=relative
+   ls = log --oneline --decorate --graph --date=relative --pretty=format:'%C(bold yellow)%h%C(reset) %C(bold cyan)%ad%C(reset) %C(bold green)%cn%C(reset) %C(bold red)%d%C(reset) %C(bold white)%s%C(reset)'
    id = rev-parse --short HEAD
    br = rev-parse --abbrev-ref --short HEAD
    alias = config --get-regexp alias
