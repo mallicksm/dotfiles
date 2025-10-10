@@ -65,4 +65,5 @@ vim.opt.inccommand = 'split'
 vim.opt.scrolloff = 0
 
 vim.opt.hlsearch = true
+vim.opt.wrap = false
 -- vim: ts=3 sts=3 sw=3 et

@@ -81,15 +81,13 @@ function Popd() {
 }
 function xpushd () {
    dir=${1:-.}
-   cd $dir
-   echo "pushing: $proj/.x_push_pop_stack"
-   mkdir -p $proj
-   echo "$PWD" > "$proj/.x_push_pop_stack"
+   echo "pushing: ~/.x_push_pop_stack"
+   echo "$PWD" > ~/.x_push_pop_stack
 }
 function xpopd () {
-   echo "popping: $proj/.x_push_pop_stack"
-   if [[ -f $proj/.x_push_pop_stack ]]; then
-      cd $(command cat "$proj/.x_push_pop_stack")
+   echo "popping: ~/.x_push_pop_stack"
+   if [[ -f ~/.x_push_pop_stack ]]; then
+      cd $(command cat ~/.x_push_pop_stack)
    else
       echo "Note: xpushd first"
    fi

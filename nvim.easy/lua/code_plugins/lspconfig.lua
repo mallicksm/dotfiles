@@ -108,7 +108,6 @@ return {
                      vim.notify("[verible] no filelist.f in " .. root)
                   end
                end,
-
             },
             pyright = {
                cmd = { "pyright-langserver", "--stdio" },

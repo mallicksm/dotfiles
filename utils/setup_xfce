@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ========== helpers ==========
+have() { command -v "$1" >/dev/null 2>&1; }
+
+xfget() { xfconf-query -c "$1" -p "$2" >/dev/null 2>&1; }
+
+# ========== disable xfce screensaver ==========
+ss_ch="xfce4-screensaver"
+
+qset_bool() {
+   local key="$1" val="$2"
+   if xfget "$ss_ch" "$key"; then
+      xfconf-query -c "$ss_ch" -p "$key" -s "$val"
+   else
+      xfconf-query -c "$ss_ch" -p "$key" --create -t bool -s "$val"
+   fi
+}
+
+disable_screensaver() {
+   echo "[*] Disabling XFCE screensaver..."
+   qset_bool "/saver/enabled" false
+   qset_bool "/saver/idle-activation/enabled" false
+   qset_bool "/lock/enabled" false
+}
+
+verify_screensaver() {
+   echo "[*] Current xfce4-screensaver settings:"
+   xfconf-query -c "$ss_ch" -lv | sed 's/^/   /'
+}
+
+# ========== add workspace switcher (pager) ==========
+panel_ch="xfce4-panel"
+
+pick_panel_id() {
+   # Prefer 2 if present, else first listed id
+   local list
+   list="$(xfconf-query -c "$panel_ch" -p /panels 2>/dev/null || true)"
+   # extract numbers
+   local ids; ids=$(printf "%s\n" "$list" | grep -oE '[0-9]+' || true)
+   if printf "%s\n" "$ids" | grep -qx 2; then
+      echo 2
+   else
+      echo "${ids%%$'\n'*}"  # first id
+   fi
+}
+
+next_free_plugin_id() {
+   local n=1
+   while xfget "$panel_ch" "/plugins/plugin-${n}"; do
+      n=$((n+1))
+   done
+   echo "$n"
+}
+
+append_or_create_plugin_ids() {
+   local panel_path="$1" pid="$2"
+   if xfget "$panel_ch" "${panel_path}/plugin-ids"; then
+      xfconf-query -c "$panel_ch" -p "${panel_path}/plugin-ids" -a -t int -s "$pid"
+   else
+      # create the array with just our pid
+      xfconf-query -c "$panel_ch" -p "${panel_path}/plugin-ids" --create -a -t int -s "$pid"
+   fi
+}
+
+add_workspace_switcher() {
+   local pid panel_id panel_path
+   panel_id="$(pick_panel_id)"
+   panel_path="/panels/panel-${panel_id}"
+   echo "[*] Targeting ${panel_path} (available panels: $(xfconf-query -c "$panel_ch" -p /panels 2>/dev/null || echo '?'))"
+
+   pid="$(next_free_plugin_id)"
+
+   # define pager plugin
+   xfconf-query -c "$panel_ch" -p "/plugins/plugin-${pid}" --create -t string -s "pager"
+
+   # attach to panel's plugin list (create if missing)
+   append_or_create_plugin_ids "$panel_path" "$pid"
+
+   echo "   Added pager as /plugins/plugin-${pid} to ${panel_path}/plugin-ids."
+   echo "[*] Restarting panel..."
+   xfce4-panel -r
+}
+
+# ========== set desktop icon type ==========
+set_icon_type() {
+   # 0=None, 1=Minimized application icons, 2=File/launcher icons
+   echo "[*] Setting desktop icon type to 'Minimized application icons'..."
+   if xfget xfce4-desktop /desktop-icons/style; then
+      xfconf-query -c xfce4-desktop -p /desktop-icons/style -s 1
+   else
+      xfconf-query -c xfce4-desktop -p /desktop-icons/style --create -t int -s 1
+   fi
+}
+
+set_cursor_size() {
+   local size="${1:-12}"   # default to 12 if not provided
+   echo "[*] Setting mouse cursor size to $size..."
+   if xfconf-query -c xsettings -p /Gtk/CursorThemeSize >/dev/null 2>&1; then
+      xfconf-query -c xsettings -p /Gtk/CursorThemeSize -s "$size"
+   else
+      xfconf-query -c xsettings -p /Gtk/CursorThemeSize --create -t int -s "$size"
+   fi
+}
+set_panel_size() {
+   local panel_id="${1:-1}"   # default to panel 1
+   local size="${2:-32}"      # default to 32 pixels
+   local prop="/panels/panel-${panel_id}/size"
+
+   echo "[*] Setting panel ${panel_id} height to ${size}px..."
+   if xfconf-query -c xfce4-panel -p "$prop" >/dev/null 2>&1; then
+      xfconf-query -c xfce4-panel -p "$prop" -s "$size"
+   else
+      xfconf-query -c xfce4-panel -p "$prop" --create -t int -s "$size"
+   fi
+
+   # restart panel so change takes effect
+   xfce4-panel -r
+}
+# ========== main ==========
+main() {
+   have xfconf-query || { echo "xfconf-query not found"; exit 1; }
+   disable_screensaver
+   verify_screensaver
+   add_workspace_switcher
+   set_icon_type
+   set_cursor_size
+   set_panel_size 1 40
+   set_panel_size 2 50
+   echo "[*] Done."
+}
+
+main "$@"

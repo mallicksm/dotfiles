@@ -92,3 +92,8 @@
    path = ~/corp/corp_gitconfig.txt
 [safe]
 	directory = /project/ai/bugatti/users
+[color "status"]
+	untracked = brightyellow
+	added = green
+	changed = brightblue
+	branch = magenta

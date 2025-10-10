@@ -85,6 +85,7 @@ function zm () {
       zellij attach --create
    else
       # fzf if >1 session exists (even if EXITED)
+      export DISPLAY=${VNCDESKTOP%% *}
       session=$(zellij ls 2>/dev/null | fzf --exit-0 --ansi --height 40% --header 'Enter to open session:') && zellij attach "${session%% *}" || echo "No sessions selected"
    fi
 }

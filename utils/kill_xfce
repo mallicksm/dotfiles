@@ -1,0 +1,7 @@
+rm -rf ~/config/xfce4
+rm -rf ~/.cache/xfce4
+rm -rf ~/.cache/sessions
+pkill xfconfd || true
+pkill xfce4-panel || true
+pkill xfce4-session || true
+[[ ! -z $DISPLAY ]] && vncserver -kill $DISPLAY
