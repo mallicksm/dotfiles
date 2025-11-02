@@ -14,6 +14,7 @@ source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null
 # Version specs
 PREFIX=$HOME/.local
 EXA=exa-linux-x86_64-musl-v0.10.1
+EZA=eza_x86_64-unknown-linux-gnu
 BAT=bat-v0.22.1-i686-unknown-linux-musl
 DELTA=delta-0.15.1-x86_64-unknown-linux-musl
 PROCS=procs-v0.14.3-x86_64-linux
@@ -26,9 +27,16 @@ download https://github.com/dalance/procs/releases/download/v0.14.3/$PROCS.zip
 unzip $PROCS.zip
 cp procs $PREFIX/bin
 
+# exa Depricated
+if false; then
 download https://github.com/ogham/exa/releases/download/v0.10.1/$EXA.zip
 unzip $EXA.zip
 cp bin/* $PREFIX/bin
+fi
+
+download https://github.com/eza-community/eza/releases/download/v0.23.4/$EZA.zip
+unzip $EZA.zip
+cp eza $PREFIX/bin
 
 download https://github.com/sharkdp/bat/releases/download/v0.22.1/$BAT.tar.gz
 tar -xvf $BAT.tar.gz

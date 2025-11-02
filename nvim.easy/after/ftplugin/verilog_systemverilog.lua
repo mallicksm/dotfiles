@@ -4,3 +4,4 @@ vim.g.verilog_syntax_fold_lst = "all"
 vim.bo.tabstop     = 3
 vim.bo.shiftwidth  = 3
 vim.bo.softtabstop = 3
+vim.bo.commentstring = '// %s'
