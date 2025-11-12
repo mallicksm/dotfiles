@@ -93,7 +93,8 @@
 [safe]
 	directory = /project/ai/bugatti/users
 [color "status"]
-	untracked = brightyellow
-	added = green
-	changed = brightblue
-	branch = magenta
+	untracked = bold 15
+	added     = bold 34
+	changed   = bold 33
+	branch    = bold 38;5;39
+	header    = bold               ; optional, makes headings pop
