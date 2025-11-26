@@ -6,6 +6,10 @@ function vi () {
    local args
    while (( $# )); do
       case $1 in
+         -x)
+            opt[XTERM]="xterm -geom 110x50-100-200 -e"
+            shift 1
+         ;;
          -*)
             opt[OPT]="$1"
             shift 1
@@ -27,7 +31,11 @@ function vi () {
          export NVIM_APPNAME=nvim.bare 
       fi
    fi
-   nvim ${opt[OPT]} ${args[@]}
+   if [[ -n "${opt[XTERM]:-}" ]]; then
+      ${opt[XTERM]} nvim ${opt[OPT]} "${args[@]}" &
+   else
+      nvim ${opt[OPT]} "${args[@]}"
+   fi
    )
 }
 # make available to subshells

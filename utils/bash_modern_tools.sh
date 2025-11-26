@@ -9,7 +9,7 @@ function cat() {
    fi
 }
 unalias ll 2> /dev/null
-source ucol.sh
+source $HOME/dotfiles/utils/ucol.sh
 function l() {
    if command -v eza >/dev/null ; then
       command eza --color=always --classify --icons --sort=Ext --group-directories-first --time-style=long-iso "$@"

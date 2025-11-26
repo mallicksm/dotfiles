@@ -83,7 +83,7 @@ LS_COLORS+=":*.sh=${__c_orange}:*.tdf=${__c_orange}:*.tcl=${__c_orange}:*.py=${_
 LS_COLORS+=":*.sv=${__c_blue}:*.svh=${__c_blue}:*.v=${__c_blue}:*.vh=${__c_blue}"
 
 # logs
-LS_COLORS+=":*.log=${__c_silver}:*.list=${__c_purple}:*.f=${__c_lightred}"
+LS_COLORS+=":*.log=${__c_silver}:*.list=${__c_green}:*.f=${__c_lightred}"
 
 # build system
 LS_COLORS+=":*Makefile=${__c_orange}:*makefile=${__c_orange}:*GNUmakefile=${__c_orange}:*CMakeLists.txt=${__c_orange}:*.mk=${__c_orange}"

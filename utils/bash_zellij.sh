@@ -89,15 +89,38 @@ function zm () {
       session=$(zellij ls 2>/dev/null | fzf --exit-0 --ansi --height 40% --header 'Enter to open session:') && zellij attach "${session%% *}" || echo "No sessions selected"
    fi
 }
-function zrf () { 
-   zellij run --name "$*" --floating -- bash -ic "$*";
+zrf() {
+   if [ $# -eq 0 ]; then
+      # No args: open a plain interactive shell that closes the pane on exit
+      zellij action new-pane \
+         --floating \
+         --close-on-exit \
+         --name "shell" \
+	 -- bash -i
+   else
+      # With args: run the command
+      cmd="$*"
+      zellij action new-pane \
+         --floating \
+         --close-on-exit \
+         --name "$cmd" \
+         -- bash -ic "$cmd; exec bash -i"
+   fi
+}
+function zmv() {
+   dir="${1:-right}"
+
+   case "$dir" in
+      left|right)
+         zellij action move-tab "$dir"
+         ;;
+      *)
+         echo "Invalid direction: $dir"
+         echo "Usage: zmv [left|right]"
+         return 1
+         ;;
+   esac
 }
 function ze () { 
    zellij action edit-scrollback;
-}
-function zs () { 
-   zellij action launch-or-focus-plugin -f "zellij:session-manager"
-}
-function zt () { 
-   zellij action new-tab -l $ZELLIJ_CONFIG_DIR/layouts/pane_${1:-def}.kdl
 }
