@@ -75,7 +75,7 @@ function vgrep () {
       echo "-m |--makefile        Makefiles like Makefile and .mk"
       return 0
    fi
-   ex="--exclude=*svn* --exclude-dir=archive --exclude=tags"
+   ex="--exclude=*svn* --exclude-dir=archive --exclude=tags --exclude-dir=fsdb"
    if [[ $args == "" ]]; then
       echo "Attention: PATTERN not provided" >&2
       echo ""

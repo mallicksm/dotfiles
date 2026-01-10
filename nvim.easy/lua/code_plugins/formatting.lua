@@ -30,8 +30,8 @@ return {
                   },
                   stdin = true,
                },
-               csrfmt = {
-                  command = "fmtcsr.py",
+               semiforefmt = {
+                  command = "semifore.py",
                   stdin = true,
                },
             },
@@ -42,7 +42,7 @@ return {
                c = { 'clang_format' },                               -- gcc13 + clang11
                cpp = { 'clang_format' },                             -- gcc13 + clang11
                verilog_systemverilog = { 'verible_verilog_format' }, -- https://github.com/chipsalliance/verible/releases
-               semifore = { 'csrfmt'},
+               semifore = { 'semiforefmt'},
             },
             notify_on_error = false,
          })

@@ -68,6 +68,7 @@ return {
                smdebug = { pattern = '%f[%w]()smdebug()%f[%W]', group = 'MiniHipatternsFixme' },
                smtodo = { pattern = '%f[%w]()smtodo()%f[%W]', group = 'MiniHipatternsHack' },
                sminfo = { pattern = '%f[%w]()sminfo()%f[%W]', group = 'MiniHipatternsNote' },
+               smnote = { pattern = '%f[%w]()smnote()%f[%W]', group = 'MiniHipatternsTodo' },
 
                -- Highlight hex color strings (`#rrggbb`) using that color
                hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),

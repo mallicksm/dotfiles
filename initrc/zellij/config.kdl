@@ -6,9 +6,6 @@ keybinds clear-defaults=true {
      bind "F1" {
         ToggleFloatingPanes; 
      }
-     bind "Ctrl F1" {
-        Run "zellij" "action" "new-pane" "-f";
-     }
      bind "F2" {
         ToggleFocusFullscreen; 
      }

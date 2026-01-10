@@ -42,7 +42,7 @@ return {
       'MunifTanjim/nui.nvim',
    },
    config = function()
-      local ntwidth = 35 -- Neo-tree window width
+      local ntwidth = 55 -- Neo-tree window width
       require('neo-tree').setup({
          window = {
             width = ntwidth,
