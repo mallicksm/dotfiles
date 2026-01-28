@@ -56,14 +56,13 @@ function zellij() {
    if [[ $2 == "-f" ]]; then
       force="yes"
    fi
-   # https://github.com/muttleyxd/clang-tools-static-binaries
    echo "Info: Installing zellij"
-   if [[ $(curl --head --silent --fail git@github.com) && ($(uname -s) == "Linux") ]]; then
+   if [[ $(uname -s) == "Linux" ]]; then
       src="https://github.com/zellij-org/zellij/releases/latest/download/zellij-$(uname -m)-unknown-linux-musl.tar.gz"
       target=~/.local/bin/zellij
       if [[ (! -f $target) || ($force == "yes") ]]; then
          Pushd "$(dirname $target)"
-         download "$src" && tar -xz -f "${src##*/}" && rm -f "${src##*/}"
+         download "$src" && tar -xz -f "${src##*/}" && rm -f "${src##*/}" || echo "Info: Download failed"
          Popd
       else
          echo "Info: Already Installed"
@@ -71,61 +70,52 @@ function zellij() {
    elif [[ $(uname -s) == "Darwin" ]]; then
       brew install zellij
    else
-      echo "Attention: no url access or not Linux"
+      echo "Attention: unsupported OS"
    fi
 }
 
 #-------------------------------------------------------------------------------
 function clang-format() {
-   # https://github.com/muttleyxd/clang-tools-static-binaries
    echo "Info: Installing clang-format"
-   if [[ $(curl --head --silent --fail git@github.com) && ($(uname -s) == "Linux") ]]; then
+   if [[ $(uname -s) == "Linux" ]]; then
       src=https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-f4f85437/clang-format-16_linux-amd64
       target=~/.local/bin/clang-format
       if [[ ! -f $target ]]; then
          Pushd "$(dirname $target)"
-         download "$src" && mv "${src##*/}" "$(basename $target)" && chmod +x "$(basename $target)"
+         download "$src" && mv "${src##*/}" "$(basename $target)" && chmod +x "$(basename $target)" || echo "Info: Download failed"
          Popd
       fi
    elif [[ $(uname -s) == "Darwin" ]]; then
       brew install clang-format
    else
-      echo "Attention: no url access or not Linux"
+      echo "Attention: unsupported OS"
    fi
 }
 
 #-------------------------------------------------------------------------------
 function getz () {
    echo "Info: Installing z"
-   if [[ $(curl --head --silent --fail git@github.com) ]]; then
-      src=https://raw.githubusercontent.com/rupa/z/master/z.sh
-      target=~/dotfiles/initrc/z.sh
-      if [[ ! -f $target ]]; then
-         Pushd "$(dirname $target)"
-         download "$src" && mv "${src##*/}" "$(basename $target)"
-         Popd
-      fi
-   else
-      echo "Attention: no url access"
+   src=https://raw.githubusercontent.com/rupa/z/master/z.sh
+   target=~/dotfiles/initrc/z.sh
+   if [[ ! -f $target ]]; then
+      Pushd "$(dirname $target)"
+      download "$src" && mv "${src##*/}" "$(basename $target)" || echo "Info: Download failed"
+      Popd
    fi
 }
 
 #-------------------------------------------------------------------------------
 function getstarship() {
    echo "Info: Installing starship"
-   if [[ $(curl --head --silent --fail git@github.com) ]]; then
-      src=https://starship.rs/install.sh
-      target=~/.local/bin/starship
-      mkdir -p $(dirname $target)
-      if [[ ! -f $target ]]; then
-         tmpdir=$(mktemp -d)
-         Pushd "$tmpdir"
-         download "$src" && sh "${src##*/}" -b $(dirname $target) || true
-         Popd
-         rm -rf "$tmpdir"
-      fi
-   else
-      echo "Attention: no url access"
+   src=https://starship.rs/install.sh
+   target=~/.local/bin/starship
+   mkdir -p $(dirname $target)
+   if [[ ! -f $target ]]; then
+      tmpdir=$(mktemp -d)
+      Pushd "$tmpdir"
+      download "$src" && sh "${src##*/}" -b $(dirname $target) || echo "Info: Download/install failed"
+      Popd
+      rm -rf "$tmpdir"
    fi
 }
 function getfzf() {
