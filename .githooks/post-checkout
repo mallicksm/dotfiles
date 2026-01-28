@@ -1,1 +1,6 @@
-chmod 600 initrc/config.ssh
+#!/bin/bash
+# Set file permissions after checkout/clone
+chmod 400 initrc/config.ssh
+# Add your files that need 400 permissions here:
+# chmod 400 path/to/file1
+# chmod 400 path/to/file2
