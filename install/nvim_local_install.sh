@@ -20,4 +20,7 @@ command mkdir -pv $dst && command cd $dst && command rm -rf $(pwd)/../nvim_lates
 download $src $(basename $src)
 tar -xvf $(basename $src) > nvim_tar.log
 loc=$(find . -print | grep 'bin/nvim')
-echo "alias nvim into $(dirname $dst)/nvim_latest/$loc"
+mkdir -p ~/.local/bin
+Pushd ~/.local/bin
+ln -s $(dirname $dst)/nvim_latest/$loc .
+Popd
