@@ -61,7 +61,13 @@ function zellij() {
    if [[ $(curl --head --silent --fail git@github.com) && ($(uname -s) == "Linux") ]]; then
       src="https://github.com/zellij-org/zellij/releases/latest/download/zellij-$(uname -m)-unknown-linux-musl.tar.gz"
       target=~/.local/bin/zellij
-      [[ (! -f $target) || ($force == "yes") ]] && curl -L "$src" | tar -C "$(dirname $target)" -xz || echo "Info: Already Installed"
+      if [[ (! -f $target) || ($force == "yes") ]]; then
+         Pushd "$(dirname $target)"
+         download "$src" && tar -xz -f "${src##*/}" && rm -f "${src##*/}"
+         Popd
+      else
+         echo "Info: Already Installed"
+      fi
    elif [[ $(uname -s) == "Darwin" ]]; then
       brew install zellij
    else
@@ -76,7 +82,11 @@ function clang-format() {
    if [[ $(curl --head --silent --fail git@github.com) && ($(uname -s) == "Linux") ]]; then
       src=https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-f4f85437/clang-format-16_linux-amd64
       target=~/.local/bin/clang-format
-      [[ ! -f $target ]] && curl -L -s $src -o $target && chmod +x $target
+      if [[ ! -f $target ]]; then
+         Pushd "$(dirname $target)"
+         download "$src" && mv "${src##*/}" "$(basename $target)" && chmod +x "$(basename $target)"
+         Popd
+      fi
    elif [[ $(uname -s) == "Darwin" ]]; then
       brew install clang-format
    else
@@ -90,7 +100,11 @@ function getz () {
    if [[ $(curl --head --silent --fail git@github.com) ]]; then
       src=https://raw.githubusercontent.com/rupa/z/master/z.sh
       target=~/dotfiles/initrc/z.sh
-      [[ ! -f $target ]] && curl -L -s $src -o $target
+      if [[ ! -f $target ]]; then
+         Pushd "$(dirname $target)"
+         download "$src" && mv "${src##*/}" "$(basename $target)"
+         Popd
+      fi
    else
       echo "Attention: no url access"
    fi
@@ -103,7 +117,13 @@ function getstarship() {
       src=https://starship.rs/install.sh
       target=~/.local/bin/starship
       mkdir -p $(dirname $target)
-      [[ ! -f $target ]] && curl -L -s $src | sh /dev/stdin -b $(dirname $target) || true
+      if [[ ! -f $target ]]; then
+         tmpdir=$(mktemp -d)
+         Pushd "$tmpdir"
+         download "$src" && sh "${src##*/}" -b $(dirname $target) || true
+         Popd
+         rm -rf "$tmpdir"
+      fi
    else
       echo "Attention: no url access"
    fi
@@ -115,10 +135,11 @@ function getfonts() {
    # Create fonts directory if needed
    mkdir -p ~/.local/share/fonts
 
-# Download and unzip
-   curl -fLo ~/.local/share/fonts/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip
-   unzip ~/.local/share/fonts/FiraCode.zip -d ~/.local/share/fonts/FiraCode
-   rm ~/.local/share/fonts/FiraCode.zip
+   # Download and unzip
+   src=https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip
+   Pushd ~/.local/share/fonts
+   download "$src" && unzip FiraCode.zip -d FiraCode && rm -f FiraCode.zip
+   Popd
 }
 getnpm() {
    local NODE_VERSION="v20.12.2"
@@ -128,7 +149,7 @@ getnpm() {
    local URL="https://nodejs.org/dist/$NODE_VERSION/$TARBALL"
 
    echo "📦 Downloading Node.js $NODE_VERSION for $ARCH..."
-   curl -LO "$URL" || { echo "❌ Failed to download Node.js"; return 1; }
+   download "$URL" || { echo "❌ Failed to download Node.js"; return 1; }
 
    echo "📂 Extracting to $INSTALL_DIR..."
    mkdir -p "$INSTALL_DIR"

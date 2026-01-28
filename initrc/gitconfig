@@ -50,6 +50,17 @@
    sup = "!f() { \
      git submodule update --recursive --init; \
    }; f"
+   bup = "!f() { \
+     set -e; \
+     if ! git diff --quiet || ! git diff --cached --quiet; then echo 'ERROR: working tree not clean'; exit 1; fi; \
+     br=$(git rev-parse --abbrev-ref HEAD); \
+     if [ \"$br\" = \"HEAD\" ]; then echo 'ERROR: detached HEAD'; exit 1; fi; \
+     if [ \"$br\" = \"main\" ]; then echo 'ERROR: refusing to run on main'; exit 1; fi; \
+     git fetch origin; \
+     git rebase origin/main; \
+     git push --force-with-lease -u origin \"$br\"; \
+     git submodule update --recursive --init; \
+   }; f"
 [color]
    ui = auto
    status = auto
