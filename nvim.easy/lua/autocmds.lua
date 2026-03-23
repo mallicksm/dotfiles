@@ -1,3 +1,24 @@
+-- Open PDFs in NERDTree using your pdftotext.py script
+vim.api.nvim_create_autocmd("BufReadCmd", {
+  pattern = "*.pdf",
+  callback = function()
+    local fname = vim.fn.expand("<afile>")
+    local cmd = "pdftotext.py " .. vim.fn.shellescape(fname)
+
+    -- Create a new buffer and read command output into it
+    vim.cmd("enew")
+    vim.cmd("setlocal buftype=nofile")
+    vim.cmd("setlocal bufhidden=wipe")
+    vim.cmd("setlocal noswapfile")
+    vim.cmd("setlocal readonly")
+
+    -- Read the output of your script into the buffer
+    vim.cmd("0read !" .. cmd)
+
+    -- Set a nice buffer name
+    vim.api.nvim_buf_set_name(0, fname .. ".txt")
+  end,
+})
 --------------------------------------------------------------------------------
 --- Basic Autocommands
 --------------------------------------------------------------------------------

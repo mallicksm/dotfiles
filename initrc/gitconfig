@@ -44,7 +44,9 @@
    } ; cb_fzf"
    # Do a pull rebase and update submodules
    up = "!f() { \
-     git pull -r;git submodule update --recursive --init; \
+     git pull -r; \
+     git submodule foreach --recursive 'git reset --hard; git clean -fd'; \
+     git submodule update --recursive --init; \
    }; f"
    # Update submodules
    sup = "!f() { \
