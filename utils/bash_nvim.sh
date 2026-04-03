@@ -1,9 +1,15 @@
+#-------------------------------------------------------------------------------
+# vi alias
+#-------------------------------------------------------------------------------
 unalias vi 2>/dev/null
-# lua based nvim installation (nvim.easy)
+
 function vi () {
    # getopt
    declare -A opt
-   local args
+   local args=()
+   local nfiles=0
+   local use_split=0
+
    while (( $# )); do
       case $1 in
          -x)
@@ -21,24 +27,46 @@ function vi () {
       esac
    done
 
+   # count real files only
+   for f in "${args[@]}"; do
+      [[ -f "$f" ]] && ((nfiles++))
+   done
+
+   # decide split
+   if (( nfiles > 0 && nfiles <= 3 )); then
+      use_split=1
+   fi
+
    # open in a subshell
    (
    export XDG_CONFIG_HOME=~/dotfiles/
    export NVIM_APPNAME=nvim.easy 
-   echo "Note: nvim ${opt[OPT]} ${args[@]}"
+
+   # preserve your large-file logic
    if [[ -n "${args[0]}" && -f "${args[0]}" ]]; then
       if [[ $(wc -l < "${args[0]}") -gt 1000000 ]]; then
          export NVIM_APPNAME=nvim.bare 
       fi
    fi
-   if [[ -n "${opt[XTERM]:-}" ]]; then
-      ${opt[XTERM]} nvim ${opt[OPT]} "${args[@]}" &
+
+   # build command (respect user-provided -O)
+   local cmd
+   if (( use_split )) && [[ "${opt[OPT]}" != "-O" ]]; then
+      cmd=(nvim -O ${opt[OPT]} "${args[@]}")
+      echo "Note: nvim -O ${opt[OPT]} ${args[@]}"
    else
-      nvim ${opt[OPT]} "${args[@]}"
+      cmd=(nvim ${opt[OPT]} "${args[@]}")
+      echo "Note: nvim ${opt[OPT]} ${args[@]}"
+   fi
+
+   if [[ -n "${opt[XTERM]:-}" ]]; then
+      ${opt[XTERM]} "${cmd[@]}" &
+   else
+      "${cmd[@]}"
    fi
    )
 }
-# make available to subshells
+
 export -f vi
 # vimscript based original nvim installation (nvim.vim)
 function vim () {

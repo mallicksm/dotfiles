@@ -9,6 +9,7 @@ return {
                   command = 'clang-format',
                   args = { '--style=file:' .. vim.fn.expand('$HOME') .. '/dotfiles/formatters/clang-format' },
                },
+               -- Keep in sync with ~/dotfiles/formatters/verible-format.flagfile (batch: format_verible_sv.sh)
                verible_verilog_format = {
                   command = 'verible-verilog-format',
                   args = {
