@@ -99,7 +99,7 @@ function vgrep () {
    fi
    local c
    if [[ ${opt[C_LANG]} -eq 1 ]]; then
-      c="--include=*.c --include=*.S --include=*.cpp"
+      c="--include=*.c --include=*.S --include=*.cpp --include=*.h"
    fi
    local h
    if [[ ${opt[HEADER]} -eq 1 ]]; then
