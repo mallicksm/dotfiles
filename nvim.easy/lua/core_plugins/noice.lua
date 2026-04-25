@@ -14,12 +14,11 @@ return {
    config = function()
       require("noice").setup({
          lsp = {
-            -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+            -- override markdown rendering so plugins use Treesitter for hover/docs
             override = {
                ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
                ["vim.lsp.util.stylize_markdown"] = true,
-               ["cmp.entry.get_documentation"] = true,        -- requires hrsh7th/nvim-cmp
-               ["vim.lsp.util.open_floating_preview"] = true, -- Route LSP floating windows through Noice
+               ["vim.lsp.util.open_floating_preview"] = true,
             },
          },
          -- you can enable a preset for easier configuration

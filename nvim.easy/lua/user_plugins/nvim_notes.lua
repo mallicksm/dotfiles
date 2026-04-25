@@ -1,46 +1,48 @@
-local cmp = require('cmp')
+--- Native blink.cmp source: serves files in ~/dotfiles/nvim_notes as
+--- completion items where the label is the filename and the docs popup
+--- shows the file contents.
 
-local directory_source = {}
+local directory_path = '~/dotfiles/nvim_notes'
 
--- Directory to read files from
-local directory_path = "~/dotfiles/nvim_notes"
+---@class blink.cmp.Source
+local source = {}
 
--- Complete function for nvim-cmp
-directory_source.complete = function(_, _, callback)
-  local items = {}
-
-  -- Expand `~` to the home directory
-  local expanded_path = vim.fn.expand(directory_path)
-
-  -- Use `vim.fn.readdir` to get files in the directory
-  local files = vim.fn.readdir(expanded_path)
-
-  for _, name in ipairs(files) do
-    local file_path = expanded_path .. "/" .. name
-    local file = io.open(file_path, "r")
-    local content = file and file:read("*all") or "No content"
-    if file then file:close() end
-
-    -- Add to completion items
-    table.insert(items, {
-      label = name, -- File name as trigger
-      documentation = content, -- File contents as documentation
-      kind = cmp.lsp.CompletionItemKind.File, -- Kind
-    })
-  end
-
-  callback(items)
+function source.new()
+   return setmetatable({}, { __index = source })
 end
 
--- Documentation resolver for showing file content
-directory_source.resolve = function(_, completion_item, callback)
-  if completion_item.documentation then
-    completion_item.documentation = {
-      kind = "markdown",
-      value = completion_item.documentation,
-    }
-  end
-  callback(completion_item)
+function source:enabled()
+   return vim.fn.isdirectory(vim.fn.expand(directory_path)) == 1
 end
 
-return directory_source
+function source:get_completions(_, callback)
+   local items = {}
+   local expanded = vim.fn.expand(directory_path)
+
+   for _, name in ipairs(vim.fn.readdir(expanded)) do
+      local file_path = expanded .. '/' .. name
+      local fd = io.open(file_path, 'r')
+      local content = fd and fd:read('*all') or 'No content'
+      if fd then fd:close() end
+
+      table.insert(items, {
+         label = name,
+         kind = vim.lsp.protocol.CompletionItemKind.File,
+         documentation = { kind = 'markdown', value = content },
+      })
+   end
+
+   callback({
+      items = items,
+      is_incomplete_backward = false,
+      is_incomplete_forward = false,
+   })
+
+   return function() end
+end
+
+function source:resolve(item, callback)
+   callback(item)
+end
+
+return source

@@ -49,7 +49,7 @@ return {
          })
          -- Recursive formatter: formats all *.sv, *.svh, *.v under cwd
          local function format_all_sv_in_cwd()
-            local uv    = vim.loop
+            local uv    = vim.uv or vim.loop
             local cwd   = uv.cwd()
             local pats  = { "**/*.sv", "**/*.svh", "**/*.v" }
 
@@ -66,7 +66,8 @@ return {
             local seen = {}
             local unique = {}
             for _, f in ipairs(files) do
-               if not seen[f] and vim.loop.fs_stat(f) and vim.loop.fs_stat(f).type == "file" then
+               local stat = uv.fs_stat(f)
+               if not seen[f] and stat and stat.type == "file" then
                   seen[f] = true
                   table.insert(unique, f)
                end
