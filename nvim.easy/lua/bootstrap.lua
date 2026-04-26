@@ -12,6 +12,7 @@ require('lazy').setup({
       { import = 'plugins' },
       { import = 'core_plugins' },
       { import = 'code_plugins' },
-   }
+   },
+   rocks = { hererocks = false }, -- no plugin needs luarocks; silences hererocks errors
 })
 -- vim: ts=3 sts=3 sw=3 et
