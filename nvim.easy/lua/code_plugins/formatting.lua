@@ -41,7 +41,16 @@ return {
                   -- -ci    : indent switch cases
                   -- -bn    : binary ops at start of line (better diff readability)
                   -- -sr    : redirect operators followed by a space
+                  -- (no -ln flag: defaults to -ln=auto, which detects bash/zsh/posix from shebang)
                   args = { '-i', '3', '-ci', '-bn', '-sr' },
+                  stdin = true,
+               },
+               shfmt_zsh = {
+                  -- Same shfmt, but force zsh dialect for buffers that nvim
+                  -- detects as ft=zsh (which usually lack a #!/bin/zsh shebang
+                  -- because they're sourced rcfiles, not standalone scripts).
+                  command = 'shfmt',
+                  args = { '-ln', 'zsh', '-i', '3', '-ci', '-bn', '-sr' },
                   stdin = true,
                },
                tclfmt = {
@@ -60,9 +69,10 @@ return {
                semifore = { 'semiforefmt' },
                sh = { 'shfmt' },                                     -- mason: shfmt
                bash = { 'shfmt' },                                   -- shebang-detected #!/bin/bash buffers
+               zsh = { 'shfmt_zsh' },                                -- forces -ln=zsh; auto-detect can't tell rc-style files
                tcl = { 'tclfmt' },                                   -- mason: tclint (provides tclfmt)
             },
-            notify_on_error = false,
+            notify_on_error = true, -- intentional: silent failures cost real time once. Flip to false if popups become annoying.
          })
          -- Recursive formatter: formats all *.sv, *.svh, *.v under cwd
          local function format_all_sv_in_cwd()

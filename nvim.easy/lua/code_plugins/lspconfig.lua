@@ -11,6 +11,7 @@ return {
             'tree-sitter-cli', -- needed by nvim-treesitter (main branch) to compile parsers
             'shfmt',           -- bash / sh formatter (Go static binary, no glibc dep)
             'tclint',          -- Tcl linter; also installs the `tclfmt` binary used by conform
+            'black',           -- Python formatter (used via conform; reads ~/dotfiles/formatters/py-format.toml)
          },
          run_on_start = true,
       },
