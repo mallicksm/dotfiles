@@ -35,6 +35,20 @@ return {
                   command = "semifore.py",
                   stdin = true,
                },
+               shfmt = {
+                  command = 'shfmt',
+                  -- -i 3   : 3-space indent (matches house style)
+                  -- -ci    : indent switch cases
+                  -- -bn    : binary ops at start of line (better diff readability)
+                  -- -sr    : redirect operators followed by a space
+                  args = { '-i', '3', '-ci', '-bn', '-sr' },
+                  stdin = true,
+               },
+               tclfmt = {
+                  command = 'tclfmt',
+                  args = { '-' }, -- read from stdin, write to stdout
+                  stdin = true,
+               },
             },
             formatters_by_ft = {
                lua = { 'stylua' },                                   -- brew install stylua
@@ -43,7 +57,10 @@ return {
                c = { 'clang_format' },                               -- gcc13 + clang11
                cpp = { 'clang_format' },                             -- gcc13 + clang11
                verilog_systemverilog = { 'verible_verilog_format' }, -- https://github.com/chipsalliance/verible/releases
-               semifore = { 'semiforefmt'},
+               semifore = { 'semiforefmt' },
+               sh = { 'shfmt' },                                     -- mason: shfmt
+               bash = { 'shfmt' },                                   -- shebang-detected #!/bin/bash buffers
+               tcl = { 'tclfmt' },                                   -- mason: tclint (provides tclfmt)
             },
             notify_on_error = false,
          })

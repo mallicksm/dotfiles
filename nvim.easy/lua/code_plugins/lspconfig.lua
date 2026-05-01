@@ -9,6 +9,8 @@ return {
       opts = {
          ensure_installed = {
             'tree-sitter-cli', -- needed by nvim-treesitter (main branch) to compile parsers
+            'shfmt',           -- bash / sh formatter (Go static binary, no glibc dep)
+            'tclint',          -- Tcl linter; also installs the `tclfmt` binary used by conform
          },
          run_on_start = true,
       },
