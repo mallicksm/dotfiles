@@ -14,8 +14,9 @@ return {
       local ts = require('nvim-treesitter')
       ts.install(ensure_installed)
 
-      -- Map Verilog/SystemVerilog filetypes (set by verilog_systemverilog.vim) to the parser
+      -- Map filetypes to their tree-sitter parser when the names differ.
       vim.treesitter.language.register('systemverilog', { 'verilog', 'verilog_systemverilog', 'systemverilog' })
+      vim.treesitter.language.register('bash', { 'sh', 'bash' })
 
       vim.api.nvim_create_autocmd('FileType', {
          group = vim.api.nvim_create_augroup('user-treesitter', { clear = true }),

@@ -5,6 +5,16 @@ return {
    },
    {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
+      dependencies = { 'mason-org/mason.nvim' },
+      opts = {
+         ensure_installed = {
+            'tree-sitter-cli', -- needed by nvim-treesitter (main branch) to compile parsers
+         },
+         run_on_start = true,
+      },
+      config = function(_, opts)
+         require('mason-tool-installer').setup(opts)
+      end,
    },
    {
       'mason-org/mason-lspconfig.nvim',

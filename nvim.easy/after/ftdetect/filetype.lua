@@ -19,6 +19,7 @@ vim.filetype.add({
       csr = "semifore",
       cmm = "trace32",
       map = "map",
+      mdc = "markdown",
    },
    -- Detect and apply filetypes based on the entire filename
    filename = {

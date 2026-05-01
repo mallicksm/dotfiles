@@ -16,6 +16,10 @@ return {
                -- windows = true,
             },
          })
+         -- mini.basics enables smartindent globally as part of its `basic = true`
+         -- bundle. It's redundant once any indentexpr/treesitter-indent is active
+         -- and it triggers a per-open warning in vhda/verilog_systemverilog.vim.
+         vim.opt.smartindent = false
          -------------------------------------------------------------
          -- <leader>K for more info on cWORD MiniExtra
          -------------------------------------------------------------
