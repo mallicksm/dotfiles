@@ -1,7 +1,7 @@
-vim.o.foldmethod = 'syntax'
-vim.g.verilog_syntax_fold_lst = "all"
--- Bias sleuth by setting defaults before it runs
-vim.bo.tabstop     = 3
-vim.bo.shiftwidth  = 3
-vim.bo.softtabstop = 3
-vim.bo.commentstring = '// %s'
+vim.opt_local.foldmethod = 'syntax'
+vim.opt_local.smartindent = false
+vim.opt_local.autoindent = true
+vim.opt_local.tabstop = 3
+vim.opt_local.shiftwidth = 3
+vim.opt_local.softtabstop = 3
+vim.opt_local.commentstring = '// %s'

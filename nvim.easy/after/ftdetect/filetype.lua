@@ -17,10 +17,13 @@ vim.filetype.add({
       scat = "scat",
       h = "c",
       csr = "semifore",
+      cmm = "trace32",
+      map = "map",
    },
    -- Detect and apply filetypes based on the entire filename
    filename = {
       ["bash_profile"] = "sh",
+      ["bashrc"] = "sh",
       ["cshrc"] = "csh",
       ["shellrc"] = "csh",
       [".shellrc"] = "csh",

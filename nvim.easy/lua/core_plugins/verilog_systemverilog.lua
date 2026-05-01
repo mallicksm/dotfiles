@@ -1,5 +1,4 @@
-vim.opt_local.smartindent = false -- Disable smartindent
-vim.opt_local.autoindent = true   -- Enable autoindent
+vim.g.verilog_syntax_fold_lst = 'all'
 return {
    'vhda/verilog_systemverilog.vim',
 }
