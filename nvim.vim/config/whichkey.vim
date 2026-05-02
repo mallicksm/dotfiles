@@ -121,11 +121,14 @@ let g:space_prefix_dict['b'] = {
          \ }
 let g:space_prefix_dict['r'] = {
          \ 'name' : '+register',
-         \ 'p' : ['MacPaste'              , 'mac-paste'     ],
-         \ 'P' : [':r !clip'              , 'unix-paste'    ],
-         \ 'c' : ['MacCopy'               , 'mac-copy'      ],
-         \ 'C' : ['<Plug>OSCYankOperator' , 'Yank to buffer'],
+         \ 'p' : ['"+p'                   , 'paste-from-+-clipboard'],
+         \ 'P' : [':r !clip'              , 'unix-paste'            ],
+         \ 'c' : ['"+y'                   , 'yank-to-+-clipboard'   ],
+         \ 'C' : ['<Plug>OSCYankOperator' , 'Yank to buffer'        ],
          \ }
+" Was: 'p'/'c' bound to MacPaste/MacCopy (ssh-based). Now bound to "+p / "+y
+" so they go through the standard + register, which kitty forwards to the
+" Mac via OSC 52. Plain y/p also work because clipboard=unnamed,unnamedplus.
 let g:space_prefix_dict['X'] = {
          \ 'name' : '+extras',
          \ }

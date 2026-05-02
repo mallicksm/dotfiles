@@ -89,6 +89,8 @@ command! Filename execute ":echo expand('%:p')"
 command! Reload   execute "source $RTP/init.vim"
 command! GdbFloat execute "FloatermNew --width=0.60 --height=0.8 --title=gdb gdb -tui"
 command! PythonFloat execute "FloatermNew --title=python python"
-command! MacCopy execute "call system('command ssh m1 pbcopy', getreg('\"'))"
-command! MacPaste execute ":r !command ssh m1 pbpaste"
+" MacCopy/MacPaste removed: they shelled out to `ssh m1 pbcopy/pbpaste` which
+" was a slow pre-OSC-52 workaround. With `set clipboard=unnamed,unnamedplus`
+" (sets.vim) yanks already land in the + register, kitty forwards that to
+" the Mac's pasteboard via OSC 52, and `"+p` pulls Mac's clipboard back.
 let $functions = '$RTP/config/functions.vim'

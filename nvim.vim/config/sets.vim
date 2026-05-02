@@ -68,7 +68,7 @@ endif
 set timeoutlen=500 ttimeoutlen=100
 set foldmethod=marker
 set autoread
-set clipboard=unnamed
+set clipboard=unnamed,unnamedplus
 set redrawtime=10000 " Allow more time for loading syntax on larger files
 set exrc
 set showmatch

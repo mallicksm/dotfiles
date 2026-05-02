@@ -168,17 +168,12 @@ function duration() {
    echo "${formatted_time}"
 }
 #-------------------------------------------------------------------------------
-# Note: clip from gvim
-# My workaround for not having xsel or xclip
-#   Ex: clipboard=$( get_clip )
-function get_clip() {
-   mkdir -p /tmp/$USER
-   file=/tmp/$USER/clipboard_contents.txt
-   /bin/rm -f $file
-   # Help from:  http://stackoverflow.com/a/23237529/120681
-   command gvim $file -T dumb --noplugin -n -es -c 'set nomore' +'normal "*P' +'wq'
-   cat $file
-}
+# get_clip() removed: it was a pre-xclip workaround that drove headless gvim
+# to dump the * register to a tempfile. xclip is now installed, kitty does
+# OSC 52, and `clipboard=unnamed,unnamedplus` makes nvim yanks land directly
+# in the system clipboard. If you ever need raw clipboard text in a script,
+# use:   xclip -selection clipboard -o
+#-------------------------------------------------------------------------------
 function modpath () {
    loc=$1
    cmd=${2:-"d"}
