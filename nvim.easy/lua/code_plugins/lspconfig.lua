@@ -43,6 +43,17 @@ return {
          'saghen/blink.cmp',
       },
       config = function()
+         -- Diagnostic display: nvim 0.11+ defaults virtual_text=off; opt back in
+         -- with a small bullet prefix and severity-sorted ordering.
+         vim.diagnostic.config({
+            virtual_text = { prefix = '●', spacing = 2 },
+            signs = true,
+            underline = true,
+            update_in_insert = false,
+            severity_sort = true,
+            float = { border = 'rounded', source = 'if_many' },
+         })
+
          vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('user-lsp-attach', { clear = true }),
             callback = function(event)
@@ -78,15 +89,13 @@ return {
             end,
          })
 
-         -- Default config applied to every server (capabilities from blink.cmp)
+         -- Default config applied to every server (capabilities from blink.cmp).
+         -- Mason-managed servers (lua_ls, bashls) inherit this and are auto-enabled
+         -- by mason-lspconfig 2.0; declare per-server overrides via vim.lsp.config
+         -- here only when actually needed.
          vim.lsp.config('*', {
             capabilities = require('blink.cmp').get_lsp_capabilities(),
          })
-
-         -- Mason-managed servers: declare overrides via vim.lsp.config,
-         -- mason-lspconfig 2.0 will auto-enable them.
-         vim.lsp.config('lua_ls', {})
-         vim.lsp.config('bashls', {})
 
          require('mason-lspconfig').setup({
             ensure_installed = { 'lua_ls', 'bashls' },

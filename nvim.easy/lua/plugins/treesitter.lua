@@ -2,7 +2,21 @@ vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.foldlevelstart = 99
 
-local ensure_installed = { 'lua', 'c', 'cpp', 'python', 'bash', 'json', 'markdown', 'markdown_inline', 'systemverilog' }
+local ensure_installed = {
+   'lua',
+   'c',
+   'cpp',
+   'python',
+   'bash',
+   'json',
+   'markdown',
+   'markdown_inline',
+   'systemverilog',
+   'vimdoc', -- highlights `:help` pages
+   'tcl',    -- .qel / .fs map to ft=tcl (paired with tclint / tclfmt)
+   'diff',   -- diff buffers, neogit views, gitcommit
+   'make',   -- Makefiles (paired with after/ftplugin/make.lua)
+}
 
 return {
    'nvim-treesitter/nvim-treesitter',

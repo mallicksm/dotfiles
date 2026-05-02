@@ -20,9 +20,10 @@ vim.keymap.set('n', '<leader>k', '<C-w><C-k>', { desc = 'Nav: upper window' })
 --------------------------------------------------------------------------------
 -- dap shortcuts
 --------------------------------------------------------------------------------
-vim.keymap.set('n', '<leader>db', require('dap').toggle_breakpoint, { desc = 'DAP: toggle breakpoint' })
-vim.keymap.set('n', '<leader>dc', require('dap').continue, { desc = 'DAP: continue' })
-vim.keymap.set('n', '<leader>dr', require('dap').restart, { desc = 'DAP: restart' })
+-- Wrap require()s in functions so this file doesn't break if dap is ever lazy-loaded.
+vim.keymap.set('n', '<leader>db', function() require('dap').toggle_breakpoint() end, { desc = 'DAP: toggle breakpoint' })
+vim.keymap.set('n', '<leader>dc', function() require('dap').continue() end, { desc = 'DAP: continue' })
+vim.keymap.set('n', '<leader>dr', function() require('dap').restart() end, { desc = 'DAP: restart' })
 
 --------------------------------------------------------------------------------
 -- formatting shortcuts
@@ -58,22 +59,23 @@ vim.keymap.set('n', '<leader>gk', ':Gitsigns prev_hunk<cr>', { desc = 'GitSigns:
 -- gitsigns shortcuts
 --------------------------------------------------------------------------------
 -- harpoon management edit(e) and add(a)
-local harpoon = require('harpoon')
+-- All harpoon requires are deferred so this file doesn't break if harpoon ever lazy-loads.
 vim.keymap.set('n', '<leader>a', function()
-   harpoon:list():append()
+   require('harpoon'):list():append()
    print('Harpoon: appended ' .. vim.fn.expand('%:t'))
 end, { desc = 'Harpoon: Mark add' })
 
 -- Toggle previous & next buffers stored within Harpoon list
 vim.keymap.set('n', '<C-p>', function()
-   harpoon:list():prev()
+   require('harpoon'):list():prev()
 end, { desc = 'Harpoon: previous' })
 vim.keymap.set('n', '<C-n>', function()
-   harpoon:list():next()
+   require('harpoon'):list():next()
 end, { desc = 'Harpoon: next' })
 
 -- harpoon list
 vim.keymap.set('n', '<leader><C-h>', function()
+   local harpoon = require('harpoon')
    harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = 'Harpoon: Marks list' })
 
@@ -95,7 +97,7 @@ function _G.toggle_telescope(harpoon_files)
    }):find()
 end
 
-vim.keymap.set("n", "<leader>H", function() toggle_telescope(harpoon:list()) end,
+vim.keymap.set("n", "<leader>H", function() toggle_telescope(require('harpoon'):list()) end,
    { desc = "Telescope: [H]arpoon list" })
 
 --------------------------------------------------------------------------------
@@ -155,10 +157,15 @@ vim.keymap.set("n", "<leader>nm", function()
 end, { noremap = true, silent = true, desc = "View Noice Messages" })
 
 --------------------------------------------------------------------------------
--- symbols-outline keymaps
+-- document symbols outline
 --------------------------------------------------------------------------------
--- Keybinding to toggle the Symbols Outline
-vim.keymap.set("n", "<leader>oo", "<cmd>SymbolsOutline<CR>", { desc = "Outline: file outline" })
+-- Telescope-powered LSP document outline. Requires an LSP attached to the buffer
+-- that supports textDocument/documentSymbol (clangd, pyright, lua_ls, verible all do).
+vim.keymap.set('n', '<leader>oo', function()
+   require('telescope.builtin').lsp_document_symbols({
+      prompt_title = 'Document Symbols (<esc> to quit)',
+   })
+end, { desc = 'Outline: LSP document symbols' })
 
 --------------------------------------------------------------------------------
 -- undotree keymaps
@@ -200,28 +207,27 @@ end, { desc = "Neo-Tree: Buffer list" })
 --------------------------------------------------------------------------------
 -- telescope keymaps
 --------------------------------------------------------------------------------
--- Keymaps for common Telescope commands
-local builtin = require('telescope.builtin')
+-- Defer telescope.builtin require so this file doesn't break if telescope ever lazy-loads.
 vim.keymap.set('n', '<leader>E', function()
-   builtin.find_files({
+   require('telescope.builtin').find_files({
       prompt_title = 'Find Files (<esc> to quit)',
    })
 end, { desc = 'Telescope: [E]xplorer' })
 
 vim.keymap.set('n', '<leader>R', function()
-   builtin.oldfiles({
+   require('telescope.builtin').oldfiles({
       prompt_title = 'Recent Files (<esc> to quit)',
    })
 end, { desc = 'Telescope: [R]ecent files' })
 
 vim.keymap.set('n', '<leader>G', function()
-   builtin.live_grep({
+   require('telescope.builtin').live_grep({
       prompt_title = 'Liverep Files (<esc> to quit)',
    })
 end, { desc = 'Telescope: live [G]rep live' })
 
 vim.keymap.set('n', '<leader>B', function()
-   builtin.buffers({
+   require('telescope.builtin').buffers({
       prompt_title = 'Buffers (<esc> to quit)',
    })
 end, { desc = 'Telescope: Open [B]uffers' })

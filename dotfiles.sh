@@ -11,6 +11,32 @@
 #===============================================================================
 source ~/dotfiles/utils/bash_snippets.sh 2> /dev/null
 cdir=$(dirname $(realpath $0))
+
+#-------------------------------------------------------------------------------
+# --dry-run / -n : show every filesystem change without performing it.
+# Recognized in any position; stripped before the action dispatch below.
+DRY_RUN=0
+__df_args=()
+for __df_a in "$@"; do
+   case "$__df_a" in
+      --dry-run|-n) DRY_RUN=1 ;;
+      *) __df_args+=("$__df_a") ;;
+   esac
+done
+set -- "${__df_args[@]}"
+unset __df_args __df_a
+if [[ "$DRY_RUN" == "1" ]]; then
+   warn "DRY-RUN mode: no filesystem changes will be made"
+fi
+
+# _dry_install <label> : in dry-run, print the install intent and return 0
+# so the caller can `&& return` out of any install_* / get* function.
+# In normal mode, returns 1 (caller proceeds with real work).
+function _dry_install() {
+   [[ "$DRY_RUN" == "1" ]] || return 1
+   warn "  [dry-run] install  $*"
+   return 0
+}
 #-------------------------------------------------------------------------------
 # linkrc -link dotfiles
 function linkrc() {
@@ -32,6 +58,41 @@ function linkrc() {
       info "Linking $dotfile → $dest"
       linkup "$cdir/initrc/$dotfile" "$dest"
    done
+
+   link_kitty_os
+}
+
+#-------------------------------------------------------------------------------
+# link_kitty_os - per-OS kitty.conf overrides ("ifdef mac vs linux")
+# Picks kitty.<darwin|linux>.conf based on `uname` and exposes it as
+# kitty.os.conf inside the kitty config dir, where kitty.conf
+# globincludes it. The symlink is per-machine and gitignored, so the
+# repo stays OS-agnostic.
+function link_kitty_os() {
+   local kitty_dir="$cdir/initrc/kitty"
+   local os src target curr
+   case "$(uname -s)" in
+      Darwin) os="darwin" ;;
+      Linux)  os="linux"  ;;
+      *)      warn "unknown OS $(uname -s); skipping kitty.os.conf"; return ;;
+   esac
+   src="kitty.${os}.conf"
+   target="$kitty_dir/kitty.os.conf"
+   if [[ ! -f "$kitty_dir/$src" ]]; then
+      warn "$kitty_dir/$src not found; skipping kitty.os.conf"
+      return
+   fi
+   if [[ -L "$target" ]]; then curr="$(readlink "$target")"; else curr="(absent)"; fi
+   if [[ "$curr" == "$src" ]]; then
+      [[ "$DRY_RUN" == "1" ]] && completed "  [dry-run] keep   $target  →  $src"
+      return
+   fi
+   if [[ "$DRY_RUN" == "1" ]]; then
+      warn "  [dry-run] link   $target  →  $src    [was: $curr]    ($(uname -s))"
+      return
+   fi
+   info "Linking kitty.os.conf → $src ($(uname -s))"
+   ln -sf "$src" "$target"
 }
 function linkup() {
    s=$1 # Source
@@ -41,6 +102,28 @@ function linkup() {
       echo "Info: Skipping link for $s → $d"
       return
    fi
+
+   local curr
+   if [[ -L "$d" ]]; then
+      curr="symlink → $(readlink "$d")"
+   elif [[ -d "$d" ]]; then
+      curr="directory"
+   elif [[ -e "$d" ]]; then
+      curr="regular file"
+   else
+      curr="(absent)"
+   fi
+
+   if [[ -L "$d" && "$(readlink "$d")" == "$s" ]]; then
+      [[ "$DRY_RUN" == "1" ]] && completed "  [dry-run] keep   $d  →  $s"
+      return
+   fi
+
+   if [[ "$DRY_RUN" == "1" ]]; then
+      warn "  [dry-run] link   $d  →  $s    [was: $curr]"
+      return
+   fi
+
    parent_dir=$(dirname "$d")
    mkdir -p "$parent_dir"
    rm -f "$d"
@@ -49,13 +132,14 @@ function linkup() {
 
 #-------------------------------------------------------------------------------
 function install_zvim() {
-   ln -sf ~/dotfiles/utils/zvim ~/.local/bin/zvim
+   linkup ~/dotfiles/utils/zvim ~/.local/bin/zvim
 }
 #-------------------------------------------------------------------------------
 function zellij() {
    if [[ $2 == "-f" ]]; then
       force="yes"
    fi
+   _dry_install "zellij  →  ~/.local/bin/zellij" && return
    echo "Info: Installing zellij"
    if [[ $(uname -s) == "Linux" ]]; then
       src="https://github.com/zellij-org/zellij/releases/latest/download/zellij-$(uname -m)-unknown-linux-musl.tar.gz"
@@ -76,6 +160,7 @@ function zellij() {
 
 #-------------------------------------------------------------------------------
 function clang-format() {
+   _dry_install "clang-format  →  ~/.local/bin/clang-format" && return
    echo "Info: Installing clang-format"
    if [[ $(uname -s) == "Linux" ]]; then
       src=https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-f4f85437/clang-format-16_linux-amd64
@@ -94,6 +179,7 @@ function clang-format() {
 
 #-------------------------------------------------------------------------------
 function getz() {
+   _dry_install "z.sh  →  ~/dotfiles/initrc/z.sh" && return
    echo "Info: Installing z"
    src=https://raw.githubusercontent.com/rupa/z/master/z.sh
    target=~/dotfiles/initrc/z.sh
@@ -106,6 +192,7 @@ function getz() {
 
 #-------------------------------------------------------------------------------
 function getstarship() {
+   _dry_install "starship  →  ~/.local/bin/starship" && return
    echo "Info: Installing starship"
    src=https://starship.rs/install.sh
    target=~/.local/bin/starship
@@ -119,9 +206,11 @@ function getstarship() {
    fi
 }
 function getfzf() {
+   _dry_install "fzf  →  ~/.fzf (git clone)" && return
    [[ ! -d ~/.fzf ]] && git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 }
 function getfonts() {
+   _dry_install "FiraCode Nerd Font  →  ~/.local/share/fonts/FiraCode" && return
    # Create fonts directory if needed
    mkdir -p ~/.local/share/fonts
 
@@ -137,6 +226,8 @@ getnpm() {
    local INSTALL_DIR="$HOME/.local/node"
    local TARBALL="node-$NODE_VERSION-$ARCH.tar.xz"
    local URL="https://nodejs.org/dist/$NODE_VERSION/$TARBALL"
+
+   _dry_install "node $NODE_VERSION + npm  →  $INSTALL_DIR" && return
 
    echo "📦 Downloading Node.js $NODE_VERSION for $ARCH..."
    download "$URL" || {
