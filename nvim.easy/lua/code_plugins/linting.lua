@@ -3,8 +3,11 @@ return {
    event = { 'BufReadPre', 'BufNewFile' },
    config = function()
       require('lint').linters_by_ft = {
-         c = { 'clangtidy' },
+         c      = { 'clangtidy' },
          python = { 'pylint' },
+         sh     = { 'shellcheck' },
+         bash   = { 'shellcheck' },
+         -- zsh: shellcheck does not support zsh; nothing to wire here. Use `zsh -n` for syntax checks.
       }
    end,
 }

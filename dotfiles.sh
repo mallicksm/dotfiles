@@ -9,25 +9,25 @@
 # Description: dotfiles executor to setup Unix environment.
 #
 #===============================================================================
-source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null
+source ~/dotfiles/utils/bash_snippets.sh 2> /dev/null
 cdir=$(dirname $(realpath $0))
 #-------------------------------------------------------------------------------
 # linkrc -link dotfiles
-function linkrc () {
+function linkrc() {
    linkup ~/corp/corp_settings.sh ~/corp_settings.sh
 
    declare -A link_map=(
-      [alacritty.toml]="$HOME/.config/alacritty/alacritty.toml"
-      [kitty]="$HOME/.config/kitty"
-      [gitk]="$HOME/.config/git/gitk"
-      [config.ssh]="$HOME/.ssh/config"
-      [cc]="$HOME/.local/bin/c99/cc"
-      [z.sh]="/dev/null"
-      [zellij]="/dev/null"
+      ["alacritty.toml"]="$HOME/.config/alacritty/alacritty.toml"
+      ["kitty"]="$HOME/.config/kitty"
+      ["gitk"]="$HOME/.config/git/gitk"
+      ["config.ssh"]="$HOME/.ssh/config"
+      ["cc"]="$HOME/.local/bin/c99/cc"
+      ["z.sh"]="/dev/null"
+      ["zellij"]="/dev/null"
    )
 
    mydotfiles=$(command ls -1 $cdir/initrc/)
-   for dotfile in ${mydotfiles[@]} ;do
+   for dotfile in ${mydotfiles[@]}; do
       dest="${link_map[$dotfile]:-$HOME/.$dotfile}"
       info "Linking $dotfile → $dest"
       linkup "$cdir/initrc/$dotfile" "$dest"
@@ -93,7 +93,7 @@ function clang-format() {
 }
 
 #-------------------------------------------------------------------------------
-function getz () {
+function getz() {
    echo "Info: Installing z"
    src=https://raw.githubusercontent.com/rupa/z/master/z.sh
    target=~/dotfiles/initrc/z.sh
@@ -139,11 +139,17 @@ getnpm() {
    local URL="https://nodejs.org/dist/$NODE_VERSION/$TARBALL"
 
    echo "📦 Downloading Node.js $NODE_VERSION for $ARCH..."
-   download "$URL" || { echo "❌ Failed to download Node.js"; return 1; }
+   download "$URL" || {
+      echo "❌ Failed to download Node.js"
+      return 1
+   }
 
    echo "📂 Extracting to $INSTALL_DIR..."
    mkdir -p "$INSTALL_DIR"
-   tar -xf "$TARBALL" --strip-components=1 -C "$INSTALL_DIR" || { echo "❌ Failed to extract"; return 1; }
+   tar -xf "$TARBALL" --strip-components=1 -C "$INSTALL_DIR" || {
+      echo "❌ Failed to extract"
+      return 1
+   }
 
    echo "🧹 Cleaning up..."
    rm "$TARBALL"
