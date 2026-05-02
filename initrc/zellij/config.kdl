@@ -142,6 +142,14 @@ keybinds clear-defaults=true {
       bind "Alt -" { Resize "Decrease"; }
       bind "Alt [" { PreviousSwapLayout; }
       bind "Alt ]" { NextSwapLayout; }
+      // Cheatsheet overlay: pops a floating pane with the curated keybind
+      // reference. q (less) closes it. Mirrors the kitty cs+/ binding.
+      bind "F3" "Alt /" {
+         Run "less" "-R" "/home/smallick/dotfiles/initrc/zellij/cheatsheet.txt" {
+            floating true
+            close_on_exit true
+         };
+      }
    }
    shared_except "normal" "locked" {
       bind "Enter" "Esc" { SwitchToMode "Normal"; }

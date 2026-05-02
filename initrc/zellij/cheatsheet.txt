@@ -1,0 +1,117 @@
+                       ZELLIJ CHEATSHEET                F3 or Alt+/  to reopen
+
+This matches YOUR config (~/dotfiles/initrc/zellij/config.kdl, which is loaded
+via ZELLIJ_CONFIG_DIR from ~/dotfiles/utils/bash_zellij.sh). It does NOT match
+upstream zellij defaults — your config has clear-defaults=true and uses Alt as
+the mode-prefix instead of Ctrl.
+
+Press q to close this overlay.
+
+
+GLOBAL  (Normal mode + works in any non-Locked mode) ────────────────────────
+  F1                toggle floating panes
+  F2                toggle fullscreen on focused pane
+  F3   Alt /        show this cheatsheet
+  F12               detach session (resume later with `zellij a <name>`)
+  Alt n             new pane (no mode switch)
+  Alt h / Alt Left  focus pane to the left  (or prev tab at edge)
+  Alt l / Alt Right focus pane to the right (or next tab at edge)
+  Alt j / Alt Down  focus pane below
+  Alt k / Alt Up    focus pane above
+  Alt = / Alt +     grow focused pane
+  Alt -             shrink focused pane
+  Alt [ / Alt ]     previous / next swap layout
+  Alt Q             quit zellij entirely (capital Q)
+  Alt u             toggle Locked mode
+
+MODE PREFIXES  (Alt+letter to enter; Esc / Enter / same prefix to leave) ────
+  Alt p             PANE mode
+  Alt t             TAB mode
+  Alt r             RESIZE mode
+  Alt f             SCROLL / SEARCH mode
+  Alt m             MOVE mode  (move panes around the layout)
+  Alt s             SESSION mode
+
+PANE MODE  (after Alt+p) ────────────────────────────────────────────────────
+  h j k l   arrows  move focus
+  p                 cycle focus to next pane
+  n                 new pane (default direction)         → returns to Normal
+  s                 new pane DOWN (horizontal split)     → returns to Normal
+  v                 new pane RIGHT (vertical split)      → returns to Normal
+  x                 close focused pane                   → returns to Normal
+  f                 toggle fullscreen                    → returns to Normal
+  z                 toggle pane frames                   → returns to Normal
+  w                 toggle floating                      → returns to Normal
+  e                 embed-or-float toggle
+  r                 rename pane (then type, Enter)
+
+TAB MODE  (after Alt+t) ─────────────────────────────────────────────────────
+  h / k / Left / Up    previous tab
+  l / j / Right / Down next tab
+  n                 new tab                              → returns to Normal
+  x                 close tab                            → returns to Normal
+  r                 rename tab
+  s                 toggle sync (broadcast input to all panes in tab)
+  b                 break focused pane into a new tab
+  ] / [             break pane into a new tab on the right / left
+  1 .. 9            jump to tab N                        → returns to Normal
+  Tab               toggle to last-used tab
+
+RESIZE MODE  (after Alt+r) ──────────────────────────────────────────────────
+  h j k l   arrows  GROW edge in that direction
+  H J K L           SHRINK edge in that direction (capitals)
+  = / +             grow generally
+  -                 shrink generally
+
+MOVE MODE  (after Alt+m) ────────────────────────────────────────────────────
+  h j k l   arrows  move focused pane in that direction
+  n / Tab           move pane (cycle forward through layout slots)
+  p                 move pane backwards
+
+SCROLL & SEARCH MODE  (after Alt+f) ─────────────────────────────────────────
+  j / k   Down/Up   scroll one line
+  d / u             half-page down / up
+  Ctrl+f  PgDn      page down       (also Right, l)
+  Ctrl+b  PgUp      page up         (also Left,  h)
+  Ctrl+c            jump to bottom and exit to Normal
+  e                 edit scrollback in $EDITOR (zvim)    → returns to Normal
+  s                 enter SEARCH (type query, Enter)
+    n / p           next / previous match
+    c               toggle case-sensitivity
+    w               toggle wrap-around
+    o               toggle whole-word
+
+SESSION MODE  (after Alt+s) ─────────────────────────────────────────────────
+  d                 detach this session
+  s                 session manager UI (floating)
+  Alt f             cross-jump straight into Scroll mode
+
+LOCKED MODE  (after Alt+u) ──────────────────────────────────────────────────
+  Alt u             unlock (back to Normal)
+  Everything else passes through to the program in the focused pane.
+  Use this when running vim/emacs/htop so zellij doesn't eat their keys.
+
+
+COMMAND-LINE  (outside zellij, in a regular shell) ──────────────────────────
+  zellij                start a new session (random name)
+  zellij -s <name>      start named session
+  zellij ls             list sessions
+  zellij a <name>       attach to an existing session
+  zellij a -c <name>    attach OR create if missing
+  zellij k <name>       kill a session
+  zellij da             delete all dead sessions
+  zellij e <file>       edit a file inside zellij (in current/new pane)
+  zellij r <cmd...>     run a one-shot command in a new zellij pane
+
+
+Tips ────────────────────────────────────────────────────────────────────────
+  - Locked mode is the "stop intercepting my keystrokes" mode.
+  - F2 (toggle fullscreen) is faster than Alt+p, f when you only need a quick zoom.
+  - The "scrollback in $EDITOR" trick (Alt+f, e) drops the entire pane buffer
+    into zvim — searchable, yankable. Killer feature.
+  - Your default layout is "def"  (default_layout "def"  in config.kdl).
+  - Sessions are serialized (session_serialization true), so a power cycle
+    does NOT lose your panes — `zellij ls` still shows them and `zellij a`
+    resurrects everything including running commands' last output.
+
+File: ~/dotfiles/initrc/zellij/cheatsheet.txt   (lives in your dotfiles repo)

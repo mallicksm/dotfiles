@@ -1,0 +1,75 @@
+                       KITTY CHEATSHEET                       cs+/  to reopen
+
+cs   = ctrl+shift   (kitty_mod)         csa  = ctrl+shift+alt
+press q to close this overlay
+
+
+CLIPBOARD ───────────────────────────────────────────────────────────────────
+  cs+c              copy selection to clipboard
+  cs+v              paste from clipboard
+  cs+s              paste from PRIMARY (X middle-click) selection
+  cs+o              pass selection to xdg-open
+
+TABS ────────────────────────────────────────────────────────────────────────
+  cs+h    cs+left   previous tab
+  cs+l    cs+right  next tab
+  cs+t              new tab
+  cs+q              close tab
+  cs+. / cs+,       move tab forward / backward
+  csa+t             rename tab
+
+WINDOWS  (splits inside one OS window) ──────────────────────────────────────
+  cs+enter          new window (split)
+  cs+w              close window
+  cs+] / cs+[       focus next / previous window
+  cs+1 .. cs+9      focus window N
+  cs+f / cs+b       move window forward / backward in layout
+  cs+r              start interactive resize (arrows, then enter)
+  cs+f7             visually pick window to focus
+  cs+f8             visually pick window to swap with
+  csa+l             cycle layouts (stack / tall / grid / ...)
+
+SCROLLING & HISTORY ─────────────────────────────────────────────────────────
+  cs+up / cs+k      scroll one line up
+  cs+down / cs+j    scroll one line down
+  cs+page_up        scroll one screen up
+  cs+page_down      scroll one screen down
+  cs+home / cs+end  jump to top / bottom of scrollback
+  cs+z / cs+x       jump to previous / next shell prompt   (shell-int)
+  csa+h             open scrollback buffer in pager (less; q to quit)
+  cs+g              open last command's output in pager    (shell-int)
+
+HINTS  (pick things off the screen with the keyboard) ──────────────────────
+  cs+e              open URL under or near cursor
+  cs+p, f           pick a file path -> insert at prompt
+  cs+p, shift+f     pick a file path -> open with default app
+  cs+p, l           pick a line -> insert
+  cs+p, w           pick a word -> insert
+  cs+p, h           pick a git-hash-shaped string -> insert
+  cs+p, n           pick file:line -> open in $EDITOR at that line
+  cs+p, y           pick an OSC-8 hyperlink
+
+OS WINDOWS / FONT ───────────────────────────────────────────────────────────
+  cs+n              new OS window
+  cs++ / cs+=       bigger font
+  cs+-              smaller font
+  cs+0              reset font size                    (your remap)
+
+OPACITY  (only if dynamic_background_opacity is on) ─────────────────────────
+  cs+a, m / cs+a, l increase / decrease background opacity
+  cs+a, 1 / cs+a, d force opaque / reset to config default
+
+META  (your "i forgot" panic buttons) ───────────────────────────────────────
+  cs+/    cs+f1     show this cheatsheet
+  cs+f2             edit kitty.conf in $EDITOR
+  cs+f5             reload kitty.conf (no restart)
+  cs+f6             dump full active config to a window
+  cs+f10            toggle maximised
+  cs+f11            toggle fullscreen
+  cs+escape         open kitty's remote-control shell (REPL)
+  cs+u              unicode input by name (e.g. "snowman" -> snowman char)
+  cs+delete         reset terminal
+
+
+Tip:    `kitty +kitten show_key`  prints what kitty receives for any keypress.
+File:   ~/dotfiles/initrc/kitty/cheatsheet.txt   (lives in your dotfiles repo)
