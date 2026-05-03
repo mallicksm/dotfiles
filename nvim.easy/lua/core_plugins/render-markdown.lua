@@ -52,6 +52,12 @@ return {
          vim.api.nvim_set_hl(0, 'RenderMarkdownWarn',    { fg = '#fabd2f', bold = true }) -- WARNING / QUESTION   (gruvbox yellow)
          vim.api.nvim_set_hl(0, 'RenderMarkdownError',   { fg = '#fb4934', bold = true }) -- CAUTION / ERROR / BUG (gruvbox red)
          vim.api.nvim_set_hl(0, 'RenderMarkdownQuote',   { fg = '#d3869b', italic = true }) -- QUOTE / CITE / plain '>' (gruvbox purple)
+
+         -- Caption / note prefix badges (used by mini.hipatterns in after/ftplugin/markdown.lua).
+         -- Pill-style: dark fg on a saturated gruvbox bg so the prefix reads as a label/tag.
+         vim.api.nvim_set_hl(0, 'MarkdownTableCaption',  { fg = '#282828', bg = '#8ec07c', bold = true }) -- gruvbox aqua
+         vim.api.nvim_set_hl(0, 'MarkdownFigureCaption', { fg = '#282828', bg = '#fe8019', bold = true }) -- gruvbox orange
+         vim.api.nvim_set_hl(0, 'MarkdownNotePrefix',    { fg = '#282828', bg = '#fabd2f', bold = true }) -- gruvbox yellow
       end
       apply_render_markdown_hls()
       vim.api.nvim_create_autocmd('ColorScheme', {
