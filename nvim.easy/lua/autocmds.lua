@@ -1,33 +1,29 @@
--- Open PDFs in NERDTree using your pdftotext.py script
-vim.api.nvim_create_autocmd("BufReadCmd", {
-  pattern = "*.pdf",
-  callback = function()
-    local fname = vim.fn.expand("<afile>")
-    local cmd = "pdftotext.py " .. vim.fn.shellescape(fname)
+-- Real autocmds only. User commands moved to lua/user_commands.lua.
+-- See `:help lua-guide-autocommands` for the API.
 
-    -- Create a new buffer and read command output into it
-    vim.cmd("enew")
-    vim.cmd("setlocal buftype=nofile")
-    vim.cmd("setlocal bufhidden=wipe")
-    vim.cmd("setlocal noswapfile")
-    vim.cmd("setlocal readonly")
+-- Read PDFs through pdftotext.py and present the extracted text in a scratch buffer.
+vim.api.nvim_create_autocmd('BufReadCmd', {
+   pattern = '*.pdf',
+   callback = function()
+      local fname = vim.fn.expand('<afile>')
+      local cmd = 'pdftotext.py ' .. vim.fn.shellescape(fname)
 
-    -- Read the output of your script into the buffer
-    vim.cmd("0read !" .. cmd)
+      vim.cmd('enew')
+      vim.cmd('setlocal buftype=nofile')
+      vim.cmd('setlocal bufhidden=wipe')
+      vim.cmd('setlocal noswapfile')
+      vim.cmd('setlocal readonly')
 
-    -- Set a nice buffer name
-    vim.api.nvim_buf_set_name(0, fname .. ".txt")
-  end,
+      vim.cmd('0read !' .. cmd)
+      vim.api.nvim_buf_set_name(0, fname .. '.txt')
+   end,
 })
---------------------------------------------------------------------------------
---- Basic Autocommands
---------------------------------------------------------------------------------
--- <leader>K for more info on cWORD lua-guide-autocommands`
--- go to last loc when opening a buffer
-vim.api.nvim_create_autocmd("BufReadPost", {
+
+-- Restore the cursor to its last position when re-opening a buffer.
+vim.api.nvim_create_autocmd('BufReadPost', {
    group = vim.api.nvim_create_augroup('last_loc', { clear = true }),
    callback = function(event)
-      local exclude = { "gitcommit" }
+      local exclude = { 'gitcommit' }
       local buf = event.buf
       if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
          return
@@ -41,83 +37,4 @@ vim.api.nvim_create_autocmd("BufReadPost", {
    end,
 })
 
---------------------------------------------------------------------------------
---- Basic user functions
---------------------------------------------------------------------------------
--- The first argument is the name of the command (which must start with an uppercase letter).
-vim.api.nvim_create_user_command("Filename",
-   function()
-      vim.print("User: " .. vim.fn.expand('%:p'))
-   end, { nargs = 0 })
-
--- Removed :Explorer / :Rg / :Git user commands: they were thin wrappers that
--- duplicated <leader>E (find_files), <leader>G (live_grep), and <leader>gG
--- (Neogit kind=auto) respectively, and the prompt_title strings had already
--- drifted between the two implementations. Use the keymaps, or call the
--- underlying commands directly: `:Telescope find_files`, `:Telescope live_grep`,
--- `:Neogit kind=auto`.
-
-vim.api.nvim_create_user_command("Utilities", function()
-   local actions = require('telescope.actions')
-   local action_state = require('telescope.actions.state')
-   local pickers = require('telescope.pickers')
-   local finders = require('telescope.finders')
-   local conf = require('telescope.config').values
-
-   pickers.new({}, {
-      prompt_title = "Choose an Option",
-      finder = finders.new_table({
-         results = {
-            { "Vim Options",      "vim_options" },
-            { "Vim Registers",    "registers" },
-            { "Colorscheme",  "colorscheme" },
-            { "Vim Helptags",     "help_tags" },
-            { "Unix Manpages",     "man_pages" },
-            { "Autocommands", "autocommands" },
-         },
-         entry_maker = function(entry)
-            return {
-               value = entry,
-               display = entry[1],
-               ordinal = entry[1],
-            }
-         end,
-      }),
-      sorter = conf.generic_sorter({}),
-      attach_mappings = function()
-         actions.select_default:replace(function(prompt_bufnr)
-            local selection = action_state.get_selected_entry()
-            actions.close(prompt_bufnr)
-            local builtin = require('telescope.builtin')
-            if selection.value[2] == "vim_options" then
-               builtin.vim_options({
-                  prompt_title = 'Vim Options (<esc> to quit)',
-               })
-            elseif selection.value[2] == "registers" then
-               builtin.registers({
-                  prompt_title = 'Vim Registers (<esc> to quit)',
-               })
-            elseif selection.value[2] == "colorscheme" then
-               builtin.colorscheme({
-                  prompt_title = 'Colorschemes (<esc> to quit)',
-                  enable_preview = true
-               })
-            elseif selection.value[2] == "help_tags" then
-               builtin.help_tags({
-                  prompt_title = 'Helptags (<esc> to quit)',
-               })
-            elseif selection.value[2] == "man_pages" then
-               builtin.man_pages({
-                  prompt_title = 'Manpages (<esc> to quit)',
-               })
-            elseif selection.value[2] == "autocommands" then
-               builtin.autocommands({
-                  prompt_title = 'Autocommands (<esc> to quit)',
-               })
-            end
-         end)
-         return true
-      end,
-   }):find()
-end, { nargs = 0 })
 -- vim: ts=3 sts=3 sw=3 et

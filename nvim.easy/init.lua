@@ -28,6 +28,7 @@ vim.g.maplocalleader = ','
 
 require('options')
 require('autocmds')
+require('user_commands')
 require('bootstrap')
 require('keymaps')
 -- vim: ts=3 sts=3 sw=3 et

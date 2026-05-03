@@ -74,52 +74,9 @@ return {
             },
             notify_on_error = true, -- intentional: silent failures cost real time once. Flip to false if popups become annoying.
          })
-         -- Recursive formatter: formats all *.sv, *.svh, *.v under cwd
-         local function format_all_sv_in_cwd()
-            local uv    = vim.uv or vim.loop
-            local cwd   = uv.cwd()
-            local pats  = { "**/*.sv", "**/*.svh", "**/*.v" }
 
-            -- collect files recursively
-            local files = {}
-            for _, pat in ipairs(pats) do
-               -- globpath(dir, pattern, nosuf, list) ? list
-               for _, f in ipairs(vim.fn.globpath(cwd, pat, false, true)) do
-                  table.insert(files, f)
-               end
-            end
-
-            -- de-dup (in case patterns overlap)
-            local seen = {}
-            local unique = {}
-            for _, f in ipairs(files) do
-               local stat = uv.fs_stat(f)
-               if not seen[f] and stat and stat.type == "file" then
-                  seen[f] = true
-                  table.insert(unique, f)
-               end
-            end
-
-            if #unique == 0 then
-               vim.notify("[conform] no SV files found under " .. cwd, vim.log.levels.WARN)
-               return
-            end
-
-            -- format each file via Conform (respects your verible args)
-            for _, f in ipairs(unique) do
-               local bufnr = vim.fn.bufadd(f)
-               vim.fn.bufload(bufnr)
-               require("conform").format({ bufnr = bufnr })
-               vim.api.nvim_buf_call(bufnr, function()
-                  vim.cmd("write")
-               end)
-            end
-
-            vim.notify(string.format("[conform] formatted %d SV files under %s", #unique, cwd))
-         end
-
-         -- :FormatAllSV command
-         vim.api.nvim_create_user_command("FormatAllSV", format_all_sv_in_cwd, {})
+         -- :FormatAllSV is registered in lua/user_commands.lua; the actual
+         -- recursive-format logic lives in lua/utils/format_sv.lua.
       end,
    },
 }

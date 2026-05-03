@@ -280,73 +280,11 @@ end, { desc = "Toggle 'focus/dim'" })
 --------------------------------------------------------------------------------
 -- generic keymaps
 --------------------------------------------------------------------------------
-vim.keymap.set("n", "<leader>K", function()
-   local word = vim.fn.expand("<cWORD>") -- Include words with hyphens (like `foo-bar`)
-   -- Function to check if the word is a URL
-   local function is_url(text)
-      return text:match("^https?://") ~= nil
-   end
-   if is_url(word) then
-      -- Open the URL with xdg-open
-      local open_command = "xdg-open " .. vim.fn.shellescape(word)
-      if vim.fn.executable("xdg-open") == 1 then
-         vim.fn.system(open_command)
-         vim.notify("Opening URL: " .. word, vim.log.levels.INFO)
-      else
-         vim.notify("xdg-open not found on your system", vim.log.levels.ERROR)
-      end
-   else
-      -- Try to open a man page for the word
-      local man_command = vim.fn.executable("man") == 1 and vim.fn.system("man -w " .. word)
-      if man_command and vim.v.shell_error == 0 then
-         vim.cmd("Man " .. word)
-      else
-         -- Fallback to Vim help if no man page exists
-         local ok = pcall(function() vim.cmd("help " .. word) end)
-         if not ok then
-            vim.notify("No man page or help available for: " .. word, vim.log.levels.WARN)
-         end
-      end
-   end
-end, { noremap = true, silent = true, desc = "Man page or help for word under cursor" })
+-- <leader>K: man / :help / xdg-open dispatch on <cWORD>. Logic in utils/.
+vim.keymap.set('n', '<leader>K', function()
+   require('utils.smart_open').open()
+end, { noremap = true, silent = true, desc = 'Man page or help for word under cursor' })
 
--------------------------------------------------------------------------------
--- :MdViewer {render|markview|none}
--- Switch markdown previewer at runtime. Both render-markdown.nvim and
--- markview.nvim are installed; only one renders at a time.
--------------------------------------------------------------------------------
-vim.api.nvim_create_user_command('MdViewer', function(opts)
-   local choice = (opts.args or ''):lower()
-   if choice == '' or choice == 'status' then
-      vim.notify('md viewer choices: render | markview | none')
-      return
-   end
-
-   local function quiet(cmd)
-      pcall(vim.cmd, 'silent! ' .. cmd)
-   end
-
-   if choice == 'render' or choice == 'render-markdown' or choice == 'rm' then
-      quiet('Markview Disable')
-      quiet('RenderMarkdown enable')
-      vim.notify('md viewer: render-markdown')
-   elseif choice == 'markview' or choice == 'mv' then
-      quiet('RenderMarkdown disable')
-      quiet('Markview Enable')
-      -- Ensure the current buffer (if markdown) is attached/refreshed.
-      quiet('Markview attach')
-      vim.notify('md viewer: markview')
-   elseif choice == 'none' or choice == 'off' then
-      quiet('RenderMarkdown disable')
-      quiet('Markview Disable')
-      vim.notify('md viewer: off')
-   else
-      vim.notify('Usage: :MdViewer {render|markview|none}', vim.log.levels.WARN)
-   end
-end, {
-   nargs = '?',
-   complete = function() return { 'render', 'markview', 'none' } end,
-   desc = 'Switch markdown previewer (render-markdown vs markview)',
-})
+-- :MdViewer is now registered in lua/user_commands.lua (utils/md_viewer.lua).
 
 -- vim: ts=3 sts=3 sw=3 et
