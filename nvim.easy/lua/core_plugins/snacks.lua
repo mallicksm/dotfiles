@@ -24,7 +24,9 @@ return {
    },
    config = function(_, opts)
       require('snacks').setup(opts)
-      _G.Snacks = require('snacks')
+      -- (Snacks sets `_G.Snacks` itself in setup(); we don't add another
+      -- global here. Callers should `require('snacks')` rather than relying
+      -- on the global so this config isn't coupled to that detail.)
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et

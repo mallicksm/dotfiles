@@ -85,12 +85,14 @@ return {
             lualine_x = {},
          },
       }
-      -- Function to toggle between configurations
+      -- :LualineToggle swaps between default and alternate layouts. Used by
+      -- the `\\\\` keymap (lua/keymaps.lua). Exposed as a user command instead
+      -- of a global function so keymaps.lua doesn't depend on load order.
       local active_config = default_config
-      function _G.toggle_lualine()
+      vim.api.nvim_create_user_command('LualineToggle', function()
          active_config = active_config == default_config and alternate_config or default_config
          lualine.setup(active_config)
-      end
+      end, { desc = 'Toggle lualine between default and alternate layouts' })
 
       lualine.setup(default_config)
    end,

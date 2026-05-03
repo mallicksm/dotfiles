@@ -103,7 +103,8 @@ vim.keymap.set("n", "<leader>H", function() harpoon_telescope_picker(require('ha
 --------------------------------------------------------------------------------
 -- lualine keymaps
 --------------------------------------------------------------------------------
-vim.keymap.set("n", "\\\\", toggle_lualine, { desc = "Toggle 'lualine'" })
+-- `:LualineToggle` is registered in lua/core_plugins/lualine.lua.
+vim.keymap.set("n", "\\\\", '<cmd>LualineToggle<cr>', { desc = "Toggle 'lualine'" })
 
 --------------------------------------------------------------------------------
 -- mini keymaps
@@ -235,38 +236,42 @@ end, { desc = 'Telescope: Open [B]uffers' })
 --------------------------------------------------------------------------------
 -- Snacks keymaps
 --------------------------------------------------------------------------------
+-- All callbacks `require('snacks')` directly instead of relying on the global
+-- `Snacks` symbol. require() is cached, so the runtime cost is one table
+-- lookup per press; the upside is no load-order coupling.
 -- <leader>K for more info on cWORD snacks-lazygit-table-of-contents
 vim.keymap.set('n', '<leader>gf', function()
-   Snacks.lazygit.log_file()
+   require('snacks').lazygit.log_file()
 end, { desc = "Snacks: git log for current file" })
 
 vim.keymap.set('n', '<leader>gl', function()
-   Snacks.lazygit.log()
+   require('snacks').lazygit.log()
 end, { desc = "Snacks: git log" })
 
 vim.keymap.set('n', '<leader>gg', function()
-   Snacks.lazygit()
+   require('snacks').lazygit()
 end, { desc = "Snacks: Lazygit: tui" })
 
 -- <leader>K for more info on cWORD snacks-terminal-table-of-contents
 vim.keymap.set('n', '<leader>T', function()
-   Snacks.terminal()
+   require('snacks').terminal()
 end, { desc = "Snacks: Terminal: bash" })
 
 -- <leader>K for more info on cWORD snacks-bufdelete-table-of-contents
 vim.keymap.set('n', '<leader>bd', function()
-   Snacks.bufdelete()
+   require('snacks').bufdelete()
 end, { desc = "Delete Buffer" })
 
 -- <leader>K for more info on cWORD snacks-dim-table-of-contents
 local dim_enabled = false
 vim.keymap.set('n', '\\f', function()
+   local snacks = require('snacks')
    if dim_enabled then
-      Snacks.dim.disable()
+      snacks.dim.disable()
       dim_enabled = false
       vim.notify("Dimming disabled", vim.log.levels.INFO)
    else
-      Snacks.dim()
+      snacks.dim()
       dim_enabled = true
       vim.notify("Dimming enabled", vim.log.levels.INFO)
    end
