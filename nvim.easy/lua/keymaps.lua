@@ -305,4 +305,43 @@ vim.keymap.set("n", "<leader>K", function()
    end
 end, { noremap = true, silent = true, desc = "Man page or help for word under cursor" })
 
+-------------------------------------------------------------------------------
+-- :MdViewer {render|markview|none}
+-- Switch markdown previewer at runtime. Both render-markdown.nvim and
+-- markview.nvim are installed; only one renders at a time.
+-------------------------------------------------------------------------------
+vim.api.nvim_create_user_command('MdViewer', function(opts)
+   local choice = (opts.args or ''):lower()
+   if choice == '' or choice == 'status' then
+      vim.notify('md viewer choices: render | markview | none')
+      return
+   end
+
+   local function quiet(cmd)
+      pcall(vim.cmd, 'silent! ' .. cmd)
+   end
+
+   if choice == 'render' or choice == 'render-markdown' or choice == 'rm' then
+      quiet('Markview Disable')
+      quiet('RenderMarkdown enable')
+      vim.notify('md viewer: render-markdown')
+   elseif choice == 'markview' or choice == 'mv' then
+      quiet('RenderMarkdown disable')
+      quiet('Markview Enable')
+      -- Ensure the current buffer (if markdown) is attached/refreshed.
+      quiet('Markview attach')
+      vim.notify('md viewer: markview')
+   elseif choice == 'none' or choice == 'off' then
+      quiet('RenderMarkdown disable')
+      quiet('Markview Disable')
+      vim.notify('md viewer: off')
+   else
+      vim.notify('Usage: :MdViewer {render|markview|none}', vim.log.levels.WARN)
+   end
+end, {
+   nargs = '?',
+   complete = function() return { 'render', 'markview', 'none' } end,
+   desc = 'Switch markdown previewer (render-markdown vs markview)',
+})
+
 -- vim: ts=3 sts=3 sw=3 et
