@@ -1,10 +1,17 @@
 -- Buffer-local extras for markdown.
 
--- Soft-wrap long lines at word boundaries (the converted PDF .md files have
--- table cells wrapped to 150 cols already, but body paragraphs can be longer).
-vim.opt_local.wrap = true
+-- nowrap by default (per request 2026-05-03): converted PDF .md files have wide
+-- tables that look terrible if reflowed. The toggle below restores soft-wrap
+-- on demand; linebreak/breakindent stay set so wrap mode looks right when flipped.
+vim.opt_local.wrap = false
 vim.opt_local.linebreak = true
 vim.opt_local.breakindent = true
+
+-- <leader>tw toggles wrap for THIS buffer (tables: nowrap; prose: wrap).
+vim.keymap.set('n', '<leader>tw', function()
+   vim.wo.wrap = not vim.wo.wrap
+   vim.notify('wrap = ' .. tostring(vim.wo.wrap), vim.log.levels.INFO)
+end, { buffer = true, desc = 'Toggle wrap (this buffer)' })
 
 ----------------------------------------------------------------------------
 -- <CR> follows a markdown link under the cursor.

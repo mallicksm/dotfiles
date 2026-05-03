@@ -53,7 +53,15 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+-- `extends` / `precedes` only render when wrap=false, so they're invisible noise
+-- on wrap=true buffers and helpful breadcrumbs (line continues left/right) on
+-- nowrap buffers (e.g. markdown via after/ftplugin/markdown.lua).
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣', extends = '›', precedes = '‹' }
+
+-- Side-scroll one column at a time and keep 5 columns of context around the
+-- cursor. No effect when wrap=true; quality-of-life when wrap=false.
+vim.opt.sidescroll = 1
+vim.opt.sidescrolloff = 5
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
