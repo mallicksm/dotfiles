@@ -50,26 +50,12 @@ vim.api.nvim_create_user_command("Filename",
       vim.print("User: " .. vim.fn.expand('%:p'))
    end, { nargs = 0 })
 
-vim.api.nvim_create_user_command("Explorer",
-   function()
-      local builtin = require 'telescope.builtin'
-      builtin.find_files({
-         prompt_title = 'Find Files (<esc> to quit)'
-      })
-   end, { nargs = 0 })
-
-vim.api.nvim_create_user_command("Rg",
-   function()
-      local builtin = require 'telescope.builtin'
-      builtin.live_grep({
-         prompt_title = 'Live Grep in Open Files (<esc> to quit)',
-      })
-   end, { nargs = 0 })
-
-vim.api.nvim_create_user_command("Git",
-   function()
-      vim.cmd('Neogit kind=auto')
-   end, { nargs = 0 })
+-- Removed :Explorer / :Rg / :Git user commands: they were thin wrappers that
+-- duplicated <leader>E (find_files), <leader>G (live_grep), and <leader>gG
+-- (Neogit kind=auto) respectively, and the prompt_title strings had already
+-- drifted between the two implementations. Use the keymaps, or call the
+-- underlying commands directly: `:Telescope find_files`, `:Telescope live_grep`,
+-- `:Neogit kind=auto`.
 
 vim.api.nvim_create_user_command("Utilities", function()
    local actions = require('telescope.actions')

@@ -11,11 +11,11 @@ return {
          { "<leader>g", group = "[G]it" },
          { "<leader>n", group = "[N]oice" },
          { "<leader>t", group = "[T]oggle" },
-         { "<leader>m", group = "[F]ormat" },
-         { "<leader>c", group = "[L]sp" },
-         { "<leader>r", group = "[L]sp" },
-         { "<leader>w", group = "[L]sp" },
-         { "<leader>o", group = "[O]ptions" },
+         { "<leader>m", group = "[M]ore tools (fmt/lnt)" }, -- <leader>mp=format, <leader>ml=lint
+         { "<leader>c", group = "[C]ode action" },          -- <leader>ca (LSP, set on LspAttach)
+         { "<leader>r", group = "[R]ename" },               -- <leader>rn (LSP, set on LspAttach)
+         { "<leader>w", group = "[W]orkspace symbol" },     -- <leader>ws (LSP, set on LspAttach)
+         { "<leader>o", group = "[O]ptions" },              -- <leader>oo=symbols, ou=undo, ob=buffers
          { "<leader>b", group = "[B]uffer delete" },
          { "<Esc>",     hidden = true },
          { "<leader>h", hidden = true },

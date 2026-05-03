@@ -56,13 +56,13 @@ vim.keymap.set('n', '<leader>gj', ':Gitsigns next_hunk<cr>', { desc = 'GitSigns:
 vim.keymap.set('n', '<leader>gk', ':Gitsigns prev_hunk<cr>', { desc = 'GitSigns: Hunk: previous' })
 
 --------------------------------------------------------------------------------
--- gitsigns shortcuts
+-- harpoon shortcuts
 --------------------------------------------------------------------------------
 -- harpoon management edit(e) and add(a)
 -- All harpoon requires are deferred so this file doesn't break if harpoon ever lazy-loads.
 vim.keymap.set('n', '<leader>a', function()
-   require('harpoon'):list():append()
-   print('Harpoon: appended ' .. vim.fn.expand('%:t'))
+   require('harpoon'):list():add()
+   print('Harpoon: added ' .. vim.fn.expand('%:t'))
 end, { desc = 'Harpoon: Mark add' })
 
 -- Toggle previous & next buffers stored within Harpoon list
@@ -79,8 +79,8 @@ vim.keymap.set('n', '<leader><C-h>', function()
    harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = 'Harpoon: Marks list' })
 
--- basic telescope configuration
-function _G.toggle_telescope(harpoon_files)
+-- Harpoon-list-as-telescope-picker. Local to this file; used only by <leader>H below.
+local function harpoon_telescope_picker(harpoon_files)
    local conf = require("telescope.config").values
    local file_paths = {}
    for _, item in ipairs(harpoon_files.items) do
@@ -97,7 +97,7 @@ function _G.toggle_telescope(harpoon_files)
    }):find()
 end
 
-vim.keymap.set("n", "<leader>H", function() toggle_telescope(require('harpoon'):list()) end,
+vim.keymap.set("n", "<leader>H", function() harpoon_telescope_picker(require('harpoon'):list()) end,
    { desc = "Telescope: [H]arpoon list" })
 
 --------------------------------------------------------------------------------

@@ -9,7 +9,15 @@ return {
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
+      {
+         "rcarriga/nvim-notify",
+         -- Explicit background_colour: silences the "NotifyBackground has no
+         -- background" warning that fires the first time anything is notified.
+         -- #282828 = gruvbox bg0; change to match if you ever switch colorscheme.
+         opts = {
+            background_colour = '#282828',
+         },
+      },
    },
    config = function()
       require("noice").setup({
