@@ -68,6 +68,10 @@
             {
                 "language": "vhdl",
                 "path": "./vhdl.json"
+            },
+            {
+                "language": "jira",
+                "path": "./jira.json"
             }
         ]
     }

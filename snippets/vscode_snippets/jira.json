@@ -1,0 +1,185 @@
+{
+   "Jira note template (full)": {
+      "prefix": "jt",
+      "body": [
+         "h2. ${1:TL;DR}",
+         "${2:One-sentence summary of what changed and why anyone should care.}",
+         "",
+         "h2. ${3:Details}",
+         "* ${4:point one}",
+         "* ${5:point two}",
+         "",
+         "----",
+         "",
+         "h3. ${6:Next steps}",
+         "# ${7:action item}",
+         "$0"
+      ],
+      "description": "Jira: full TL;DR / details / next-steps comment template"
+   },
+   "Heading 1": {
+      "prefix": "h1",
+      "body": ["h1. ${1:heading}"],
+      "description": "Jira h1 heading"
+   },
+   "Heading 2": {
+      "prefix": "h2",
+      "body": ["h2. ${1:heading}"],
+      "description": "Jira h2 heading"
+   },
+   "Heading 3": {
+      "prefix": "h3",
+      "body": ["h3. ${1:heading}"],
+      "description": "Jira h3 heading"
+   },
+   "Heading 4": {
+      "prefix": "h4",
+      "body": ["h4. ${1:heading}"],
+      "description": "Jira h4 heading"
+   },
+   "Bullet": {
+      "prefix": "bul",
+      "body": ["* ${1:item}"],
+      "description": "Bulleted list item (* = bullet, ** = nested)"
+   },
+   "Numbered": {
+      "prefix": "num",
+      "body": ["# ${1:item}"],
+      "description": "Numbered list item (# = number, ## = nested)"
+   },
+   "Horizontal rule": {
+      "prefix": "hr",
+      "body": ["----"],
+      "description": "Horizontal rule (4 hyphens on own line)"
+   },
+   "Code block": {
+      "prefix": "code",
+      "body": ["{code:${1:bash}}", "${2:body}", "{code}", "$0"],
+      "description": "Fenced code block with language (bash, python, c, java, ...)"
+   },
+   "Noformat block": {
+      "prefix": "nof",
+      "body": ["{noformat}", "${1:plain text / log paste}", "{noformat}", "$0"],
+      "description": "Preformatted block, no syntax highlight (good for logs)"
+   },
+   "Quote block": {
+      "prefix": "quote",
+      "body": ["{quote}", "${1:quoted text}", "{quote}", "$0"],
+      "description": "Multi-line quote block"
+   },
+   "Quote line": {
+      "prefix": "bq",
+      "body": ["bq. ${1:single-line quote}"],
+      "description": "Single-line block quote"
+   },
+   "Bold": {
+      "prefix": "bold",
+      "body": ["*${1:bold}*"],
+      "description": "Bold inline"
+   },
+   "Italic": {
+      "prefix": "ital",
+      "body": ["_${1:italic}_"],
+      "description": "Italic inline"
+   },
+   "Mono": {
+      "prefix": "mono",
+      "body": ["{{${1:code}}}"],
+      "description": "Inline monospace"
+   },
+   "Strikethrough": {
+      "prefix": "strk",
+      "body": ["-${1:strike}-"],
+      "description": "Strikethrough inline"
+   },
+   "Underline": {
+      "prefix": "undr",
+      "body": ["+${1:underline}+"],
+      "description": "Underline inline"
+   },
+   "Color": {
+      "prefix": "col",
+      "body": ["{color:${1:#fe8019}}${2:text}{color}"],
+      "description": "Inline colored text (named or hex)"
+   },
+   "Link": {
+      "prefix": ["link", "l"],
+      "body": ["[${1:text}|${2:https://}]"],
+      "description": "External link"
+   },
+   "Issue link": {
+      "prefix": "key",
+      "body": ["${1:BUGATTI}-${2:1234}"],
+      "description": "Auto-linked issue key (bare KEY-N renders as a link)"
+   },
+   "Mention": {
+      "prefix": "mnt",
+      "body": ["[~accountid:${1:5b10ac8d82e05b22cc7d4ef5}]"],
+      "description": "User mention (Cloud needs Atlassian accountId)"
+   },
+   "Image": {
+      "prefix": "img",
+      "body": ["!${1:filename.png}!"],
+      "description": "Inline image (must jira-attach the file first)"
+   },
+   "Image sized": {
+      "prefix": "imgw",
+      "body": ["!${1:filename.png}|width=${2:600}!"],
+      "description": "Inline image with explicit width"
+   },
+   "Image thumbnail": {
+      "prefix": "imgt",
+      "body": ["!${1:filename.png}|thumbnail!"],
+      "description": "Image thumbnail (click to enlarge)"
+   },
+   "Attachment link": {
+      "prefix": "att",
+      "body": ["[^${1:filename.pdf}]"],
+      "description": "Link to non-image attachment"
+   },
+   "Info panel": {
+      "prefix": "info",
+      "body": ["{info}", "${1:fyi}", "{info}", "$0"],
+      "description": "Info panel (blue)"
+   },
+   "Note panel": {
+      "prefix": "note",
+      "body": ["{note}", "${1:note}", "{note}", "$0"],
+      "description": "Note panel (yellow)"
+   },
+   "Warning panel": {
+      "prefix": "warn",
+      "body": ["{warning}", "${1:heads up}", "{warning}", "$0"],
+      "description": "Warning panel (red)"
+   },
+   "Tip panel": {
+      "prefix": "tip",
+      "body": ["{tip}", "${1:tip}", "{tip}", "$0"],
+      "description": "Tip panel (green)"
+   },
+   "Custom panel": {
+      "prefix": "panel",
+      "body": [
+         "{panel:title=${1:Title}|borderColor=#ccc|titleBGColor=#f7d6c1|bgColor=#fff7e6}",
+         "${2:body}",
+         "{panel}",
+         "$0"
+      ],
+      "description": "Custom-styled panel"
+   },
+   "Table 2x2": {
+      "prefix": "table",
+      "body": ["||${1:H1}||${2:H2}||", "|${3:c1}|${4:c2}|", "$0"],
+      "description": "Table starter (2 columns, 1 row)"
+   },
+   "Table 3x3": {
+      "prefix": "tab3",
+      "body": [
+         "||${1:H1}||${2:H2}||${3:H3}||",
+         "|${4:a1}|${5:a2}|${6:a3}|",
+         "|${7:b1}|${8:b2}|${9:b3}|",
+         "$0"
+      ],
+      "description": "Table starter (3 columns, 2 rows)"
+   }
+}

@@ -20,6 +20,7 @@ vim.filetype.add({
       cmm = "trace32",
       map = "map",
       mdc = "markdown",
+      jira = "jira",
    },
    -- Detect and apply filetypes based on the entire filename
    filename = {
