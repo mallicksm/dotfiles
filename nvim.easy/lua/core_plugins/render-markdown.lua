@@ -43,6 +43,82 @@ return {
             icon = '▊',
             repeat_linebreak = true,
          },
+         ----------------------------------------------------------------
+         -- Code blocks: solid card with language label on the right
+         ----------------------------------------------------------------
+         -- Pulls the same "block of background + thin top/bottom border"
+         -- treatment as headings, so headings/quotes/code all read as
+         -- visual cards with consistent left/right padding.
+         code = {
+            sign = false,            -- consistent with heading.sign = false
+            width = 'block',         -- bg only spans the code, not full window
+            min_width = 60,          -- short blocks still get a chunky bg
+            left_pad = 1,
+            right_pad = 4,
+            border = 'thick',        -- ▄/▀ horizontal rules above + below
+            position = 'right',      -- language label on the right side
+            language_pad = 2,        -- breathing room around the language tag
+            language_name = true,
+            language_icon = true,    -- needs nerd font (you have it)
+            disable_background = { 'diff' }, -- diff has its own +/- bg
+         },
+         ----------------------------------------------------------------
+         -- Bullets: nested cycle, four levels deep
+         ----------------------------------------------------------------
+         bullet = {
+            icons = { '●', '◆', '▪', '▸' },  -- L1 / L2 / L3 / L4 (cycles after)
+            right_pad = 1,                   -- one cell between bullet and text
+         },
+         ----------------------------------------------------------------
+         -- Checkboxes: classic [ ]/[x] + extras
+         ----------------------------------------------------------------
+         -- Custom states render only when the raw text matches exactly.
+         -- - [-] is "in progress" (clock icon, info color)
+         -- - [!] is "important"   (alert icon, error color)
+         -- - [?] is "question"    (info icon, warn  color)
+         checkbox = {
+            right_pad = 2,
+            unchecked = { icon = '󰄱 ', highlight = 'RenderMarkdownUnchecked' },
+            checked   = { icon = '󰱒 ', highlight = 'RenderMarkdownChecked'   },
+            custom = {
+               todo      = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo'    },
+               important = { raw = '[!]', rendered = '󰀦 ', highlight = 'RenderMarkdownError'   },
+               question  = { raw = '[?]', rendered = '󰋗 ', highlight = 'RenderMarkdownWarn'    },
+            },
+         },
+         ----------------------------------------------------------------
+         -- Pipe tables: rounded unicode borders (╭┬╮ corners)
+         ----------------------------------------------------------------
+         -- 'round' preset gives the GitHub-table look. 'cell = padded'
+         -- pads every cell to the column width so columns line up
+         -- regardless of underlying markdown spacing.
+         pipe_table = {
+            preset = 'round',
+            cell = 'padded',
+            alignment_indicator = '─',
+         },
+         ----------------------------------------------------------------
+         -- Thematic break (--- / ***): spans full width, gruvbox color
+         ----------------------------------------------------------------
+         dash = {
+            icon = '─',
+            width = 'full',
+         },
+         ----------------------------------------------------------------
+         -- Link icons (rendered as inline prefix on `[text](url)` etc)
+         ----------------------------------------------------------------
+         -- The custom table matches the URL by lua-pattern; first-match wins.
+         -- github / youtube get their own icon, otherwise plain web globe.
+         link = {
+            image     = '󰥶 ',
+            email     = '󰀓 ',
+            hyperlink = '󰌹 ',
+            custom = {
+               github  = { pattern = 'github%.com',  icon = '󰊤 ', highlight = 'RenderMarkdownLink' },
+               youtube = { pattern = 'youtube%.com', icon = '󰗃 ', highlight = 'RenderMarkdownLink' },
+               web     = { pattern = '^https?://',   icon = '󰖟 ', highlight = 'RenderMarkdownLink' },
+            },
+         },
       })
 
       -- Tune highlights to match gruvbox. Re-apply on ColorScheme change so
@@ -70,6 +146,32 @@ return {
          vim.api.nvim_set_hl(0, 'MarkdownTableCaption',  { fg = '#282828', bg = '#8ec07c', bold = true }) -- gruvbox aqua
          vim.api.nvim_set_hl(0, 'MarkdownFigureCaption', { fg = '#282828', bg = '#fe8019', bold = true }) -- gruvbox orange
          vim.api.nvim_set_hl(0, 'MarkdownNotePrefix',    { fg = '#282828', bg = '#fabd2f', bold = true }) -- gruvbox yellow
+
+         -- Code blocks: bg0 darker than buffer (subtle card), border in muted yellow
+         vim.api.nvim_set_hl(0, 'RenderMarkdownCode',         { bg = '#1d2021' })                  -- gruvbox bg0_h (slightly darker than default bg)
+         vim.api.nvim_set_hl(0, 'RenderMarkdownCodeBorder',   { fg = '#665c54', bg = '#282828' })  -- bg2/bg0 (thin rule)
+         vim.api.nvim_set_hl(0, 'RenderMarkdownCodeInfo',     { fg = '#a89984', bg = '#1d2021' })  -- language label fg (gruvbox fg4)
+         vim.api.nvim_set_hl(0, 'RenderMarkdownCodeFallback', { fg = '#a89984', bg = '#1d2021' })  -- language fallback (no icon)
+         vim.api.nvim_set_hl(0, 'RenderMarkdownCodeInline',   { fg = '#fe8019', bg = '#3c3836' })  -- `inline code`: orange on bg1
+
+         -- Checkboxes
+         vim.api.nvim_set_hl(0, 'RenderMarkdownUnchecked', { fg = '#928374' })                    -- gruvbox gray
+         vim.api.nvim_set_hl(0, 'RenderMarkdownChecked',   { fg = '#b8bb26', bold = true })       -- gruvbox green, bold
+         vim.api.nvim_set_hl(0, 'RenderMarkdownTodo',      { fg = '#83a598', bold = true })       -- gruvbox blue (in-progress)
+
+         -- Links: cyan-ish blue, underlined for affordance
+         vim.api.nvim_set_hl(0, 'RenderMarkdownLink', { fg = '#83a598', underline = true })       -- gruvbox blue
+
+         -- Pipe table border (the ╭┬╮ characters)
+         vim.api.nvim_set_hl(0, 'RenderMarkdownTableHead', { fg = '#fabd2f', bold = true })        -- header row in yellow
+         vim.api.nvim_set_hl(0, 'RenderMarkdownTableRow',  { fg = '#a89984' })                     -- body rows in fg4
+         vim.api.nvim_set_hl(0, 'RenderMarkdownTableFill', { fg = '#665c54' })                     -- border chars in bg3
+
+         -- Dash (--- thematic break) in muted yellow
+         vim.api.nvim_set_hl(0, 'RenderMarkdownDash', { fg = '#fabd2f' })
+
+         -- Bullets: cycle blue/aqua/yellow/orange to mirror the depth visually
+         vim.api.nvim_set_hl(0, 'RenderMarkdownBullet', { fg = '#fabd2f', bold = true })
       end
       apply_render_markdown_hls()
       vim.api.nvim_create_autocmd('ColorScheme', {
