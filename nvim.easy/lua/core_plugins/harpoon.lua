@@ -25,7 +25,7 @@ return {
             '<leader>a',
             function()
                require('harpoon'):list():add()
-               print('Harpoon: added ' .. vim.fn.expand('%:t'))
+               vim.notify('Harpoon: added ' .. vim.fn.expand('%:t'), vim.log.levels.INFO)
             end,
             desc = 'Harpoon: Mark add',
          },

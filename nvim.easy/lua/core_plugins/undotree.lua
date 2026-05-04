@@ -5,7 +5,7 @@ return {
       {
          '<leader>ou',
          function()
-            print('Create ~/undotree_debug.log to debug')
+            vim.notify('Create ~/undotree_debug.log to debug', vim.log.levels.INFO)
             vim.cmd.UndotreeToggle()
          end,
          desc = 'Undotree: toggle',

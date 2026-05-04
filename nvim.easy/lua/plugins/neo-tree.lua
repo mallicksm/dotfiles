@@ -13,9 +13,18 @@ return {
                toggle = true,
                reveal_force_cwd = true,
             })
-            -- Auto order files by type after open.
-            local state = require('neo-tree.sources.manager').get_state('filesystem')
-            require('neo-tree.sources.common.commands').order_by_type(state)
+            -- Auto order files by type after open. This reaches into neo-tree
+            -- internals (sources.manager + sources.common.commands) so it could
+            -- break across plugin updates -- pcall'd so a failure just logs to
+            -- :messages instead of breaking the keymap. If this ever fires,
+            -- check whether neo-tree v3.x added a public sort_by_type config.
+            local ok, err = pcall(function()
+               local state = require('neo-tree.sources.manager').get_state('filesystem')
+               require('neo-tree.sources.common.commands').order_by_type(state)
+            end)
+            if not ok then
+               vim.notify('[neo-tree] order_by_type failed (API may have moved): ' .. tostring(err), vim.log.levels.WARN)
+            end
          end,
          desc = 'Neo-tree: File browser toggle',
       },
@@ -81,15 +90,15 @@ return {
             mappings = {
                ['s'] = 'open_split',  -- Open in split window
                ['v'] = 'open_vsplit', -- Open in vertical split window
-               ['y'] = {
-                  function(state)
-                     local node = state.tree:get_node()
-                     local path = node:get_id()
-                     print('Copied to clipboard: (*) ' .. path)
-                     vim.fn.setreg('*', path)
-                  end,
-                  desc = 'Copy Path to Clipboard',
-               },
+            ['y'] = {
+               function(state)
+                  local node = state.tree:get_node()
+                  local path = node:get_id()
+                  vim.fn.setreg('*', path)
+                  vim.notify('Copied to clipboard: (*) ' .. path, vim.log.levels.INFO)
+               end,
+               desc = 'Copy Path to Clipboard',
+            },
             },
          },
          filesystem = {
