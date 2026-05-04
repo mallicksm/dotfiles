@@ -2,6 +2,7 @@
 return {
    { -- Collection of various small independent plugins/modules
       'echasnovski/mini.nvim',
+      lazy = false, -- mini.basics + mini.hipatterns wire global autocmds; load at startup
       config = function()
          -----------------------------------------------------
          -- <leader>K for more info on cWORD MiniBasics.config

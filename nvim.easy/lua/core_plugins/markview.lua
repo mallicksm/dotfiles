@@ -4,7 +4,11 @@ return {
    'OXY2DEV/markview.nvim',
    -- per upstream README: do NOT lazy-load, the plugin self-lazy-loads
    lazy = false,
-   priority = 49, -- after colorscheme so highlight groups resolve correctly
+   -- Lazy.nvim loads higher priority first. Colorscheme is 1000, so anything
+   -- below that loads after it; 100 is the conventional "low priority eager load"
+   -- value (lower than mini/snacks defaults). Markview's hl groups inherit from
+   -- the colorscheme so this ordering matters.
+   priority = 100,
    opts = {
       preview = {
          -- Start disabled so render-markdown owns rendering by default.

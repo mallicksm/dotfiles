@@ -29,8 +29,10 @@ return {
       ts.install(ensure_installed)
 
       -- Map filetypes to their tree-sitter parser when the names differ.
-      vim.treesitter.language.register('systemverilog', { 'verilog', 'verilog_systemverilog', 'systemverilog' })
-      vim.treesitter.language.register('bash', { 'sh', 'bash' })
+      -- after/ftdetect/filetype.lua only ever sets ft=verilog_systemverilog (never
+      -- 'verilog' or 'systemverilog'), so we only need that one alias.
+      vim.treesitter.language.register('systemverilog', { 'verilog_systemverilog' })
+      vim.treesitter.language.register('bash', { 'sh' })
 
       vim.api.nvim_create_autocmd('FileType', {
          group = vim.api.nvim_create_augroup('user-treesitter', { clear = true }),
