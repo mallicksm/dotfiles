@@ -1,6 +1,38 @@
 return {
    'nvim-neo-tree/neo-tree.nvim',
    branch = 'v3.x',
+   cmd = { 'Neotree' },
+   keys = {
+      {
+         '<leader>e',
+         function()
+            require('neo-tree.command').execute({
+               action = 'focus',
+               source = 'filesystem',
+               position = 'left',
+               toggle = true,
+               reveal_force_cwd = true,
+            })
+            -- Auto order files by type after open.
+            local state = require('neo-tree.sources.manager').get_state('filesystem')
+            require('neo-tree.sources.common.commands').order_by_type(state)
+         end,
+         desc = 'Neo-tree: File browser toggle',
+      },
+      {
+         '<leader>ob',
+         function()
+            require('neo-tree.command').execute({
+               action = 'show',
+               source = 'buffers',
+               position = 'right',
+               toggle = true,
+               reveal_force_cwd = true,
+            })
+         end,
+         desc = 'Neo-Tree: Buffer list',
+      },
+   },
    dependencies = {
       'nvim-lua/plenary.nvim',
       {

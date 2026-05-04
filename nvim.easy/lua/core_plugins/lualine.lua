@@ -1,5 +1,9 @@
 return {
    'nvim-lualine/lualine.nvim',
+   lazy = false, -- statusline: must load at startup, not on keypress
+   keys = {
+      { '\\\\', '<cmd>LualineToggle<cr>', desc = "Toggle 'lualine' layout" },
+   },
    config = function()
       local lualine = require('lualine')
       -- LSP clients attached to buffer

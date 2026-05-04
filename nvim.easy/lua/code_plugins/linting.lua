@@ -1,6 +1,9 @@
 return {
    'mfussenegger/nvim-lint',
    event = { 'BufReadPre', 'BufNewFile' },
+   keys = {
+      { '<leader>ml', function() require('lint').try_lint() end, desc = 'Lnt: Trigger linting' },
+   },
    config = function()
       require('lint').linters_by_ft = {
          c      = { 'clangtidy' },

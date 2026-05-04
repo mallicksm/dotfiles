@@ -1,8 +1,46 @@
+-- Telescope-backed picker for the harpoon list. Bound below as <leader>H.
+local function harpoon_telescope_picker()
+   local harpoon = require('harpoon')
+   local picker_files = harpoon:list()
+   local conf = require('telescope.config').values
+   local file_paths = {}
+   for _, item in ipairs(picker_files.items) do
+      table.insert(file_paths, item.value)
+   end
+   require('telescope.pickers').new({}, {
+      prompt_title = 'Harpoon (<esc> to quit)',
+      finder = require('telescope.finders').new_table({ results = file_paths }),
+      previewer = conf.file_previewer({}),
+      sorter = conf.generic_sorter({}),
+   }):find()
+end
+
 return {
    {
       'ThePrimeagen/harpoon',
       branch = 'harpoon2',
       dependencies = { 'nvim-lua/plenary.nvim' },
+      keys = {
+         {
+            '<leader>a',
+            function()
+               require('harpoon'):list():add()
+               print('Harpoon: added ' .. vim.fn.expand('%:t'))
+            end,
+            desc = 'Harpoon: Mark add',
+         },
+         { '<C-p>', function() require('harpoon'):list():prev() end, desc = 'Harpoon: previous' },
+         { '<C-n>', function() require('harpoon'):list():next() end, desc = 'Harpoon: next' },
+         {
+            '<leader><C-h>',
+            function()
+               local harpoon = require('harpoon')
+               harpoon.ui:toggle_quick_menu(harpoon:list())
+            end,
+            desc = 'Harpoon: Marks list',
+         },
+         { '<leader>H', harpoon_telescope_picker, desc = 'Telescope: [H]arpoon list' },
+      },
 
       config = function()
          local harpoon = require('harpoon')

@@ -6,6 +6,21 @@
 return {
    { -- Adds git related signs to the gutter, as well as utilities for managing changes
       'lewis6991/gitsigns.nvim',
+      event = { 'BufReadPre', 'BufNewFile' }, -- attach to buffers as soon as they're opened (gutter signs)
+      keys = {
+         { '\\b',        '<cmd>Gitsigns toggle_current_line_blame<cr>', desc = "Toggle 'Git line blame'" },
+         { '<leader>gs', '<cmd>Gitsigns stage_buffer<cr>',              desc = 'GitSigns: Stage entire buffer' },
+         { '<leader>gj', '<cmd>Gitsigns next_hunk<cr>',                 desc = 'GitSigns: Hunk: next' },
+         { '<leader>gk', '<cmd>Gitsigns prev_hunk<cr>',                 desc = 'GitSigns: Hunk: previous' },
+         {
+            '<leader>gu',
+            function()
+               local bufname = vim.api.nvim_buf_get_name(0)
+               vim.cmd('!git restore --staged ' .. bufname)
+            end,
+            desc = 'Git: Unstage buffer',
+         },
+      },
       opts = {
          signs = {
             add = { text = '+' },

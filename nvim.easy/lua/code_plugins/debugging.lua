@@ -1,8 +1,13 @@
 return {
    'mfussenegger/nvim-dap',
+   keys = {
+      { '<leader>db', function() require('dap').toggle_breakpoint() end, desc = 'DAP: toggle breakpoint' },
+      { '<leader>dc', function() require('dap').continue() end,         desc = 'DAP: continue' },
+      { '<leader>dr', function() require('dap').restart() end,          desc = 'DAP: restart' },
+   },
    dependencies = {
       'rcarriga/nvim-dap-ui',
-      "theHamsta/nvim-dap-virtual-text",
+      'theHamsta/nvim-dap-virtual-text',
       'nvim-neotest/nvim-nio',
    },
    config = function()

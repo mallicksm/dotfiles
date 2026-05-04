@@ -3,6 +3,10 @@ return {
    -- lazy.nvim
    "folke/noice.nvim",
    event = "VeryLazy",
+   keys = {
+      { '<leader>nc', '<cmd>Noice dismiss<cr>', noremap = true, silent = true, desc = 'Clear Noice Messages' },
+      { '<leader>nm', '<cmd>NoiceAll<cr>',      noremap = true, silent = true, desc = 'View Noice Messages' },
+   },
    dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",

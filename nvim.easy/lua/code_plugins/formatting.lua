@@ -2,6 +2,16 @@ return {
    { -- Autoformat
       'stevearc/conform.nvim',
       event = { 'BufReadPre', 'BufNewFile' },
+      keys = {
+         {
+            '<leader>mp',
+            function()
+               require('conform').format({ async = true, lsp_format = 'fallback', timeout_ms = 1800 })
+            end,
+            mode = { 'n', 'v' },
+            desc = 'Fmt: Format file',
+         },
+      },
       config = function()
          require('conform').setup({
             formatters = {
