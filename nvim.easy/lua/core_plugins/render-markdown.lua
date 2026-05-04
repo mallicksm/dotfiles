@@ -31,6 +31,18 @@ return {
 
             sign = false, -- skip gutter sign; the bar is enough
          },
+         -- Blockquote bar (also drives the left bar on `> [!NOTE]` / `> [!WARNING]`
+         -- callouts since callouts inherit quote rendering). The "icon" is a single
+         -- terminal cell whose FILL determines visual width:
+         --   ▏ ▎ ▍ ▌  (12.5% / 25% / 37.5% / 50%) -- thinner
+         --   ▋ (62.5%, render-markdown default)
+         --   ▊ ▉ █    (75% / 87.5% / 100%)        -- thicker (current pick)
+         -- repeat_linebreak = true draws the bar on every wrapped line too, so
+         -- multi-line callouts render as a solid color block on the left margin.
+         quote = {
+            icon = '▊',
+            repeat_linebreak = true,
+         },
       })
 
       -- Tune highlights to match gruvbox. Re-apply on ColorScheme change so
