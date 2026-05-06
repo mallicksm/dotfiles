@@ -38,6 +38,22 @@ return {
             style = 'float',
          },
       },
+      -- <leader>K for more info on cWORD snacks-lazygit-table-of-contents
+      lazygit = {
+         -- We own our lazygit config out-of-band: $LG_CONFIG_FILE points at
+         -- ~/dotfiles/initrc/lazygit.config.yml (set in shell rc). That file
+         -- defines our gruvbox theme, zvim editor, delta pager flags, etc.
+         -- Setting `configure = false` tells snacks to NOT generate a theme
+         -- YAML and NOT mutate LG_CONFIG_FILE, so our curated config is the
+         -- single source of truth. Only the float window styling below is ours.
+         configure = false,
+         win = {
+            style = 'lazygit',
+            border = 'rounded',
+            width = 0.9,
+            height = 0.9,
+         },
+      },
       image = {
          enabled = true,
          doc = {

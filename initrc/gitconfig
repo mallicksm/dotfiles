@@ -80,12 +80,14 @@
 [merge]
    conflictstyle = diff3
    tool = meld
+; Pane order matches delta's side-by-side convention: $LOCAL = old (pre-image)
+; on the LEFT, $REMOTE = new (post-image) on the RIGHT.
 [difftool "vimdiff"]
-   cmd = XDG_CONFIG_HOME=~/dotfiles NVIM_APPNAME=nvim.easy nvim -d "$REMOTE" "$LOCAL"
+   cmd = XDG_CONFIG_HOME=~/dotfiles NVIM_APPNAME=nvim.easy nvim -d "$LOCAL" "$REMOTE"
 [difftool "tkdiff"]
-   cmd = tkdiff "$REMOTE" "$LOCAL"
+   cmd = tkdiff "$LOCAL" "$REMOTE"
 [difftool "meld"]
-   cmd = meld "$REMOTE" "$LOCAL"
+   cmd = meld "$LOCAL" "$REMOTE"
 [push]
    default = current
 [pull]
