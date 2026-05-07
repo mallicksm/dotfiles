@@ -9,11 +9,20 @@ function vi () {
    local args=()
    local nfiles=0
    local use_split=0
+   local appname='nvim.easy'   # default config (lazy.nvim-based)
 
    while (( $# )); do
       case $1 in
          -x)
             opt[XTERM]="xterm -geom 110x50-100-200 -e"
+            shift 1
+         ;;
+         -p)
+            # -p selects nvim.pack -- the parallel config powered by nvim's
+            # built-in vim.pack package manager (see ~/dotfiles/nvim.pack/).
+            # Plugins/state are isolated under ~/.local/{share,state,cache}/nvim.pack/
+            # so toggling between vi and `vi -p` will not touch the .easy data dir.
+            appname='nvim.pack'
             shift 1
          ;;
          -*)
@@ -40,12 +49,12 @@ function vi () {
    # open in a subshell
    (
    export XDG_CONFIG_HOME=~/dotfiles/
-   export NVIM_APPNAME=nvim.easy 
+   export NVIM_APPNAME=$appname
 
-   # preserve your large-file logic
+   # preserve your large-file logic (overrides -p if file is huge)
    if [[ -n "${args[0]}" && -f "${args[0]}" ]]; then
       if [[ $(wc -l < "${args[0]}") -gt 1000000 ]]; then
-         export NVIM_APPNAME=nvim.bare 
+         export NVIM_APPNAME=nvim.bare
       fi
    fi
 

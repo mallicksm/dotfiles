@@ -1,0 +1,70 @@
+-- lualine -- statusline. Two layouts; \\\\ toggles between them via :LualineToggle.
+local lualine = require('lualine')
+
+local clients_lsp = function()
+   local bufnr = vim.api.nvim_get_current_buf()
+   local clients = vim.lsp.get_clients({ buffer = bufnr })
+   local c = {}
+   for _, client in pairs(clients) do
+      if client.attached_buffers and client.attached_buffers[bufnr] then
+         table.insert(c, client.name)
+      end
+   end
+   if vim.tbl_isempty(c) then return 'No LSP' end
+   return '\u{f085} ' .. table.concat(c, '\u{2016}')
+end
+
+local function inactive()
+   local filename = vim.fn.expand('%:p') or '[no name]'
+   return 'inactive:' .. filename
+end
+
+local default_config = {
+   options = {
+      theme              = 'dracula',
+      component_separators = { left = '\u{2016}', right = '\u{2016}' },
+      disabled_filetypes = {
+         statusline = { 'neo-tree', 'undotree', 'diff', 'Outline' },
+      },
+   },
+   sections = {
+      lualine_b = { 'branch', 'diff' },
+      lualine_c = { { 'filename', path = 0 } },
+      lualine_x = {
+         'fileformat',
+         clients_lsp,
+         function()
+            local ft = vim.bo.filetype
+            return ft == 'verilog_systemverilog' and 'sv' or ft
+         end,
+      },
+   },
+   inactive_sections = {
+      lualine_c = { { inactive, color = { fg = '#ffff00', gui = 'italic' } } },
+   },
+   tabline = {
+      lualine_a = { { 'tabs', tab_max_length = 60, max_length = 200, mode = 2 } },
+      lualine_b = {}, lualine_c = {}, lualine_x = {}, lualine_y = {}, lualine_z = {},
+   },
+}
+
+local alternate_config = {
+   sections = {
+      lualine_b = { 'branch' },
+      lualine_c = { { 'filename', path = 3 } },
+      lualine_x = {},
+   },
+}
+
+-- :LualineToggle swaps between layouts. Used by the `\\\\` keymap below.
+local active_config = default_config
+vim.api.nvim_create_user_command('LualineToggle', function()
+   active_config = active_config == default_config and alternate_config or default_config
+   lualine.setup(active_config)
+end, { desc = 'Toggle lualine between default and alternate layouts' })
+
+vim.keymap.set('n', '\\\\', '<cmd>LualineToggle<cr>', { desc = "Toggle 'lualine' layout" })
+
+lualine.setup(default_config)
+
+-- vim: ts=3 sts=3 sw=3 et
