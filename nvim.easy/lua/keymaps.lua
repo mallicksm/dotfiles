@@ -5,6 +5,14 @@
 -- Clear search highlight on <Esc> in normal mode.
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- Re-enable hlsearch on `*` and `#` so the per-match Search highlight comes
+-- back after we've used a plugin that explicitly disabled it (kaleidosearch
+-- does `set nohlsearch` after every call so its color highlights aren't
+-- visually clashed with vim's yellow Search). Without this, after using
+-- kaleidosearch once, plain `*` would jump but never highlight again.
+vim.keymap.set('n', '*', '*<cmd>set hlsearch<CR>', { desc = 'Search forward for <cword> (with hlsearch)'  })
+vim.keymap.set('n', '#', '#<cmd>set hlsearch<CR>', { desc = 'Search backward for <cword> (with hlsearch)' })
+
 -- Quit shortcuts. `q` quits if no changes; `gq` is preserved as the original
 -- `q` (start macro) since `q` is overloaded by us.
 vim.keymap.set('n', 'gq',         'q',             { desc = 'Nav: Macro' })
