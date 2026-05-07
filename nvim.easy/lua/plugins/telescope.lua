@@ -22,11 +22,29 @@ return {
          desc = 'Telescope: [R]ecent files',
       },
       {
+         -- <leader>G prompts for an extension first, then runs live_grep filtered
+         -- to that file type via ripgrep's --glob. Defaults to the current
+         -- buffer's extension so the common case is just "<leader>G <Enter>".
+         -- Leave the prompt empty + <Enter> for an unfiltered grep across all files.
+         -- Brace expansion works: e.g. {v,vh,sv,svh} for all verilog flavors.
          '<leader>G',
          function()
-            require('telescope.builtin').live_grep({ prompt_title = 'Live Grep (<esc> to quit)' })
+            local default = vim.fn.expand('%:e')
+            vim.ui.input({
+               prompt  = 'Live Grep -- extension (empty = all files): ',
+               default = default,
+            }, function(ext)
+               if ext == nil then return end -- user pressed <esc>
+               local opts = { prompt_title = 'Live Grep (<esc> to quit)' }
+               if ext ~= '' then
+                  local glob = '*.' .. ext
+                  opts.additional_args = function() return { '--glob', glob } end
+                  opts.prompt_title = 'Live Grep [' .. glob .. ']  (<esc> to quit)'
+               end
+               require('telescope.builtin').live_grep(opts)
+            end)
          end,
-         desc = 'Telescope: live [G]rep',
+         desc = 'Telescope: live [G]rep (with optional extension filter)',
       },
       {
          '<leader>B',
