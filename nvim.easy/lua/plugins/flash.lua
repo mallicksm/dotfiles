@@ -18,7 +18,19 @@ return {
    'folke/flash.nvim',
    event = 'VeryLazy',
    ---@type Flash.Config
-   opts = {},
+   opts = {
+      modes = {
+         char = {
+            -- Show jump labels after the target char, so f<char> -> label = jump
+            -- to a specific occurrence. Default is false (just dim + ;/, to walk).
+            -- Labels are auto-suppressed when a count is given (e.g. 3fa still
+            -- works as "jump to 3rd a") or when recording/executing a macro.
+            jump_labels = true,
+            -- Hide flash overlay after the jump so the dim doesn't linger.
+            autohide    = true,
+         },
+      },
+   },
    keys = {
       -- Label-based jump. Type chars; flash shows labels at every match;
       -- press the label to jump. Visual mode is intentionally excluded so
