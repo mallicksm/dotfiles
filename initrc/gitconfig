@@ -107,6 +107,7 @@
    path = ~/corp/corp_gitconfig.txt
 [safe]
 	directory = /project/ai/bugatti/users
+	directory = /project/bugatti
 [color "status"]
 	untracked = bold 15
 	added     = bold 34

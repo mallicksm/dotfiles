@@ -13,11 +13,11 @@ return {
                toggle = true,
                reveal_force_cwd = true,
             })
-            -- Auto order files by type after open. This reaches into neo-tree
-            -- internals (sources.manager + sources.common.commands) so it could
-            -- break across plugin updates -- pcall'd so a failure just logs to
-            -- :messages instead of breaking the keymap. If this ever fires,
-            -- check whether neo-tree v3.x added a public sort_by_type config.
+            -- Auto order files by type after open. Reaches into neo-tree
+            -- internals (sources.manager + sources.common.commands) so it
+            -- could break across plugin updates -- pcall'd so a failure just
+            -- logs to :messages instead of breaking the keymap. If this ever
+            -- fires, check whether neo-tree v3.x added a public sort_by_type.
             local ok, err = pcall(function()
                local state = require('neo-tree.sources.manager').get_state('filesystem')
                require('neo-tree.sources.common.commands').order_by_type(state)
@@ -102,6 +102,22 @@ return {
             },
          },
          filesystem = {
+            -- Full-feature mode: live file watcher + follow current buffer.
+            -- The original slowness on /project/bugatti was caused by git's
+            -- "dubious ownership" check failing per directory probe; fixed by
+            -- adding /project/bugatti to ~/.gitconfig safe.directory. With
+            -- that fix in place, neo-tree opens fast even with the watcher
+            -- on. If you ever land on an NFS path where it's slow again, the
+            -- inotify setup is the most likely culprit -- flip
+            -- use_libuv_file_watcher = false here.
+            use_libuv_file_watcher = true,
+            follow_current_file    = { enabled = true },
+            -- Lazy-scan: only scan visible (expanded) directories, never
+            -- pre-walk the whole tree. This is the default but make it
+            -- explicit so it survives upstream config changes.
+            scan_mode = 'shallow',
+            -- Async directory scan so first paint never blocks on slow IO.
+            async_directory_scan = 'always',
             components = {
                -- Truncate Neo-tree header for filesystem
                name = function(config, node, state)
