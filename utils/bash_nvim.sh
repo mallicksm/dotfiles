@@ -1,21 +1,34 @@
+# shellcheck shell=bash
 #-------------------------------------------------------------------------------
-# vi alias
+# vi alias -- wraps nvim with appname switching and split-on-multi-file behavior.
+#
+# Flags:
+#   -x   wrap launch in xterm (backgrounded)
+#   -p   use ~/dotfiles/nvim.pack (vim.pack-based config) instead of nvim.easy
+#        (note: nvim's own -p "open in tabs" is consumed by this wrapper. To
+#         force tabs explicitly, pass -p<N> e.g. -p5 -- it falls through to nvim.)
+#   -O   explicit vertical split (suppresses auto split/tab behavior below)
+#   anything else starting with - is forwarded verbatim to nvim
+#
+# Auto layout (only when user didn't pass -O or -p<N>):
+#   1..3 real files on disk -> prepend -O   (vertical split)
+#   4+   real files on disk -> prepend -p   (open each in its own tab)
+#   0    real files         -> no layout flag added
 #-------------------------------------------------------------------------------
 unalias vi 2>/dev/null
 
-function vi () {
-   # getopt
-   declare -A opt
-   local args=()
+vi() {
+   local -A opt
+   local -a args=()
+   local -a extra_opts=()
    local nfiles=0
-   local use_split=0
    local appname='nvim.easy'   # default config (lazy.nvim-based)
 
    while (( $# )); do
       case $1 in
          -x)
-            opt[XTERM]="xterm -geom 110x50-100-200 -e"
-            shift 1
+            opt[XTERM]='xterm -geom 110x50-100-200 -e'
+            shift
          ;;
          -p)
             # -p selects nvim.pack -- the parallel config powered by nvim's
@@ -23,104 +36,83 @@ function vi () {
             # Plugins/state are isolated under ~/.local/{share,state,cache}/nvim.pack/
             # so toggling between vi and `vi -p` will not touch the .easy data dir.
             appname='nvim.pack'
-            shift 1
+            shift
          ;;
          -*)
-            opt[OPT]="$1"
-            shift 1
+            extra_opts+=("$1")
+            shift
          ;;
          *)
             args+=("$1")
-            shift 1
+            shift
          ;;
       esac
    done
 
-   # count real files only
+   local f
    for f in "${args[@]}"; do
-      [[ -f "$f" ]] && ((nfiles++))
+      [[ -f $f ]] && (( ++nfiles ))
    done
 
-   # decide split
-   if (( nfiles > 0 && nfiles <= 3 )); then
-      use_split=1
+   # Detect a user-supplied layout flag so we don't double up. Bare -p is
+   # consumed earlier as the appname switch; any -p<N> form falls through into
+   # extra_opts and counts as an explicit tabs request.
+   local has_layout=0 o
+   for o in "${extra_opts[@]}"; do
+      [[ $o == -O || $o == -p* ]] && has_layout=1
+   done
+
+   local -a auto_layout=()
+   if (( ! has_layout )); then
+      if   (( nfiles >= 1 && nfiles <= 3 )); then auto_layout=(-O)
+      elif (( nfiles >= 4 ));                then auto_layout=(-p)
+      fi
    fi
 
-   # open in a subshell
    (
-   export XDG_CONFIG_HOME=~/dotfiles/
-   export NVIM_APPNAME=$appname
+      # shellcheck disable=SC2030,SC2031
+      export XDG_CONFIG_HOME=~/dotfiles/
+      # shellcheck disable=SC2030,SC2031
+      export NVIM_APPNAME=$appname
 
-   # (huge-file fallback removed -- snacks.bigfile in the active config now
-   # disables expensive features at BufReadPre on a per-buffer basis. See
-   # snacks.lua's `bigfile = { size = 10 MB }`. No need to swap NVIM_APPNAME.)
+      # (huge-file fallback removed -- snacks.bigfile in the active config now
+      # disables expensive features at BufReadPre on a per-buffer basis. See
+      # snacks.lua's `bigfile = { size = 10 MB }`. No need to swap NVIM_APPNAME.)
 
-   # build command (respect user-provided -O)
-   local cmd
-   if (( use_split )) && [[ "${opt[OPT]}" != "-O" ]]; then
-      cmd=(nvim -O ${opt[OPT]} "${args[@]}")
-      echo "Note: nvim -O ${opt[OPT]} ${args[@]}"
-   else
-      cmd=(nvim ${opt[OPT]} "${args[@]}")
-      echo "Note: nvim ${opt[OPT]} ${args[@]}"
-   fi
+      local -a cmd
+      cmd=(nvim "${auto_layout[@]}" "${extra_opts[@]}" "${args[@]}")
+      printf 'Note: %s\n' "${cmd[*]}"
 
-   if [[ -n "${opt[XTERM]:-}" ]]; then
-      ${opt[XTERM]} "${cmd[@]}" &
-   else
-      "${cmd[@]}"
-   fi
+      if [[ -n ${opt[XTERM]:-} ]]; then
+         # xterm wrapper is a single string we want word-split into argv
+         # shellcheck disable=SC2086
+         ${opt[XTERM]} "${cmd[@]}" &
+      else
+         "${cmd[@]}"
+      fi
    )
 }
-
 export -f vi
-# vimscript based original nvim installation (nvim.vim)
-function vim () {
-   # getopt
-   declare -A opt
-   local args
+
+#-------------------------------------------------------------------------------
+# vim alias -- vimscript-based original nvim installation (nvim.vim)
+#-------------------------------------------------------------------------------
+vim() {
+   local -a extra_opts=()
+   local -a args=()
    while (( $# )); do
       case $1 in
-         -*)
-            opt[OPT]="$1"
-            shift 1
-         ;;
-         *)
-            args+=("$1")
-            shift 1
-         ;;
+         -*) extra_opts+=("$1"); shift ;;
+         *)  args+=("$1");       shift ;;
       esac
    done
 
-   # open in a subshell
    (
-   export XDG_CONFIG_HOME=~/dotfiles/
-   export NVIM_APPNAME=nvim.vim 
-   echo "Note: nvim ${opt[OPT]} ${args[@]}"
-   nvim ${opt[OPT]} ${args[@]}
+      # shellcheck disable=SC2030,SC2031
+      export XDG_CONFIG_HOME=~/dotfiles/
+      # shellcheck disable=SC2030,SC2031
+      export NVIM_APPNAME=nvim.vim
+      printf 'Note: nvim %s %s\n' "${extra_opts[*]}" "${args[*]}"
+      nvim "${extra_opts[@]}" "${args[@]}"
    )
-}
-# make available to subshells
-export -f vim
-linediff() { 
-   if [ -z "$1" ] || [ -z "$2" ]; then 
-      return; 
-   fi
-   f1=$(basename "$1").f1
-   f2=$(basename "$2").f2
-   nl "$1" > "/tmp/$f1"
-   nl "$2" > "/tmp/$f2"
-   tkdiff "/tmp/$f1" "/tmp/$f2"
-   rm "/tmp/$f1" "/tmp/$f2"
-}
-dsplinediff() { 
-   if [ -z "$1" ] || [ -z "$2" ]; then 
-      return; 
-   fi
-   f1=$(basename "$1").f1
-   f2=$(basename "$2").f2
-   nl "$1" |sed 's/+//g' > "/tmp/$f1"
-   nl "$2" |sed 's/+//g' > "/tmp/$f2"
-   tkdiff "/tmp/$f1" "/tmp/$f2"
-   rm "/tmp/$f1" "/tmp/$f2"
 }

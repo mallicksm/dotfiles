@@ -6,8 +6,9 @@ press q to close this overlay
 
 CLIPBOARD ───────────────────────────────────────────────────────────────────
   cs+c              copy selection to clipboard
-  cs+v              paste from clipboard
-  cs+s              paste from PRIMARY (X middle-click) selection
+  csa+v             paste from clipboard           (cs+v is vsplit; see WINDOWS)
+  csa+s             paste from PRIMARY selection   (cs+s is hsplit; see WINDOWS)
+  shift+insert      paste from PRIMARY selection   (kitty default, kept)
   cs+o              pass selection to xdg-open
 
 TABS ────────────────────────────────────────────────────────────────────────
@@ -19,7 +20,9 @@ TABS ─────────────────────────
   csa+t             rename tab
 
 WINDOWS  (splits inside one OS window) ──────────────────────────────────────
-  cs+enter          new window (split)
+  cs+s              :sp  -- horizontal split (new window BELOW; divider --)
+  cs+v              :vsp -- vertical split   (new window RIGHT; divider | )
+  cs+enter          new window (layout-default placement; pre-vim-mapping)
   cs+w              close window
   cs+] / cs+[       focus next / previous window
   cs+1 .. cs+9      focus window N

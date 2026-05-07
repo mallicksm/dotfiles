@@ -25,6 +25,18 @@ require('snacks').setup({
    },
    image = {
       enabled = true,
+      -- Drop `pdf` from the default formats list. Snacks otherwise registers its
+      -- own BufReadCmd for `*.pdf` and tries to render the first page via
+      -- `magick`, which (a) fails noisily on this box where ImageMagick isn't
+      -- installed and (b) collides with our `*.pdf` BufReadCmd in
+      -- lua/autocmds.lua that hands PDFs to evince. Keep `pdf` out so PDFs flow
+      -- cleanly through our autocmd. (Videos like mp4/mov/avi/mkv/webm are still
+      -- here but `magick` can't render them without ffmpeg -- prune them too if
+      -- you start seeing similar warnings on those.)
+      formats = {
+         'png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'tiff', 'heic', 'avif',
+         'mp4', 'mov', 'avi', 'mkv', 'webm', 'icns',
+      },
       doc     = { enabled = true, inline = true, float = true, max_width = 80, max_height = 40 },
       convert = { magick = { 'magick' } },
    },

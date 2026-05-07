@@ -1,21 +1,43 @@
 -- Real autocmds only. User commands moved to lua/user_commands.lua.
 -- See `:help lua-guide-autocommands` for the API.
 
--- Read PDFs through pdftotext.py and present the extracted text in a scratch buffer.
+-- Open PDFs in the system's default viewer (vim.ui.open dispatches to `open` on macOS,
+-- `xdg-open` on Linux, etc.). Leaves a small placeholder buffer in nvim so we don't
+-- accidentally close the editor when the PDF was the sole argument.
 vim.api.nvim_create_autocmd('BufReadCmd', {
    pattern = '*.pdf',
    callback = function()
-      local fname = vim.fn.expand('<afile>')
-      local cmd = 'pdftotext.py ' .. vim.fn.shellescape(fname)
+      local fname = vim.fn.fnamemodify(vim.fn.expand('<afile>'), ':p')
 
-      vim.cmd('enew')
-      vim.cmd('setlocal buftype=nofile')
-      vim.cmd('setlocal bufhidden=wipe')
-      vim.cmd('setlocal noswapfile')
-      vim.cmd('setlocal readonly')
+      vim.bo.buftype = 'nofile'
+      vim.bo.bufhidden = 'wipe'
+      vim.bo.swapfile = false
+      -- Rename the placeholder so the buffer name does NOT end in `.pdf`.
+      -- snacks.image keys off the extension and would otherwise try to
+      -- render the file as an inline PNG via `magick` (failing loudly when
+      -- ImageMagick isn't installed -- exactly the case here). The rename
+      -- also matches the historical `foo.pdf.txt` naming the old
+      -- pdftotext.py flow used.
+      pcall(vim.api.nvim_buf_set_name, 0, fname .. '.opened')
+      vim.b.snacks_image = false -- belt-and-suspenders against snacks.image
+      vim.api.nvim_buf_set_lines(0, 0, -1, false, {
+         '-- Opened ' .. fname .. ' in the system PDF viewer --',
+         '',
+         'Use :bd to close this placeholder buffer.',
+      })
+      vim.bo.modifiable = false
+      vim.bo.readonly = true
 
-      vim.cmd('0read !' .. cmd)
-      vim.api.nvim_buf_set_name(0, fname .. '.txt')
+      -- NB: use jobstart (not vim.ui.open / vim.system) so the child doesn't
+      -- inherit the captured pipes vim.system sets up. Inheriting those pipes
+      -- makes evince spit a "magick shim / Image conversion failed" warning
+      -- when its thumbnailer forks. Plain shell `xdg-open foo.pdf` is clean
+      -- because stdio is just the tty -- jobstart+detach mirrors that.
+      local cmd = vim.fn.has('mac') == 1 and { 'open', fname } or { 'xdg-open', fname }
+      local ok, jid = pcall(vim.fn.jobstart, cmd, { detach = true })
+      if not ok or jid <= 0 then
+         vim.notify('Failed to launch PDF viewer: ' .. tostring(jid), vim.log.levels.ERROR)
+      end
    end,
 })
 
