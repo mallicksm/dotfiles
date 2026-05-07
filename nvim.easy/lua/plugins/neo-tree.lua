@@ -119,7 +119,17 @@ return {
             -- Async directory scan so first paint never blocks on slow IO.
             async_directory_scan = 'always',
             components = {
-               -- Truncate Neo-tree header for filesystem
+               -- Custom name component:
+               --   1. Truncate the depth-1 root header so long paths fit the window.
+               --   2. Color the filename text per-extension (mimics `ls --color`).
+               --      We borrow nvim-web-devicons' icon highlight group
+               --      (DevIconLua, DevIconPython, ...), which is the same group
+               --      driving the leading icon -- so name + icon stay color-synced.
+               --      Only applied to regular files past depth 1, and only when
+               --      neo-tree's default highlight isn't one of the NeoTreeGit*
+               --      groups (so modified / staged / untracked files keep their
+               --      git status color, which we want to be more salient than
+               --      filetype color).
                name = function(config, node, state)
                   local name = require('neo-tree.sources.common.components').name(config, node, state)
                   if node:get_depth() == 1 then
@@ -128,6 +138,13 @@ return {
                      if pathlen > (ntwidth - 8) then
                         name.text = '..' .. string.sub(path, pathlen - (ntwidth - 8))
                      end
+                  end
+                  if node.type == 'file' and node:get_depth() > 1
+                     and (not name.highlight or not tostring(name.highlight):find('^NeoTreeGit'))
+                  then
+                     local web = require('nvim-web-devicons')
+                     local _, hl = web.get_icon(node.name, vim.fn.fnamemodify(node.name, ':e'), { default = true })
+                     if hl then name.highlight = hl end
                   end
                   return name
                end,
