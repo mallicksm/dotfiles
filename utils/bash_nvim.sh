@@ -51,12 +51,9 @@ function vi () {
    export XDG_CONFIG_HOME=~/dotfiles/
    export NVIM_APPNAME=$appname
 
-   # preserve your large-file logic (overrides -p if file is huge)
-   if [[ -n "${args[0]}" && -f "${args[0]}" ]]; then
-      if [[ $(wc -l < "${args[0]}") -gt 1000000 ]]; then
-         export NVIM_APPNAME=nvim.bare
-      fi
-   fi
+   # (huge-file fallback removed -- snacks.bigfile in the active config now
+   # disables expensive features at BufReadPre on a per-buffer basis. See
+   # snacks.lua's `bigfile = { size = 10 MB }`. No need to swap NVIM_APPNAME.)
 
    # build command (respect user-provided -O)
    local cmd

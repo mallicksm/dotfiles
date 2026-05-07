@@ -1,5 +1,19 @@
 -- snacks.nvim -- folke's collection (lazygit, terminal, bufdelete, dim, image).
 require('snacks').setup({
+   -- snacks.bigfile: replaces the old `nvim.bare` wrapper trick. When a
+   -- file's bytes >= `size` OR its average line length is "minified",
+   -- snacks attaches a BufReadPre handler that disables treesitter, LSP
+   -- attach, syntax sync, matchparen, and other O(N) features *for that
+   -- buffer only*. 50-200 MB logs open in tens of ms instead of stalling.
+   -- `notify=true` toasts once when triggered so we know we're in degraded
+   -- mode. size = 10 MB catches sim logs / waveform dumps without false-
+   -- positive on big source files.
+   bigfile = {
+      enabled     = true,
+      notify      = true,
+      size        = 10 * 1024 * 1024,
+      line_length = 1000,
+   },
    terminal = { win = { style = 'float' } },
    lazygit = {
       -- $LG_CONFIG_FILE points at ~/dotfiles/initrc/lazygit.config.yml in

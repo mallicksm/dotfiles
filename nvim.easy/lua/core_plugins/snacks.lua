@@ -33,6 +33,22 @@ return {
       },
    },
    opts = {
+      -- snacks.bigfile: replaces our old `nvim.bare` wrapper trick. When a
+      -- file's bytes >= `size` OR its average line length is "minified",
+      -- snacks attaches a BufReadPre handler that disables treesitter,
+      -- LSP attach, syntax sync, matchparen, and a few other O(N) features
+      -- *for that buffer only*. Result: 50-200 MB log files open in tens
+      -- of ms instead of stalling. `notify=true` toasts once when triggered
+      -- so we know we're in degraded mode.
+      --
+      -- size = 10 MB chosen to catch our typical sim logs / waveform dumps
+      -- (often 30-100+ MB) without false-positive on big source files.
+      bigfile = {
+         enabled     = true,
+         notify      = true,
+         size        = 10 * 1024 * 1024, -- 10 MB
+         line_length = 1000,             -- "minified file" heuristic
+      },
       terminal = {
          win = {
             style = 'float',

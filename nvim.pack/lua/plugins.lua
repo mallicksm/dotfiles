@@ -86,6 +86,13 @@ vim.pack.add({
    ----------------------------------------------------------------------------
    { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
    { src = 'https://github.com/vhda/verilog_systemverilog.vim' },
+}, {
+   -- confirm = false silences the "These plugins will be installed:" popup
+   -- that fires on every launch when vim.pack's in-session registry thinks
+   -- some plugins need installation (often a leftover from an interrupted
+   -- first-launch). The actual clone/verify still happens; just no prompt.
+   -- To explicitly update everything: :lua vim.pack.update()
+   confirm = false,
 })
 
 -- ----------------------------------------------------------------------------
