@@ -12,19 +12,24 @@ CLIPBOARD ───────────────────────�
   cs+o              pass selection to xdg-open
 
 TABS ────────────────────────────────────────────────────────────────────────
-  cs+h    cs+left   previous tab
-  cs+l    cs+right  next tab
+  cs+left           previous tab    (pure tab nav, no window step)
+  cs+right          next tab        (pure tab nav, no window step)
   cs+t              new tab
   cs+q              close tab
   cs+. / cs+,       move tab forward / backward
   csa+t             rename tab
+  (cs+h / cs+l also reach adjacent tabs -- but only when no window neighbor;
+   see WINDOWS below.)
 
 WINDOWS  (splits inside one OS window) ──────────────────────────────────────
   cs+s              :sp  -- horizontal split (new window BELOW; divider --)
   cs+v              :vsp -- vertical split   (new window RIGHT; divider | )
   cs+enter          new window (layout-default placement; pre-vim-mapping)
   cs+w              close window
-  cs+] / cs+[       focus next / previous window
+  cs+h / cs+l       focus window LEFT / RIGHT, falls through to prev/next tab
+                    when there is no window neighbor in that direction
+  cs+j / cs+k       focus window DOWN / UP (no tab fallthrough; mirrors nvim)
+  cs+] / cs+[       focus next / previous window (layout order, not directional)
   cs+1 .. cs+9      focus window N
   cs+f / cs+b       move window forward / backward in layout
   cs+r              start interactive resize (arrows, then enter)
