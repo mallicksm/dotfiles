@@ -39,7 +39,26 @@ return {
          -------------------------------------------------------
          -- <leader>K for more info on cWORD MiniSurround.config
          -------------------------------------------------------
-         require('mini.surround').setup()
+         -- Remapped from the default `s` prefix to `gs` so that bare `s` and
+         -- `S` are free for flash.nvim's label-based jump motions (see
+         -- lua/plugins/flash.lua). Trade-off: one extra keystroke per
+         -- surround op (saiw" -> gsaiw") in exchange for getting flash on
+         -- the canonical bindings everyone else's vim uses.
+         require('mini.surround').setup({
+            mappings = {
+               add            = 'gsa', -- add surrounding (visual or operator)
+               delete         = 'gsd', -- delete surrounding
+               find           = 'gsf', -- find surrounding (to the right)
+               find_left      = 'gsF', -- find surrounding (to the left)
+               highlight      = 'gsh', -- highlight surrounding
+               replace        = 'gsr', -- replace surrounding
+               update_n_lines = 'gsn', -- update `n_lines`
+               -- These two are NOT prefixes; they're suffix chars used inside
+               -- the chord, e.g. `gsfn` = find next, `gsfl` = find prev.
+               suffix_last    = 'l',
+               suffix_next    = 'n',
+            },
+         })
 
          ----------------------------------------------------
          -- <leader>K for more info on cWORD MiniPairs.config
