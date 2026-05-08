@@ -15,9 +15,13 @@ TABS ─────────────────────────
   cs+left           previous tab    (pure tab nav, no window step)
   cs+right          next tab        (pure tab nav, no window step)
   cs+t              new tab
-  cs+q              close tab
+  cs+q              close tab (keyboard)
+  middle-click      close any tab from the mouse (kitty built-in)
   cs+. / cs+,       move tab forward / backward
-  csa+t             rename tab
+  csa+t             rename tab interactively (kitty overlay)
+  $ tabname [name]  rename current tab from shell (any window in the tab)
+                    -r resets; no args = prompt; needs allow_remote_control yes
+                    defined in ~/dotfiles/utils/bash_kitty.sh
   (cs+h / cs+l also reach adjacent tabs -- but only when no window neighbor;
    see WINDOWS below.)
 

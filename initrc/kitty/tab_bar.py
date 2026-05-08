@@ -44,6 +44,14 @@ from kitty.tab_bar import (
 # pinned. Tune to taste.
 TAB_WIDTH = 20
 
+# Visual close-button affordance drawn at the right edge of every tab.
+# kitty has no per-character mouse mapping inside a tab, so this glyph
+# would only ever be decorative -- the real close action is middle-click
+# anywhere on the tab. Disabled (empty string) by default to keep tabs
+# uncluttered. Set to e.g. ' ×' if you want the visual hint back; the
+# title shrinks to (TAB_WIDTH - len(CLOSE_GLYPH)) cells to compensate.
+CLOSE_GLYPH = ''
+
 # Muted slate -- intentionally darker than the active-tab fg so the status
 # block doesn't compete for attention with what you're actually doing.
 STATUS_FG = 0x7e7e96
@@ -107,10 +115,11 @@ def draw_tab(
     is_last: bool,
     extra_data: ExtraData,
 ) -> int:
-    # Pin tab width by padding/truncating the rendered title. ljust keeps
-    # the bell/activity symbols and title text left-aligned; trailing space
-    # absorbs the slack on shorter titles.
-    fixed = tab.title.ljust(TAB_WIDTH)[:TAB_WIDTH]
+    # Pin tab width by padding/truncating the rendered title. The title
+    # gets (TAB_WIDTH - len(CLOSE_GLYPH)) cells; the trailing CLOSE_GLYPH
+    # is appended to fill the rest as a visual close-button affordance.
+    title_room = TAB_WIDTH - len(CLOSE_GLYPH)
+    fixed = tab.title.ljust(title_room)[:title_room] + CLOSE_GLYPH
     tab = tab._replace(title=fixed)
 
     end = draw_tab_with_powerline(

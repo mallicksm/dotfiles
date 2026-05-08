@@ -29,11 +29,22 @@ vim.api.nvim_create_autocmd('BufReadCmd', {
       vim.bo.readonly = true
 
       -- NB: use jobstart (not vim.ui.open / vim.system) so the child doesn't
-      -- inherit the captured pipes vim.system sets up. Inheriting those pipes
-      -- makes evince spit a "magick shim / Image conversion failed" warning
-      -- when its thumbnailer forks. Plain shell `xdg-open foo.pdf` is clean
-      -- because stdio is just the tty -- jobstart+detach mirrors that.
-      local cmd = vim.fn.has('mac') == 1 and { 'open', fname } or { 'xdg-open', fname }
+      -- inherit captured pipes that some viewers (evince in particular) trip
+      -- on with "magick shim / Image conversion failed" thumbnailer warnings.
+      -- Plain shell `xdg-open foo.pdf` is clean because stdio is just the
+      -- tty -- jobstart+detach mirrors that.
+      --
+      -- On Linux, launch zathura via the ~/.local/bin/zathura wrapper
+      -- (which sets ZATHURA_PLUGINS_PATH for the EPEL-9 plugin and exec's
+      -- the patched binary -- see ~/.local/README.md and the wrapper itself
+      -- for the patchelf / glibc-2.40 setup). To switch back to evince,
+      -- replace 'zathura' with vim.fn.expand('~/dotfiles/utils/pdf-evince').
+      local cmd
+      if vim.fn.has('mac') == 1 then
+         cmd = { 'open', fname }
+      else
+         cmd = { 'zathura', fname }
+      end
       local ok, jid = pcall(vim.fn.jobstart, cmd, { detach = true })
       if not ok or jid <= 0 then
          vim.notify('Failed to launch PDF viewer: ' .. tostring(jid), vim.log.levels.ERROR)

@@ -1,0 +1,102 @@
+## zathurarc -- vim-style PDF viewer config
+## Symlinked from ~/dotfiles/zathura/zathurarc to ~/.config/zathura/zathurarc.
+## Reload at runtime via `:source ~/.config/zathura/zathurarc` from inside zathura.
+
+# -----------------------------------------------------------------------------
+# Window geometry on open
+# -----------------------------------------------------------------------------
+# Initial window size in pixels. 1556x904 mirrors the half-screen target we
+# settled on for evince (one of the two ~1556-wide monitors on ups-a14).
+# Window-manager may override these on tiling WMs; if so resize manually.
+set window-width  1556
+set window-height 1200
+
+# -----------------------------------------------------------------------------
+# Zoom & layout on open
+# -----------------------------------------------------------------------------
+# `none`     -> don't auto-fit; honor the zoom level set below
+# `width`    -> fit page width to window (zathura default)
+# `best-fit` -> fit whole page to window
+set adjust-open    "none"
+set zoom 140
+
+# Step size for the +/- zoom keys at runtime
+set zoom-step      10
+
+# Single-page-at-a-time view (vs dual-page side-by-side)
+set pages-per-row  1
+set first-page-column "1:1"
+
+# -----------------------------------------------------------------------------
+# UI behavior
+# -----------------------------------------------------------------------------
+# Continuous (smooth) scroll between pages instead of paged jumps
+set scroll-page-aware "true"
+set smooth-scroll     "true"
+
+# Font for chrome (statusbar AND inputbar -- zathura has no separate setting).
+# Pango format is "<family> <style?> <size>". Bump the number to taste; 14 is a
+# comfortable two-step-up from the ~10pt default. Common families:
+#   "monospace"            -> system default monospace (matches kitty look)
+#   "DejaVu Sans Mono"     -> if installed, crisper than Liberation Mono
+#   "Sans"                 -> proportional, less terminal-like
+set font "monospace 14"
+
+# Inputbar / statusbar visual height. Default v-padding is 1; bumping to 4
+# gives the command line ~30% more vertical real estate so the larger font
+# above doesn't feel cramped against the bar's top/bottom edges.
+set statusbar-h-padding 8
+set statusbar-v-padding 4
+
+# -- Gruvbox light (medium) palette --------------------------------------------
+# Matches the nvim colorscheme (light variant). To swap back to dark medium:
+#   recolor-darkcolor   <-> recolor-lightcolor
+#   default-bg          <-> default-fg
+#   statusbar/inputbar/notification/completion/index bg/fg pairs all flip too,
+#   plus search/active highlights swap to bright variants (#fabd2f / #fe8019).
+# Quick runtime toggle that ONLY flips PDF page colors (chrome stays light):
+#   Ctrl+r   (zathura's `:set recolor!` shortcut)
+set recolor                  "true"
+set recolor-darkcolor        "#3c3836"
+set recolor-lightcolor       "#fbf1c7"
+set recolor-keephue          "true"
+
+# UI chrome -- statusbar / inputbar / window background
+set default-bg               "#fbf1c7"
+set default-fg               "#3c3836"
+set statusbar-bg             "#ebdbb2"
+set statusbar-fg             "#3c3836"
+set inputbar-bg              "#f9f5d7"
+set inputbar-fg              "#9d0006"
+set notification-bg          "#fbf1c7"
+set notification-fg          "#3c3836"
+set notification-error-bg    "#9d0006"
+set notification-error-fg    "#fbf1c7"
+set notification-warning-bg  "#b57614"
+set notification-warning-fg  "#fbf1c7"
+
+# Search highlights (faded yellow = matches in page, faded orange = active)
+set highlight-color          "#b57614"
+set highlight-active-color   "#af3a03"
+
+# Completion menu (when typing in the `:` prompt)
+set completion-bg            "#ebdbb2"
+set completion-fg            "#3c3836"
+set completion-highlight-bg  "#d5c4a1"
+set completion-highlight-fg  "#af3a03"
+set completion-group-bg      "#ebdbb2"
+set completion-group-fg      "#b57614"
+
+# Scrollbar / index-mode colors
+set index-bg                 "#fbf1c7"
+set index-fg                 "#3c3836"
+set index-active-bg          "#d5c4a1"
+set index-active-fg          "#af3a03"
+
+# -----------------------------------------------------------------------------
+# Misc
+# -----------------------------------------------------------------------------
+# Don't keep clutter
+set database "sqlite"
+set window-title-basename     "true"
+set selection-clipboard       "clipboard"
