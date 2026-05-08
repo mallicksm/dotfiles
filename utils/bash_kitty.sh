@@ -133,3 +133,58 @@ EOF
          ;;
    esac
 }
+
+#-------------------------------------------------------------------------------
+# tabname - rename the current kitty tab from any window inside it
+#
+# Sets a manual override on the focused tab's title via kitty's remote
+# control facility. The override stays until the active program writes
+# its own title (vim, less, etc. typically do) -- if you want truly
+# sticky, also bind a shell prompt that doesn't keep retitling.
+#
+# Requires `allow_remote_control yes` in kitty.conf (or socket-only with
+# $KITTY_LISTEN_ON set up). The wrapper detects the missing permission
+# and prints a clear error rather than failing silently.
+#
+# Usage:
+#   tabname work               # rename current tab to "work"
+#   tabname some long phrase   # joins all args with spaces
+#   tabname                    # interactive prompt for the title
+#   tabname -r                 # reset (kitty resumes inferring from program)
+#   tabname -h                 # show help
+#-------------------------------------------------------------------------------
+function tabname() {
+   if [[ -z ${KITTY_WINDOW_ID:-} ]]; then
+      echo "tabname: not running inside a kitty terminal" >&2
+      return 1
+   fi
+
+   local title
+   case "${1:-}" in
+      -h|--help)
+         cat <<'EOF'
+Usage: tabname [title...]    set tab title from args (joined with spaces)
+       tabname               prompt for title
+       tabname -r            reset; kitty resumes inferring from active program
+       tabname -h            this help
+EOF
+         return 0
+         ;;
+      -r|--reset)
+         title=""
+         ;;
+      "")
+         read -rp 'New tab title: ' title
+         ;;
+      *)
+         title="$*"
+         ;;
+   esac
+
+   # `--` guards against titles starting with `-` being parsed as flags by `kitty @`.
+   if ! kitty @ set-tab-title -- "$title" 2>/dev/null; then
+      echo "tabname: failed -- enable 'allow_remote_control yes' in kitty.conf and reload (cs+f5 won't be enough; needs new kitty)" >&2
+      return 1
+   fi
+}
+export -f tabname
