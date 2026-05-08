@@ -63,9 +63,21 @@ OS WINDOWS / FONT ────────────────────�
   cs+-              smaller font
   cs+0              reset font size                    (your remap)
 
-OPACITY  (only if dynamic_background_opacity is on) ─────────────────────────
+OPACITY  (dynamic_background_opacity is now ON; default = 0.9) ─────────────
   cs+a, m / cs+a, l increase / decrease background opacity
   cs+a, 1 / cs+a, d force opaque / reset to config default
+
+DECORATIONS  (visible cues, no keybindings -- just so you know what changed)
+  active split      purple  (#bd93f9) 2pt border on the focused split
+  inactive splits   slate   (#3a3c4e) border + text dimmed to 0.85 alpha
+  bell border       pink    (#ff79c6) when an inactive window rings
+  tab bar           hidden when only 1 tab; angled (>) powerline separators
+                    each tab pinned to 20-cell width (no bouncing)
+                    right side shows: cwd | host | HH:MM   (muted slate fg)
+                    custom drawer: ~/dotfiles/initrc/kitty/tab_bar.py
+  titlebar          shown (default) -- WM provides drag/close/min/max
+  background        90% opaque + 20-radius blur (compositor-dependent on X11)
+                    cs+a,d to reset, cs+a,1 for fully opaque
 
 META  (your "i forgot" panic buttons) ───────────────────────────────────────
   cs+/    cs+f1     show this cheatsheet
