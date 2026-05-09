@@ -228,7 +228,7 @@ function rgrep () {
           --bind 'ctrl-/:change-preview-window(down|hidden|)' \
           --color header:italic \
           --header-first \
-          --header "ripgrep [one-shot: '$query'${type_arg:+, $type_arg}] | F1=chx F2=vsv F3=py F4=tcl F5=mk F6=all | Enter=open | CTRL-/=preview"
+          --header "ripgrep [one-shot: '$query'${type_arg:+, $type_arg}] | F1=chx F2=vsv F3=py F4=tcl F5=mk F6=all | Enter=open | CTRL-/=preview  (<esc> to quit)"
       return
    fi
 
@@ -276,5 +276,5 @@ function rgrep () {
        --bind 'ctrl-/:change-preview-window(down|hidden|)' \
        --color header:italic \
        --header-first \
-       --header 'ripgrep [live: shallow files | type to grep | F1=chx F2=vsv F3=py F4=tcl F5=mk F6=all | Enter=open | CTRL-/=preview]'
+       --header 'ripgrep [live: shallow files | type to grep | F1=chx F2=vsv F3=py F4=tcl F5=mk F6=all | Enter=open | CTRL-/=preview]  (<esc> to quit)'
 }

@@ -32,13 +32,13 @@ export FZF_CTRL_T_OPTS="
    --bind 'ctrl-/:change-preview-window(down|hidden|)'
    --bind 'enter:become(bash -c \"vi {} < /dev/tty > /dev/tty\")'
    --color header:italic
-   --header 'File explorer  |  Enter=open in nvim  |  CTRL-/=toggle preview'"
+   --header 'File explorer  |  Enter=open in nvim  |  CTRL-/=toggle preview  (<esc> to quit)'"
 
 export FZF_CTRL_R_OPTS="
    --preview 'echo {}' --preview-window up:3:hidden:wrap
    --bind 'ctrl-/:toggle-preview'
    --color header:italic
-   --header 'History search  |  Enter=paste at prompt  |  CTRL-/=toggle preview'"
+   --header 'History search  |  Enter=paste at prompt  |  CTRL-/=toggle preview  (<esc> to quit)'"
 
 # Alt+C / fuzzy-cd vars -- DEAD. The binding is unbound below; these vars
 # were only consumed by `__fzf_cd__` which `\ec` wraps. Kept here, commented,
