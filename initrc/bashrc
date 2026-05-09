@@ -20,6 +20,13 @@ if [[ $- == *i* ]]; then
    bind '"\e[B": history-search-forward'
    bind '"\e[C": forward-char'
    bind '"\e[D": backward-char'
+
+   # Disable vi-edit-and-execute-command on `v` in vi-command mode.
+   # `set -o vi` above puts readline in vi mode; Alt+v sends Esc-v which
+   # enters command mode then fires `v`, which would launch $EDITOR on a
+   # /tmp/bash-fc.XXXXXX scratch file -- looks like a random file opening
+   # out of nowhere. Rebound to a harmless no-op redraw.
+   bind -m vi-command '"v": redraw-current-line'
 fi
 
 export HISTCONTROL=ignoredups:erasedups
