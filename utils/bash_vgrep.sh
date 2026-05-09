@@ -226,6 +226,8 @@ function rgrep () {
           --bind "f6:reload:$rg_base                -- $q_quoted || true" \
           --bind 'enter:become(vi {1} +{2})' \
           --bind 'ctrl-/:change-preview-window(down|hidden|)' \
+          --color header:italic \
+          --header-first \
           --header "ripgrep [one-shot: '$query'${type_arg:+, $type_arg}] | F1=chx F2=vsv F3=py F4=tcl F5=mk F6=all | Enter=open | CTRL-/=preview"
       return
    fi
@@ -272,5 +274,7 @@ function rgrep () {
        --bind "f6:reload:$f6_cmd" \
        --bind 'enter:become(__rgrep_open {})' \
        --bind 'ctrl-/:change-preview-window(down|hidden|)' \
+       --color header:italic \
+       --header-first \
        --header 'ripgrep [live: shallow files | type to grep | F1=chx F2=vsv F3=py F4=tcl F5=mk F6=all | Enter=open | CTRL-/=preview]'
 }
