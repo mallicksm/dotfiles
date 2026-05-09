@@ -1,5 +1,13 @@
 #-------------------------------------------------------------------------------
 # Note: fzf
+#
+# Most of this file was copied verbatim from `~/.fzf/install` and lightly
+# tweaked over time. Of the three keybindings fzf installs by default:
+#   Ctrl+R -> history fuzzy search    (actually used; kept)
+#   Ctrl+T -> file picker             (never used at Ctrl+T -- rebound to Ctrl+E below)
+#   Alt+C  -> fuzzy cd                (never used -- have z, b, cd.., cd_func)
+# See the "Personal rebinds" block at the bottom for the real key map.
+#-------------------------------------------------------------------------------
 # Configuration
 # -------------
 # Auto-completion
@@ -14,6 +22,9 @@ source "${HOME}/.fzf/shell/key-bindings.bash"
 export FZF_DEFAULT_COMMAND="fd --type f --follow --exclude '.git'"
 export FZF_DEFAULT_OPTS='--height 100% --layout=reverse --border=double --margin=1 --padding=1 --multi --inline-info'
 
+# These FZF_CTRL_T_* vars are read by `fzf-file-widget` regardless of which
+# key triggers it -- the variable name is fzf-internal, not the actual chord.
+# In this config they back the Ctrl+E rebinding below.
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="
    --height 100% 
@@ -29,12 +40,15 @@ export FZF_CTRL_R_OPTS="
    --color header:italic
    --header 'Press CTRL-/ to toggle preview'"
 
-export FZF_ALT_C_COMMAND="fd --type d . --color=never --hidden --exclude '.git'"
-export FZF_ALT_C_OPTS="
-   --preview 'tree -C {}'
-   --bind 'ctrl-/:toggle-preview'
-   --color header:italic
-   --header 'Press CTRL-/ to toggle preview'"
+# Alt+C / fuzzy-cd vars -- DEAD. The binding is unbound below; these vars
+# were only consumed by `__fzf_cd__` which `\ec` wraps. Kept here, commented,
+# so the recipe survives if I ever want to re-enable fuzzy directory jump.
+# export FZF_ALT_C_COMMAND="fd --type d . --color=never --hidden --exclude '.git'"
+# export FZF_ALT_C_OPTS="
+#    --preview 'tree -C {}'
+#    --bind 'ctrl-/:toggle-preview'
+#    --color header:italic
+#    --header 'Press CTRL-/ to toggle preview'"
 
 export FZF_TMUX=1
 # for more info see fzf/shell/completion.zsh
@@ -59,3 +73,31 @@ _fzf_comprun() {
    *)            fzf "$@" ;;
   esac
 }
+
+#-------------------------------------------------------------------------------
+# Personal rebinds: replace the fzf installer's default chords with what my
+# fingers actually reach for. These run AFTER the `source key-bindings.bash`
+# above, so they override whatever fzf installed.
+#-------------------------------------------------------------------------------
+
+# Ctrl+E ("E for Edit") -> fzf file picker (preview via bat, Enter opens in
+# the `vi` wrapper from bash_nvim.sh). Bound only in vi modes; emacs-standard
+# keeps its default end-of-line so Ctrl+Z (toggle to emacs editing) still
+# behaves normally.
+bind -m vi-insert  -x '"\C-e": fzf-file-widget'
+bind -m vi-command -x '"\C-e": fzf-file-widget'
+
+# Drop the fzf installer's bindings I never use:
+#   Ctrl+T -> file picker  (replaced by Ctrl+E above; dual binding would confuse)
+#   Alt+C  -> fuzzy cd     (redundant with z, b, cd.., bash_cd_func.sh)
+#
+# Note: `bind -r` only removes MACRO bindings, not `-x` execute-command
+# bindings, on bash 4.4 (RHEL 8). fzf installs Ctrl+T as `-x`, so a plain
+# `bind -r` silently no-ops on it. Workaround: overwrite both with `-x`
+# bindings that run the no-op `:` builtin. \ec needs both treatments
+# because fzf installs it as a macro in vi modes and as an -x macro in
+# emacs-standard.
+for keymap in vi-insert vi-command emacs-standard; do
+   bind -m "$keymap" -x '"\C-t": :'
+   bind -m "$keymap" -x '"\ec":  :'
+done
