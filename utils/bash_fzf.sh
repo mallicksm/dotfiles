@@ -32,13 +32,13 @@ export FZF_CTRL_T_OPTS="
    --bind 'ctrl-/:change-preview-window(down|hidden|)'
    --bind 'enter:become(bash -c \"vi {} < /dev/tty > /dev/tty\")'
    --color header:italic
-   --header 'Press CTRL-/ to toggle preview'"
+   --header 'File explorer  |  Enter=open in nvim  |  CTRL-/=toggle preview'"
 
 export FZF_CTRL_R_OPTS="
    --preview 'echo {}' --preview-window up:3:hidden:wrap
    --bind 'ctrl-/:toggle-preview'
    --color header:italic
-   --header 'Press CTRL-/ to toggle preview'"
+   --header 'History search  |  Enter=paste at prompt  |  CTRL-/=toggle preview'"
 
 # Alt+C / fuzzy-cd vars -- DEAD. The binding is unbound below; these vars
 # were only consumed by `__fzf_cd__` which `\ec` wraps. Kept here, commented,
@@ -86,6 +86,13 @@ _fzf_comprun() {
 # behaves normally.
 bind -m vi-insert  -x '"\C-e": fzf-file-widget'
 bind -m vi-command -x '"\C-e": fzf-file-widget'
+
+# Ctrl+G ("G for grep") -> live ripgrep + fzf with type-filter hotkeys.
+# Defined in ~/dotfiles/utils/bash_vgrep.sh (function rgrep). F1-F6 inside
+# fzf swap the type filter; Enter opens the matched line in nvim.
+# Note: overrides bash readline default Ctrl+G (vi: clear-pending-vi-cmd).
+bind -m vi-insert  -x '"\C-g": rgrep'
+bind -m vi-command -x '"\C-g": rgrep'
 
 # Drop the fzf installer's bindings I never use:
 #   Ctrl+T -> file picker  (replaced by Ctrl+E above; dual binding would confuse)

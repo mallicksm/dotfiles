@@ -15,3 +15,20 @@
 !emu-soummya-*
 --glob
 !run-soummya-*
+
+# Custom type groups -- usable as `rg --type <name>` or via the `rgrep` shell
+# function (in ~/dotfiles/utils/bash_vgrep.sh). Names chosen to NOT shadow
+# rg's built-in types (use `rg --type-list` to see those).
+#
+# chx     broad C/C++  (rg's built-in `c` is .c/.h only)
+# vsv     verilog + systemverilog combined (broader than rg defaults)
+# tclqel  TCL family used in this codebase
+# mk      makefiles in any common name
+--type-add
+chx:*.c,*.h,*.cpp,*.hpp,*.S,*.cc,*.cxx,*.hxx,*.cppm,*.ipp
+--type-add
+vsv:*.v,*.vh,*.sv,*.svh,*.svp,*.vp,*.vhd,*.vhdl
+--type-add
+tclqel:*.tcl,*.qel,*.fs
+--type-add
+mk:*.mk,Makefile,makefile,GNUmakefile,*.gmk
