@@ -16,10 +16,17 @@ if [[ $- == *i* ]]; then
    shopt -s cdable_vars
    shopt -s autocd
    shopt -s direxpand
-   bind '"\e[A": history-search-backward'  # sane arrow keys
-   bind '"\e[B": history-search-forward'
-   bind '"\e[C": forward-char'
-   bind '"\e[D": backward-char'
+   # Arrow keys (vi-insert keymap, the default at prompt under `set -o vi`).
+   # \e[A/B/C/D are the standard xterm escape sequences for Up/Down/Right/Left.
+   # Rebinding Up/Down to history-SEARCH (vs the default cycle-all-history)
+   # means: type a prefix, press Up, and only history entries starting with
+   # that prefix surface. Way faster than scrolling through everything.
+   # Left/Right are bound to their defaults explicitly -- not strictly needed,
+   # but kept so the four arrow keys are documented together as a unit.
+   bind '"\e[A": history-search-backward'   # Up    -> filtered history back
+   bind '"\e[B": history-search-forward'    # Down  -> filtered history fwd
+   bind '"\e[C": forward-char'              # Right -> cursor right (default)
+   bind '"\e[D": backward-char'             # Left  -> cursor left  (default)
 
    # Disable vi-edit-and-execute-command on `v` in vi-command mode.
    # `set -o vi` above puts readline in vi mode; Alt+v sends Esc-v which
