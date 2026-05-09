@@ -265,6 +265,11 @@ default_layout "def"
 //   - true (default)
 //   - false
 //
+// Left at default (true) so zellij's mouse features stay alive: click pane
+// to focus, click tab to switch, drag pane border to resize, scroll wheel
+// per-pane. Trade-off: text selection inside a pane requires Shift+drag
+// (kitty's standard "bypass app mouse mode" modifier) instead of plain drag.
+//
 // mouse_mode false
 
 // Configure the scroll back buffer size
@@ -281,6 +286,13 @@ scroll_buffer_size 10000
 // that will be used by default if this option is not set.
 // Examples:
 //
+// copy_command intentionally unset. Tried both `xclip -selection clipboard`
+// (failed silently because zellij doesn't propagate $DISPLAY to children)
+// and `kitten clipboard` (zellij swallows OSC 52, and the kitty IPC socket
+// path requires a multi-step kitty/zellij restart dance to plumb through).
+// Decision: rely on Shift+drag to bypass zellij and let kitty handle the
+// selection natively (kitty's `copy_on_select clipboard` puts it in the
+// system clipboard). Standard tmux/zellij convention.
 //copy_command "xclip -selection clipboard" // x11
 // copy_command "wl-copy"                    // wayland
 // copy_command "pbcopy"                     // osx
