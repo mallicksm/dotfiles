@@ -29,16 +29,15 @@ vim.api.nvim_create_autocmd('BufReadCmd', {
       vim.bo.readonly = true
 
       -- NB: use jobstart (not vim.ui.open / vim.system) so the child doesn't
-      -- inherit captured pipes that some viewers (evince in particular) trip
-      -- on with "magick shim / Image conversion failed" thumbnailer warnings.
-      -- Plain shell `xdg-open foo.pdf` is clean because stdio is just the
-      -- tty -- jobstart+detach mirrors that.
+      -- inherit captured pipes that some viewers trip on with thumbnailer
+      -- warnings. Plain shell `xdg-open foo.pdf` is clean because stdio is
+      -- just the tty -- jobstart+detach mirrors that.
       --
       -- On Linux, launch zathura via the ~/.local/bin/zathura wrapper
-      -- (which sets ZATHURA_PLUGINS_PATH for the EPEL-9 plugin and exec's
-      -- the patched binary -- see ~/.local/README.md and the wrapper itself
-      -- for the patchelf / glibc-2.40 setup). To switch back to evince,
-      -- replace 'zathura' with vim.fn.expand('~/dotfiles/utils/pdf-evince').
+      -- (sets ZATHURA_PLUGINS_PATH for the EPEL-9 plugin and exec's the
+      -- patched binary -- see ~/.local/README.md and the wrapper itself
+      -- for the patchelf / glibc-2.40 setup). To use a different viewer,
+      -- swap 'zathura' below for whatever's in PATH.
       local cmd
       if vim.fn.has('mac') == 1 then
          cmd = { 'open', fname }
