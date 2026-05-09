@@ -2,6 +2,19 @@
 # Note: cd/cd_up/cd_func
 # cd up to n dirs
 # using:  cd.. 10   cd.. dir
+#-------------------------------------------------------------------------------
+
+# CDPATH: directories `cd` searches when given a relative path (no leading /).
+# Order matters -- bash searches them in order and stops at the first match.
+#   .                                    -> cwd first (cwd-relative wins)
+#   $HOME                                -> `cd dotfiles` -> ~/dotfiles
+#   /project/bugatti/users/$USER         -> `cd <whatever>` for user-level project files
+#   /project/bugatti/users/$USER/sparews -> `cd serdes`, `cd dw_ss_DWC...` etc. (workspace IPs)
+# Built incrementally with += for clarity; one concept per line, easy to add/remove.
+export CDPATH=".:$HOME"
+CDPATH+=":/project/bugatti/users/$USER"
+CDPATH+=":/project/bugatti/users/$USER/sparews"
+
 function cd () {
    # replace "builtin cd" with cd_func() to enable "cd with history"
    if [ -n "$1" ]; then
@@ -44,9 +57,33 @@ function cd_func () {
    # '~' has to be substituted by ${HOME}
    [[ ${the_new_dir:0:1} == '~' ]] && the_new_dir="${HOME}${the_new_dir:1}"
    if [[  -v ${the_new_dir} ]]; then
-      the_new_dir=${!the_new_dir};# handle cdable_vars 
+      the_new_dir=${!the_new_dir};# handle cdable_vars
    fi
-   [[ ! -d $the_new_dir ]] && { echo bash: cd: $the_new_dir: No such file or directory;return 1; }
+
+   # CDPATH-aware existence check.
+   # Plain bash builtin `cd` consults $CDPATH when the argument is a bare
+   # name (no leading /, ./, or ../). Our [ -d ] check above defeats that
+   # because it tests the literal arg against cwd only -- so without this
+   # block, `cd dotfiles` from /tmp would error out before Pushd is ever
+   # called. Walk $CDPATH explicitly here, mirroring bash's own semantics.
+   if [[ ! -d $the_new_dir ]]; then
+      case $the_new_dir in
+         /*|./*|../*) ;;     # absolute / relative-with-dot: no CDPATH search
+         *)
+            local _d _found=""
+            local IFS=:
+            for _d in $CDPATH; do
+               if [[ -d "$_d/$the_new_dir" ]]; then
+                  the_new_dir="$_d/$the_new_dir"
+                  _found=1
+                  break
+               fi
+            done
+            [[ -n $_found ]] || { echo "bash: cd: $1: No such file or directory"; return 1; }
+            ;;
+      esac
+      [[ -d $the_new_dir ]] || { echo "bash: cd: $1: No such file or directory"; return 1; }
+   fi
    #
    # Now change to the new dir and add to the top of the stack
    Pushd "${the_new_dir}"
