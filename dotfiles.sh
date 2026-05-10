@@ -9,8 +9,9 @@
 # Description: dotfiles executor to setup Unix environment.
 #
 #===============================================================================
+# shellcheck source=utils/bash_snippets.sh
 source ~/dotfiles/utils/bash_snippets.sh 2> /dev/null
-cdir=$(dirname $(realpath $0))
+cdir=$(dirname "$(realpath "$0")")
 
 #-------------------------------------------------------------------------------
 # --dry-run / -n : show every filesystem change without performing it.
@@ -135,24 +136,39 @@ function install_zvim() {
    linkup ~/dotfiles/utils/zvim ~/.local/bin/zvim
 }
 #-------------------------------------------------------------------------------
+# shellcheck disable=SC2120  # invoked via dispatcher; args optional
 function zellij() {
-   if [[ $2 == "-f" ]]; then
-      force="yes"
-   fi
-   _dry_install "zellij  →  ~/.local/bin/zellij" && return
+   local force="" arg
+   for arg in "$@"; do
+      [[ "$arg" == "-f" || "$arg" == "--force" ]] && force="yes"
+   done
+   _dry_install "zellij  →  ~/.local/bin/zellij${force:+  (force)}" && return
    echo "Info: Installing zellij"
    if [[ $(uname -s) == "Linux" ]]; then
+      local src target tarball
       src="https://github.com/zellij-org/zellij/releases/latest/download/zellij-$(uname -m)-unknown-linux-musl.tar.gz"
       target=~/.local/bin/zellij
+      tarball="${src##*/}"
       if [[ (! -f $target) || ($force == "yes") ]]; then
-         Pushd "$(dirname $target)"
-         download "$src" && tar -xz -f "${src##*/}" && rm -f "${src##*/}" || echo "Info: Download failed"
+         mkdir -p "$(dirname "$target")"
+         Pushd "$(dirname "$target")"
+         if download "$src" && tar -xz -f "$tarball"; then
+            chmod +x "$target"
+            "$target" --version
+         else
+            echo "Info: zellij install failed (download or extract)"
+         fi
+         rm -f "$tarball"
          Popd
       else
-         echo "Info: Already Installed"
+         echo "Info: Already installed ($("$target" --version 2>/dev/null)). Pass -f to force reinstall."
       fi
    elif [[ $(uname -s) == "Darwin" ]]; then
-      brew install zellij
+      if [[ "$force" == "yes" ]]; then
+         brew reinstall zellij
+      else
+         brew install zellij
+      fi
    else
       echo "Attention: unsupported OS"
    fi
@@ -194,13 +210,14 @@ function getz() {
 function getstarship() {
    _dry_install "starship  →  ~/.local/bin/starship" && return
    echo "Info: Installing starship"
+   local src target tmpdir
    src=https://starship.rs/install.sh
    target=~/.local/bin/starship
-   mkdir -p $(dirname $target)
-   if [[ ! -f $target ]]; then
+   mkdir -p "$(dirname "$target")"
+   if [[ ! -f "$target" ]]; then
       tmpdir=$(mktemp -d)
       Pushd "$tmpdir"
-      download "$src" && sh "${src##*/}" -b $(dirname $target) || echo "Info: Download/install failed"
+      download "$src" && sh "${src##*/}" -b "$(dirname "$target")" || echo "Info: Download/install failed"
       Popd
       rm -rf "$tmpdir"
    fi
@@ -251,22 +268,24 @@ getnpm() {
 }
 
 #-------------------------------------------------------------------------------
+# shellcheck disable=SC2120  # invoked via dispatcher; args optional
 function all() {
    linkrc
    clang-format
    getz
    getstarship
-   zellij
+   zellij "$@"   # forward -f/--force through to the zellij installer
    install_zvim
    getfzf
 }
 
 echo "Executing ~/corp/dotfiles.sh if any.."
+# shellcheck source=/dev/null   # corp file may not exist on every host
 [[ -f ~/corp/dotfiles.sh ]] && source ~/corp/dotfiles.sh
 
-if [[ "$corp" == "" ]]; then
+if [[ -z "${corp:-}" ]]; then
    echo "Please export corp=xxx"
    exit
 fi
 
-${1:-all} $@
+"${1:-all}" "$@"

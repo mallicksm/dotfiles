@@ -13,7 +13,7 @@ function common_options () {
          ;;
    esac
 }
-declare -A helpstr=()
+declare -gA helpstr 2>/dev/null  # ensure global assoc array exists; do NOT reset
 helpstr["zm"]="\
    usage: zm [options|-h]
    create or attach to zellij session
