@@ -39,10 +39,37 @@ vim.keymap.set('n', '<leader>th', function()
    vim.notify('hlsearch = ' .. tostring(vim.opt.hlsearch:get()), vim.log.levels.INFO)
 end, { desc = '[T]oggle: [h]lsearch (global)' })
 
-vim.keymap.set('n', '<leader>tc', function()
+vim.keymap.set('n', '<leader>tC', function()
    vim.wo.cursorline = not vim.wo.cursorline
    vim.notify('cursorline = ' .. tostring(vim.wo.cursorline), vim.log.levels.INFO)
-end, { desc = '[T]oggle: [c]ursorline (current window)' })
+end, { desc = '[T]oggle: [C]ursorline (current window)' })
+
+-- <leader>tc cycles search case-sensitivity through the 3 useful states:
+--   sensitive    /Foo  matches  Foo            ignorecase=off, smartcase=off
+--   insensitive  /Foo  matches  Foo / foo / FOO ignorecase=on,  smartcase=off
+--   smart        /foo  matches  Foo / foo / FOO ignorecase=on,  smartcase=on
+--                /Foo  matches  Foo only       (uppercase => case-sensitive)
+-- Default (set in options.lua) is "smart". Pressing <leader>tc walks
+-- smart -> sensitive -> insensitive -> smart -> ...
+vim.keymap.set('n', '<leader>tc', function()
+   local ic = vim.opt.ignorecase:get()
+   local sc = vim.opt.smartcase:get()
+   local label
+   if ic and sc then           -- smart -> sensitive
+      vim.opt.ignorecase = false
+      vim.opt.smartcase  = false
+      label = 'sensitive'
+   elseif not ic then          -- sensitive -> insensitive
+      vim.opt.ignorecase = true
+      vim.opt.smartcase  = false
+      label = 'insensitive'
+   else                        -- insensitive -> smart
+      vim.opt.ignorecase = true
+      vim.opt.smartcase  = true
+      label = 'smart'
+   end
+   vim.notify('case: ' .. label, vim.log.levels.INFO)
+end, { desc = '[T]oggle: [c]ase  sensitive -> insensitive -> smart' })
 
 vim.keymap.set('n', '<leader>tr', function()
    vim.wo.relativenumber = not vim.wo.relativenumber
