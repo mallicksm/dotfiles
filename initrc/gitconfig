@@ -77,9 +77,6 @@
    side-by-side = true
    line-numbers = true
    file-style = bold yellow
-[merge]
-   conflictstyle = diff3
-   tool = meld
 ; Pane order matches delta's side-by-side convention: $LOCAL = old (pre-image)
 ; on the LEFT, $REMOTE = new (post-image) on the RIGHT.
 [difftool "vimdiff"]

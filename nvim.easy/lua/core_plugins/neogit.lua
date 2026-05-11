@@ -5,17 +5,6 @@ return {
       cmd = { 'Neogit' }, -- :Neogit (typed) loads the plugin
       keys = {
          { '<leader>gG', '<cmd>Neogit kind=auto<cr>', desc = 'Neogit: Git status CLI' },
-         {
-            '<leader>gd',
-            function()
-               if next(require('diffview.lib').views) == nil then
-                  vim.cmd('DiffviewOpen -uno')
-               else
-                  vim.cmd('DiffviewClose')
-               end
-            end,
-            desc = 'Diffview: toggle',
-         },
       },
       dependencies = {
          'nvim-lua/plenary.nvim',

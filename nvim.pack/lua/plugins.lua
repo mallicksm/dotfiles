@@ -136,6 +136,7 @@ require('plugins.markview')
 
 require('plugins.gitsigns')
 require('plugins.neogit')
+require('plugins.diffview')      -- after neogit so our setup() wins
 
 require('plugins.flash')
 require('plugins.kaleidosearch')

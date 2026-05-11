@@ -7,12 +7,5 @@ require('neogit').setup({
 })
 
 vim.keymap.set('n', '<leader>gG', '<cmd>Neogit kind=auto<cr>', { desc = 'Neogit: Git status CLI' })
-vim.keymap.set('n', '<leader>gd', function()
-   if next(require('diffview.lib').views) == nil then
-      vim.cmd('DiffviewOpen -uno')
-   else
-      vim.cmd('DiffviewClose')
-   end
-end, { desc = 'Diffview: toggle' })
 
 -- vim: ts=3 sts=3 sw=3 et
