@@ -1,6 +1,3 @@
--- Module-level state for the dim toggle (persists across `\f` presses).
-local dim_enabled = false
-
 return {
    'folke/snacks.nvim',
    priority = 1000,
@@ -14,23 +11,6 @@ return {
       { '<leader>T',  function() require('snacks').terminal() end,         desc = 'Snacks: Terminal: bash' },
       -- <leader>K for more info on cWORD snacks-bufdelete-table-of-contents
       { '<leader>bd', function() require('snacks').bufdelete() end,        desc = 'Delete Buffer' },
-      -- <leader>K for more info on cWORD snacks-dim-table-of-contents
-      {
-         '\\f',
-         function()
-            local snacks = require('snacks')
-            if dim_enabled then
-               snacks.dim.disable()
-               dim_enabled = false
-               vim.notify('Dimming disabled', vim.log.levels.INFO)
-            else
-               snacks.dim()
-               dim_enabled = true
-               vim.notify('Dimming enabled', vim.log.levels.INFO)
-            end
-         end,
-         desc = "Toggle 'focus/dim'",
-      },
    },
    opts = {
       -- snacks.bigfile: replaces our old `nvim.bare` wrapper trick. When a

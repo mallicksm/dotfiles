@@ -1,4 +1,4 @@
--- lualine -- statusline. Two layouts; \\\\ toggles between them via :LualineToggle.
+-- lualine -- statusline.
 local lualine = require('lualine')
 
 local clients_lsp = function()
@@ -47,23 +47,6 @@ local default_config = {
       lualine_b = {}, lualine_c = {}, lualine_x = {}, lualine_y = {}, lualine_z = {},
    },
 }
-
-local alternate_config = {
-   sections = {
-      lualine_b = { 'branch' },
-      lualine_c = { { 'filename', path = 3 } },
-      lualine_x = {},
-   },
-}
-
--- :LualineToggle swaps between layouts. Used by the `\\\\` keymap below.
-local active_config = default_config
-vim.api.nvim_create_user_command('LualineToggle', function()
-   active_config = active_config == default_config and alternate_config or default_config
-   lualine.setup(active_config)
-end, { desc = 'Toggle lualine between default and alternate layouts' })
-
-vim.keymap.set('n', '\\\\', '<cmd>LualineToggle<cr>', { desc = "Toggle 'lualine' layout" })
 
 lualine.setup(default_config)
 

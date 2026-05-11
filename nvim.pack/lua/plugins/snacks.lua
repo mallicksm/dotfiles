@@ -42,23 +42,10 @@ require('snacks').setup({
    },
 })
 
--- Module-level so toggle persists across `\f` presses.
-local dim_enabled = false
-
 vim.keymap.set('n', '<leader>gf', function() require('snacks').lazygit.log_file() end, { desc = 'Snacks: git log for current file' })
 vim.keymap.set('n', '<leader>gl', function() require('snacks').lazygit.log() end,      { desc = 'Snacks: git log' })
 vim.keymap.set('n', '<leader>gg', function() require('snacks').lazygit() end,          { desc = 'Snacks: Lazygit: tui' })
 vim.keymap.set('n', '<leader>T',  function() require('snacks').terminal() end,         { desc = 'Snacks: Terminal: bash' })
 vim.keymap.set('n', '<leader>bd', function() require('snacks').bufdelete() end,        { desc = 'Delete Buffer' })
-vim.keymap.set('n', '\\f', function()
-   local snacks = require('snacks')
-   if dim_enabled then
-      snacks.dim.disable(); dim_enabled = false
-      vim.notify('Dimming disabled', vim.log.levels.INFO)
-   else
-      snacks.dim();         dim_enabled = true
-      vim.notify('Dimming enabled', vim.log.levels.INFO)
-   end
-end, { desc = "Toggle 'focus/dim'" })
 
 -- vim: ts=3 sts=3 sw=3 et

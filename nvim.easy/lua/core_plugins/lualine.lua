@@ -1,9 +1,6 @@
 return {
    'nvim-lualine/lualine.nvim',
    lazy = false, -- statusline: must load at startup, not on keypress
-   keys = {
-      { '\\\\', '<cmd>LualineToggle<cr>', desc = "Toggle 'lualine' layout" },
-   },
    config = function()
       local lualine = require('lualine')
       -- LSP clients attached to buffer
@@ -82,22 +79,6 @@ return {
             lualine_z = {},
          },
       }
-      local alternate_config = {
-         sections = {
-            lualine_b = { 'branch' },
-            lualine_c = { { 'filename', path = 3 } },
-            lualine_x = {},
-         },
-      }
-      -- :LualineToggle swaps between default and alternate layouts. Used by
-      -- the `\\\\` keymap (lua/keymaps.lua). Exposed as a user command instead
-      -- of a global function so keymaps.lua doesn't depend on load order.
-      local active_config = default_config
-      vim.api.nvim_create_user_command('LualineToggle', function()
-         active_config = active_config == default_config and alternate_config or default_config
-         lualine.setup(active_config)
-      end, { desc = 'Toggle lualine between default and alternate layouts' })
-
       lualine.setup(default_config)
    end,
 }

@@ -32,20 +32,6 @@ vim.keymap.set('n', '<C-Right>', '"<Cmd>vertical resize +" . v:count1 . "<CR>"',
 vim.keymap.set('n', '<C-Down>',  '"<Cmd>resize -"          . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Decrease window height' })
 vim.keymap.set('n', '<C-Up>',    '"<Cmd>resize +"          . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Increase window height' })
 
--- \B toggles vim's background option (light <-> dark).
-vim.keymap.set('n', '\\B', function()
-   vim.o.background = vim.o.background == 'dark' and 'light' or 'dark'
-end, { desc = "Toggle 'background color'" })
-
--- \t prints lazy.nvim startup stats (handy when debugging plugin load times).
-vim.keymap.set('n', '\\t', function()
-   local stats = require('lazy').stats()
-   vim.notify(
-      'Neovim started in ' .. stats.startuptime .. 'ms with ' .. stats.count .. ' plugins.',
-      vim.log.levels.INFO
-   )
-end, { noremap = true, silent = true, desc = "Show 'startup time'" })
-
 -- <leader>K: man / :help / xdg-open dispatch on <cWORD>. Logic in utils/.
 vim.keymap.set('n', '<leader>K', function()
    require('utils.smart_open').open()
