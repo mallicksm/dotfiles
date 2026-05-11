@@ -26,6 +26,29 @@ vim.keymap.set('n', '<leader>l', '<C-w><C-l>', { desc = 'Nav: right window' })
 vim.keymap.set('n', '<leader>j', '<C-w><C-j>', { desc = 'Nav: lower window' })
 vim.keymap.set('n', '<leader>k', '<C-w><C-k>', { desc = 'Nav: upper window' })
 
+-- <leader>t* -- option toggles, scoped to current window when sensible.
+-- Window-local (vim.wo) toggles only affect the active split; global ones
+-- (vim.opt) affect every window.
+vim.keymap.set('n', '<leader>tw', function()
+   vim.wo.wrap = not vim.wo.wrap
+   vim.notify('wrap = ' .. tostring(vim.wo.wrap), vim.log.levels.INFO)
+end, { desc = '[T]oggle: [w]rap (current window)' })
+
+vim.keymap.set('n', '<leader>th', function()
+   vim.opt.hlsearch = not vim.opt.hlsearch:get()
+   vim.notify('hlsearch = ' .. tostring(vim.opt.hlsearch:get()), vim.log.levels.INFO)
+end, { desc = '[T]oggle: [h]lsearch (global)' })
+
+vim.keymap.set('n', '<leader>tc', function()
+   vim.wo.cursorline = not vim.wo.cursorline
+   vim.notify('cursorline = ' .. tostring(vim.wo.cursorline), vim.log.levels.INFO)
+end, { desc = '[T]oggle: [c]ursorline (current window)' })
+
+vim.keymap.set('n', '<leader>tr', function()
+   vim.wo.relativenumber = not vim.wo.relativenumber
+   vim.notify('relativenumber = ' .. tostring(vim.wo.relativenumber), vim.log.levels.INFO)
+end, { desc = '[T]oggle: [r]elativenumber (current window)' })
+
 -- Window resize via Ctrl+Arrow. v:count1 lets `5<C-Right>` widen by 5.
 vim.keymap.set('n', '<C-Left>',  '"<Cmd>vertical resize -" . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Decrease window width' })
 vim.keymap.set('n', '<C-Right>', '"<Cmd>vertical resize +" . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Increase window width' })

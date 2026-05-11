@@ -13,12 +13,6 @@ vim.opt_local.breakindent  = true
 vim.opt_local.textwidth    = 0   -- jira renders prose unconstrained; don't auto-wrap on save
 vim.opt_local.conceallevel = 0   -- show wiki markup ({code}, !img!, h2., etc.) literally
 
--- <leader>tw toggles wrap for THIS buffer (mirrors markdown ftplugin).
-vim.keymap.set('n', '<leader>tw', function()
-   vim.wo.wrap = not vim.wo.wrap
-   vim.notify('wrap = ' .. tostring(vim.wo.wrap), vim.log.levels.INFO)
-end, { buffer = true, desc = 'Toggle wrap (this buffer)' })
-
 ----------------------------------------------------------------------------
 -- <leader>jp = "jira post": send the current buffer's contents as a comment
 -- to a Jira issue you'll be prompted for. Wraps ~/.local/bin/jira-comment.

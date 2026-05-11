@@ -7,12 +7,6 @@ vim.opt_local.wrap = false
 vim.opt_local.linebreak = true
 vim.opt_local.breakindent = true
 
--- <leader>tw toggles wrap for THIS buffer (tables: nowrap; prose: wrap).
-vim.keymap.set('n', '<leader>tw', function()
-   vim.wo.wrap = not vim.wo.wrap
-   vim.notify('wrap = ' .. tostring(vim.wo.wrap), vim.log.levels.INFO)
-end, { buffer = true, desc = 'Toggle wrap (this buffer)' })
-
 ----------------------------------------------------------------------------
 -- Pretty-print caption / note prefixes via mini.hipatterns (markdown only).
 --   Table 2-3: ...   -> aqua badge
