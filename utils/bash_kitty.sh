@@ -19,7 +19,8 @@ export KITTY_CONFIG_DIRECTORY=~/dotfiles/initrc/kitty
 #   kktheme catppuccin                # fuzzy-picks among the 4 Catppuccins
 #   kktheme mocha                     # one match -> applied directly
 #   kktheme tokyo_night_storm         # exact name -> applied directly
-#   kktheme original                  # restore committed dracula-pro.conf
+#   kktheme original                  # restore your saved original-theme.conf
+#   kktheme save                      # snapshot current-theme.conf -> original-theme.conf
 #   kktheme list                      # interactive picker w/ live preview
 #   kktheme -h                        # this help
 #-------------------------------------------------------------------------------
@@ -28,14 +29,19 @@ function kktheme() {
       ""|-h|--help|help)
          cat <<'EOF'
 Usage: kktheme <theme-or-fuzzy-query>
-  Switch kitty theme. Catalog themes update the current AND future windows.
-  Local-file shortcuts (original/dracula) update future windows only — press
-  cs+f5 (kitty default = load_config_file) to reload the current window.
+  Switch kitty theme. Catalog themes (kitten themes) update current AND
+  future windows. Local-file shortcuts (original/dracula) cp the file over
+  current-theme.conf and live-retone every window via 'kitty @ set-colors'
+  (auto-fallback to "press cs+f5" if remote control is off).
 
-  kktheme original           Restore your saved Dracula Pro from the repo
-                            (current window: press cs+f5 to reload)
-  kktheme dracula            Vanilla Dracula from the repo
-                            (current window: press cs+f5 to reload)
+  kktheme original           Restore the saved snapshot in original-theme.conf
+                            (auto-retones every kitty window if remote
+                            control is on; otherwise press cs+f5 to reload).
+  kktheme save               Snapshot the CURRENT theme into original-theme.conf
+                            so 'kktheme original' rolls back to this state
+                            next time you fuck up. Backs up the previous
+                            snapshot as original-theme.conf.bak.
+  kktheme dracula            Vanilla Dracula from the repo (auto-retone too).
   kktheme list               Interactive kitten picker with LIVE palette
                             preview. Inside the picker: type letters to
                             filter, arrows to move, Enter to apply, Esc to
@@ -68,23 +74,49 @@ EOF
 
    local kdir=~/.config/kitty
    case "${1:-}" in
-      original|dracula-pro)
-         if [[ ! -f "$kdir/dracula-pro.conf" ]]; then
-            echo "Error: $kdir/dracula-pro.conf not found" >&2
+      original)
+         if [[ ! -f "$kdir/original-theme.conf" ]]; then
+            echo "kktheme: $kdir/original-theme.conf not found -- nothing to restore." >&2
+            echo "kktheme: run 'kktheme save' first to snapshot your current theme as the rollback target." >&2
             return 1
          fi
-         cp "$kdir/dracula-pro.conf" "$kdir/current-theme.conf"
-         echo "Set: Dracula Pro (your original).  New windows pick this up."
-         echo "Press cs+f5 to reload the current window."
+         cp "$kdir/original-theme.conf" "$kdir/current-theme.conf"
+         if kitty @ set-colors --all --configured 2>/dev/null; then
+            echo "kktheme: restored original-theme.conf and retoned all kitty windows."
+         else
+            echo "kktheme: copied original-theme.conf into current-theme.conf -- new windows will pick it up."
+            echo "kktheme: live retone failed; ensure 'allow_remote_control yes' in kitty.conf, or press cs+f5 in each window." >&2
+         fi
          ;;
       dracula)
          if [[ ! -f "$kdir/dracula.conf" ]]; then
-            echo "Error: $kdir/dracula.conf not found" >&2
+            echo "kktheme: $kdir/dracula.conf not found" >&2
             return 1
          fi
          cp "$kdir/dracula.conf" "$kdir/current-theme.conf"
-         echo "Set: Dracula (vanilla).  New windows pick this up."
-         echo "Press cs+f5 to reload the current window."
+         if kitty @ set-colors --all --configured 2>/dev/null; then
+            echo "kktheme: applied vanilla Dracula and retoned all kitty windows."
+         else
+            echo "kktheme: copied dracula.conf into current-theme.conf -- new windows will pick it up."
+            echo "kktheme: live retone failed; ensure 'allow_remote_control yes' in kitty.conf, or press cs+f5 in each window." >&2
+         fi
+         ;;
+      save|snapshot)
+         # Lock in the current `current-theme.conf` as the new 'original' --
+         # i.e. what `kktheme original` will restore. Backs up the previous
+         # snapshot to original-theme.conf.bak in case you want to reach back.
+         if [[ ! -f "$kdir/current-theme.conf" ]]; then
+            echo "kktheme: $kdir/current-theme.conf not found -- nothing to snapshot." >&2
+            return 1
+         fi
+         if [[ -f "$kdir/original-theme.conf" ]]; then
+            cp -f "$kdir/original-theme.conf" "$kdir/original-theme.conf.bak"
+         fi
+         cp "$kdir/current-theme.conf" "$kdir/original-theme.conf"
+         echo "kktheme: snapshotted current theme into $kdir/original-theme.conf"
+         echo "kktheme: 'kktheme original' will now restore THIS exact state."
+         [[ -f "$kdir/original-theme.conf.bak" ]] && \
+            echo "kktheme: previous snapshot saved as original-theme.conf.bak"
          ;;
       list|ls|pick)
          # Hand off to kitten's own interactive picker — it's the only thing
