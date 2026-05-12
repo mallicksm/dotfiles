@@ -86,11 +86,11 @@ vim.keymap.set('n', '<leader>tl', function()
    vim.notify('list = ' .. tostring(vim.wo.list), vim.log.levels.INFO)
 end, { desc = '[T]oggle: [l]ist chars (tabs/trailing/eol -- current window)' })
 
--- `tV` not `tc` (case=tc) and not `tC` (cursorline=tC). V = vertical bar.
-vim.keymap.set('n', '<leader>tV', function()
+-- `tv` not `tc` (case=tc) and not `tC` (cursorline=tC). v = vertical bar.
+vim.keymap.set('n', '<leader>tv', function()
    vim.wo.cursorcolumn = not vim.wo.cursorcolumn
    vim.notify('cursorcolumn = ' .. tostring(vim.wo.cursorcolumn), vim.log.levels.INFO)
-end, { desc = '[T]oggle: cursorcolumn ([V]ertical bar -- current window)' })
+end, { desc = '[T]oggle: cursorcolumn ([v]ertical bar -- current window)' })
 
 -- Diagnostics toggle is buffer-local via vim.diagnostic.{is_enabled,enable}.
 -- The 0.10+ API takes a boolean as the first arg; passing `not enabled`
