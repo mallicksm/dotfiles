@@ -49,6 +49,25 @@ return {
             view_history = "messages",
             view_search = "virtualtext",
          },
+         -- vim.notify() routing:
+         --   WARN / ERROR  -> nvim-notify (big top-right popup, demands attention)
+         --   INFO / DEBUG  -> mini view   (small bottom-right toast, fades in ~2s)
+         -- The default for `notify.view` is "notify" already; we override per-call
+         -- via the route below using a `cond` filter on message.level.
+         notify = {
+            enabled = true,
+            view = "notify",
+         },
+         views = {
+            -- Tighten the mini view a bit: bottom-right, short timeout, no border.
+            -- (These are the noice defaults for "mini" plus an explicit timeout.)
+            mini = {
+               timeout = 2000,
+               position = { row = -2, col = "100%" }, -- 2 rows above cmdline, right edge
+               border = { style = "none" },
+               win_options = { winblend = 30 }, -- semi-transparent
+            },
+         },
          routes = {
             {
                --[[ only Push "User: " output to popup ]]
@@ -70,6 +89,18 @@ return {
                      { find = '; before #%d+' },
                      { find = 'yanked' },
                   },
+               },
+               view = "mini",
+            },
+            {
+               -- vim.notify(..., INFO/DEBUG/TRACE) -> mini (bottom-right toast)
+               -- WARN/ERROR fall through to the default `notify` view above.
+               filter = {
+                  event = "notify",
+                  cond = function(message)
+                     local lvl = message.level
+                     return lvl == "info" or lvl == "debug" or lvl == "trace"
+                  end,
                },
                view = "mini",
             },
