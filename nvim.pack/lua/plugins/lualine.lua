@@ -24,7 +24,9 @@ local default_config = {
       theme              = 'dracula',
       component_separators = { left = '\u{2016}', right = '\u{2016}' },
       disabled_filetypes = {
-         statusline = { 'neo-tree', 'undotree', 'diff', 'Outline' },
+         -- 'nvim-undotree' is the filetype set by nvim 0.12's built-in undotree
+         -- (mbbill/undotree, now removed, used 'undotree').
+         statusline = { 'neo-tree', 'nvim-undotree', 'diff', 'Outline' },
       },
    },
    sections = {

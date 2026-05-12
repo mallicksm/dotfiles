@@ -33,7 +33,7 @@ return {
             disabled_filetypes = {
                statusline = {
                   "neo-tree",
-                  "undotree",
+                  "nvim-undotree", -- nvim 0.12 built-in undotree (mbbill set 'undotree')
                   "diff",
                   "Outline",
                },

@@ -1,23 +1,41 @@
+-- Built-in nvim 0.12+ undotree plugin.
+--
+-- The actual code ships in $VIMRUNTIME/pack/dist/opt/nvim.undotree/ (opt
+-- means "load on demand via :packadd"). Lazy.nvim manages it via the
+-- `dir = ...` field pointing at the runtime path -- nothing is fetched
+-- from GitHub, but lazy still adds it to runtimepath and lazy-loads it
+-- on cmd / key. First press of <leader>ou pulls in ~400 lines of pure Lua.
+--
+-- Differences vs the old mbbill/undotree:
+--   - Tree-only view (no diff pane below). For a diff, do `:DiffOrig`
+--     or open a fugitive `:Gvdiffsplit` against the saved buffer.
+--   - Cursor movement in the tree window auto-applies the corresponding
+--     undo state via `:undo {seq}` -- no <CR> needed.
+--   - Auto-redraws on TextChanged / InsertLeave.
+--   - `q` closes the side window (default Nvim behavior on nofile bufs).
+--
+-- Replaces mbbill/undotree (removed from spec list).
 return {
-   'mbbill/undotree',
-   cmd = { 'UndotreeToggle', 'UndotreeShow', 'UndotreeHide', 'UndotreeFocus' },
+   dir  = vim.env.VIMRUNTIME .. '/pack/dist/opt/nvim.undotree',
+   name = 'nvim.undotree',
+   cmd  = { 'Undotree' },
    keys = {
       {
          '<leader>ou',
          function()
-            vim.notify('Create ~/undotree_debug.log to debug', vim.log.levels.INFO)
-            vim.cmd.UndotreeToggle()
+            require('undotree').open({ command = 'topleft 50vnew' })
          end,
-         desc = 'Undotree: toggle',
+         desc = 'Undotree: toggle (built-in)',
       },
    },
-   config = function()
-      local undodir = vim.fn.expand("$HOME") .. "/.undodir"
+   init = function()
+      -- Persistent undo dir. Independent of the visualizer; needed so
+      -- :undo <seq> works across nvim sessions. `undofile = true` is
+      -- already set in options.lua.
+      local undodir = vim.fn.expand('$HOME') .. '/.undodir'
       if not (vim.uv or vim.loop).fs_stat(undodir) then
-         vim.fn.mkdir(undodir, "p")
+         vim.fn.mkdir(undodir, 'p')
       end
-      vim.g.undotree_SplitWidth = 50
-      vim.g.undotree_WindowLayout = 2
       vim.opt.undodir = undodir
    end,
 }

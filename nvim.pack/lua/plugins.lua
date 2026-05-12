@@ -58,7 +58,8 @@ vim.pack.add({
    { src = 'https://github.com/hamidi-dev/kaleidosearch.nvim' },
    { src = 'https://github.com/ThePrimeagen/harpoon',           version = 'harpoon2' },
    { src = 'https://github.com/chentoast/marks.nvim'         },
-   { src = 'https://github.com/mbbill/undotree'              },
+   -- (mbbill/undotree removed -- replaced by nvim 0.12 built-in
+   -- $VIMRUNTIME/pack/dist/opt/nvim.undotree, wired up in plugins/undotree.lua)
    { src = 'https://github.com/nvim-neo-tree/neo-tree.nvim',    version = 'v3.x' },
    { src = 'https://github.com/nvim-telescope/telescope.nvim' },
    { src = 'https://github.com/nvim-telescope/telescope-ui-select.nvim' },
