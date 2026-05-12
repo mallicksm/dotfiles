@@ -89,8 +89,9 @@ vim.lsp.config('clangd', {
 
 vim.lsp.config('verible', {
    -- cmd as a function so we can opportunistically inject --file_list_path
-   -- from the project's filelist.f. Logged at DEBUG so :messages records it
-   -- but no noice toast pops on every project.
+   -- from the project's filelist.f. No notify -- nvim-notify (via noice)
+   -- shows DEBUG-level messages too, so even DEBUG popped a toast on every
+   -- project open. Inspect via :LspInfo / :checkhealth lsp instead.
    cmd = function(dispatchers)
       local cmd_args = {
          'verible-verilog-ls',
@@ -101,7 +102,6 @@ vim.lsp.config('verible', {
          local fl = root .. '/filelist.f'
          if vim.uv.fs_stat(fl) then
             table.insert(cmd_args, '--file_list_path=' .. fl)
-            vim.notify('[verible] using file_list_path: ' .. fl, vim.log.levels.DEBUG)
          end
       end
       return vim.lsp.rpc.start(cmd_args, dispatchers)

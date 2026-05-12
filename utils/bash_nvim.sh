@@ -75,6 +75,24 @@ vi() {
       # shellcheck disable=SC2030,SC2031
       export NVIM_APPNAME=$appname
 
+      # NVIM_TEST=1 suppresses ONE specific warning in defaults.lua:
+      #   "Did not detect DSR response from terminal..."
+      # On X-forwarded SSH the OSC 11 / DSR probe doesn't always answer in
+      # the 100 ms window, the WARN-level notify fires before noice is
+      # loaded, and nvim's built-in echo path then triggers a hit-enter
+      # prompt on startup. Search the runtime: NVIM_TEST gates *only* this
+      # single call (runtime/lua/vim/_core/defaults.lua:984), no other
+      # nvim subsystem checks it -- safe to set unconditionally.
+      # shellcheck disable=SC2030,SC2031
+      export NVIM_TEST=1
+
+      # COLORTERM=truecolor short-circuits the truecolor probe in
+      # defaults.lua (DECRQSS round-trip), shaving another startup query
+      # on the same SSH+X11 pipe. Most terminals we use already advertise
+      # this; setting it explicitly is harmless on the rest.
+      # shellcheck disable=SC2030,SC2031
+      export COLORTERM=${COLORTERM:-truecolor}
+
       # (huge-file fallback removed -- snacks.bigfile in the active config now
       # disables expensive features at BufReadPre on a per-buffer basis. See
       # snacks.lua's `bigfile = { size = 10 MB }`. No need to swap NVIM_APPNAME.)
@@ -112,6 +130,12 @@ vim() {
       export XDG_CONFIG_HOME=~/dotfiles/
       # shellcheck disable=SC2030,SC2031
       export NVIM_APPNAME=nvim.vim
+      # See `vi()` above for rationale -- silences the DSR hit-enter prompt
+      # over X-forwarded SSH and skips the truecolor DECRQSS probe.
+      # shellcheck disable=SC2030,SC2031
+      export NVIM_TEST=1
+      # shellcheck disable=SC2030,SC2031
+      export COLORTERM=${COLORTERM:-truecolor}
       printf 'Note: nvim %s %s\n' "${extra_opts[*]}" "${args[*]}"
       nvim "${extra_opts[@]}" "${args[@]}"
    )
