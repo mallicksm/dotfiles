@@ -3,7 +3,14 @@
 
 require('mini.basics').setup({
    options  = { extra_ui = true },     -- 'winblend', cmdheight=0, etc.
-   mappings = {},                       -- (window nav stays via <leader>hjkl in keymaps.lua)
+   mappings = {
+      -- (window nav stays via <leader>hjkl in keymaps.lua)
+      -- Disable the entire `\X` option-toggle family (\w \h \c \r \n \l \i \s
+      -- \d \b \C). We have our own <leader>t* equivalents in keymaps.lua
+      -- (toggle wrap / hlsearch / cursorline / relnum / case). Empty string
+      -- here = "do not install any of the option_toggle mappings".
+      option_toggle_prefix = '',
+   },
 })
 -- mini.basics enables smartindent globally as part of `basic = true`. It's
 -- redundant once any indentexpr/treesitter-indent is active, and it triggers

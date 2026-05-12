@@ -15,6 +15,12 @@ return {
             mappings = {
                -- Window navigation with <C-hjkl>, resize with <C-arrow>
                -- windows = true,
+               -- Disable the entire `\X` option-toggle family (\w \h \c \r \n
+               -- \l \i \s \d \b \C). We have our own <leader>t* equivalents in
+               -- keymaps.lua (toggle wrap / hlsearch / cursorline / relnum /
+               -- case) and prefer one consistent prefix. Empty string =
+               -- "do not install any of the option_toggle mappings".
+               option_toggle_prefix = '',
             },
          })
          -- mini.basics enables smartindent globally as part of its `basic = true`

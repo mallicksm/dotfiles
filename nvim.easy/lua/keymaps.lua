@@ -76,6 +76,31 @@ vim.keymap.set('n', '<leader>tr', function()
    vim.notify('relativenumber = ' .. tostring(vim.wo.relativenumber), vim.log.levels.INFO)
 end, { desc = '[T]oggle: [r]elativenumber (current window)' })
 
+vim.keymap.set('n', '<leader>tn', function()
+   vim.wo.number = not vim.wo.number
+   vim.notify('number = ' .. tostring(vim.wo.number), vim.log.levels.INFO)
+end, { desc = '[T]oggle: line [n]umber (current window)' })
+
+vim.keymap.set('n', '<leader>tl', function()
+   vim.wo.list = not vim.wo.list
+   vim.notify('list = ' .. tostring(vim.wo.list), vim.log.levels.INFO)
+end, { desc = '[T]oggle: [l]ist chars (tabs/trailing/eol -- current window)' })
+
+-- `tV` not `tc` (case=tc) and not `tC` (cursorline=tC). V = vertical bar.
+vim.keymap.set('n', '<leader>tV', function()
+   vim.wo.cursorcolumn = not vim.wo.cursorcolumn
+   vim.notify('cursorcolumn = ' .. tostring(vim.wo.cursorcolumn), vim.log.levels.INFO)
+end, { desc = '[T]oggle: cursorcolumn ([V]ertical bar -- current window)' })
+
+-- Diagnostics toggle is buffer-local via vim.diagnostic.{is_enabled,enable}.
+-- The 0.10+ API takes a boolean as the first arg; passing `not enabled`
+-- flips the state. bufnr=0 means "current buffer".
+vim.keymap.set('n', '<leader>td', function()
+   local enabled = vim.diagnostic.is_enabled({ bufnr = 0 })
+   vim.diagnostic.enable(not enabled, { bufnr = 0 })
+   vim.notify('diagnostic = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
+end, { desc = '[T]oggle: [d]iagnostics (current buffer)' })
+
 -- Window resize via Ctrl+Arrow. v:count1 lets `5<C-Right>` widen by 5.
 vim.keymap.set('n', '<C-Left>',  '"<Cmd>vertical resize -" . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Decrease window width' })
 vim.keymap.set('n', '<C-Right>', '"<Cmd>vertical resize +" . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Increase window width' })
