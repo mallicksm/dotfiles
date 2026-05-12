@@ -101,6 +101,99 @@ vim.keymap.set('n', '<leader>td', function()
    vim.notify('diagnostic = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
 end, { desc = '[T]oggle: [d]iagnostics (current buffer)' })
 
+-- LSP inlay hints (clangd, lua_ls, etc. emit these). Buffer-local.
+-- nvim 0.10+ API: vim.lsp.inlay_hint.{is_enabled, enable}.
+vim.keymap.set('n', '<leader>ti', function()
+   local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+   vim.lsp.inlay_hint.enable(not enabled, { bufnr = 0 })
+   vim.notify('inlay hints = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
+end, { desc = '[T]oggle: LSP [i]nlay hints (current buffer)' })
+
+-- Render-markdown.nvim on/off. After :RenderMarkdown toggle we read the
+-- updated state.enabled to print the new value (instead of guessing).
+vim.keymap.set('n', '<leader>tm', function()
+   vim.cmd('RenderMarkdown toggle')
+   vim.notify('render-markdown = ' .. tostring(require('render-markdown.state').enabled), vim.log.levels.INFO)
+end, { desc = '[T]oggle: render-[m]arkdown (global)' })
+
+-- Treesitter highlight on/off (current buffer). Useful when TS highlight
+-- is misbehaving and you want to compare against vim's regex syntax.
+-- vim.treesitter.highlighter.active[buf] is the canonical "is TS attached"
+-- check; cheaper than tracking our own per-buf flag.
+vim.keymap.set('n', '<leader>tT', function()
+   local buf = vim.api.nvim_get_current_buf()
+   if vim.treesitter.highlighter.active[buf] then
+      vim.treesitter.stop(buf)
+      vim.notify('treesitter highlight = false (this buffer)', vim.log.levels.INFO)
+   else
+      local lang = vim.treesitter.language.get_lang(vim.bo[buf].filetype)
+      if not lang then
+         vim.notify('treesitter: no parser for ft=' .. vim.bo[buf].filetype, vim.log.levels.WARN)
+         return
+      end
+      local ok, err = pcall(vim.treesitter.start, buf, lang)
+      if ok then
+         vim.notify('treesitter highlight = true (this buffer)', vim.log.levels.INFO)
+      else
+         vim.notify('treesitter start failed: ' .. tostring(err), vim.log.levels.ERROR)
+      end
+   end
+end, { desc = '[T]oggle: [T]reesitter highlight (current buffer)' })
+
+-- LSP virtual_text on/off (global). Different from <leader>td which kills
+-- ALL diagnostics in the buffer; this only hides the inline `●` text and
+-- keeps signs / underlines so you still know where issues are. We snapshot
+-- the previous virtual_text config in a closure-local var so subsequent
+-- "on" restores your custom prefix/spacing instead of nvim's default.
+do
+   local prev_vt
+   vim.keymap.set('n', '<leader>tD', function()
+      local cur = vim.diagnostic.config().virtual_text
+      if cur then
+         prev_vt = cur
+         vim.diagnostic.config({ virtual_text = false })
+         vim.notify('LSP virtual_text = false', vim.log.levels.INFO)
+      else
+         vim.diagnostic.config({ virtual_text = prev_vt or { prefix = '●', spacing = 2 } })
+         vim.notify('LSP virtual_text = true', vim.log.levels.INFO)
+      end
+   end, { desc = '[T]oggle: LSP virtual text [D]iagnostics (global)' })
+end
+
+-- Format-on-save (conform.nvim) -- session-local opt-in.
+-- Strategy: register the BufWritePre autocmd ONCE here (always present),
+-- and gate it on vim.g.format_on_save. The toggle just flips the flag --
+-- no add/remove of the autocmd, so behavior is consistent and idempotent.
+-- Default is OFF, matching your existing manual <leader>mp policy.
+vim.api.nvim_create_autocmd('BufWritePre', {
+   group = vim.api.nvim_create_augroup('user-format-on-save', { clear = true }),
+   callback = function(args)
+      if vim.g.format_on_save then
+         require('conform').format({ bufnr = args.buf, lsp_format = 'fallback', timeout_ms = 1800 })
+      end
+   end,
+})
+vim.keymap.set('n', '<leader>tf', function()
+   vim.g.format_on_save = not vim.g.format_on_save
+   vim.notify('format-on-save = ' .. tostring(vim.g.format_on_save), vim.log.levels.INFO)
+end, { desc = '[T]oggle: [f]ormat on save (conform)' })
+
+-- Noice on/off. We track via vim.g.noice_disabled (a string flag, since
+-- noice itself doesn't expose a queryable enabled state). Useful when
+-- noice is hiding raw :messages output you want to inspect, or for
+-- isolating a UI bug.
+vim.keymap.set('n', '<leader>tN', function()
+   if vim.g.noice_disabled then
+      vim.cmd('Noice enable')
+      vim.g.noice_disabled = false
+      vim.notify('noice = true', vim.log.levels.INFO)
+   else
+      vim.cmd('Noice disable')
+      vim.g.noice_disabled = true
+      vim.notify('noice = false', vim.log.levels.INFO)
+   end
+end, { desc = '[T]oggle: [N]oice UI on/off (global)' })
+
 -- Window resize via Ctrl+Arrow. v:count1 lets `5<C-Right>` widen by 5.
 vim.keymap.set('n', '<C-Left>',  '"<Cmd>vertical resize -" . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Decrease window width' })
 vim.keymap.set('n', '<C-Right>', '"<Cmd>vertical resize +" . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Increase window width' })

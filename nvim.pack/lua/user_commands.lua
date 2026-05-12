@@ -9,15 +9,9 @@ vim.api.nvim_create_user_command('Utilities', function()
    require('utils.utilities_picker').open()
 end, { nargs = 0, desc = 'Multi-choice telescope picker (options/registers/colorscheme/...)' })
 
--- Switch markdown previewer at runtime. Both render-markdown.nvim and
--- markview.nvim are installed; only one renders at a time.
-vim.api.nvim_create_user_command('MdViewer', function(opts)
-   require('utils.md_viewer').set(opts.args)
-end, {
-   nargs = '?',
-   complete = function() return { 'render', 'markview', 'none' } end,
-   desc = 'Switch markdown previewer (render-markdown vs markview)',
-})
+-- (`:MdViewer` user command removed -- markview was uninstalled, so the only
+--  previewer left is render-markdown.nvim. Toggle it with <leader>tm or use
+--  `:RenderMarkdown {toggle,enable,disable,buf_toggle}` directly.)
 
 vim.api.nvim_create_user_command('FormatAllSV', function()
    require('utils.format_sv').format_all_in_cwd()

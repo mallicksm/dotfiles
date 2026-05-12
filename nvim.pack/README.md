@@ -38,7 +38,7 @@ Subsequent launches: nothing reinstalls, just `vim.pack.add` checks rtp.
 ├── lua/
 │   ├── options.lua              vim.opt.* (verbatim from nvim.easy)
 │   ├── autocmds.lua             real autocmds (PDF reader, last-loc restore)
-│   ├── user_commands.lua        :Filename / :Utilities / :MdViewer / :FormatAllSV
+│   ├── user_commands.lua        :Filename / :Utilities / :FormatAllSV
 │   ├── keymaps.lua              basic, plugin-agnostic keymaps
 │   ├── plugins.lua              vim.pack.add() of every repo + post-build steps
 │   ├── plugins/                 per-plugin setup, one file each
@@ -52,7 +52,6 @@ Subsequent launches: nothing reinstalls, just `vim.pack.add` checks rtp.
 │   │   ├── indentline.lua       indent-blankline (gruvbox rainbow)
 │   │   ├── treesitter.lua       fold via TS, parser install, FT autocmd
 │   │   ├── render-markdown.lua  + gruvbox-tuned highlights
-│   │   ├── markview.lua         alternative previewer (off by default)
 │   │   ├── gitsigns.lua
 │   │   ├── neogit.lua           + diffview
 │   │   ├── flash.lua            s/S/r/R/<C-s>
@@ -70,7 +69,7 @@ Subsequent launches: nothing reinstalls, just `vim.pack.add` checks rtp.
 │   │   ├── debugging.lua        nvim-dap + dap-ui + dap-virtual-text
 │   │   └── verilog.lua          vhda/verilog_systemverilog.vim global
 │   ├── markdown/links.lua       (verbatim from nvim.easy)
-│   ├── utils/                   (verbatim) smart_open, md_viewer, utilities_picker, format_sv
+│   ├── utils/                   (verbatim) smart_open, utilities_picker, format_sv
 │   └── user_plugins/            (verbatim) nvim_notes blink source
 ├── after/
 │   ├── ftdetect/filetype.lua    (verbatim)

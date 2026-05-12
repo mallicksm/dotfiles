@@ -39,10 +39,10 @@ vim.pack.add({
    { src = 'https://github.com/lukas-reineke/indent-blankline.nvim' },
 
    ----------------------------------------------------------------------------
-   -- Markdown rendering (two; pick at runtime via :MdViewer)
+   -- Markdown rendering
    ----------------------------------------------------------------------------
    { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
-   { src = 'https://github.com/OXY2DEV/markview.nvim'        },
+   -- (markview removed; render-markdown is the sole previewer. Toggle via <leader>tm)
 
    ----------------------------------------------------------------------------
    -- Git stack
@@ -133,7 +133,7 @@ require('plugins.indentline')
 
 require('plugins.treesitter')
 require('plugins.render-markdown')
-require('plugins.markview')
+-- (plugins.markview removed; markview.nvim is no longer in the spec list)
 
 require('plugins.gitsigns')
 require('plugins.neogit')
