@@ -22,7 +22,10 @@
 
 -- Leader keys MUST be set before any plugin spec or keymap binds them.
 vim.g.mapleader = ' '
-vim.g.maplocalleader = ','
+-- maplocalleader intentionally NOT set: defaults to '\' which is fine since
+-- we have zero <localleader> bindings. Reserving , as an active prefix
+-- conflicts with treesitter-textobjects' `,` = repeat-last-move-opposite
+-- (planned adoption). Restore here if/when ft-local bindings get added.
 
 -- Order matters:
 --   1. options       -- vim.opt.* before plugins read them

@@ -29,18 +29,29 @@ local function harpoon_telescope_picker()
    }):find()
 end
 
-vim.keymap.set('n', '<leader>a', function()
+-- All harpoon bindings live under <leader>H* (group label in plugins/which-key.lua).
+-- Bare <leader>H is intentionally NOT bound -- keeping it as a pure prefix
+-- avoids the 300ms timeout that would otherwise hit every <leader>HX press.
+vim.keymap.set('n', '<leader>Ha', function()
    harpoon:list():add()
    vim.notify('Harpoon: added ' .. vim.fn.expand('%:t'), vim.log.levels.INFO)
-end, { desc = 'Harpoon: Mark add' })
+end, { desc = 'Harpoon: [a]dd current file' })
 
-vim.keymap.set('n', '<C-p>', function() harpoon:list():prev() end, { desc = 'Harpoon: previous' })
-vim.keymap.set('n', '<C-n>', function() harpoon:list():next() end, { desc = 'Harpoon: next' })
+vim.keymap.set('n', '<leader>Hn', function() harpoon:list():next() end, { desc = 'Harpoon: [n]ext mark' })
+vim.keymap.set('n', '<leader>Hp', function() harpoon:list():prev() end, { desc = 'Harpoon: [p]rev mark' })
 
-vim.keymap.set('n', '<leader><C-h>', function()
+vim.keymap.set('n', '<leader>Hm', function()
    harpoon.ui:toggle_quick_menu(harpoon:list())
-end, { desc = 'Harpoon: Marks list' })
+end, { desc = 'Harpoon: quick [m]enu (native UI)' })
 
-vim.keymap.set('n', '<leader>H', harpoon_telescope_picker, { desc = 'Telescope: [H]arpoon list' })
+vim.keymap.set('n', '<leader>Hl', harpoon_telescope_picker, { desc = 'Harpoon: telescope [l]ist' })
+
+-- Slot jumps. Primeagen's convention is 4 slots; bump the upper bound below
+-- if you start carrying more around. select(N) is no-op when slot N is empty
+-- (logs to harpoon's internal log, not the UI).
+for i = 1, 4 do
+   vim.keymap.set('n', '<leader>H' .. i, function() harpoon:list():select(i) end,
+      { desc = 'Harpoon: jump to slot [' .. i .. ']' })
+end
 
 -- vim: ts=3 sts=3 sw=3 et

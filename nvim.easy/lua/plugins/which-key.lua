@@ -18,6 +18,7 @@ return {
          { "<leader>w", group = "[W]orkspace symbol" },     -- <leader>ws (LSP, set on LspAttach)
          { "<leader>o", group = "[O]ptions" },              -- <leader>oo=symbols, ou=undo, ob=buffers
          { "<leader>b", group = "[B]uffer delete" },
+         { "<leader>H", group = "[H]arpoon" },              -- <leader>H{a,n,p,m,l} -- see core_plugins/harpoon.lua
          { "gs",        group = "[S]urround (mini)" }, -- gsa/gsd/gsr/gsf/gsF/gsh, see core_plugins/mini.lua
          { "<Esc>",     hidden = true },
          { "<leader>h", hidden = true },
