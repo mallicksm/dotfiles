@@ -14,7 +14,7 @@ require('which-key').setup({
       { '<leader>o', group = '[O]ptions'             },
       { '<leader>b', group = '[B]uffer delete'       },
       { '<leader>H', group = '[H]arpoon'             }, -- <leader>H{a,n,p,m,l} -- see plugins/harpoon.lua
-      { 'gs',        group = '[S]urround (mini)'     },
+      { 's',         group = '[S]urround (mini)'     }, -- upstream defaults; see plugins/mini.lua
       { '<Esc>',     hidden = true },
       { '<leader>h', hidden = true },
       { '<leader>l', hidden = true },

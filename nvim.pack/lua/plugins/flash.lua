@@ -1,29 +1,46 @@
--- flash.nvim -- label-based jump motions, treesitter node selection,
--- multi-line f/F/t/T enhancement.
+-- flash.nvim -- minimalist setup.
 --
--- Uses upstream defaults `s`/`S`/`r`/`R`/`<C-s>`. mini.surround was moved to
--- `gs*` (see plugins/mini.lua) to free `s`/`S`. `r` in operator-pending is
--- flash.remote(); normal-mode `r{char}` (vim's "replace char") is preserved
--- because we only register `r` for operator mode.
+-- Everything except `f` is on vim defaults. `f` becomes flash.jump:
+-- bidirectional, multi-char, labeled. That's the one feature we keep.
 --
--- Defaults left ON intentionally:
---   * search integration: typing in `/` or `?` shows jump labels for matches
---   * char mode (f/F/t/T) enhancement: cross-line jumps + labels for repeats
+-- Released back to vim defaults: s, S, F, t, T, ;, ,, r, R, /, ?, <C-s>.
+-- (modes.search.enabled is `false` by default, so `/` and `?` were never
+-- flash-enhanced anyway; modes.char enhancement of f/F/t/T is what we
+-- explicitly disable below.)
+--
+-- Trade-offs of replacing vim's default `f`:
+--   * lose `<count>fX` -- flash labels every match, so picking the Nth
+--     match is now "look at label, press label" instead of counting.
+--   * lose `;`/`,` repeat for `f` -- they still work for `t`/`T` (vim
+--     native again) and for `F` (vim native again).
+--   * gain bidirectional + multi-char + labeled jumps in one keystroke.
 require('flash').setup({
    modes = {
-      char = {
-         jump_labels = true, -- f<char> -> label-pick (default false = ;/, walk)
-         autohide    = true, -- hide overlay after jump so dim doesn't linger
-      },
+      char = { enabled = false }, -- release f/F/t/T/;/, to vim defaults
    },
 })
 
--- Visual-mode `s`/`S`/`R` deliberately excluded so vim defaults (substitute
--- selection / substitute lines / replace) still work there.
-vim.keymap.set({ 'n', 'o' },      's',     function() require('flash').jump() end,             { desc = 'Flash: jump (label search)' })
-vim.keymap.set({ 'n', 'o' },      'S',     function() require('flash').treesitter() end,       { desc = 'Flash: treesitter node select' })
-vim.keymap.set('o',               'r',     function() require('flash').remote() end,           { desc = 'Flash: remote (operator only, e.g. dr)' })
-vim.keymap.set('o',               'R',     function() require('flash').treesitter_search() end, { desc = 'Flash: treesitter search (operator only)' })
-vim.keymap.set('c',               '<C-s>', function() require('flash').toggle() end,            { desc = 'Flash: toggle labels while in / search' })
+-- Visual-mode `f` deliberately excluded so vim's "extend selection to next
+-- char" still works there. operator-pending IS included so `df<chars><label>`
+-- deletes from cursor to the labeled spot.
+vim.keymap.set({ 'n', 'o' }, 'f', function() require('flash').jump() end,
+   { desc = 'Flash: jump (bidirectional multi-char, replaces vim f)' })
+
+-- Make label letters visually distinct from matched chars. By default
+-- FlashMatch -> Search (yellow in gruvbox) and FlashLabel -> Substitute
+-- (also yellow-ish), which made matched-text and the label letter look the
+-- same color. Re-applying on ColorScheme so theme switches don't wipe these.
+local function apply_flash_hl()
+   -- Matched char: keep on default Search highlight (yellow bg).
+   -- Label letter: dark text on bright RED bg, bold. Pops hard.
+   vim.api.nvim_set_hl(0, 'FlashLabel',   { fg = '#1d2021', bg = '#fb4934', bold = true }) -- gruvbox bg0 on bright_red
+   vim.api.nvim_set_hl(0, 'FlashCurrent', { fg = '#1d2021', bg = '#fe8019', bold = true }) -- gruvbox bg0 on bright_orange (the "currently picked" match)
+end
+apply_flash_hl()
+vim.api.nvim_create_autocmd('ColorScheme', {
+   group    = vim.api.nvim_create_augroup('user-flash-hl', { clear = true }),
+   callback = apply_flash_hl,
+   desc     = 'Flash: re-apply label/current highlights after theme switch',
+})
 
 -- vim: ts=3 sts=3 sw=3 et

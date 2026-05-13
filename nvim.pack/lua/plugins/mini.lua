@@ -26,21 +26,13 @@ require('mini.ai').setup({
    },
 })
 
--- mini.surround on `gs*` prefix (sa/sd/sr/sf/sF/sh moved off the bare `s`
--- prefix so flash.nvim can use `s`/`S` for label-based jump motions).
-require('mini.surround').setup({
-   mappings = {
-      add            = 'gsa', -- add surrounding (visual or operator)
-      delete         = 'gsd', -- delete surrounding
-      find           = 'gsf', -- find surrounding (to the right)
-      find_left      = 'gsF', -- find surrounding (to the left)
-      highlight      = 'gsh', -- highlight surrounding
-      replace        = 'gsr', -- replace surrounding
-      update_n_lines = 'gsn', -- update `n_lines`
-      suffix_last    = 'l',   -- suffix INSIDE the chord, e.g. gsfl = find prev
-      suffix_next    = 'n',
-   },
-})
+-- mini.surround on upstream defaults: sa/sd/sr/sf/sF/sh on the `s` prefix.
+-- Trade-off vs. our old `gs*` setup: bare `s` (vim's substitute-char) now
+-- waits `timeoutlen` (300ms) before firing because vim checks whether
+-- you'll continue with a/d/r/f/F/h. If the lag annoys you, drop timeoutlen
+-- in options.lua or revert to `gs*`. Most folks use `cl` for substitute
+-- anyway, so the lag is rarely felt.
+require('mini.surround').setup()
 
 require('mini.pairs').setup({
    mappings          = { ['`'] = false },

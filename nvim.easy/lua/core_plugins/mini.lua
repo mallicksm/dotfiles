@@ -45,26 +45,14 @@ return {
          -------------------------------------------------------
          -- <leader>K for more info on cWORD MiniSurround.config
          -------------------------------------------------------
-         -- Remapped from the default `s` prefix to `gs` so that bare `s` and
-         -- `S` are free for flash.nvim's label-based jump motions (see
-         -- lua/plugins/flash.lua). Trade-off: one extra keystroke per
-         -- surround op (saiw" -> gsaiw") in exchange for getting flash on
-         -- the canonical bindings everyone else's vim uses.
-         require('mini.surround').setup({
-            mappings = {
-               add            = 'gsa', -- add surrounding (visual or operator)
-               delete         = 'gsd', -- delete surrounding
-               find           = 'gsf', -- find surrounding (to the right)
-               find_left      = 'gsF', -- find surrounding (to the left)
-               highlight      = 'gsh', -- highlight surrounding
-               replace        = 'gsr', -- replace surrounding
-               update_n_lines = 'gsn', -- update `n_lines`
-               -- These two are NOT prefixes; they're suffix chars used inside
-               -- the chord, e.g. `gsfn` = find next, `gsfl` = find prev.
-               suffix_last    = 'l',
-               suffix_next    = 'n',
-            },
-         })
+         -- Upstream defaults: sa/sd/sr/sf/sF/sh on the `s` prefix.
+         -- Trade-off vs. our old `gs*` setup: bare `s` (vim's substitute-
+         -- char) now waits `timeoutlen` (300ms) before firing because vim
+         -- has to check whether you'll continue with a/d/r/f/F/h. If the
+         -- 300ms tax annoys you, either drop timeoutlen lower in
+         -- options.lua or revert to `gs*`. Most folks use `cl` instead
+         -- of `s` for substitute-char anyway, so the lag is rarely felt.
+         require('mini.surround').setup()
 
          ----------------------------------------------------
          -- <leader>K for more info on cWORD MiniPairs.config
