@@ -2,6 +2,12 @@ return {
    'MeanderingProgrammer/render-markdown.nvim',
    config = function()
       require('render-markdown').setup({
+         -- LaTeX math rendering ($...$ / $$...$$) needs the `latex` treesitter
+         -- parser; without it render-markdown spams "parser: not installed"
+         -- and "ABI: unknown" warnings on every checkhealth. We don't write
+         -- LaTeX in markdown (SV docs / Jira / READMEs), so just turn it off.
+         -- Re-enable + run `:TSInstall latex` if you ever start writing math.
+         latex = { enabled = false },
          -- Conceal common inline HTML tags. The renderer hides start AND end tag
          -- for any tag name listed here (see render/html/tag.lua); empty config
          -- = "just hide it, no icon". Add more as you encounter them in docs.

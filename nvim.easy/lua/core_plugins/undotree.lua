@@ -21,11 +21,12 @@ return {
    cmd  = { 'Undotree' },
    keys = {
       {
-         '<leader>ou',
+         -- Lives under <leader>v* alongside other "introspection" commands.
+         '<leader>vu',
          function()
             require('undotree').open({ command = 'topleft 50vnew' })
          end,
-         desc = 'Undotree: toggle (built-in)',
+         desc = 'Vim: [u]ndotree (built-in nvim 0.12+)',
       },
    },
    init = function()

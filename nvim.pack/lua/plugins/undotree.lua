@@ -24,9 +24,10 @@ if not vim.uv.fs_stat(undodir) then
 end
 vim.opt.undodir = undodir
 
-vim.keymap.set('n', '<leader>ou', function()
+-- Lives under <leader>v* alongside other "introspection" commands.
+vim.keymap.set('n', '<leader>vu', function()
    vim.cmd.packadd('nvim.undotree')
    require('undotree').open({ command = 'topleft 50vnew' })
-end, { desc = 'Undotree: toggle (built-in)' })
+end, { desc = 'Vim: [u]ndotree (built-in nvim 0.12+)' })
 
 -- vim: ts=3 sts=3 sw=3 et

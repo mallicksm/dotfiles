@@ -7,10 +7,11 @@ return {
       { '<leader>gf', function() require('snacks').lazygit.log_file() end, desc = 'Snacks: git log for current file' },
       { '<leader>gl', function() require('snacks').lazygit.log() end,      desc = 'Snacks: git log' },
       { '<leader>gg', function() require('snacks').lazygit() end,          desc = 'Snacks: Lazygit: tui' },
-      -- <leader>K for more info on cWORD snacks-terminal-table-of-contents
-      { '<leader>T',  function() require('snacks').terminal() end,         desc = 'Snacks: Terminal: bash' },
-      -- <leader>K for more info on cWORD snacks-bufdelete-table-of-contents
-      { '<leader>bd', function() require('snacks').bufdelete() end,        desc = 'Delete Buffer' },
+      -- Lives under <leader>v* alongside other "vim utilities" -- moved off
+      -- bare <leader>T after the toggle family migrated to <leader>T*.
+      { '<leader>vt',  function() require('snacks').terminal() end,        desc = 'Vim: floating [t]erminal (snacks)' },
+      -- (snacks.bufdelete moved to <leader>vd; lives in keymaps.lua under
+      --  the <leader>v* "vim introspection / utilities" family.)
    },
    opts = {
       -- snacks.bigfile: replaces our old `nvim.bare` wrapper trick. When a
@@ -31,7 +32,14 @@ return {
       },
       terminal = {
          win = {
-            style = 'float',
+            style    = 'float',
+            border   = 'rounded',
+            -- Mid-size centered float: 75% of editor width, 55% of height.
+            -- Numbers between 0 and 1 are fractions of the editor; integers
+            -- > 1 would be absolute row/col counts.
+            width    = 0.75,
+            height   = 0.55,
+            position = 'float',
          },
       },
       -- <leader>K for more info on cWORD snacks-lazygit-table-of-contents

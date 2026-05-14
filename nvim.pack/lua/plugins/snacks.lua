@@ -14,7 +14,11 @@ require('snacks').setup({
       size        = 10 * 1024 * 1024,
       line_length = 1000,
    },
-   terminal = { win = { style = 'float' } },
+   terminal = {
+      -- Mid-size centered float: 75% editor width, 55% height, rounded border.
+      -- Fractions 0-1 = fraction of editor; integers > 1 = absolute row/col.
+      win = { style = 'float', border = 'rounded', width = 0.75, height = 0.55, position = 'float' },
+   },
    lazygit = {
       -- $LG_CONFIG_FILE points at ~/dotfiles/initrc/lazygit.config.yml in
       -- shell rc; it's the single source of truth for our gruvbox theme,
@@ -45,7 +49,10 @@ require('snacks').setup({
 vim.keymap.set('n', '<leader>gf', function() require('snacks').lazygit.log_file() end, { desc = 'Snacks: git log for current file' })
 vim.keymap.set('n', '<leader>gl', function() require('snacks').lazygit.log() end,      { desc = 'Snacks: git log' })
 vim.keymap.set('n', '<leader>gg', function() require('snacks').lazygit() end,          { desc = 'Snacks: Lazygit: tui' })
-vim.keymap.set('n', '<leader>T',  function() require('snacks').terminal() end,         { desc = 'Snacks: Terminal: bash' })
-vim.keymap.set('n', '<leader>bd', function() require('snacks').bufdelete() end,        { desc = 'Delete Buffer' })
+-- Lives under <leader>v* alongside other "vim utilities" -- moved off bare
+-- <leader>T after the toggle family migrated to <leader>T*.
+vim.keymap.set('n', '<leader>vt', function() require('snacks').terminal() end, { desc = 'Vim: floating [t]erminal (snacks)' })
+-- (snacks.bufdelete moved to <leader>vd in keymaps.lua under the
+--  <leader>v* "vim introspection / utilities" family.)
 
 -- vim: ts=3 sts=3 sw=3 et

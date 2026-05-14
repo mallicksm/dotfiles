@@ -1,6 +1,11 @@
 -- render-markdown.nvim with gruvbox-tuned highlights (re-applied on
 -- ColorScheme so :Telescope colorscheme previews don't strip them).
 require('render-markdown').setup({
+   -- LaTeX math rendering needs the `latex` treesitter parser; without it
+   -- render-markdown spams "parser: not installed" and "ABI: unknown" on
+   -- every checkhealth. We don't write LaTeX in markdown -- turn it off.
+   -- Re-enable + run `:TSInstall latex` if you ever start writing math.
+   latex = { enabled = false },
    html = {
       tag = {
          a   = {},

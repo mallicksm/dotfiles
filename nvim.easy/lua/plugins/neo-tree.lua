@@ -29,7 +29,9 @@ return {
          desc = 'Neo-tree: File browser toggle',
       },
       {
-         '<leader>ob',
+         -- Lives under <leader>v* alongside the other "buffer" commands.
+         -- <leader>vb = raw :ls dump, <leader>vB = fancy neo-tree side panel.
+         '<leader>vB',
          function()
             require('neo-tree.command').execute({
                action = 'show',
@@ -39,7 +41,7 @@ return {
                reveal_force_cwd = true,
             })
          end,
-         desc = 'Neo-Tree: Buffer list',
+         desc = 'Vim: [B]uffer list (neo-tree GUI panel)',
       },
    },
    dependencies = {

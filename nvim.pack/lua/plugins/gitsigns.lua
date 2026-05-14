@@ -13,7 +13,7 @@ require('gitsigns').setup({
 
 vim.cmd.hi('GitSignsCurrentLineBlame guifg=yellow')
 
-vim.keymap.set('n', '<leader>tb', '<cmd>Gitsigns toggle_current_line_blame<cr>', { desc = "[T]oggle: Git line [b]lame" })
+vim.keymap.set('n', '<leader>Tb', '<cmd>Gitsigns toggle_current_line_blame<cr>', { desc = "[T]oggle: Git line [b]lame" })
 vim.keymap.set('n', '<leader>gs', '<cmd>Gitsigns stage_buffer<cr>',              { desc = 'GitSigns: Stage entire buffer' })
 vim.keymap.set('n', '<leader>gj', '<cmd>Gitsigns next_hunk<cr>',                 { desc = 'GitSigns: Hunk: next' })
 vim.keymap.set('n', '<leader>gk', '<cmd>Gitsigns prev_hunk<cr>',                 { desc = 'GitSigns: Hunk: previous' })

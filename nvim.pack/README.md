@@ -60,8 +60,8 @@ Subsequent launches: nothing reinstalls, just `vim.pack.add` checks rtp.
 │   │   ├── marks.lua
 │   │   ├── undotree.lua
 │   │   ├── neo-tree.lua         + per-extension filename colors
-│   │   ├── telescope.lua        + extension-filtered <leader>G
-│   │   ├── smart-open.lua       <leader>F (frecency)
+│   │   ├── telescope.lua        <leader>t{g,b} -- live_grep / buffers
+│   │   ├── smart-open.lua       <leader>tf (frecency-ranked file picker)
 │   │   ├── completions.lua      blink.cmp (must precede lspconfig)
 │   │   ├── lspconfig.lua        mason + mason-lspconfig + nvim-lspconfig
 │   │   ├── formatting.lua       conform.nvim

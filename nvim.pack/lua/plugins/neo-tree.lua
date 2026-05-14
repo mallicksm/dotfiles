@@ -85,7 +85,9 @@ vim.keymap.set('n', '<leader>e', function()
    order_by_type_safely()
 end, { desc = 'Neo-tree: File browser toggle' })
 
-vim.keymap.set('n', '<leader>ob', function()
+-- Lives under <leader>v* alongside the other "buffer" commands.
+-- <leader>vb = raw :ls dump, <leader>vB = fancy neo-tree side panel.
+vim.keymap.set('n', '<leader>vB', function()
    require('neo-tree.command').execute({
       action           = 'show',
       source           = 'buffers',
@@ -93,6 +95,6 @@ vim.keymap.set('n', '<leader>ob', function()
       toggle           = true,
       reveal_force_cwd = true,
    })
-end, { desc = 'Neo-Tree: Buffer list' })
+end, { desc = 'Vim: [B]uffer list (neo-tree GUI panel)' })
 
 -- vim: ts=3 sts=3 sw=3 et

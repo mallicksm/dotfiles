@@ -17,19 +17,15 @@ telescope.setup({
 pcall(telescope.load_extension, 'ui-select')
 pcall(telescope.load_extension, 'fzf')
 
-vim.keymap.set('n', '<leader>E', function()
-   require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })
-end, { desc = 'Telescope: [E]xplorer' })
+-- <leader>t* -- [t]elescope family (toggles moved to <leader>T*).
+-- <leader>tf (smart_open / frecency, replaces the old find_files which was
+-- redundant -- smart_open is a strict superset) lives in plugins/smart-open.lua.
 
-vim.keymap.set('n', '<leader>R', function()
-   require('telescope.builtin').oldfiles({ prompt_title = 'Recent Files (<esc> to quit)' })
-end, { desc = 'Telescope: [R]ecent files' })
-
--- <leader>G prompts for an extension first, then runs live_grep filtered to
+-- <leader>tg prompts for an extension first, then runs live_grep filtered to
 -- that file type via ripgrep's --glob. Defaults to the current buffer's
 -- extension. Empty + <Enter> = unfiltered grep across all files.
 -- Brace expansion works: e.g. {v,vh,sv,svh} for all verilog flavors.
-vim.keymap.set('n', '<leader>G', function()
+vim.keymap.set('n', '<leader>tg', function()
    local default = vim.fn.expand('%:e')
    vim.ui.input({
       prompt  = 'Live Grep -- extension (empty = all files): ',
@@ -44,14 +40,23 @@ vim.keymap.set('n', '<leader>G', function()
       end
       require('telescope.builtin').live_grep(opts)
    end)
-end, { desc = 'Telescope: live [G]rep (with optional extension filter)' })
+end, { desc = 'Telescope: live [g]rep (with optional extension filter)' })
 
-vim.keymap.set('n', '<leader>B', function()
+vim.keymap.set('n', '<leader>tb', function()
    require('telescope.builtin').buffers({ prompt_title = 'Buffers (<esc> to quit)' })
-end, { desc = 'Telescope: Open [B]uffers' })
+end, { desc = 'Telescope: open [b]uffers' })
 
-vim.keymap.set('n', '<leader>oo', function()
+-- <leader>td -- frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
+-- Default action lcd's into the picked dir; <C-f> from inside the picker
+-- chains into smart_open scoped to that dir (z + file pick combo).
+-- Implementation: lua/utils/z_picker.lua.
+vim.keymap.set('n', '<leader>td', function()
+   require('utils.z_picker').open()
+end, { desc = 'Telescope: z [d]irectories (frecency from ~/.z)' })
+
+-- Lives under <leader>v* alongside other "introspection" commands.
+vim.keymap.set('n', '<leader>vo', function()
    require('telescope.builtin').lsp_document_symbols({ prompt_title = 'Document Symbols (<esc> to quit)' })
-end, { desc = 'Outline: LSP document symbols' })
+end, { desc = 'Vim: [o]utline -- LSP document symbols (telescope)' })
 
 -- vim: ts=3 sts=3 sw=3 et

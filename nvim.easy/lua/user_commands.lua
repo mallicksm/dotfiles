@@ -10,7 +10,7 @@ vim.api.nvim_create_user_command('Utilities', function()
 end, { nargs = 0, desc = 'Multi-choice telescope picker (options/registers/colorscheme/...)' })
 
 -- (`:MdViewer` user command removed -- markview was uninstalled, so the only
---  previewer left is render-markdown.nvim. Toggle it with <leader>tm or use
+--  previewer left is render-markdown.nvim. Toggle it with <leader>Tm or use
 --  `:RenderMarkdown {toggle,enable,disable,buf_toggle}` directly.)
 
 vim.api.nvim_create_user_command('FormatAllSV', function()
