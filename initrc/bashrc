@@ -21,8 +21,8 @@ if [[ $- == *i* ]]; then
    # Rebinding Up/Down to history-SEARCH (vs the default cycle-all-history)
    # means: type a prefix, press Up, and only history entries starting with
    # that prefix surface. Way faster than scrolling through everything.
-   # Left/Right are bound to their defaults explicitly -- not strictly needed,
-   # but kept so the four arrow keys are documented together as a unit.
+   # Atuin is reached via Ctrl-A (global) -- see the brute-force block at
+   # the bottom of this file.
    bind '"\e[A": history-search-backward'   # Up    -> filtered history back
    bind '"\e[B": history-search-forward'    # Down  -> filtered history fwd
    bind '"\e[C": forward-char'              # Right -> cursor right (default)
@@ -44,3 +44,9 @@ export HISTIGNORE='pwd:exit:fg:bg:top:c:clear::b:.:..:...:....:z:h:history:ls:ll
 
 export EDITOR=vi
 export IGNOREEOF=1 # use exit to leave shell
+
+# All atuin setup (PATH, init, keybindings) lives in ~/.bash_atuin.sh,
+# symlinked from ~/dotfiles/initrc/bash_atuin.sh by `dotfiles.sh linkrc`.
+# Sourced last so its binds override fzf + the Up/Down history-search-*
+# rebinds in the interactive block above.
+[[ -f ~/.bash_atuin.sh ]] && source ~/.bash_atuin.sh

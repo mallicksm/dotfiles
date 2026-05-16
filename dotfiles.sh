@@ -45,6 +45,8 @@ function linkrc() {
 
    declare -A link_map=(
       ["alacritty.toml"]="$HOME/.config/alacritty/alacritty.toml"
+      ["atuin.toml"]="$HOME/.config/atuin/config.toml"
+      ["bash_atuin.sh"]="$HOME/.bash_atuin.sh"
       ["kitty"]="$HOME/.config/kitty"
       ["gitk"]="$HOME/.config/git/gitk"
       ["config.ssh"]="$HOME/.ssh/config"

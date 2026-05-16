@@ -1,0 +1,33 @@
+# Atuin config — tracked in dotfiles, symlinked into the location atuin reads.
+#
+# This file lives at ~/dotfiles/initrc/atuin.toml.
+# It is symlinked to ~/.config/atuin/config.toml by `dotfiles.sh linkrc`
+# (atuin v18 reads only ~/.config/atuin/config.toml; ATUIN_CONFIG_DIR is
+# ignored).
+#
+# Atuin's data (sqlite DB, encryption key) lives in ~/.local/share/atuin/,
+# which intentionally stays machine-local — not in this repo.
+#
+# Reload by opening a fresh shell, or `exec bash` in the current one.
+
+# --- key bindings -------------------------------------------------------------
+# Up-arrow opens the picker filtered to commands you ran in the CURRENT
+# directory (newest first). This is the workflow you actually want most of
+# the time: "what did I run here last?"
+filter_mode_shell_up_key_binding = "directory"
+
+# Ctrl-R opens the picker in GLOBAL mode so your imported bash legacy
+# (21,730 commands without cwd metadata) is reachable. While the picker
+# is open, press Ctrl-R again to cycle: global → host → session → directory.
+filter_mode = "global"
+
+# --- search behavior ----------------------------------------------------------
+search_mode    = "fuzzy"          # fzf-style multi-token; alts: "prefix", "fulltext", "skim"
+style          = "compact"        # less vertical space than "auto"
+inline_height  = 20               # picker height; 0 = full-screen
+show_preview   = true             # show full command + metadata in a preview pane
+exit_mode      = "return-original" # Esc returns whatever you had typed, not nothing
+
+# --- privacy / network --------------------------------------------------------
+update_check   = false            # no phone-home for new versions
+auto_sync      = false            # local-only; opt into sync explicitly via `atuin login`
