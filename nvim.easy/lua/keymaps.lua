@@ -32,10 +32,10 @@ vim.keymap.set('n', '<leader>k', '<C-w><C-k>', { desc = 'Nav: upper window' })
 -- (Moved off <leader>t* to free that prefix for the [t]elescope family --
 --  <leader>tf=find_files, <leader>tF=smart_open, <leader>tg=live_grep,
 --  <leader>tb=buffers. See lua/plugins/telescope.lua and smart-open.lua.)
-vim.keymap.set('n', '<leader>Tw', function()
+vim.keymap.set('n', '<leader>vw', function()
    vim.wo.wrap = not vim.wo.wrap
    vim.notify('wrap = ' .. tostring(vim.wo.wrap), vim.log.levels.INFO)
-end, { desc = '[T]oggle: [w]rap (current window)' })
+end, { desc = '[v]iew: toggle [w]rap (current window)' })
 
 vim.keymap.set('n', '<leader>Th', function()
    vim.opt.hlsearch = not vim.opt.hlsearch:get()

@@ -7,17 +7,34 @@ return {
    lazy = false,
    cmd = { 'Telescope' },
    keys = {
-      -- <leader>t* -- [t]elescope family (toggles moved to <leader>T*).
-      -- <leader>tf (smart_open / frecency, replaces the old find_files which
-      -- was redundant -- smart_open is a strict superset) lives in
-      -- plugins/smart-open.lua.
       {
-         -- <leader>tg prompts for an extension first, then runs live_grep filtered
+         '<leader>te',
+         function()
+            require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })
+         end,
+         desc = 'Telescope: [E]xplorer',
+      },
+      {
+         '<leader>E',
+         function()
+            require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })
+         end,
+         desc = 'Telescope: [E]xplorer (alias of <leader>te)',
+      },
+      {
+         '<leader>R',
+         function()
+            require('telescope.builtin').oldfiles({ prompt_title = 'Recent Files (<esc> to quit)' })
+         end,
+         desc = 'Telescope: [R]ecent files',
+      },
+      {
+         -- <leader>G prompts for an extension first, then runs live_grep filtered
          -- to that file type via ripgrep's --glob. Defaults to the current
-         -- buffer's extension so the common case is just "<leader>tg <Enter>".
+         -- buffer's extension so the common case is just "<leader>G <Enter>".
          -- Leave the prompt empty + <Enter> for an unfiltered grep across all files.
          -- Brace expansion works: e.g. {v,vh,sv,svh} for all verilog flavors.
-         '<leader>tg',
+         '<leader>G',
          function()
             local default = vim.fn.expand('%:e')
             vim.ui.input({
@@ -34,33 +51,21 @@ return {
                require('telescope.builtin').live_grep(opts)
             end)
          end,
-         desc = 'Telescope: live [g]rep (with optional extension filter)',
+         desc = 'Telescope: live [G]rep (with optional extension filter)',
       },
       {
-         '<leader>tb',
+         '<leader>B',
          function()
             require('telescope.builtin').buffers({ prompt_title = 'Buffers (<esc> to quit)' })
          end,
-         desc = 'Telescope: open [b]uffers',
+         desc = 'Telescope: Open [B]uffers',
       },
       {
-         -- Frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
-         -- Default action lcd's into the picked dir; <C-f> from inside the
-         -- picker chains into smart_open scoped to that dir (z + file pick).
-         -- Implementation: lua/utils/z_picker.lua.
-         '<leader>td',
-         function()
-            require('utils.z_picker').open()
-         end,
-         desc = 'Telescope: z [d]irectories (frecency from ~/.z)',
-      },
-      {
-         -- Lives under <leader>v* alongside other "introspection" commands.
-         '<leader>vo',
+         '<leader>oo',
          function()
             require('telescope.builtin').lsp_document_symbols({ prompt_title = 'Document Symbols (<esc> to quit)' })
          end,
-         desc = 'Vim: [o]utline -- LSP document symbols (telescope)',
+         desc = 'Outline: LSP document symbols',
       },
    },
    dependencies = {

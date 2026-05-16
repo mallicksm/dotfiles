@@ -29,9 +29,7 @@ return {
          desc = 'Neo-tree: File browser toggle',
       },
       {
-         -- Lives under <leader>v* alongside the other "buffer" commands.
-         -- <leader>vb = raw :ls dump, <leader>vB = fancy neo-tree side panel.
-         '<leader>vB',
+         '<leader>ob',
          function()
             require('neo-tree.command').execute({
                action = 'show',
@@ -41,7 +39,7 @@ return {
                reveal_force_cwd = true,
             })
          end,
-         desc = 'Vim: [B]uffer list (neo-tree GUI panel)',
+         desc = 'Neo-Tree: Buffer list',
       },
    },
    dependencies = {
@@ -85,6 +83,28 @@ return {
       'MunifTanjim/nui.nvim',
    },
    config = function()
+      -- Defensive override: upstream's neo-tree/git/ls-files.lua does
+      --     assert(vim.v.shell_error == 0)
+      -- on the synchronous `git ls-files` call backing M.ignored. When git
+      -- refuses to operate (dubious-ownership repos on shared NFS paths,
+      -- corrupted index, missing .git, etc.) the assert turns a recoverable
+      -- failure into a vim.schedule traceback that kills the tree refresh.
+      -- We wrap M.ignored so any failure yields an empty list, and
+      -- mark_gitignored just no-ops for that directory. Re-apply this if
+      -- upstream changes the signature; tracked at
+      -- https://github.com/nvim-neo-tree/neo-tree.nvim/blob/main/lua/neo-tree/git/ls-files.lua
+      do
+         local ok, ls = pcall(require, 'neo-tree.git.ls-files')
+         if ok and type(ls.ignored) == 'function' then
+            local orig = ls.ignored
+            ls.ignored = function(worktree_root)
+               local ok2, paths = pcall(orig, worktree_root)
+               if not ok2 then return {} end
+               return paths or {}
+            end
+         end
+      end
+
       local ntwidth = 55 -- Neo-tree window width
       require('neo-tree').setup({
          window = {

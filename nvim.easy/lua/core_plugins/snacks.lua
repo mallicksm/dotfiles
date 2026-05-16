@@ -73,11 +73,16 @@ return {
             'mp4', 'mov', 'avi', 'mkv', 'webm', 'icns',
          },
          doc = {
+            -- Inline image rendering inside markdown. `max_width`/`max_height`
+            -- are in TERMINAL CELLS (columns/rows), not pixels. The defaults
+            -- (80 x 40) shrink every figure to a tiny preview regardless of how
+            -- big the source PNG is. Bumped to fill the window — pick large
+            -- caps so any reasonable terminal width/height is the actual limit.
             enabled = true,
             inline = true,
             float = true,
-            max_width = 80,
-            max_height = 40,
+            max_width = 300,
+            max_height = 200,
          },
          convert = {
             magick = { 'magick' },
