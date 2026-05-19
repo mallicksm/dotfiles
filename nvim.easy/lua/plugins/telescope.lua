@@ -12,29 +12,22 @@ return {
          function()
             require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })
          end,
-         desc = 'Telescope: [E]xplorer',
+         desc = 'Telescope: [e]xplorer (find_files)',
       },
       {
-         '<leader>E',
-         function()
-            require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })
-         end,
-         desc = 'Telescope: [E]xplorer (alias of <leader>te)',
-      },
-      {
-         '<leader>R',
+         '<leader>tr',
          function()
             require('telescope.builtin').oldfiles({ prompt_title = 'Recent Files (<esc> to quit)' })
          end,
-         desc = 'Telescope: [R]ecent files',
+         desc = 'Telescope: [r]ecent files (oldfiles)',
       },
       {
-         -- <leader>G prompts for an extension first, then runs live_grep filtered
+         -- <leader>tg prompts for an extension first, then runs live_grep filtered
          -- to that file type via ripgrep's --glob. Defaults to the current
-         -- buffer's extension so the common case is just "<leader>G <Enter>".
+         -- buffer's extension so the common case is just "<leader>tg <Enter>".
          -- Leave the prompt empty + <Enter> for an unfiltered grep across all files.
          -- Brace expansion works: e.g. {v,vh,sv,svh} for all verilog flavors.
-         '<leader>G',
+         '<leader>tg',
          function()
             local default = vim.fn.expand('%:e')
             vim.ui.input({
@@ -51,14 +44,14 @@ return {
                require('telescope.builtin').live_grep(opts)
             end)
          end,
-         desc = 'Telescope: live [G]rep (with optional extension filter)',
+         desc = 'Telescope: live [g]rep (with optional extension filter)',
       },
       {
-         '<leader>B',
+         '<leader>tb',
          function()
             require('telescope.builtin').buffers({ prompt_title = 'Buffers (<esc> to quit)' })
          end,
-         desc = 'Telescope: Open [B]uffers',
+         desc = 'Telescope: open [b]uffers',
       },
       {
          '<leader>oo',
