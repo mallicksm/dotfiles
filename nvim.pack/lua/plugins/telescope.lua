@@ -46,6 +46,13 @@ vim.keymap.set('n', '<leader>tb', function()
    require('telescope.builtin').buffers({ prompt_title = 'Buffers (<esc> to quit)' })
 end, { desc = 'Telescope: open [b]uffers' })
 
+-- <leader>te -- plain find_files. Mirrors nvim.easy's binding so muscle memory
+-- carries over. <leader>tf (smart_open in plugins/smart-open.lua) is the
+-- frecency-aware superset; <leader>te is the dumb-but-fast Telescope explorer.
+vim.keymap.set('n', '<leader>te', function()
+   require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })
+end, { desc = 'Telescope: [E]xplorer (find_files)' })
+
 -- <leader>td -- frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
 -- Default action lcd's into the picked dir; <C-f> from inside the picker
 -- chains into smart_open scoped to that dir (z + file pick combo).

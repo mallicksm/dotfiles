@@ -26,35 +26,35 @@ vim.keymap.set('n', '<leader>l', '<C-w><C-l>', { desc = 'Nav: right window' })
 vim.keymap.set('n', '<leader>j', '<C-w><C-j>', { desc = 'Nav: lower window' })
 vim.keymap.set('n', '<leader>k', '<C-w><C-k>', { desc = 'Nav: upper window' })
 
--- <leader>T* -- option toggles, scoped to current window when sensible.
+-- <leader>v* -- option toggles + vim introspection commands.
 -- Window-local (vim.wo) toggles only affect the active split; global ones
 -- (vim.opt) affect every window.
--- (Moved off <leader>t* to free that prefix for the [t]elescope family --
---  <leader>tf=find_files, <leader>tF=smart_open, <leader>tg=live_grep,
---  <leader>tb=buffers. See lua/plugins/telescope.lua and smart-open.lua.)
-vim.keymap.set('n', '<leader>Tw', function()
+-- (Moved off <leader>T*: T was rarely the prefix I reached for. v now hosts
+--  both toggles and :registers/:marks/:messages/etc. -- see further down.)
+vim.keymap.set('n', '<leader>vw', function()
    vim.wo.wrap = not vim.wo.wrap
    vim.notify('wrap = ' .. tostring(vim.wo.wrap), vim.log.levels.INFO)
-end, { desc = '[T]oggle: [w]rap (current window)' })
+end, { desc = '[v]iew: toggle [w]rap (current window)' })
 
-vim.keymap.set('n', '<leader>Th', function()
+vim.keymap.set('n', '<leader>vh', function()
    vim.opt.hlsearch = not vim.opt.hlsearch:get()
    vim.notify('hlsearch = ' .. tostring(vim.opt.hlsearch:get()), vim.log.levels.INFO)
-end, { desc = '[T]oggle: [h]lsearch (global)' })
+end, { desc = '[v]iew: toggle [h]lsearch (global)' })
 
-vim.keymap.set('n', '<leader>TC', function()
+vim.keymap.set('n', '<leader>vL', function()
    vim.wo.cursorline = not vim.wo.cursorline
    vim.notify('cursorline = ' .. tostring(vim.wo.cursorline), vim.log.levels.INFO)
-end, { desc = '[T]oggle: [C]ursorline (current window)' })
+end, { desc = '[v]iew: toggle cursor[L]ine (current window)' })
 
--- <leader>Tc cycles search case-sensitivity through the 3 useful states:
+-- <leader>vC cycles search case-sensitivity through the 3 useful states:
 --   sensitive    /Foo  matches  Foo            ignorecase=off, smartcase=off
 --   insensitive  /Foo  matches  Foo / foo / FOO ignorecase=on,  smartcase=off
 --   smart        /foo  matches  Foo / foo / FOO ignorecase=on,  smartcase=on
 --                /Foo  matches  Foo only       (uppercase => case-sensitive)
--- Default (set in options.lua) is "smart". Pressing <leader>Tc walks
+-- Default (set in options.lua) is "smart". Pressing <leader>vC walks
 -- smart -> sensitive -> insensitive -> smart -> ...
-vim.keymap.set('n', '<leader>Tc', function()
+-- (Caps because <leader>vc is :changes; case-sens cycle is the rarer of the two.)
+vim.keymap.set('n', '<leader>vC', function()
    local ic = vim.opt.ignorecase:get()
    local sc = vim.opt.smartcase:get()
    local label
@@ -72,58 +72,58 @@ vim.keymap.set('n', '<leader>Tc', function()
       label = 'smart'
    end
    vim.notify('case: ' .. label, vim.log.levels.INFO)
-end, { desc = '[T]oggle: [c]ase  sensitive -> insensitive -> smart' })
+end, { desc = '[v]iew: [C]ase-sensitivity cycle (smart -> sensitive -> insensitive -> smart)' })
 
-vim.keymap.set('n', '<leader>Tr', function()
+vim.keymap.set('n', '<leader>vR', function()
    vim.wo.relativenumber = not vim.wo.relativenumber
    vim.notify('relativenumber = ' .. tostring(vim.wo.relativenumber), vim.log.levels.INFO)
-end, { desc = '[T]oggle: [r]elativenumber (current window)' })
+end, { desc = '[v]iew: [R]elativenumber (caps: vr=:registers)' })
 
-vim.keymap.set('n', '<leader>Tn', function()
+vim.keymap.set('n', '<leader>vn', function()
    vim.wo.number = not vim.wo.number
    vim.notify('number = ' .. tostring(vim.wo.number), vim.log.levels.INFO)
-end, { desc = '[T]oggle: line [n]umber (current window)' })
+end, { desc = '[v]iew: line [n]umber (current window)' })
 
-vim.keymap.set('n', '<leader>Tl', function()
+vim.keymap.set('n', '<leader>vl', function()
    vim.wo.list = not vim.wo.list
    vim.notify('list = ' .. tostring(vim.wo.list), vim.log.levels.INFO)
-end, { desc = '[T]oggle: [l]ist chars (tabs/trailing/eol -- current window)' })
+end, { desc = '[v]iew: [l]ist chars (tabs/trailing/eol -- current window)' })
 
--- `Tv` not `Tc` (case=Tc) and not `TC` (cursorline=TC). v = vertical bar.
-vim.keymap.set('n', '<leader>Tv', function()
+-- `vv` (cursorcolumn) is the duplicate-letter mnemonic for `v` itself.
+vim.keymap.set('n', '<leader>vv', function()
    vim.wo.cursorcolumn = not vim.wo.cursorcolumn
    vim.notify('cursorcolumn = ' .. tostring(vim.wo.cursorcolumn), vim.log.levels.INFO)
-end, { desc = '[T]oggle: cursorcolumn ([v]ertical bar -- current window)' })
+end, { desc = '[v]iew: cursorcolumn ([v]ertical bar -- current window' })
 
 -- Diagnostics toggle is buffer-local via vim.diagnostic.{is_enabled,enable}.
 -- The 0.10+ API takes a boolean as the first arg; passing `not enabled`
 -- flips the state. bufnr=0 means "current buffer".
-vim.keymap.set('n', '<leader>Td', function()
+vim.keymap.set('n', '<leader>vD', function()
    local enabled = vim.diagnostic.is_enabled({ bufnr = 0 })
    vim.diagnostic.enable(not enabled, { bufnr = 0 })
    vim.notify('diagnostic = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
-end, { desc = '[T]oggle: [d]iagnostics (current buffer)' })
+end, { desc = '[v]iew: [D]iagnostics on/off (caps: vd=snacks bufdelete -- current buffer)' })
 
 -- LSP inlay hints (clangd, lua_ls, etc. emit these). Buffer-local.
 -- nvim 0.10+ API: vim.lsp.inlay_hint.{is_enabled, enable}.
-vim.keymap.set('n', '<leader>Ti', function()
+vim.keymap.set('n', '<leader>vi', function()
    local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
    vim.lsp.inlay_hint.enable(not enabled, { bufnr = 0 })
    vim.notify('inlay hints = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
-end, { desc = '[T]oggle: LSP [i]nlay hints (current buffer)' })
+end, { desc = '[v]iew: LSP [i]nlay hints (current buffer)' })
 
 -- Render-markdown.nvim on/off. After :RenderMarkdown toggle we read the
 -- updated state.enabled to print the new value (instead of guessing).
-vim.keymap.set('n', '<leader>Tm', function()
+vim.keymap.set('n', '<leader>vP', function()
    vim.cmd('RenderMarkdown toggle')
    vim.notify('render-markdown = ' .. tostring(require('render-markdown.state').enabled), vim.log.levels.INFO)
-end, { desc = '[T]oggle: render-[m]arkdown (global)' })
+end, { desc = '[v]iew: render-markdown [P]review (vm/vM taken: marks/messages)' })
 
 -- Treesitter highlight on/off (current buffer). Useful when TS highlight
 -- is misbehaving and you want to compare against vim's regex syntax.
 -- vim.treesitter.highlighter.active[buf] is the canonical "is TS attached"
 -- check; cheaper than tracking our own per-buf flag.
-vim.keymap.set('n', '<leader>TT', function()
+vim.keymap.set('n', '<leader>vt', function()
    local buf = vim.api.nvim_get_current_buf()
    if vim.treesitter.highlighter.active[buf] then
       vim.treesitter.stop(buf)
@@ -141,7 +141,7 @@ vim.keymap.set('n', '<leader>TT', function()
          vim.notify('treesitter start failed: ' .. tostring(err), vim.log.levels.ERROR)
       end
    end
-end, { desc = '[T]oggle: [T]reesitter highlight (current buffer)' })
+end, { desc = '[v]iew: [t]reesitter highlight (current buffer)' })
 
 -- LSP virtual_text on/off (global). Different from <leader>td which kills
 -- ALL diagnostics in the buffer; this only hides the inline `●` text and
@@ -150,7 +150,7 @@ end, { desc = '[T]oggle: [T]reesitter highlight (current buffer)' })
 -- "on" restores your custom prefix/spacing instead of nvim's default.
 do
    local prev_vt
-   vim.keymap.set('n', '<leader>TD', function()
+   vim.keymap.set('n', '<leader>vV', function()
       local cur = vim.diagnostic.config().virtual_text
       if cur then
          prev_vt = cur
@@ -160,7 +160,7 @@ do
          vim.diagnostic.config({ virtual_text = prev_vt or { prefix = '●', spacing = 2 } })
          vim.notify('LSP virtual_text = true', vim.log.levels.INFO)
       end
-   end, { desc = '[T]oggle: LSP virtual text [D]iagnostics (global)' })
+   end, { desc = '[v]iew: LSP [V]irtual text on/off (vd taken)' })
 end
 
 -- Format-on-save (conform.nvim) -- session-local opt-in.
@@ -176,16 +176,16 @@ vim.api.nvim_create_autocmd('BufWritePre', {
       end
    end,
 })
-vim.keymap.set('n', '<leader>Tf', function()
+vim.keymap.set('n', '<leader>vf', function()
    vim.g.format_on_save = not vim.g.format_on_save
    vim.notify('format-on-save = ' .. tostring(vim.g.format_on_save), vim.log.levels.INFO)
-end, { desc = '[T]oggle: [f]ormat on save (conform)' })
+end, { desc = '[v]iew: [f]ormat on save (conform)' })
 
 -- Noice on/off. We track via vim.g.noice_disabled (a string flag, since
 -- noice itself doesn't expose a queryable enabled state). Useful when
 -- noice is hiding raw :messages output you want to inspect, or for
 -- isolating a UI bug.
-vim.keymap.set('n', '<leader>TN', function()
+vim.keymap.set('n', '<leader>vN', function()
    if vim.g.noice_disabled then
       vim.cmd('Noice enable')
       vim.g.noice_disabled = false
@@ -195,7 +195,7 @@ vim.keymap.set('n', '<leader>TN', function()
       vim.g.noice_disabled = true
       vim.notify('noice = false', vim.log.levels.INFO)
    end
-end, { desc = '[T]oggle: [N]oice UI on/off (global)' })
+end, { desc = '[v]iew: [N]oice UI on/off (caps: vn=line number toggle)' })
 
 -- <leader>v* -- vim introspection commands. None of these are bound by
 -- default in vim; this gives the "show me current state" family a
@@ -207,9 +207,9 @@ vim.keymap.set('n', '<leader>vm', '<cmd>marks<cr>',      { desc = 'Vim: [m]arks'
 vim.keymap.set('n', '<leader>vM', '<cmd>messages<cr>',   { desc = 'Vim: [M]essages (raw, not noice)' })
 vim.keymap.set('n', '<leader>vj', '<cmd>jumps<cr>',      { desc = 'Vim: [j]umplist' })
 vim.keymap.set('n', '<leader>vc', '<cmd>changes<cr>',    { desc = 'Vim: [c]hangelist' })
-vim.keymap.set('n', '<leader>vh', '<cmd>history<cr>',    { desc = 'Vim: cmdline [h]istory' })
+vim.keymap.set('n', '<leader>vH', '<cmd>history<cr>',    { desc = 'Vim: cmdline [H]istory (bumped from vh: hlsearch toggle reuses lowercase)' })
 vim.keymap.set('n', '<leader>vb', '<cmd>ls<cr>',         { desc = 'Vim: raw [b]uffer list (:ls)' })
-vim.keymap.set('n', '<leader>vH', '<cmd>checkhealth<cr>', { desc = 'Vim: check[H]ealth' })
+vim.keymap.set('n', '<leader>vK', '<cmd>checkhealth<cr>', { desc = 'Vim: chec[K]health (bumped from vH: cmdline history reuses vH)' })
 -- snacks.bufdelete is preferred over raw :bdelete -- prompts on unsaved
 -- buffers, preserves window layout, drops the buffer cleanly.
 vim.keymap.set('n', '<leader>vd', function() require('snacks').bufdelete() end, { desc = 'Vim: buffer [d]elete (snacks: prompts on unsaved)' })

@@ -1,3 +1,23 @@
+-- Defensive override: upstream's neo-tree/git/ls-files.lua does
+--     assert(vim.v.shell_error == 0)
+-- on the synchronous `git ls-files` call backing M.ignored. When git
+-- refuses to operate (dubious-ownership repos on shared NFS paths,
+-- corrupted index, missing .git, etc.) the assert turns a recoverable
+-- failure into a vim.schedule traceback that kills the tree refresh.
+-- We wrap M.ignored so any failure yields an empty list, and
+-- mark_gitignored just no-ops for that directory.
+do
+   local ok, ls = pcall(require, 'neo-tree.git.ls-files')
+   if ok and type(ls.ignored) == 'function' then
+      local orig = ls.ignored
+      ls.ignored = function(worktree_root)
+         local ok2, paths = pcall(orig, worktree_root)
+         if not ok2 then return {} end
+         return paths or {}
+      end
+   end
+end
+
 -- neo-tree.nvim (branch v3.x) -- file/buffer tree.
 --
 -- Full-feature mode: libuv watcher on (auto-refresh) + follow_current_file.

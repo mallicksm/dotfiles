@@ -42,7 +42,7 @@ vim.pack.add({
    -- Markdown rendering
    ----------------------------------------------------------------------------
    { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
-   -- (markview removed; render-markdown is the sole previewer. Toggle via <leader>Tm)
+   -- (markview removed; render-markdown is the sole previewer. Toggle via <leader>vP)
 
    ----------------------------------------------------------------------------
    -- Git stack

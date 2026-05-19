@@ -8,7 +8,6 @@ return {
       'lewis6991/gitsigns.nvim',
       event = { 'BufReadPre', 'BufNewFile' }, -- attach to buffers as soon as they're opened (gutter signs)
       keys = {
-         { '<leader>Tb', '<cmd>Gitsigns toggle_current_line_blame<cr>', desc = "[T]oggle: Git line [b]lame" },
          { '<leader>gs', '<cmd>Gitsigns stage_buffer<cr>',              desc = 'GitSigns: Stage entire buffer' },
          { '<leader>gj', '<cmd>Gitsigns next_hunk<cr>',                 desc = 'GitSigns: Hunk: next' },
          { '<leader>gk', '<cmd>Gitsigns prev_hunk<cr>',                 desc = 'GitSigns: Hunk: previous' },

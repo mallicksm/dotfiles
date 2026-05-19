@@ -1,11 +1,13 @@
 return {
    {
       'mason-org/mason.nvim',
+      cmd = { 'Mason', 'MasonInstall', 'MasonUninstall', 'MasonUninstallAll', 'MasonLog', 'MasonUpdate' },
       opts = {},
    },
    {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       dependencies = { 'mason-org/mason.nvim' },
+      event = 'VeryLazy', -- defer ensure_installed walk past first paint
       opts = {
          ensure_installed = {
             'tree-sitter-cli', -- needed by nvim-treesitter (main branch) to compile parsers
@@ -26,11 +28,17 @@ return {
          'mason-org/mason.nvim',
          'neovim/nvim-lspconfig',
       },
+      event = { 'BufReadPre', 'BufNewFile' },
    },
    {
       'neovim/nvim-lspconfig',
+      event = { 'BufReadPre', 'BufNewFile' },
       dependencies = {
-         { 'j-hui/fidget.nvim', opts = {} },
+         {
+            'j-hui/fidget.nvim',
+            event = 'LspAttach', -- only load once an LSP actually attaches
+            opts = {},
+         },
          {
             'folke/lazydev.nvim',
             ft = 'lua',
