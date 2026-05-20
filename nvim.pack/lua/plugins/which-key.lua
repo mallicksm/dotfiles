@@ -1,6 +1,16 @@
 -- which-key -- popup describing what's bound under a leader / prefix key.
 require('which-key').setup({
-   icons = { mappings = true, keys = {} },
+   icons = {
+      mappings = true,
+      keys = {},
+      -- Custom rules run BEFORE the built-ins, so any desc starting with
+      -- "Toggle" / "Cycle" gets the toggle-switch glyph regardless of
+      -- whether the desc also mentions "diagnostic", "format", "noice", etc.
+      rules = {
+         { pattern = "^toggle", icon = "󰔡", color = "yellow" },
+         { pattern = "^cycle",  icon = "󰔡", color = "yellow" },
+      },
+   },
    spec = {
       { '<leader>d', group = '[D]ap', icon = { icon = '󰃤', color = 'red' } },
       { '<leader>g', group = '[G]it', icon = { cat = 'filetype', name = 'git', color = 'green' } },

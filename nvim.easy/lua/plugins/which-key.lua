@@ -4,7 +4,14 @@ return {
    opts = {
       icons = {
          mappings = true,
-         keys = {}
+         keys = {},
+         -- Custom rules run BEFORE the built-ins, so any desc starting with
+         -- "Toggle" / "Cycle" gets the toggle-switch glyph regardless of
+         -- whether the desc also mentions "diagnostic", "format", "noice", etc.
+         rules = {
+            { pattern = "^toggle", icon = "󰔡", color = "yellow" },
+            { pattern = "^cycle",  icon = "󰔡", color = "yellow" },
+         },
       },
       spec = {
          { "<leader>d", group = "[D]ap", icon = { icon = "󰃤", color = "red" } },
