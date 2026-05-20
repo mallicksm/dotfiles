@@ -5,7 +5,7 @@ return {
    event = "VeryLazy",
    keys = {
       { '<leader>Vnc', '<cmd>Noice dismiss<cr>', noremap = true, silent = true, desc = 'Clear Noice Messages' },
-      { '<leader>Vnm', '<cmd>NoiceAll<cr>',      noremap = true, silent = true, desc = 'View Noice Messages' },
+      { '<leader>vM', '<cmd>NoiceAll<cr>',      noremap = true, silent = true, desc = 'View Noice Messages' },
    },
    dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries

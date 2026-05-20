@@ -15,8 +15,8 @@ return {
          { "<leader>s", group = "[S]earch (kaleido)", icon = { icon = "󰫖", color = "purple" } },     -- <leader>s{s,n,a,c,l} kaleidosearch
          { "<leader>H", group = "[H]arpoon", icon = { icon = "󰀢", color = "blue" } },              -- <leader>H{a,n,p,m,l} -- see core_plugins/harpoon.lua
          { "<leader>v", group = "[V]im", icon = { icon = "󰈈", color = "azure" } },  -- option toggles + :registers/:marks/:messages/etc -- see keymaps.lua
-         { "<leader>V", group = "[V]im tools", icon = { icon = "󰈉", color = "cyan" } }, -- <leader>Vb = neo-tree buffer panel, <leader>Vu = undotree, <leader>Vm = render-markdown
-         { "<leader>Vn", group = "[V]n -> [N]oice", icon = { icon = "󰂞", color = "yellow" } }, -- <leader>Vnc=clear, <leader>Vnm=messages, <leader>Vnt=toggle
+         { "<leader>V", group = "[V]im tools", icon = { icon = "󰈉", color = "cyan" } }, -- <leader>Vb = neo-tree buffer panel, <leader>Vu = undotree, <leader>Vm = render-markdown, <leader>Vf = format-on-save toggle
+         { "<leader>Vn", group = "[V]n -> [N]oice", icon = { icon = "󰂞", color = "yellow" } }, -- <leader>Vnc=clear, <leader>Vnt=toggle (vM = view-all-messages, under [V]im group)
          { "s", group = "[S]urround (mini)", icon = { icon = "󰅪", color = "purple" } }, -- sa/sd/sr/sf/sF/sh on upstream defaults; see core_plugins/mini.lua
          { "<Esc>",     hidden = true },
          { "<leader>h", hidden = true },

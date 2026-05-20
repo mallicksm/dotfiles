@@ -170,7 +170,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
       end
    end,
 })
-vim.keymap.set('n', '<leader>vf', function()
+vim.keymap.set('n', '<leader>Vf', function()
    vim.g.format_on_save = not vim.g.format_on_save
    vim.notify('format-on-save = ' .. tostring(vim.g.format_on_save), vim.log.levels.INFO)
 end, { desc = 'Toggle format-on-save (conform; default off)' })
@@ -197,7 +197,6 @@ end, { desc = 'Toggle Noice cmdline/messages UI' })
 -- a hundred times a day). All open as native vim listings, not telescope
 -- pickers -- they're info-dump views you read once and dismiss.
 vim.keymap.set('n', '<leader>vm', '<cmd>messages<cr>',   { desc = 'Show :messages (raw, bypasses Noice)' })
-vim.keymap.set('n', '<leader>vb', '<cmd>ls<cr>',         { desc = 'Show :ls raw buffer list' })
 -- snacks.bufdelete is preferred over raw :bdelete -- prompts on unsaved
 -- buffers, preserves window layout, drops the buffer cleanly.
 vim.keymap.set('n', '<leader>vd', function() require('snacks').bufdelete() end, { desc = 'Delete current buffer (snacks: prompts on unsaved)' })
