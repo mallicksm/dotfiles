@@ -2,7 +2,7 @@ return {
    'mfussenegger/nvim-lint',
    event = { 'BufReadPre', 'BufNewFile' },
    keys = {
-      { '<leader>ml', function() require('lint').try_lint() end, desc = 'Lnt: Trigger linting' },
+      { '<leader>pl', function() require('lint').try_lint() end, desc = 'ls[p]: trigger linting (nvim-lint)' },
    },
    config = function()
       require('lint').linters_by_ft = {
@@ -12,7 +12,7 @@ return {
          bash   = { 'shellcheck' },
          -- zsh: shellcheck does not support zsh; nothing to wire here. Use `zsh -n` for syntax checks.
       }
-      -- Linting is manual: <leader>ml triggers `lint.try_lint()`.
+      -- Linting is manual: <leader>pl triggers `lint.try_lint()`.
       -- (No BufWritePost/InsertLeave autocmd by design -- matches format-on-save policy.)
    end,
 }

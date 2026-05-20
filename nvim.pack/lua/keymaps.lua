@@ -166,7 +166,7 @@ end
 -- Strategy: register the BufWritePre autocmd ONCE here (always present),
 -- and gate it on vim.g.format_on_save. The toggle just flips the flag --
 -- no add/remove of the autocmd, so behavior is consistent and idempotent.
--- Default is OFF, matching your existing manual <leader>mp policy.
+-- Default is OFF, matching your existing manual <leader>pf policy.
 vim.api.nvim_create_autocmd('BufWritePre', {
    group = vim.api.nvim_create_augroup('user-format-on-save', { clear = true }),
    callback = function(args)
