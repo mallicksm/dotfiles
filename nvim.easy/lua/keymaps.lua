@@ -36,7 +36,7 @@ vim.keymap.set('n', '<leader>vw', function()
    vim.notify('wrap = ' .. tostring(vim.wo.wrap), vim.log.levels.INFO)
 end, { desc = 'Toggle line wrap (this window)' })
 
-vim.keymap.set('n', '<leader>vL', function()
+vim.keymap.set('n', '<leader>vl', function()
    vim.wo.cursorline = not vim.wo.cursorline
    vim.notify('cursorline = ' .. tostring(vim.wo.cursorline), vim.log.levels.INFO)
 end, { desc = 'Toggle cursor line highlight (this window)' })
@@ -78,7 +78,7 @@ vim.keymap.set('n', '<leader>vn', function()
    vim.notify('number = ' .. tostring(vim.wo.number), vim.log.levels.INFO)
 end, { desc = 'Toggle absolute line numbers (this window)' })
 
-vim.keymap.set('n', '<leader>vl', function()
+vim.keymap.set('n', '<leader>vs', function()
    vim.wo.list = not vim.wo.list
    vim.notify('list = ' .. tostring(vim.wo.list), vim.log.levels.INFO)
 end, { desc = 'Toggle whitespace markers (tabs / EOL / trailing)' })
