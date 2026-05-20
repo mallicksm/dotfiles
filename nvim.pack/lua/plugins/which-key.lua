@@ -5,12 +5,12 @@ require('which-key').setup({
       { '<leader>d', group = '[D]ap', icon = { icon = '󰃤', color = 'red' } },
       { '<leader>g', group = '[G]it', icon = { cat = 'filetype', name = 'git', color = 'green' } },
       { '<leader>gb', '<cmd>Gitsigns toggle_current_line_blame<cr>', desc = '[G]it: toggle current line [b]lame', icon = { icon = '󰍡', color = 'grey' } },
-      { '<leader>p', group = 'ls[p]', icon = { icon = '󰒋', color = 'blue' } }, -- LSP: pd=type def, ps=workspace symbols, pr=rename, pa=code action, po=outline, pv=virt-text-toggle, pD=all-diag-toggle, pf=format, pl=lint
+      { '<leader>p', group = 'ls[p]', icon = { icon = '󰒋', color = 'blue' } }, -- LSP: pd=type def, ps=workspace symbols, pr=rename, pa=code action, po=outline, pv=virt-text-toggle, pD=all-diag-toggle, pi=inlay-hints-toggle, pf=format, pl=lint
       { '<leader>t', group = '[t]elescope', icon = { icon = '󰍉', color = 'azure' } }, -- <leader>t{f,g,b,d} -- see plugins/{telescope,smart-open}.lua
       { '<leader>s', group = '[S]earch (kaleido)', icon = { icon = '󰫖', color = 'purple' } },
       { '<leader>H', group = '[H]arpoon', icon = { icon = '󰀢', color = 'blue' } }, -- <leader>H{a,n,p,m,l} -- see plugins/harpoon.lua
       { '<leader>v', group = '[V]im', icon = { icon = '󰈈', color = 'azure' } }, -- option toggles + :registers/:marks/:messages/etc -- see keymaps.lua
-      { '<leader>V', group = '[V]im tools', icon = { icon = '󰈉', color = 'cyan' } }, -- <leader>Vb = neo-tree buffer panel, <leader>Vu = undotree, <leader>Vh = checkhealth
+      { '<leader>V', group = '[V]im tools', icon = { icon = '󰈉', color = 'cyan' } }, -- <leader>Vb = neo-tree buffer panel, <leader>Vu = undotree, <leader>Vh = checkhealth, <leader>Vm = render-markdown
       { '<leader>Vn', group = '[V]n -> [N]oice', icon = { icon = '󰂞', color = 'yellow' } }, -- <leader>Vnc=clear, <leader>Vnm=messages, <leader>Vnt=toggle
       { 's', group = '[S]urround (mini)', icon = { icon = '󰅪', color = 'purple' } }, -- upstream defaults; see plugins/mini.lua
       { '<Esc>',     hidden = true },

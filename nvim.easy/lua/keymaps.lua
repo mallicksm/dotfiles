@@ -36,11 +36,6 @@ vim.keymap.set('n', '<leader>vw', function()
    vim.notify('wrap = ' .. tostring(vim.wo.wrap), vim.log.levels.INFO)
 end, { desc = 'Toggle line wrap (this window)' })
 
-vim.keymap.set('n', '<leader>vh', function()
-   vim.opt.hlsearch = not vim.opt.hlsearch:get()
-   vim.notify('hlsearch = ' .. tostring(vim.opt.hlsearch:get()), vim.log.levels.INFO)
-end, { desc = 'Toggle search highlights (clear after :/?)' })
-
 vim.keymap.set('n', '<leader>vL', function()
    vim.wo.cursorline = not vim.wo.cursorline
    vim.notify('cursorline = ' .. tostring(vim.wo.cursorline), vim.log.levels.INFO)
@@ -105,7 +100,7 @@ end, { desc = 'Toggle all LSP diagnostics (this buffer)' })
 
 -- LSP inlay hints (clangd, lua_ls, etc. emit these). Buffer-local.
 -- nvim 0.10+ API: vim.lsp.inlay_hint.{is_enabled, enable}.
-vim.keymap.set('n', '<leader>vi', function()
+vim.keymap.set('n', '<leader>pi', function()
    local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
    vim.lsp.inlay_hint.enable(not enabled, { bufnr = 0 })
    vim.notify('inlay hints = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
@@ -113,7 +108,7 @@ end, { desc = 'Toggle LSP inlay hints (this buffer)' })
 
 -- Render-markdown.nvim on/off. After :RenderMarkdown toggle we read the
 -- updated state.enabled to print the new value (instead of guessing).
-vim.keymap.set('n', '<leader>vP', function()
+vim.keymap.set('n', '<leader>Vm', function()
    vim.cmd('RenderMarkdown toggle')
    vim.notify('render-markdown = ' .. tostring(require('render-markdown.state').enabled), vim.log.levels.INFO)
 end, { desc = 'Toggle render-markdown preview rendering' })
