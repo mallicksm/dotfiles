@@ -202,7 +202,6 @@ end, { desc = 'Toggle Noice cmdline/messages UI' })
 -- a hundred times a day). All open as native vim listings, not telescope
 -- pickers -- they're info-dump views you read once and dismiss.
 vim.keymap.set('n', '<leader>vm', '<cmd>messages<cr>',   { desc = 'Show :messages (raw, bypasses Noice)' })
-vim.keymap.set('n', '<leader>vj', '<cmd>jumps<cr>',      { desc = 'Show :jumps (Ctrl-O / Ctrl-I history)' })
 vim.keymap.set('n', '<leader>vb', '<cmd>ls<cr>',         { desc = 'Show :ls raw buffer list' })
 vim.keymap.set('n', '<leader>Vh', '<cmd>checkhealth<cr>', { desc = 'Run :checkhealth (plugin health summary)' })
 -- snacks.bufdelete is preferred over raw :bdelete -- prompts on unsaved
