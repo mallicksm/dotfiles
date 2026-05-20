@@ -46,14 +46,14 @@ vim.keymap.set('n', '<leader>vL', function()
    vim.notify('cursorline = ' .. tostring(vim.wo.cursorline), vim.log.levels.INFO)
 end, { desc = 'Toggle cursor line highlight (this window)' })
 
--- <leader>vC cycles search case-sensitivity through the 3 useful states:
+-- <leader>vc cycles search case-sensitivity through the 3 useful states:
 --   sensitive    /Foo  matches  Foo            ignorecase=off, smartcase=off
 --   insensitive  /Foo  matches  Foo / foo / FOO ignorecase=on,  smartcase=off
 --   smart        /foo  matches  Foo / foo / FOO ignorecase=on,  smartcase=on
 --                /Foo  matches  Foo only       (uppercase => case-sensitive)
--- Default (set in options.lua) is "smart". Pressing <leader>vC walks
+-- Default (set in options.lua) is "smart". Pressing <leader>vc walks
 -- smart -> sensitive -> insensitive -> smart -> ...
-vim.keymap.set('n', '<leader>vC', function()
+vim.keymap.set('n', '<leader>vc', function()
    local ic = vim.opt.ignorecase:get()
    local sc = vim.opt.smartcase:get()
    local label
@@ -203,7 +203,6 @@ end, { desc = 'Toggle Noice cmdline/messages UI' })
 -- pickers -- they're info-dump views you read once and dismiss.
 vim.keymap.set('n', '<leader>vm', '<cmd>messages<cr>',   { desc = 'Show :messages (raw, bypasses Noice)' })
 vim.keymap.set('n', '<leader>vj', '<cmd>jumps<cr>',      { desc = 'Show :jumps (Ctrl-O / Ctrl-I history)' })
-vim.keymap.set('n', '<leader>vc', '<cmd>changes<cr>',    { desc = 'Show :changes (g; / g, history -- this buffer)' })
 vim.keymap.set('n', '<leader>vb', '<cmd>ls<cr>',         { desc = 'Show :ls raw buffer list' })
 vim.keymap.set('n', '<leader>Vh', '<cmd>checkhealth<cr>', { desc = 'Run :checkhealth (plugin health summary)' })
 -- snacks.bufdelete is preferred over raw :bdelete -- prompts on unsaved
