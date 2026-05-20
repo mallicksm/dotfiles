@@ -179,7 +179,7 @@ end, { desc = 'Toggle format-on-save (conform; default off)' })
 -- noice itself doesn't expose a queryable enabled state). Useful when
 -- noice is hiding raw :messages output you want to inspect, or for
 -- isolating a UI bug.
-vim.keymap.set('n', '<leader>Vnt', function()
+vim.keymap.set('n', '<leader>Vn', function()
    if vim.g.noice_disabled then
       vim.cmd('Noice enable')
       vim.g.noice_disabled = false
@@ -196,7 +196,14 @@ end, { desc = 'Toggle Noice cmdline/messages UI' })
 -- discoverable keybind home (and gets you out of typing `:registers<CR>`
 -- a hundred times a day). All open as native vim listings, not telescope
 -- pickers -- they're info-dump views you read once and dismiss.
-vim.keymap.set('n', '<leader>vm', '<cmd>messages<cr>',   { desc = 'Show :messages (raw, bypasses Noice)' })
+vim.keymap.set('n', '<leader>vm', function()
+   local out = vim.fn.execute('messages'):gsub('^%s+', ''):gsub('%s+$', '')
+   if out == '' then
+      vim.notify('No :messages', vim.log.levels.INFO)
+   else
+      vim.cmd('messages')
+   end
+end, { desc = 'Show :messages (raw, bypasses Noice; notify if empty)' })
 -- snacks.bufdelete is preferred over raw :bdelete -- prompts on unsaved
 -- buffers, preserves window layout, drops the buffer cleanly.
 vim.keymap.set('n', '<leader>vd', function() require('snacks').bufdelete() end, { desc = 'Delete current buffer (snacks: prompts on unsaved)' })

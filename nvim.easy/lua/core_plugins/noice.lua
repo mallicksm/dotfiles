@@ -4,7 +4,6 @@ return {
    "folke/noice.nvim",
    event = "VeryLazy",
    keys = {
-      { '<leader>Vnc', '<cmd>Noice dismiss<cr>', noremap = true, silent = true, desc = 'Clear Noice Messages' },
       { '<leader>vM', '<cmd>NoiceAll<cr>',      noremap = true, silent = true, desc = 'View Noice Messages' },
    },
    dependencies = {

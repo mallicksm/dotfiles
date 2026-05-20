@@ -73,7 +73,6 @@ require('noice').setup({
    },
 })
 
-vim.keymap.set('n', '<leader>Vnc', '<cmd>Noice dismiss<cr>', { noremap = true, silent = true, desc = 'Clear Noice Messages' })
 vim.keymap.set('n', '<leader>vM', '<cmd>NoiceAll<cr>',      { noremap = true, silent = true, desc = 'View Noice Messages' })
 
 -- vim: ts=3 sts=3 sw=3 et
