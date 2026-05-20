@@ -73,7 +73,7 @@ vim.keymap.set('n', '<leader>vC', function()
    vim.notify('case: ' .. label, vim.log.levels.INFO)
 end, { desc = 'Cycle search case sensitivity (smart -> sensitive -> insensitive)' })
 
-vim.keymap.set('n', '<leader>vR', function()
+vim.keymap.set('n', '<leader>vr', function()
    vim.wo.relativenumber = not vim.wo.relativenumber
    vim.notify('relativenumber = ' .. tostring(vim.wo.relativenumber), vim.log.levels.INFO)
 end, { desc = 'Toggle relative line numbers (this window)' })
@@ -201,13 +201,11 @@ end, { desc = 'Toggle Noice cmdline/messages UI' })
 -- discoverable keybind home (and gets you out of typing `:registers<CR>`
 -- a hundred times a day). All open as native vim listings, not telescope
 -- pickers -- they're info-dump views you read once and dismiss.
-vim.keymap.set('n', '<leader>vr', '<cmd>registers<cr>',  { desc = 'Show :registers (paste targets)' })
 vim.keymap.set('n', '<leader>vm', '<cmd>messages<cr>',   { desc = 'Show :messages (raw, bypasses Noice)' })
 vim.keymap.set('n', '<leader>vj', '<cmd>jumps<cr>',      { desc = 'Show :jumps (Ctrl-O / Ctrl-I history)' })
 vim.keymap.set('n', '<leader>vc', '<cmd>changes<cr>',    { desc = 'Show :changes (g; / g, history -- this buffer)' })
-vim.keymap.set('n', '<leader>vH', '<cmd>history<cr>',    { desc = 'Show :history (last cmdline commands)' })
 vim.keymap.set('n', '<leader>vb', '<cmd>ls<cr>',         { desc = 'Show :ls raw buffer list' })
-vim.keymap.set('n', '<leader>vK', '<cmd>checkhealth<cr>', { desc = 'Run :checkhealth (plugin health summary)' })
+vim.keymap.set('n', '<leader>Vh', '<cmd>checkhealth<cr>', { desc = 'Run :checkhealth (plugin health summary)' })
 -- snacks.bufdelete is preferred over raw :bdelete -- prompts on unsaved
 -- buffers, preserves window layout, drops the buffer cleanly.
 vim.keymap.set('n', '<leader>vd', function() require('snacks').bufdelete() end, { desc = 'Delete current buffer (snacks: prompts on unsaved)' })
