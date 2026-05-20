@@ -198,7 +198,6 @@ end, { desc = 'Toggle Noice cmdline/messages UI' })
 -- pickers -- they're info-dump views you read once and dismiss.
 vim.keymap.set('n', '<leader>vm', '<cmd>messages<cr>',   { desc = 'Show :messages (raw, bypasses Noice)' })
 vim.keymap.set('n', '<leader>vb', '<cmd>ls<cr>',         { desc = 'Show :ls raw buffer list' })
-vim.keymap.set('n', '<leader>Vh', '<cmd>checkhealth<cr>', { desc = 'Run :checkhealth (plugin health summary)' })
 -- snacks.bufdelete is preferred over raw :bdelete -- prompts on unsaved
 -- buffers, preserves window layout, drops the buffer cleanly.
 vim.keymap.set('n', '<leader>vd', function() require('snacks').bufdelete() end, { desc = 'Delete current buffer (snacks: prompts on unsaved)' })
