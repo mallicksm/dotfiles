@@ -61,9 +61,9 @@ vim.keymap.set('n', '<leader>td', function()
    require('utils.z_picker').open()
 end, { desc = 'Telescope: z [d]irectories (frecency from ~/.z)' })
 
--- Lives under <leader>V* (capital): [V]im tools group.
-vim.keymap.set('n', '<leader>Vo', function()
+-- Lives under <leader>p* (ls[p] group) since it queries the LSP.
+vim.keymap.set('n', '<leader>po', function()
    require('telescope.builtin').lsp_document_symbols({ prompt_title = 'Document Symbols (<esc> to quit)' })
-end, { desc = '[V]iew: [o]utline -- LSP document symbols (telescope)' })
+end, { desc = 'ls[p]: [o]utline -- document symbols (telescope)' })
 
 -- vim: ts=3 sts=3 sw=3 et

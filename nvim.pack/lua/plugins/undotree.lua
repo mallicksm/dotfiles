@@ -25,9 +25,9 @@ end
 vim.opt.undodir = undodir
 
 -- Lives under <leader>v* alongside other "introspection" commands.
-vim.keymap.set('n', '<leader>vu', function()
+vim.keymap.set('n', '<leader>Vu', function()
    vim.cmd.packadd('nvim.undotree')
    require('undotree').open({ command = 'topleft 50vnew' })
-end, { desc = 'Vim: [u]ndotree (built-in nvim 0.12+)' })
+end, { desc = '[V]im tools: [u]ndotree (built-in nvim 0.12+)' })
 
 -- vim: ts=3 sts=3 sw=3 et
