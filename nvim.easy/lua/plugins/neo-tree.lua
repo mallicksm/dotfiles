@@ -28,19 +28,6 @@ return {
          end,
          desc = 'Neo-tree: File browser toggle',
       },
-      {
-         '<leader>Vb',
-         function()
-            require('neo-tree.command').execute({
-               action = 'show',
-               source = 'buffers',
-               position = 'right',
-               toggle = true,
-               reveal_force_cwd = true,
-            })
-         end,
-         desc = 'Neo-Tree: Buffer list',
-      },
    },
    dependencies = {
       'nvim-lua/plenary.nvim',

@@ -20,7 +20,7 @@ require('which-key').setup({
       { '<leader>s', group = '[S]earch (kaleido)', icon = { icon = '󰫖', color = 'purple' } },
       { '<leader>H', group = '[H]arpoon', icon = { icon = '󰀢', color = 'blue' } }, -- <leader>H{a,n,p,m,l} -- see plugins/harpoon.lua
       { '<leader>v', group = '[V]im', icon = { icon = '󰈈', color = 'azure' } }, -- option toggles + :registers/:marks/:messages/etc -- see keymaps.lua
-      { '<leader>V', group = '[V]im tools', icon = { icon = '󰈉', color = 'cyan' } }, -- <leader>Vb = neo-tree buffer panel, <leader>Vu = undotree, <leader>Vm = render-markdown, <leader>Vf = format-on-save toggle, <leader>Vn = toggle Noice UI
+      { '<leader>V', group = '[V]im tools', icon = { icon = '󰈉', color = 'cyan' } }, -- <leader>Vm = render-markdown, <leader>Vf = format-on-save toggle, <leader>Vn = toggle Noice UI
       { 's', group = '[S]urround (mini)', icon = { icon = '󰅪', color = 'purple' } }, -- upstream defaults; see plugins/mini.lua
       { '<Esc>',     hidden = true },
       { '<leader>h', hidden = true },

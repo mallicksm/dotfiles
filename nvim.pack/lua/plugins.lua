@@ -22,7 +22,6 @@ vim.pack.add({
    { src = 'https://github.com/nvim-lua/plenary.nvim'        },
    { src = 'https://github.com/MunifTanjim/nui.nvim'         },
    { src = 'https://github.com/nvim-tree/nvim-web-devicons'  },
-   { src = 'https://github.com/kkharji/sqlite.lua'           },
    { src = 'https://github.com/tpope/vim-repeat'             },
    { src = 'https://github.com/nvim-neotest/nvim-nio'        },
 
@@ -64,7 +63,6 @@ vim.pack.add({
    { src = 'https://github.com/nvim-telescope/telescope.nvim' },
    { src = 'https://github.com/nvim-telescope/telescope-ui-select.nvim' },
    { src = 'https://github.com/nvim-telescope/telescope-fzf-native.nvim' },
-   { src = 'https://github.com/danielfalk/smart-open.nvim',     version = '0.2.x' },
 
    ----------------------------------------------------------------------------
    -- LSP / completion / format / lint / debug
@@ -146,7 +144,6 @@ require('plugins.marks')
 require('plugins.undotree')
 require('plugins.neo-tree')
 require('plugins.telescope')
-require('plugins.smart-open')
 
 require('plugins.completions')   -- blink.cmp -- before lspconfig
 require('plugins.lspconfig')      -- mason + mason-lspconfig + lspconfig

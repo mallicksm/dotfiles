@@ -8,6 +8,13 @@ return {
    cmd = { 'Telescope' },
    keys = {
       {
+         '<leader>tf',
+         function()
+            require('telescope.builtin').oldfiles({ prompt_title = 'Oldfiles (<esc> to quit)' })
+         end,
+         desc = 'Telescope: old[f]iles',
+      },
+      {
          '<leader>te',
          function()
             require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })
@@ -48,7 +55,7 @@ return {
       },
       {
          -- <leader>td -- frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
-         -- <CR> lcds into the picked dir; <C-f> chains into smart_open scoped to that dir.
+         -- <CR> lcds into the picked dir; <C-f> chains into find_files scoped to that dir.
          -- Implementation: lua/utils/z_picker.lua.
          '<leader>td',
          function()

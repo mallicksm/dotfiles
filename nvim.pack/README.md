@@ -61,7 +61,6 @@ Subsequent launches: nothing reinstalls, just `vim.pack.add` checks rtp.
 │   │   ├── undotree.lua
 │   │   ├── neo-tree.lua         + per-extension filename colors
 │   │   ├── telescope.lua        <leader>t{g,b} -- live_grep / buffers
-│   │   ├── smart-open.lua       <leader>tf (frecency-ranked file picker)
 │   │   ├── completions.lua      blink.cmp (must precede lspconfig)
 │   │   ├── lspconfig.lua        mason + mason-lspconfig + nvim-lspconfig
 │   │   ├── formatting.lua       conform.nvim
@@ -69,7 +68,7 @@ Subsequent launches: nothing reinstalls, just `vim.pack.add` checks rtp.
 │   │   ├── debugging.lua        nvim-dap + dap-ui + dap-virtual-text
 │   │   └── verilog.lua          vhda/verilog_systemverilog.vim global
 │   ├── markdown/links.lua       (verbatim from nvim.easy)
-│   ├── utils/                   (verbatim) smart_open, utilities_picker, format_sv
+│   ├── utils/                   helper utilities (z_picker, format_sv, etc.)
 │   └── user_plugins/            (verbatim) nvim_notes blink source
 ├── after/
 │   ├── ftdetect/filetype.lua    (verbatim)

@@ -17,9 +17,13 @@ telescope.setup({
 pcall(telescope.load_extension, 'ui-select')
 pcall(telescope.load_extension, 'fzf')
 
--- <leader>t* -- [t]elescope family (toggles moved to <leader>T*).
--- <leader>tf (smart_open / frecency, replaces the old find_files which was
--- redundant -- smart_open is a strict superset) lives in plugins/smart-open.lua.
+-- <leader>t* -- [t]elescope family.
+-- <leader>tf is plain oldfiles (Vim/Shada recent files) by design: no frecency,
+-- no cwd preference, just the files Vim knows you opened before.
+
+vim.keymap.set('n', '<leader>tf', function()
+   require('telescope.builtin').oldfiles({ prompt_title = 'Oldfiles (<esc> to quit)' })
+end, { desc = 'Telescope: old[f]iles' })
 
 -- <leader>tg prompts for an extension first, then runs live_grep filtered to
 -- that file type via ripgrep's --glob. Defaults to the current buffer's
@@ -46,16 +50,15 @@ vim.keymap.set('n', '<leader>tb', function()
    require('telescope.builtin').buffers({ prompt_title = 'Buffers (<esc> to quit)' })
 end, { desc = 'Telescope: open [b]uffers' })
 
--- <leader>te -- plain find_files. Mirrors nvim.easy's binding so muscle memory
--- carries over. <leader>tf (smart_open in plugins/smart-open.lua) is the
--- frecency-aware superset; <leader>te is the dumb-but-fast Telescope explorer.
+-- <leader>te -- plain find_files. <leader>tf is oldfiles; <leader>te is
+-- the dumb-but-fast current-project file explorer.
 vim.keymap.set('n', '<leader>te', function()
    require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })
 end, { desc = 'Telescope: [E]xplorer (find_files)' })
 
 -- <leader>td -- frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
 -- Default action lcd's into the picked dir; <C-f> from inside the picker
--- chains into smart_open scoped to that dir (z + file pick combo).
+-- chains into find_files scoped to that dir (z + file pick combo).
 -- Implementation: lua/utils/z_picker.lua.
 vim.keymap.set('n', '<leader>td', function()
    require('utils.z_picker').open()

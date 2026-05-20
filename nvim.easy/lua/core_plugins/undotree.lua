@@ -4,7 +4,7 @@
 -- means "load on demand via :packadd"). Lazy.nvim manages it via the
 -- `dir = ...` field pointing at the runtime path -- nothing is fetched
 -- from GitHub, but lazy still adds it to runtimepath and lazy-loads it
--- on cmd / key. First press of <leader>Vu pulls in ~400 lines of pure Lua.
+-- on cmd / key. First press of <leader>vu pulls in ~400 lines of pure Lua.
 --
 -- Differences vs the old mbbill/undotree:
 --   - Tree-only view (no diff pane below). For a diff, do `:DiffOrig`
@@ -22,7 +22,7 @@ return {
    keys = {
       {
          -- Lives under <leader>v* alongside other "introspection" commands.
-         '<leader>Vu',
+         '<leader>vu',
          function()
             require('undotree').open({ command = 'topleft 50vnew' })
          end,

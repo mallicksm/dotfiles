@@ -2,7 +2,7 @@
 ---
 --- Reads ~/.z (or $_Z_DATA if set), parses the `dir|rank|time` format, sorts
 --- by rank descending. Default action: :lcd to selected dir. <C-f> action:
---- :lcd then immediately fire smart_open in that dir (the "z + file pick"
+--- :lcd then immediately fire find_files in that dir (the "z + file pick"
 --- combo without leaving nvim).
 ---
 --- z.sh stores: <abs_path>|<rank_float>|<unix_time>
@@ -81,18 +81,16 @@ function M.open()
             vim.cmd.lcd(sel.value)
             vim.notify('lcd ' .. sel.value, vim.log.levels.INFO)
          end)
-         -- <C-f> -- lcd into the directory THEN immediately fire smart_open
+         -- <C-f> -- lcd into the directory THEN immediately run find_files
          -- scoped to that cwd. Killer "z + file pick" combo.
          map({ 'i', 'n' }, '<C-f>', function()
             local sel = action_state.get_selected_entry()
             actions.close(prompt_bufnr)
             if not sel then return end
             vim.cmd.lcd(sel.value)
-            require('telescope').extensions.smart_open.smart_open({
-               cwd            = sel.value,
-               cwd_only       = true,
-               filename_first = true,
-               prompt_title   = 'smart_open in ' .. sel.value,
+            require('telescope.builtin').find_files({
+               cwd = sel.value,
+               prompt_title = 'Find Files in ' .. sel.value,
             })
          end)
          return true
