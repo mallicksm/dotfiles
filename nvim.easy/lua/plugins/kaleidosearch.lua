@@ -2,11 +2,11 @@
 -- foreground AND background per highlight (highlighter-pen style), instead
 -- of upstream's algorithmic HSL fg-only colors.
 --
--- Why <leader>s* and not the plugin's <leader>c* defaults: <leader>ca is the
--- LSP code action (see code_plugins/lspconfig.lua) and the entire <leader>c
--- namespace is documented in which-key as "[C]ode action". <leader>s
--- ("[S]earch") was free, so we route there and disable the plugin's
+-- Why <leader>s* and not the plugin's <leader>c* defaults: kaleidosearch's
+-- upstream defaults claim <leader>c* but we want that prefix free. <leader>s
+-- ("[S]earch") was unused, so we route there and disable the plugin's
 -- keymaps.enabled. Group label is added in plugins/which-key.lua.
+-- (LSP code action lives at <leader>pa now, under the ls[p] family.)
 --
 -- Optional dep: tpope/vim-repeat -> dot-repeat for AddCursorWord, so after
 -- <leader>sa on one word you can `.` on the next word and it picks the next

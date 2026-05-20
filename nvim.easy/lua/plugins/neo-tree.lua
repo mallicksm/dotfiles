@@ -29,7 +29,7 @@ return {
          desc = 'Neo-tree: File browser toggle',
       },
       {
-         '<leader>ob',
+         '<leader>Vb',
          function()
             require('neo-tree.command').execute({
                action = 'show',

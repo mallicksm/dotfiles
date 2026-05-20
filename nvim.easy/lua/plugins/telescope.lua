@@ -54,11 +54,11 @@ return {
          desc = 'Telescope: open [b]uffers',
       },
       {
-         '<leader>oo',
+         '<leader>Vo',
          function()
             require('telescope.builtin').lsp_document_symbols({ prompt_title = 'Document Symbols (<esc> to quit)' })
          end,
-         desc = 'Outline: LSP document symbols',
+         desc = '[V]iew: [o]utline -- LSP document symbols (telescope)',
       },
    },
    dependencies = {

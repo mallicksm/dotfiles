@@ -43,11 +43,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
       map('gd',         function() require('telescope.builtin').lsp_definitions() end,                '[G]oto [D]efinition')
       map('gr',         function() require('telescope.builtin').lsp_references() end,                 '[G]oto [R]eferences')
-      map('<leader>D',  function() require('telescope.builtin').lsp_type_definitions() end,           'Type [D]efinition')
-      map('<leader>ds', function() require('telescope.builtin').lsp_document_symbols() end,           '[D]ocument [S]ymbols')
-      map('<leader>ws', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end,  '[W]orkspace [S]ymbols')
-      map('<leader>rn', vim.lsp.buf.rename,                                                          '[R]e[n]ame')
-      map('<leader>ca', vim.lsp.buf.code_action,                                                     '[C]ode [A]ction', { 'n', 'x' })
+      map('<leader>pd', function() require('telescope.builtin').lsp_type_definitions() end,           'ls[p]: type [D]efinition')
+      map('<leader>ps', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end,  'ls[p]: workspace [S]ymbols')
+      map('<leader>pr', vim.lsp.buf.rename, 'ls[p]: [r]ename')
+      map('<leader>pa', vim.lsp.buf.code_action, 'ls[p]: code [a]ction', { 'n', 'x' })
       map('gD',         vim.lsp.buf.declaration,                                                     '[G]oto [D]eclaration')
       map('K',          function() vim.lsp.buf.hover({ border = 'rounded' }) end,                    'Documentation')
 
