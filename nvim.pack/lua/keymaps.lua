@@ -202,8 +202,7 @@ end, { desc = 'Toggle Noice cmdline/messages UI' })
 -- a hundred times a day). All open as native vim listings, not telescope
 -- pickers -- they're info-dump views you read once and dismiss.
 vim.keymap.set('n', '<leader>vr', '<cmd>registers<cr>',  { desc = 'Show :registers (paste targets)' })
-vim.keymap.set('n', '<leader>vm', '<cmd>marks<cr>',      { desc = 'Show :marks' })
-vim.keymap.set('n', '<leader>vM', '<cmd>messages<cr>',   { desc = 'Show :messages (raw, bypasses Noice)' })
+vim.keymap.set('n', '<leader>vm', '<cmd>messages<cr>',   { desc = 'Show :messages (raw, bypasses Noice)' })
 vim.keymap.set('n', '<leader>vj', '<cmd>jumps<cr>',      { desc = 'Show :jumps (Ctrl-O / Ctrl-I history)' })
 vim.keymap.set('n', '<leader>vc', '<cmd>changes<cr>',    { desc = 'Show :changes (g; / g, history -- this buffer)' })
 vim.keymap.set('n', '<leader>vH', '<cmd>history<cr>',    { desc = 'Show :history (last cmdline commands)' })
