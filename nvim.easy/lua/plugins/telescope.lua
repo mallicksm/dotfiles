@@ -15,13 +15,6 @@ return {
          desc = 'Telescope: [e]xplorer (find_files)',
       },
       {
-         '<leader>tr',
-         function()
-            require('telescope.builtin').oldfiles({ prompt_title = 'Recent Files (<esc> to quit)' })
-         end,
-         desc = 'Telescope: [r]ecent files (oldfiles)',
-      },
-      {
          -- <leader>tg prompts for an extension first, then runs live_grep filtered
          -- to that file type via ripgrep's --glob. Defaults to the current
          -- buffer's extension so the common case is just "<leader>tg <Enter>".
@@ -52,6 +45,16 @@ return {
             require('telescope.builtin').buffers({ prompt_title = 'Buffers (<esc> to quit)' })
          end,
          desc = 'Telescope: open [b]uffers',
+      },
+      {
+         -- <leader>td -- frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
+         -- <CR> lcds into the picked dir; <C-f> chains into smart_open scoped to that dir.
+         -- Implementation: lua/utils/z_picker.lua.
+         '<leader>td',
+         function()
+            require('utils.z_picker').open()
+         end,
+         desc = 'Telescope: z [d]irectories (frecency from ~/.z)',
       },
       {
          '<leader>po',
