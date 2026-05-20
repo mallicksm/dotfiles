@@ -97,7 +97,7 @@ end, { desc = 'Toggle vertical cursor column ruler (this window)' })
 -- Diagnostics toggle is buffer-local via vim.diagnostic.{is_enabled,enable}.
 -- The 0.10+ API takes a boolean as the first arg; passing `not enabled`
 -- flips the state. bufnr=0 means "current buffer".
-vim.keymap.set('n', '<leader>vD', function()
+vim.keymap.set('n', '<leader>pD', function()
    local enabled = vim.diagnostic.is_enabled({ bufnr = 0 })
    vim.diagnostic.enable(not enabled, { bufnr = 0 })
    vim.notify('diagnostic = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
@@ -184,7 +184,7 @@ end, { desc = 'Toggle format-on-save (conform; default off)' })
 -- noice itself doesn't expose a queryable enabled state). Useful when
 -- noice is hiding raw :messages output you want to inspect, or for
 -- isolating a UI bug.
-vim.keymap.set('n', '<leader>vN', function()
+vim.keymap.set('n', '<leader>Vnt', function()
    if vim.g.noice_disabled then
       vim.cmd('Noice enable')
       vim.g.noice_disabled = false
