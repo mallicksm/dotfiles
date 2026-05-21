@@ -70,3 +70,45 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 })
 
 -- vim: ts=3 sts=3 sw=3 et
+
+-- Persist per-file fold/view state across sessions. `loadview` is scheduled so
+-- treesitter foldexpr / filetype setup has finished before folds are restored.
+vim.opt.viewoptions = { "folds", "cursor" }
+
+local persist_view_group = vim.api.nvim_create_augroup("user-persist-view", { clear = true })
+local persist_view_exclude = {
+   gitcommit = true,
+   gitrebase = true,
+   help = true,
+   qf = true,
+   TelescopePrompt = true,
+}
+
+local function can_persist_view(buf)
+   if not vim.api.nvim_buf_is_valid(buf) then return false end
+   if vim.bo[buf].buftype ~= "" then return false end
+   if vim.api.nvim_buf_get_name(buf) == "" then return false end
+   if persist_view_exclude[vim.bo[buf].filetype] then return false end
+   return true
+end
+
+vim.api.nvim_create_autocmd("BufWinLeave", {
+   group = persist_view_group,
+   callback = function(event)
+      if can_persist_view(event.buf) then
+         pcall(vim.cmd.mkview, { mods = { emsg_silent = true } })
+      end
+   end,
+})
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+   group = persist_view_group,
+   callback = function(event)
+      if not can_persist_view(event.buf) then return end
+      vim.schedule(function()
+         if can_persist_view(event.buf) then
+            pcall(vim.cmd.loadview, { mods = { emsg_silent = true } })
+         end
+      end)
+   end,
+})
