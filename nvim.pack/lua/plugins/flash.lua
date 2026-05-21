@@ -26,6 +26,7 @@ require('flash').setup({
 vim.keymap.set({ 'n', 'o' }, 'f', function() require('flash').jump() end,
    { desc = 'Flash: jump (bidirectional multi-char, replaces vim f)' })
 
+
 -- Make label letters visually distinct from matched chars. By default
 -- FlashMatch -> Search (yellow in gruvbox) and FlashLabel -> Substitute
 -- (also yellow-ish), which made matched-text and the label letter look the

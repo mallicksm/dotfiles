@@ -46,9 +46,9 @@ require('snacks').setup({
    },
 })
 
-vim.keymap.set('n', '<leader>gf', function() require('snacks').lazygit.log_file() end, { desc = 'Snacks: git log for current file' })
-vim.keymap.set('n', '<leader>gl', function() require('snacks').lazygit.log() end,      { desc = 'Snacks: git log' })
-vim.keymap.set('n', '<leader>gg', function() require('snacks').lazygit() end,          { desc = 'Snacks: Lazygit: tui' })
+vim.keymap.set('n', '<leader>gF', function() require('snacks').lazygit.log_file() end, { desc = 'Snacks: Lazygit: log current [F]ile' })
+vim.keymap.set('n', '<leader>gL', function() require('snacks').lazygit.log() end,      { desc = 'Snacks: Lazygit: repo [L]og' })
+vim.keymap.set('n', '<leader>gl', function() require('snacks').lazygit() end,          { desc = 'Snacks: [l]azygit TUI' })
 -- Lives under <leader>v* alongside other "vim utilities" -- moved off bare
 -- <leader>T after the toggle family migrated to <leader>T*.
 vim.keymap.set('n', '<leader>vt', function() require('snacks').terminal() end, { desc = 'Vim: floating [t]erminal (snacks)' })

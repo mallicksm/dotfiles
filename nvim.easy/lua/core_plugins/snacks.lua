@@ -4,9 +4,9 @@ return {
    lazy = false,
    keys = {
       -- <leader>K for more info on cWORD snacks-lazygit-table-of-contents
-      { '<leader>gf', function() require('snacks').lazygit.log_file() end, desc = 'Snacks: git log for current file' },
-      { '<leader>gl', function() require('snacks').lazygit.log() end,      desc = 'Snacks: git log' },
-      { '<leader>gg', function() require('snacks').lazygit() end,          desc = 'Snacks: Lazygit: tui' },
+      { '<leader>gF', function() require('snacks').lazygit.log_file() end, desc = 'Snacks: Lazygit: log current [F]ile' },
+      { '<leader>gL', function() require('snacks').lazygit.log() end,      desc = 'Snacks: Lazygit: repo [L]og' },
+      { '<leader>gl', function() require('snacks').lazygit() end,          desc = 'Snacks: [l]azygit TUI' },
       -- Lives under <leader>v* alongside other "vim utilities" -- moved off
       -- bare <leader>T after the toggle family migrated to <leader>T*.
       { '<leader>vt',  function() require('snacks').terminal() end,        desc = 'Vim: floating [t]erminal (snacks)' },

@@ -63,14 +63,17 @@ return {
          -------------------------------------------------------
          -- <leader>K for more info on cWORD MiniSurround.config
          -------------------------------------------------------
-         -- Upstream defaults: sa/sd/sr/sf/sF/sh on the `s` prefix.
-         -- Trade-off vs. our old `gs*` setup: bare `s` (vim's substitute-
-         -- char) now waits `timeoutlen` (300ms) before firing because vim
-         -- has to check whether you'll continue with a/d/r/f/F/h. If the
-         -- 300ms tax annoys you, either drop timeoutlen lower in
-         -- options.lua or revert to `gs*`. Most folks use `cl` instead
-         -- of `s` for substitute-char anyway, so the lag is rarely felt.
-         require('mini.surround').setup()
+         -- mini.surround moved to gs* so visual-mode `s` stays Vim substitute.
+         require('mini.surround').setup({
+            mappings = {
+               add = 'gsa',
+               delete = 'gsd',
+               find = 'gsf',
+               find_left = 'gsF',
+               highlight = 'gsh',
+               replace = 'gsr',
+            },
+         })
 
          ----------------------------------------------------
          -- <leader>K for more info on cWORD MiniPairs.config

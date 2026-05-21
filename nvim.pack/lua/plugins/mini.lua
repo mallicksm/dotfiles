@@ -44,13 +44,17 @@ ai.setup({
    },
 })
 
--- mini.surround on upstream defaults: sa/sd/sr/sf/sF/sh on the `s` prefix.
--- Trade-off vs. our old `gs*` setup: bare `s` (vim's substitute-char) now
--- waits `timeoutlen` (300ms) before firing because vim checks whether
--- you'll continue with a/d/r/f/F/h. If the lag annoys you, drop timeoutlen
--- in options.lua or revert to `gs*`. Most folks use `cl` for substitute
--- anyway, so the lag is rarely felt.
-require('mini.surround').setup()
+-- mini.surround moved to gs* so visual-mode `s` stays Vim substitute.
+require('mini.surround').setup({
+   mappings = {
+      add = 'gsa',
+      delete = 'gsd',
+      find = 'gsf',
+      find_left = 'gsF',
+      highlight = 'gsh',
+      replace = 'gsr',
+   },
+})
 
 require('mini.pairs').setup({
    mappings          = { ['`'] = false },

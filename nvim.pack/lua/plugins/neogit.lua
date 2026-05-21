@@ -6,6 +6,6 @@ require('neogit').setup({
    console_timeout = 5000,
 })
 
-vim.keymap.set('n', '<leader>gG', '<cmd>Neogit kind=auto<cr>', { desc = 'Neogit: Git status CLI' })
+vim.keymap.set('n', '<leader>gn', '<cmd>Neogit kind=auto<cr>', { desc = 'Neogit: Git status CLI' })
 
 -- vim: ts=3 sts=3 sw=3 et

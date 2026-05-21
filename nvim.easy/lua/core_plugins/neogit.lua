@@ -4,7 +4,7 @@ return {
       branch = 'master',
       cmd = { 'Neogit' }, -- :Neogit (typed) loads the plugin
       keys = {
-         { '<leader>gG', '<cmd>Neogit kind=auto<cr>', desc = 'Neogit: Git status CLI' },
+         { '<leader>gn', '<cmd>Neogit kind=auto<cr>', desc = 'Neogit: Git status CLI' },
       },
       dependencies = {
          'nvim-lua/plenary.nvim',
