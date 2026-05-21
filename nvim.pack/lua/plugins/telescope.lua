@@ -75,6 +75,14 @@ vim.keymap.set('n', '<leader>te', function()
    require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })
 end, { desc = 'Telescope: [E]xplorer (find_files)' })
 
+vim.keymap.set('n', '<leader>tE', function()
+   require('telescope.builtin').find_files({
+      prompt_title = 'Find Files - all (<esc> to quit)',
+      hidden = true,
+      no_ignore = true,
+   })
+end, { desc = 'Telescope: [E]xplorer all files (hidden + ignored)' })
+
 -- <leader>td -- frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
 -- Default action lcd's into the picked dir; <C-f> from inside the picker
 -- chains into find_files scoped to that dir (z + file pick combo).

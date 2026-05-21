@@ -31,3 +31,8 @@ exit_mode      = "return-original" # Esc returns whatever you had typed, not not
 # --- privacy / network --------------------------------------------------------
 update_check   = false            # no phone-home for new versions
 auto_sync      = false            # local-only; opt into sync explicitly via `atuin login`
+
+# Store Atuin sqlite DBs on local disk, not NFS $HOME. SQLite WAL locking on
+# NFSv3 can leave stale locks and cause: "pool timed out while waiting for an
+# open connection". Data is machine-local by design; dotfiles track config only.
+data_dir = "/var/tmp/smallick/atuin"

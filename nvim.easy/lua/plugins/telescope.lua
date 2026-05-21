@@ -37,6 +37,17 @@ return {
          desc = 'Telescope: [e]xplorer (find_files)',
       },
       {
+         '<leader>tE',
+         function()
+            require('telescope.builtin').find_files({
+               prompt_title = 'Find Files - all (<esc> to quit)',
+               hidden = true,
+               no_ignore = true,
+            })
+         end,
+         desc = 'Telescope: [E]xplorer all files (hidden + ignored)',
+      },
+      {
          -- <leader>tg prompts for an extension first, then runs live_grep filtered
          -- to that file type via ripgrep's --glob. Defaults to the current
          -- buffer's extension so the common case is just "<leader>tg <Enter>".
