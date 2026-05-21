@@ -23,6 +23,13 @@ return {
          desc = 'Telescope: old[f]iles',
       },
       {
+         '<leader>tr',
+         function()
+            require('telescope.builtin').resume()
+         end,
+         desc = 'Telescope: [r]esume last picker',
+      },
+      {
          '<leader>te',
          function()
             require('telescope.builtin').find_files({ prompt_title = 'Find Files (<esc> to quit)' })

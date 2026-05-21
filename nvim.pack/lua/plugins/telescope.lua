@@ -40,6 +40,10 @@ vim.keymap.set('n', '<leader>tf', function()
    require('telescope.builtin').oldfiles({ prompt_title = 'Oldfiles (<esc> to quit)' })
 end, { desc = 'Telescope: old[f]iles' })
 
+vim.keymap.set('n', '<leader>tr', function()
+   require('telescope.builtin').resume()
+end, { desc = 'Telescope: [r]esume last picker' })
+
 -- <leader>tg prompts for an extension first, then runs live_grep filtered to
 -- that file type via ripgrep's --glob. Defaults to the current buffer's
 -- extension. Empty + <Enter> = unfiltered grep across all files.
