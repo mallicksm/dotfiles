@@ -194,8 +194,16 @@ end, { desc = 'Toggle Noice cmdline/messages UI' })
 -- <leader>v* -- vim introspection commands. None of these are bound by
 -- default in vim; this gives the "show me current state" family a
 -- discoverable keybind home (and gets you out of typing `:registers<CR>`
--- a hundred times a day). All open as native vim listings, not telescope
--- pickers -- they're info-dump views you read once and dismiss.
+-- a hundred times a day). Most open as native vim listings; command/search
+-- history use Telescope because fuzzy filtering is useful there.
+vim.keymap.set('n', '<leader>v:', function()
+   require('utils.telescope_history').command_history({ prompt_title = 'Command History (<CR> run, <esc> to quit)' })
+end, { desc = 'Telescope: command history (:)' })
+
+vim.keymap.set('n', '<leader>v/', function()
+   require('utils.telescope_history').search_history({ prompt_title = 'Search History (<CR> use, <esc> to quit)' })
+end, { desc = 'Telescope: search history (/ and ?)' })
+
 vim.keymap.set('n', '<leader>vm', function()
    local out = vim.fn.execute('messages'):gsub('^%s+', ''):gsub('%s+$', '')
    if out == '' then
