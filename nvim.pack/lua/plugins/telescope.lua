@@ -17,6 +17,21 @@ telescope.setup({
 pcall(telescope.load_extension, 'ui-select')
 pcall(telescope.load_extension, 'fzf')
 
+vim.keymap.set('i', '<C-r>', function()
+   require('telescope.builtin').registers({ prompt_title = 'Registers (<CR> paste, <C-e> edit)', layout_config = { height = 0.75 } })
+end, { desc = 'Telescope: registers (<CR> paste, <C-e> edit)' })
+
+-- which-key's registers preset owns cmdline <C-r> and normal/visual ".
+-- Re-assert insert-mode <C-r> after VimEnter so insert uses Telescope.
+vim.api.nvim_create_autocmd('VimEnter', {
+   group = vim.api.nvim_create_augroup('user-force-insert-registers-telescope', { clear = true }),
+   callback = function()
+      vim.keymap.set('i', '<C-r>', function()
+         require('telescope.builtin').registers({ prompt_title = 'Registers (<CR> paste, <C-e> edit)', layout_config = { height = 0.75 } })
+      end, { desc = 'Telescope: registers (<CR> paste, <C-e> edit)' })
+   end,
+})
+
 -- <leader>t* -- [t]elescope family.
 -- <leader>tf is plain oldfiles (Vim/Shada recent files) by design: no frecency,
 -- no cwd preference, just the files Vim knows you opened before.

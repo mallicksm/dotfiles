@@ -50,3 +50,6 @@ export IGNOREEOF=1 # use exit to leave shell
 # Sourced last so its binds override fzf + the Up/Down history-search-*
 # rebinds in the interactive block above.
 [[ -f ~/.bash_atuin.sh ]] && source ~/.bash_atuin.sh
+
+# xPack RISC-V bare-metal GCC (for cv32e40p / PULP)
+export PATH="$HOME/.local/riscv-none-elf/bin:$PATH"

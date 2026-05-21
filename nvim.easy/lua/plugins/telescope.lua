@@ -8,6 +8,14 @@ return {
    cmd = { 'Telescope' },
    keys = {
       {
+         '<C-r>',
+         function()
+            require('telescope.builtin').registers({ prompt_title = 'Registers (<CR> paste, <C-e> edit)', layout_config = { height = 0.75 } })
+         end,
+         mode = 'i',
+         desc = 'Telescope: registers (<CR> paste, <C-e> edit)',
+      },
+      {
          '<leader>tf',
          function()
             require('telescope.builtin').oldfiles({ prompt_title = 'Oldfiles (<esc> to quit)' })
@@ -99,6 +107,17 @@ return {
 
       pcall(telescope.load_extension, 'ui-select')
       pcall(telescope.load_extension, 'fzf')
+
+      -- which-key's registers preset owns cmdline <C-r> and normal/visual ".
+      -- Re-assert insert-mode <C-r> after VimEnter so insert uses Telescope.
+      vim.api.nvim_create_autocmd('VimEnter', {
+         group = vim.api.nvim_create_augroup('user-force-insert-registers-telescope', { clear = true }),
+         callback = function()
+            vim.keymap.set('i', '<C-r>', function()
+               require('telescope.builtin').registers({ prompt_title = 'Registers (<CR> paste, <C-e> edit)', layout_config = { height = 0.75 } })
+            end, { desc = 'Telescope: registers (<CR> paste, <C-e> edit)' })
+         end,
+      })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et
