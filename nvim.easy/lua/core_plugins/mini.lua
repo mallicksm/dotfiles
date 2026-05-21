@@ -35,10 +35,28 @@ return {
          -------------------------------------------------------------
          -- <leader>K for more info on cWORD MiniAi-textobject-builtin
          -------------------------------------------------------------
-         require('mini.ai').setup({
+         local ai = require('mini.ai')
+         local extra = require('mini.extra')
+         local ts = ai.gen_spec.treesitter
+         local function ts_textobject(captures)
+            local spec = ts(captures)
+            return function(ai_type, id, opts)
+               pcall(function() vim.treesitter.get_parser(0):parse() end)
+               return spec(ai_type, id, opts)
+            end
+         end
+         ai.setup({
+            n_lines = 10000, -- SV modules/classes are often huge; needed for TS textobjects
             custom_textobjects = {
-               B = require('mini.extra').gen_ai_spec.buffer(),
-               L = require('mini.extra').gen_ai_spec.line(),
+               B = extra.gen_ai_spec.buffer(),
+               L = extra.gen_ai_spec.line(),
+               f = ts_textobject({ a = '@function.outer',  i = '@function.inner' }),
+               m = ts_textobject({ a = '@module.outer',    i = '@module.inner' }),
+               c = ts_textobject({ a = '@class.outer',     i = '@class.inner' }),
+               a = ts_textobject({ a = '@parameter.outer', i = '@parameter.inner' }),
+               b = ts_textobject({ a = '@block.outer',     i = '@block.inner' }),
+               u = ts_textobject({ a = '@instance.outer',  i = '@instance.inner' }),
+               n = ts_textobject({ a = '@field.outer',     i = '@field.inner' }),
             },
          })
 

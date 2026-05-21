@@ -21,7 +21,7 @@ local ensure_installed = {
 return {
    'nvim-treesitter/nvim-treesitter',
    branch = 'main',
-   dependencies = { 'nvim-lua/plenary.nvim' },
+   dependencies = { 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter-textobjects' },
    lazy = false,
    build = ':TSUpdate',
    config = function()

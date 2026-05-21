@@ -1,7 +1,6 @@
-vim.opt_local.foldmethod = 'syntax'
-vim.opt_local.smartindent = false
-vim.opt_local.autoindent = true
-vim.opt_local.tabstop = 3
-vim.opt_local.shiftwidth = 3
-vim.opt_local.softtabstop = 3
-vim.opt_local.commentstring = '// %s'
+-- Use Treesitter folds for SystemVerilog. The vhda syntax plugin defaults to
+-- syntax folds, but our TS parser has better structural nodes (modules,
+-- instances, classes, begin/end blocks) and matches the mini.ai textobjects.
+vim.opt_local.foldmethod = "expr"
+vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt_local.foldlevelstart = 99

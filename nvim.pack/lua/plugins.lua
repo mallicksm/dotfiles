@@ -84,6 +84,7 @@ vim.pack.add({
    -- Treesitter + Verilog/SystemVerilog syntax
    ----------------------------------------------------------------------------
    { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
+   { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' },
    { src = 'https://github.com/vhda/verilog_systemverilog.vim' },
 }, {
    -- confirm = false silences the "These plugins will be installed:" popup
