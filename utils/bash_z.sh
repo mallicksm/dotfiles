@@ -1,11 +1,30 @@
 # z settings
 [[ -f ~/dotfiles/initrc/z.sh ]] && source ~/dotfiles/initrc/z.sh
-# configure fzf with  z
-# Note: https://github.com/junegunn/fzf/wiki/Examples#integration-with-z
+# configure fzf with z. With no args, show ~/.z sorted by LAST VISIT time
+# (newest first), not z.sh's frecency score. fzf is in --no-sort mode so
+# fuzzy filtering preserves that recency order instead of re-ranking by match.
+# ~/.z format: path|rank|epoch_seconds
 unalias z 2> /dev/null
+
+_z_recent_dirs() {
+  local data="${_Z_DATA:-$HOME/.z}"
+  [[ -f "$data" ]] || return 1
+  awk -F'|' 'NF >= 3 { printf "%s\t%s\t%s\n", $3, $2, $1 }' "$data" \
+    | sort -t $'\t' -k1,1nr
+}
+
+_z_pick_recent_dir() {
+  local query="$1"
+  _z_recent_dirs \
+    | fzf +s --no-sort --delimiter=$'\t' --with-nth=3.. --nth=3.. -q "$query" \
+    | awk -F'\t' '{ print $3 }'
+}
+
 z() {
+  local dir
   if [[ -z "$*" ]]; then
-    cd "$(_z -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
+    dir="$(_z_pick_recent_dir "")" || return
+    [[ -n "$dir" ]] && cd "$dir"
   else
     _last_z_args="$@"
     _z "$@"
@@ -13,5 +32,7 @@ z() {
 }
 
 zz() {
-  cd "$(_z -l 2>&1 | sed 's/^[0-9,.]* *//' | fzf -q "$_last_z_args")"
+  local dir
+  dir="$(_z_pick_recent_dir "$_last_z_args")" || return
+  [[ -n "$dir" ]] && cd "$dir"
 }

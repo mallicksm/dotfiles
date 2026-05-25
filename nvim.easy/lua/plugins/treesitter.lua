@@ -26,6 +26,10 @@ return {
    build = ':TSUpdate',
    config = function()
       local ts = require('nvim-treesitter')
+      -- nvim-treesitter main keeps some queries under runtime/queries; put
+      -- that directory on rtp so languages missing builtin queries (asm/vmasm)
+      -- get highlights.
+      vim.opt.runtimepath:prepend(vim.fn.stdpath('data') .. '/lazy/nvim-treesitter/runtime')
       ts.install(ensure_installed)
 
       -- Map filetypes to their tree-sitter parser when the names differ.
@@ -33,6 +37,7 @@ return {
       -- 'verilog' or 'systemverilog'), so we only need that one alias.
       vim.treesitter.language.register('systemverilog', { 'verilog_systemverilog' })
       vim.treesitter.language.register('bash', { 'sh' })
+      vim.treesitter.language.register('asm', { 'vmasm' })
 
       vim.api.nvim_create_autocmd('FileType', {
          group = vim.api.nvim_create_augroup('user-treesitter', { clear = true }),
