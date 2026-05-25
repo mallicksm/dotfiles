@@ -227,4 +227,19 @@ vim.keymap.set('n', '<leader>K', function()
    require('utils.smart_open').open()
 end, { noremap = true, silent = true, desc = 'Man page or help for word under cursor' })
 
+-- <C-g>: yank full path into the unnamed register """ and drop a quiet
+-- INFO notify so noice routes it to the bottom-right mini view (see
+-- plugins/noice.lua "notify -> mini" route). Plain `p` pastes the path;
+-- "*"/"+" stay untouched. Push to clipboard explicitly with
+-- :let @* = @"   (or paste from "" via `""p`).
+vim.keymap.set('n', '<C-g>', function()
+   local p = vim.fn.expand('%:p')
+   if p == '' then
+      vim.notify('[No Name]', vim.log.levels.INFO)
+      return
+   end
+   vim.fn.setreg('"', p)
+   vim.notify(p, vim.log.levels.INFO)
+end, { desc = 'CTRL-G: full path -> noice (bot-right) + yank to ""' })
+
 -- vim: ts=3 sts=3 sw=3 et
