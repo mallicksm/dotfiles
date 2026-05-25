@@ -16,7 +16,7 @@ require('which-key').setup({
       { '<leader>g', group = '[G]it', icon = { cat = 'filetype', name = 'git', color = 'green' } },
       { '<leader>gb', '<cmd>Gitsigns toggle_current_line_blame<cr>', desc = '[G]it: toggle current line [b]lame', icon = { icon = '󰍡', color = 'grey' } },
       { '<leader>p', group = 'ls[p]', icon = { icon = '󰒋', color = 'blue' } }, -- LSP: pd=type def, ps=workspace symbols, pr=rename, pa=code action, po=outline, pv=virt-text-toggle, pD=all-diag-toggle, pi=inlay-hints-toggle, pf=format, pl=lint
-      { '<leader>t', group = '[t]elescope', icon = { icon = '󰍉', color = 'azure' } }, -- <leader>t{f,g,b,d} -- see plugins/{telescope,smart-open}.lua
+      { '<leader>t', group = '[t]elescope', icon = { icon = '󰍉', color = 'azure' } }, -- <leader>t{f,g,b,d} -- see plugins/telescope.lua
       { '<leader>s', group = '[S]earch (kaleido)', icon = { icon = '󰫖', color = 'purple' } },
       { '<leader>H', group = '[H]arpoon', icon = { icon = '󰀢', color = 'blue' } }, -- <leader>H{a,n,p,m,l} -- see plugins/harpoon.lua
       { '<leader>v', group = '[V]im', icon = { icon = '󰈈', color = 'azure' } }, -- option toggles + :registers/:marks/:messages/etc -- see keymaps.lua
