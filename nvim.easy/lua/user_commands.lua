@@ -1,10 +1,6 @@
 -- All user commands live here. Real autocmds are in lua/autocmds.lua.
 -- Implementations live under lua/utils/ when they're more than 1-2 lines.
 
-vim.api.nvim_create_user_command('Filename', function()
-   vim.print('User: ' .. vim.fn.expand('%:p'))
-end, { nargs = 0, desc = 'Print full path of current file' })
-
 vim.api.nvim_create_user_command('Utilities', function()
    require('utils.utilities_picker').open()
 end, { nargs = 0, desc = 'Multi-choice telescope picker (options/registers/colorscheme/...)' })

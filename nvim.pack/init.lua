@@ -11,7 +11,7 @@
    │   init.lua                this file -- entry point           │
    │   lua/options.lua         vim.opt.* (verbatim from nvim.easy)│
    │   lua/autocmds.lua        real autocmds                      │
-   │   lua/user_commands.lua   :Filename / :Utilities / :MdViewer │
+   │   lua/user_commands.lua   :Utilities / :FormatAllSV          │
    │   lua/plugins.lua         vim.pack.add() of every repo       │
    │   lua/plugins/<name>.lua  per-plugin setup (one file each)   │
    │   lua/keymaps.lua         basic, plugin-agnostic keymaps     │
@@ -30,7 +30,7 @@ vim.g.mapleader = ' '
 -- Order matters:
 --   1. options       -- vim.opt.* before plugins read them
 --   2. autocmds      -- real autocmds (PDF reader, last-loc restore)
---   3. user_commands -- :Filename, :Utilities, :MdViewer, :FormatAllSV
+--   3. user_commands -- :Utilities, :FormatAllSV
 --   4. plugins       -- vim.pack.add(...) + per-plugin setup files
 --   5. keymaps       -- basic plugin-agnostic keymaps
 require('options')

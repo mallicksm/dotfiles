@@ -70,16 +70,6 @@ return {
          },
          routes = {
             {
-               --[[ only Push "User: " output to popup ]]
-               filter = {
-                  event = "msg_show",
-                  any = {
-                     { find = "User: " },
-                  },
-               },
-               view = "popup",
-            },
-            {
                --[[ redirect annoying messages to mini ]]
                filter = {
                   event = "msg_show",

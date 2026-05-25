@@ -38,7 +38,7 @@ Subsequent launches: nothing reinstalls, just `vim.pack.add` checks rtp.
 ├── lua/
 │   ├── options.lua              vim.opt.* (verbatim from nvim.easy)
 │   ├── autocmds.lua             real autocmds (PDF reader, last-loc restore)
-│   ├── user_commands.lua        :Filename / :Utilities / :FormatAllSV
+│   ├── user_commands.lua        :Utilities / :FormatAllSV
 │   ├── keymaps.lua              basic, plugin-agnostic keymaps
 │   ├── plugins.lua              vim.pack.add() of every repo + post-build steps
 │   ├── plugins/                 per-plugin setup, one file each

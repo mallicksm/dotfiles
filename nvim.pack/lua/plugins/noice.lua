@@ -47,8 +47,6 @@ require('noice').setup({
       },
    },
    routes = {
-      -- Push "User: ..." (our :Filename command etc.) to a popup
-      { filter = { event = 'msg_show', any = { { find = 'User: ' } } }, view = 'popup' },
       -- Redirect noisy info messages to the small mini view
       {
          filter = { event = 'msg_show', any = {
