@@ -16,6 +16,7 @@ telescope.setup({
 
 pcall(telescope.load_extension, 'ui-select')
 pcall(telescope.load_extension, 'fzf')
+pcall(telescope.load_extension, 'live_grep_args')
 
 vim.keymap.set('i', '<C-r>', function()
    require('telescope.builtin').registers({ prompt_title = 'Registers (<CR> paste, <C-e> edit)', layout_config = { height = 0.75 } })
@@ -44,26 +45,20 @@ vim.keymap.set('n', '<leader>tr', function()
    require('telescope.builtin').resume()
 end, { desc = 'Telescope: [r]esume last picker' })
 
--- <leader>tg prompts for an extension first, then runs live_grep filtered to
--- that file type via ripgrep's --glob. Defaults to the current buffer's
--- extension. Empty + <Enter> = unfiltered grep across all files.
--- Brace expansion works: e.g. {v,vh,sv,svh} for all verilog flavors.
+-- <leader>tg uses telescope-live-grep-args: pass ripgrep args inline in the
+-- prompt, e.g.  foo -t lua  or  bar -g '*.{sv,svh}'  or  baz --no-ignore .
+-- We pre-seed with a -g '*.<current-ext>' filter so the common case is
+-- "type pattern after the seed". <C-k> in the prompt quotes the pattern
+-- (handy for multi-word search). Clear the prompt for an unfiltered grep.
+-- NOTE: $VAR / ~ in paths are NOT expanded -- use full paths or :lcd.
 vim.keymap.set('n', '<leader>tg', function()
-   local default = vim.fn.expand('%:e')
-   vim.ui.input({
-      prompt  = 'Live Grep -- extension (empty = all files): ',
-      default = default,
-   }, function(ext)
-      if ext == nil then return end -- user pressed <esc>
-      local opts = { prompt_title = 'Live Grep (<esc> to quit)' }
-      if ext ~= '' then
-         local glob = '*.' .. ext
-         opts.additional_args = function() return { '--glob', glob } end
-         opts.prompt_title    = 'Live Grep [' .. glob .. ']  (<esc> to quit)'
-      end
-      require('telescope.builtin').live_grep(opts)
-   end)
-end, { desc = 'Telescope: live [g]rep (with optional extension filter)' })
+   local ext = vim.fn.expand('%:e')
+   local default_text = (ext ~= '' and string.format("-g '*.%s' ", ext)) or ''
+   require('telescope').extensions.live_grep_args.live_grep_args({
+      prompt_title = "Live Grep w/ rg args (-g '*.sv', -t lua, ...) -- <esc> to quit",
+      default_text = default_text,
+   })
+end, { desc = 'Telescope: live [g]rep w/ rg args' })
 
 vim.keymap.set('n', '<leader>tb', function()
    require('telescope.builtin').buffers({ prompt_title = 'Buffers (<esc> to quit)' })

@@ -48,29 +48,23 @@ return {
          desc = 'Telescope: [E]xplorer all files (hidden + ignored)',
       },
       {
-         -- <leader>tg prompts for an extension first, then runs live_grep filtered
-         -- to that file type via ripgrep's --glob. Defaults to the current
-         -- buffer's extension so the common case is just "<leader>tg <Enter>".
-         -- Leave the prompt empty + <Enter> for an unfiltered grep across all files.
-         -- Brace expansion works: e.g. {v,vh,sv,svh} for all verilog flavors.
+         -- <leader>tg uses telescope-live-grep-args: pass ripgrep args inline
+         -- in the prompt, e.g.  foo -t lua  or  bar -g '*.{sv,svh}'  or
+         -- baz --no-ignore . We pre-seed with a -g '*.<current-ext>' filter
+         -- so the common case is just "type pattern after the seed". <C-k>
+         -- in the prompt quotes the pattern (handy for multi-word search).
+         -- Clear the prompt for an unfiltered grep across all files.
+         -- NOTE: $VAR / ~ in paths are NOT expanded -- use full paths or :lcd.
          '<leader>tg',
          function()
-            local default = vim.fn.expand('%:e')
-            vim.ui.input({
-               prompt  = 'Live Grep -- extension (empty = all files): ',
-               default = default,
-            }, function(ext)
-               if ext == nil then return end -- user pressed <esc>
-               local opts = { prompt_title = 'Live Grep (<esc> to quit)' }
-               if ext ~= '' then
-                  local glob = '*.' .. ext
-                  opts.additional_args = function() return { '--glob', glob } end
-                  opts.prompt_title = 'Live Grep [' .. glob .. ']  (<esc> to quit)'
-               end
-               require('telescope.builtin').live_grep(opts)
-            end)
+            local ext = vim.fn.expand('%:e')
+            local default_text = (ext ~= '' and string.format("-g '*.%s' ", ext)) or ''
+            require('telescope').extensions.live_grep_args.live_grep_args({
+               prompt_title = "Live Grep w/ rg args (-g '*.sv', -t lua, ...) -- <esc> to quit",
+               default_text = default_text,
+            })
          end,
-         desc = 'Telescope: live [g]rep (with optional extension filter)',
+         desc = 'Telescope: live [g]rep w/ rg args',
       },
       {
          '<leader>tb',
@@ -101,6 +95,7 @@ return {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-ui-select.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+      'nvim-telescope/telescope-live-grep-args.nvim',
    },
    config = function()
       local telescope = require('telescope')
@@ -125,6 +120,7 @@ return {
 
       pcall(telescope.load_extension, 'ui-select')
       pcall(telescope.load_extension, 'fzf')
+      pcall(telescope.load_extension, 'live_grep_args')
 
       -- which-key's registers preset owns cmdline <C-r> and normal/visual ".
       -- Re-assert insert-mode <C-r> after VimEnter so insert uses Telescope.

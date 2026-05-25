@@ -96,11 +96,11 @@ end
 
 vim.keymap.set('n', '<leader>e', function()
    require('neo-tree.command').execute({
-      action           = 'focus',
-      source           = 'filesystem',
-      position         = 'left',
-      toggle           = true,
-      reveal_force_cwd = true,
+      action   = 'focus',
+      source   = 'filesystem',
+      position = 'left',
+      toggle   = true,
+      dir      = vim.fn.getcwd(), -- follow :lcd / :cd; ignore current buffer's location
    })
    order_by_type_safely()
 end, { desc = 'Neo-tree: File browser toggle' })

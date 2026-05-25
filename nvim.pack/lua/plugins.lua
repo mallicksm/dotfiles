@@ -63,6 +63,7 @@ vim.pack.add({
    { src = 'https://github.com/nvim-telescope/telescope.nvim' },
    { src = 'https://github.com/nvim-telescope/telescope-ui-select.nvim' },
    { src = 'https://github.com/nvim-telescope/telescope-fzf-native.nvim' },
+   { src = 'https://github.com/nvim-telescope/telescope-live-grep-args.nvim' },
 
    ----------------------------------------------------------------------------
    -- LSP / completion / format / lint / debug

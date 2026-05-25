@@ -11,7 +11,7 @@ return {
                source = 'filesystem',
                position = 'left',
                toggle = true,
-               reveal_force_cwd = true,
+               dir = vim.fn.getcwd(), -- follow :lcd / :cd; ignore current buffer's location
             })
             -- Auto order files by type after open. Reaches into neo-tree
             -- internals (sources.manager + sources.common.commands) so it
