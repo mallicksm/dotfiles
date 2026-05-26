@@ -117,7 +117,10 @@ end, { desc = 'Toggle render-markdown preview rendering' })
 -- is misbehaving and you want to compare against vim's regex syntax.
 -- vim.treesitter.highlighter.active[buf] is the canonical "is TS attached"
 -- check; cheaper than tracking our own per-buf flag.
-vim.keymap.set('n', '<leader>vt', function()
+-- NOTE: <leader>vt (lowercase) is owned by snacks.terminal in
+-- plugins/snacks.lua; this debug toggle lives in the [V]im-tools family
+-- as <leader>Vx (next to <leader>V{c,f,m,n}).
+vim.keymap.set('n', '<leader>Vx', function()
    local buf = vim.api.nvim_get_current_buf()
    if vim.treesitter.highlighter.active[buf] then
       vim.treesitter.stop(buf)
@@ -135,7 +138,7 @@ vim.keymap.set('n', '<leader>vt', function()
          vim.notify('treesitter start failed: ' .. tostring(err), vim.log.levels.ERROR)
       end
    end
-end, { desc = 'Toggle Treesitter highlight (compare vs regex syntax)' })
+end, { desc = '[V]im tools: toggle treesitter highlight (vs regex syntax)' })
 
 -- LSP virtual_text on/off (global). Different from <leader>td which kills
 -- ALL diagnostics in the buffer; this only hides the inline `●` text and

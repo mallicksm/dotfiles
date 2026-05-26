@@ -35,7 +35,6 @@ vim.pack.add({
    { src = 'https://github.com/folke/which-key.nvim'         },
    { src = 'https://github.com/folke/noice.nvim'             },
    { src = 'https://github.com/rcarriga/nvim-notify'         },
-   { src = 'https://github.com/lukas-reineke/indent-blankline.nvim' },
 
    ----------------------------------------------------------------------------
    -- Markdown rendering
@@ -129,7 +128,6 @@ require('plugins.lualine')
 require('plugins.snacks')
 require('plugins.which-key')
 require('plugins.noice')
-require('plugins.indentline')
 
 require('plugins.treesitter')
 require('plugins.render-markdown')

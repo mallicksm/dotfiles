@@ -1,4 +1,21 @@
--- snacks.nvim -- folke's collection (lazygit, terminal, bufdelete, dim, image).
+-- snacks.nvim -- folke's collection (lazygit, terminal, bufdelete, dim, image, indent).
+
+-- (Re)define the per-depth rainbow highlight groups used by snacks.indent.
+-- Fired on ColorScheme so theme swaps (Telescope colorscheme previews etc.)
+-- restore them, and called once immediately so they exist before snacks
+-- first renders.
+local function set_rainbow_hl()
+   vim.api.nvim_set_hl(0, 'RainbowRed',    { fg = '#fb4934' }) -- gruvbox red
+   vim.api.nvim_set_hl(0, 'RainbowYellow', { fg = '#fabd2f' }) -- gruvbox yellow
+   vim.api.nvim_set_hl(0, 'RainbowBlue',   { fg = '#83a598' }) -- gruvbox blue
+   vim.api.nvim_set_hl(0, 'RainbowOrange', { fg = '#fe8019' }) -- gruvbox orange
+   vim.api.nvim_set_hl(0, 'RainbowGreen',  { fg = '#b8bb26' }) -- gruvbox green
+   vim.api.nvim_set_hl(0, 'RainbowViolet', { fg = '#d3869b' }) -- gruvbox purple
+   vim.api.nvim_set_hl(0, 'RainbowCyan',   { fg = '#8ec07c' }) -- gruvbox aqua
+end
+vim.api.nvim_create_autocmd('ColorScheme', { callback = set_rainbow_hl })
+set_rainbow_hl()
+
 require('snacks').setup({
    -- snacks.bigfile: replaces the old `nvim.bare` wrapper trick. When a
    -- file's bytes >= `size` OR its average line length is "minified",
@@ -27,6 +44,23 @@ require('snacks').setup({
       configure = false,
       win = { style = 'lazygit', border = 'rounded', width = 0.9, height = 0.9 },
    },
+   -- Indent guides + current-scope line. Replaces lukas-reineke/indent-
+   -- blankline.nvim. snacks rotates `indent.hl` per depth, so the 7
+   -- Rainbow* groups (set above) produce the same gruvbox rainbow that
+   -- ibl produced.
+   indent = {
+      enabled = true,
+      indent  = {
+         char = '│',
+         hl   = {
+            'RainbowRed', 'RainbowYellow', 'RainbowBlue', 'RainbowOrange',
+            'RainbowGreen', 'RainbowViolet', 'RainbowCyan',
+         },
+      },
+      scope   = { enabled = true },    -- highlight the cursor's scope line
+      chunk   = { enabled = false },   -- skip the animated bracket
+      animate = { enabled = false },   -- match ibl behavior, no animation
+   },
    image = {
       enabled = true,
       -- Drop `pdf` from the default formats list. Snacks otherwise registers its
@@ -52,6 +86,8 @@ vim.keymap.set('n', '<leader>gl', function() require('snacks').lazygit() end,   
 -- Lives under <leader>v* alongside other "vim utilities" -- moved off bare
 -- <leader>T after the toggle family migrated to <leader>T*.
 vim.keymap.set('n', '<leader>vt', function() require('snacks').terminal() end, { desc = 'Vim: floating [t]erminal (snacks)' })
+-- Toggle indent guides. Uses snacks.toggle.indent() (handles redraw + notify).
+vim.keymap.set('n', '<leader>vi', function() require('snacks').toggle.indent():toggle() end, { desc = 'Vim: toggle [i]ndent lines (snacks)' })
 -- (snacks.bufdelete moved to <leader>vd in keymaps.lua under the
 --  <leader>v* "vim introspection / utilities" family.)
 

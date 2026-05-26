@@ -49,7 +49,6 @@ Subsequent launches: nothing reinstalls, just `vim.pack.add` checks rtp.
 │   │   ├── snacks.lua           lazygit / terminal / dim / image / bufdelete
 │   │   ├── which-key.lua
 │   │   ├── noice.lua            + nvim-notify
-│   │   ├── indentline.lua       indent-blankline (gruvbox rainbow)
 │   │   ├── treesitter.lua       fold via TS, parser install, FT autocmd
 │   │   ├── render-markdown.lua  + gruvbox-tuned highlights
 │   │   ├── gitsigns.lua

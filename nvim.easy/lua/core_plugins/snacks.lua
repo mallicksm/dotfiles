@@ -10,6 +10,10 @@ return {
       -- Lives under <leader>v* alongside other "vim utilities" -- moved off
       -- bare <leader>T after the toggle family migrated to <leader>T*.
       { '<leader>vt',  function() require('snacks').terminal() end,        desc = 'Vim: floating [t]erminal (snacks)' },
+      -- Snacks.toggle.indent():map() requires snacks to be loaded first; in a
+      -- lazy.nvim `keys = {}` spec the binding fires lazily after load, so
+      -- using a plain rhs function (not :map()) is safest.
+      { '<leader>vi',  function() require('snacks').toggle.indent():toggle() end, desc = 'Vim: toggle [i]ndent lines (snacks)' },
       -- (snacks.bufdelete moved to <leader>vd; lives in keymaps.lua under
       --  the <leader>v* "vim introspection / utilities" family.)
    },
@@ -58,6 +62,25 @@ return {
             height = 0.9,
          },
       },
+      -- Indent guides + current-scope line. Replaces lukas-reineke/indent-
+      -- blankline.nvim. snacks.indent rotates `indent.hl` per depth, so the
+      -- 7 Rainbow* groups give the same gruvbox rainbow that ibl produced.
+      -- The Rainbow* hl groups are (re)created in the ColorScheme autocmd
+      -- registered in `config` below, so they survive `:Telescope colorscheme`
+      -- previews the same way the old ibl HIGHLIGHT_SETUP hook did.
+      indent = {
+         enabled = true,
+         indent  = {
+            char = '│',
+            hl   = {
+               'RainbowRed', 'RainbowYellow', 'RainbowBlue', 'RainbowOrange',
+               'RainbowGreen', 'RainbowViolet', 'RainbowCyan',
+            },
+         },
+         scope   = { enabled = true },    -- highlight the cursor's scope line
+         chunk   = { enabled = false },   -- skip the animated bracket
+         animate = { enabled = false },   -- match ibl behavior, no animation
+      },
       image = {
          enabled = true,
          -- Drop `pdf` from the default formats list. Snacks otherwise registers
@@ -90,6 +113,22 @@ return {
       },
    },
    config = function(_, opts)
+      -- (Re)define the per-depth rainbow highlight groups used by
+      -- snacks.indent.indent.hl. Fired on ColorScheme so theme swaps
+      -- (Telescope colorscheme previews, etc.) restore them, and called
+      -- once immediately so they exist before snacks first renders.
+      local function set_rainbow_hl()
+         vim.api.nvim_set_hl(0, 'RainbowRed',    { fg = '#fb4934' }) -- gruvbox red
+         vim.api.nvim_set_hl(0, 'RainbowYellow', { fg = '#fabd2f' }) -- gruvbox yellow
+         vim.api.nvim_set_hl(0, 'RainbowBlue',   { fg = '#83a598' }) -- gruvbox blue
+         vim.api.nvim_set_hl(0, 'RainbowOrange', { fg = '#fe8019' }) -- gruvbox orange
+         vim.api.nvim_set_hl(0, 'RainbowGreen',  { fg = '#b8bb26' }) -- gruvbox green
+         vim.api.nvim_set_hl(0, 'RainbowViolet', { fg = '#d3869b' }) -- gruvbox purple
+         vim.api.nvim_set_hl(0, 'RainbowCyan',   { fg = '#8ec07c' }) -- gruvbox aqua
+      end
+      vim.api.nvim_create_autocmd('ColorScheme', { callback = set_rainbow_hl })
+      set_rainbow_hl()
+
       require('snacks').setup(opts)
       -- (Snacks sets `_G.Snacks` itself in setup(); we don't add another
       -- global here. Callers should `require('snacks')` rather than relying

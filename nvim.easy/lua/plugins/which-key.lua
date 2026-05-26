@@ -22,7 +22,7 @@ return {
          { "<leader>s", group = "[S]earch (kaleido)", icon = { icon = "󰫖", color = "purple" } },     -- <leader>s{s,n,a,c,l} kaleidosearch
          { "<leader>H", group = "[H]arpoon", icon = { icon = "󰀢", color = "blue" } },              -- <leader>H{a,n,p,m,l} -- see core_plugins/harpoon.lua
          { "<leader>v", group = "[V]im", icon = { icon = "󰈈", color = "azure" } },  -- option toggles + :registers/:marks/:messages/etc -- see keymaps.lua
-         { "<leader>V", group = "[V]im tools", icon = { icon = "󰈉", color = "cyan" } }, -- <leader>Vm = render-markdown, <leader>Vf = format-on-save toggle, <leader>Vn = toggle Noice UI, <leader>Vc = clear Noice
+         { "<leader>V", group = "[V]im tools", icon = { icon = "󰈉", color = "cyan" } }, -- <leader>Vm = render-markdown, <leader>Vf = format-on-save toggle, <leader>Vn = toggle Noice UI, <leader>Vc = clear Noice, <leader>Vx = toggle treesitter highlight
          { "s", group = "[S]urround (mini)", icon = { icon = "󰅪", color = "purple" } }, -- gsa/gsd/gsr/gsf/gsF/gsh on upstream defaults; see core_plugins/mini.lua
          { "<Esc>",     hidden = true },
          { "<leader>h", hidden = true },
