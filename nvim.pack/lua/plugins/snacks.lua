@@ -1,5 +1,21 @@
 -- snacks.nvim -- folke's collection (lazygit, terminal, bufdelete, dim, image, indent).
 
+-- Shared dashboard action: :lcd + open snacks.picker.files for `dir`. The
+-- isdirectory() stat is intentionally deferred to keypress time -- doing it
+-- inside the dashboard section generators costs one NFS metadata round-trip
+-- per row, and /project/* is on NFS, so it blocked the first paint for
+-- seconds. (Symptom: blank screen for 2-4s; press any key -> instant render.)
+local function dashboard_open_dir(label, dir)
+   return function()
+      if vim.fn.isdirectory(dir) == 0 then
+         vim.notify(string.format('[%s] not a directory: %s', label, dir), vim.log.levels.WARN)
+         return
+      end
+      vim.cmd.lcd(dir)
+      require('snacks').picker.files({ cwd = dir, title = label .. ' files' })
+   end
+end
+
 -- (Re)define the per-depth rainbow highlight groups used by snacks.indent.
 -- Fired on ColorScheme so theme swaps (Telescope colorscheme previews etc.)
 -- restore them, and called once immediately so they exist before snacks
@@ -124,6 +140,99 @@ require('snacks').setup({
    -- snacks.explorer: file tree, bound to <leader>e below. Replaced neo-tree
    -- (which was too slow on /project NFS paths).
    explorer = { enabled = true },
+
+   -- snacks.dashboard: the start page. Shows when nvim opens with no file
+   -- argument (the user's `vi` function passes -O/-p only when files are
+   -- given, so bare `vi` lands here).
+   --
+   -- The "Projects" section is env-var-driven: each entry below is only
+   -- shown if the corresponding $VAR is set AND points at an existing
+   -- directory. Unset / missing paths are silently skipped -- no broken-
+   -- link rows. Pressing a project key :lcds into the dir AND opens
+   -- snacks.picker.files scoped there.
+   dashboard = {
+      enabled = true,
+      width   = 52, -- matches the EZ Nvim ASCII header width; tighter column
+      -- Left-align every line type within the dashboard column (defaults
+      -- center the header/footer). With width=52 this gives a consistent
+      -- vertical edge at the dashboard's left margin.
+      formats = {
+         header = { '%s', align = 'left' },
+         footer = { '%s', align = 'left' },
+      },
+      preset = {
+         -- "EZ Nvim" ASCII art. Single-color (SnacksDashboardHeader -> Title).
+         header = table.concat({
+            '',
+            '███████╗███████╗   ███╗   ██╗██╗   ██╗██╗███╗   ███╗',
+            '██╔════╝╚══███╔╝   ████╗  ██║██║   ██║██║████╗ ████║',
+            '█████╗    ███╔╝    ██╔██╗ ██║██║   ██║██║██╔████╔██║',
+            '██╔══╝   ███╔╝     ██║╚██╗██║╚██╗ ██╔╝██║██║╚██╔╝██║',
+            '███████╗███████╗   ██║ ╚████║ ╚████╔╝ ██║██║ ╚═╝ ██║',
+            '╚══════╝╚══════╝   ╚═╝  ╚═══╝  ╚═══╝  ╚═╝╚═╝     ╚═╝',
+            '            h j k l   —   no mouse required',
+            '',
+         }, '\n'),
+         -- Slim action list: just the two the user reaches for daily.
+         -- (Find File / Find Text / New File / Edit Config / Lazy were
+         -- removed -- the picker keys <leader>te/tg/tf/po cover them.)
+         keys = {
+            { icon = ' ', key = 'r', desc = 'Recent Files', action = function() require('snacks').picker.recent() end },
+            { icon = ' ', key = 'q', desc = 'Quit',         action = ':qa' },
+         },
+      },
+      sections = {
+         { section = 'header' },
+
+         -- Workspaces: hardcoded paths. NO fs probe in the generator --
+         -- the dir check lives in dashboard_open_dir() at file scope. A
+         -- missing workspace shows a "[label] not a directory" toast on
+         -- keypress instead of blocking the first paint with an NFS stat.
+         function()
+            local workspaces = {
+               { key = '0', label = 'bugatti_ws0', dir = '/project/bugatti/users/smallick/bugatti_ws0' },
+               { key = '1', label = 'bugatti_ws1', dir = '/project/bugatti/users/smallick/bugatti_ws1' },
+               { key = '2', label = 'sparews/ws0', dir = '/project/bugatti/users/smallick/sparews/ws0' },
+               { key = '3', label = 'sparews/ws1', dir = '/project/bugatti/users/smallick/sparews/ws1' },
+            }
+            local items = { title = 'Workspaces', padding = 1 }
+            for _, w in ipairs(workspaces) do
+               table.insert(items, {
+                  icon = '󰉋 ', key = w.key, desc = w.label,
+                  action = dashboard_open_dir(w.label, w.dir),
+               })
+            end
+            return items
+         end,
+
+         -- Projects: env-var-driven shortcuts. We gate on env-var presence
+         -- (free string check) but NOT on isdirectory(), same NFS-stat
+         -- reason as Workspaces above.
+         function()
+            local projects = {
+               { key = 'e', label = 'ETH_MAC',  env = 'ETH_MAC_DIR'  },
+               { key = 'p', label = 'PCS100G',  env = 'PCS100G_DIR'  },
+               { key = 'P', label = 'PCS800G',  env = 'PCS800G_DIR'  },
+               { key = 'M', label = 'MAC100G',  env = 'MAC100G_DIR'  },
+               { key = 's', label = 'SERDES',   env = 'PMD_RTL_DIR'  },
+            }
+            local items = { title = 'Projects', padding = 1 }
+            for _, p in ipairs(projects) do
+               local dir = vim.env[p.env]
+               if dir and dir ~= '' then
+                  table.insert(items, {
+                     icon = '󰍛 ', key = p.key, desc = p.label,
+                     action = dashboard_open_dir(p.label, dir),
+                  })
+               end
+            end
+            return #items > 0 and items or nil
+         end,
+
+         { section = 'keys', gap = 1, padding = 1 },
+         { section = 'startup' },
+      },
+   },
 })
 
 vim.keymap.set('n', '<leader>gF', function() require('snacks').lazygit.log_file() end, { desc = 'Snacks: Lazygit: log current [F]ile' })
@@ -190,5 +299,13 @@ end, { desc = 'ls[p]: [o]utline -- document symbols' })
 vim.keymap.set('n', '<leader>e', function()
    require('snacks').explorer({ cwd = vim.fn.getcwd() })
 end, { desc = 'Snacks: [e]xplorer (file browser)' })
+
+-- ---------- dashboard reopener ----------
+-- snacks.dashboard auto-opens when nvim launches with no file argument. This
+-- binding re-opens it on demand (e.g. after :bd-ing all buffers you want to
+-- land back on the project picker without restarting nvim).
+vim.keymap.set('n', '<leader>D', function()
+   require('snacks').dashboard()
+end, { desc = 'Snacks: open [D]ashboard' })
 
 -- vim: ts=3 sts=3 sw=3 et
