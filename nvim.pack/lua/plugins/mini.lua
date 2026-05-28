@@ -83,6 +83,109 @@ require('mini.pairs').setup({
 
 require('mini.comment').setup()
 
+-- mini.clue -- replaces folke/which-key.nvim. Pops a small floating window
+-- after `delay` ms when a registered trigger key has been pressed and there
+-- are pending child keymaps. Reads every vim.keymap.set() description
+-- automatically, so we only need to declare GROUP LABELS (e.g.
+-- "<Leader>g = +Git") and the trigger list -- leaf keys come along for free.
+--
+-- Notable diffs vs which-key:
+--  - no per-group colored icons; clue is fg-only (visual downgrade).
+--  - no `hidden = true` list needed; leaf keys never trigger a popup.
+--  - no "register a keymap here" path; <leader>gb moves into gitsigns.lua.
+do
+   local miniclue = require('mini.clue')
+   miniclue.setup({
+      window = {
+         delay  = 200, -- ms; matches the which-key feel we had
+         config = { border = 'rounded' },
+      },
+      triggers = {
+         -- Leader (n + x = normal AND visual-mode leader chains)
+         { mode = 'n', keys = '<Leader>' },
+         { mode = 'x', keys = '<Leader>' },
+
+         -- `g` chain. Covers built-in `g*` and our gs* (mini.surround) +
+         -- gc* (mini.comment) chains.
+         { mode = 'n', keys = 'g' },
+         { mode = 'x', keys = 'g' },
+
+         -- `z` chain (folds, scroll)
+         { mode = 'n', keys = 'z' },
+         { mode = 'x', keys = 'z' },
+
+         -- Marks
+         { mode = 'n', keys = "'" },
+         { mode = 'n', keys = '`' },
+         { mode = 'x', keys = "'" },
+         { mode = 'x', keys = '`' },
+
+         -- Registers
+         { mode = 'n', keys = '"' },
+         { mode = 'x', keys = '"' },
+         { mode = 'i', keys = '<C-r>' },
+         { mode = 'c', keys = '<C-r>' },
+
+         -- Window commands
+         { mode = 'n', keys = '<C-w>' },
+
+         -- Bracket motions
+         { mode = 'n', keys = '[' },
+         { mode = 'n', keys = ']' },
+         { mode = 'x', keys = '[' },
+         { mode = 'x', keys = ']' },
+
+         -- Built-in insert-mode completion (i_CTRL-X)
+         { mode = 'i', keys = '<C-x>' },
+      },
+      clues = {
+         -- Built-in clue generators document Vim's own multi-key chains.
+         miniclue.gen_clues.builtin_completion(),
+         miniclue.gen_clues.g(),
+         miniclue.gen_clues.marks(),
+         miniclue.gen_clues.registers(),
+         miniclue.gen_clues.windows(),
+         miniclue.gen_clues.z(),
+         miniclue.gen_clues.square_brackets(),
+
+         -- Leader-prefix GROUP labels (mirroring the old which-key spec).
+         -- Leading nerd-font glyph + `+` (= "group, not leaf"). mini.clue
+         -- only has ONE highlight group for ALL group descs
+         -- (MiniClueDescGroup); glyphs come back, per-group colors do not.
+         -- The set_clue_hl() block below retunes MiniClueDescGroup to a
+         -- saturated gruvbox yellow so it pops vs leaf descs.
+         { mode = 'n', keys = '<Leader>d', desc = '󰃤  +[D]ap' },
+         { mode = 'n', keys = '<Leader>g', desc = '  +[G]it' },
+         { mode = 'n', keys = '<Leader>p', desc = '󰒋  +ls[p]' },
+         { mode = 'n', keys = '<Leader>t', desc = '󰍉  +[t]ools (picker)' },
+         { mode = 'n', keys = '<Leader>s', desc = '󰫖  +[S]earch (kaleido)' },
+         { mode = 'n', keys = '<Leader>H', desc = '󰀢  +[H]arpoon' },
+         { mode = 'n', keys = '<Leader>v', desc = '󰈈  +[V]im' },
+         { mode = 'n', keys = '<Leader>V', desc = '󰈉  +[V]im tools' },
+
+         -- mini.surround sub-prefix (gs* lives under the `g` trigger).
+         { mode = 'n', keys = 'gs', desc = '󰅪  +[S]urround (mini)' },
+         { mode = 'x', keys = 'gs', desc = '󰅪  +[S]urround (mini)' },
+      },
+   })
+
+   -- Retune the five MiniClue* highlight groups for gruvbox. Re-fired on
+   -- ColorScheme so :Telescope colorscheme previews etc. don't wipe them.
+   local function set_clue_hl()
+      vim.api.nvim_set_hl(0, 'MiniClueDescGroup',           { fg = '#fabd2f', bold = true }) -- gruvbox bright_yellow -- groups pop
+      vim.api.nvim_set_hl(0, 'MiniClueDescSingle',          { fg = '#ebdbb2' })              -- gruvbox fg1 (cream) -- leaves
+      vim.api.nvim_set_hl(0, 'MiniClueNextKey',             { fg = '#83a598', bold = true }) -- gruvbox bright_blue -- key letter
+      vim.api.nvim_set_hl(0, 'MiniClueNextKeyWithPostkeys', { fg = '#fb4934', bold = true }) -- gruvbox bright_red -- key w/ postkeys
+      vim.api.nvim_set_hl(0, 'MiniClueSeparator',           { fg = '#928374' })              -- gruvbox gray -- ' › ' separator
+   end
+   set_clue_hl()
+   vim.api.nvim_create_autocmd('ColorScheme', {
+      group    = vim.api.nvim_create_augroup('user-mini-clue-hl', { clear = true }),
+      callback = set_clue_hl,
+      desc     = 'mini.clue: re-apply gruvbox highlights after theme switch',
+   })
+end
+
 require('mini.hipatterns').setup({
    highlighters = {
       fixme    = { pattern = '%f[%w]()FIXME()%f[%W]',   group = 'MiniHipatternsFixme' },

@@ -30,7 +30,7 @@ return {
       'ThePrimeagen/harpoon',
       branch = 'harpoon2',
       dependencies = { 'nvim-lua/plenary.nvim' },
-      -- All harpoon bindings live under <leader>H* (group label in which-key.lua).
+      -- All harpoon bindings live under <leader>H* (group label in mini.clue setup, core_plugins/mini.lua).
       -- Bare <leader>H is intentionally NOT bound -- keeping it as a pure prefix
       -- avoids the 300ms timeout that would otherwise hit every <leader>HX press.
       keys = {

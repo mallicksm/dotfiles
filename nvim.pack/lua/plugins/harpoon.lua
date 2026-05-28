@@ -39,7 +39,7 @@ local function harpoon_snacks_picker()
    })
 end
 
--- All harpoon bindings live under <leader>H* (group label in plugins/which-key.lua).
+-- All harpoon bindings live under <leader>H* (group label in mini.clue setup, plugins/mini.lua).
 -- Bare <leader>H is intentionally NOT bound -- keeping it as a pure prefix
 -- avoids the 300ms timeout that would otherwise hit every <leader>HX press.
 vim.keymap.set('n', '<leader>Ha', function()

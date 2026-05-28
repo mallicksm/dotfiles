@@ -34,7 +34,9 @@ vim.pack.add({
    { src = 'https://github.com/echasnovski/mini.nvim'        },
    { src = 'https://github.com/nvim-lualine/lualine.nvim'    },
    { src = 'https://github.com/folke/snacks.nvim'            },
-   { src = 'https://github.com/folke/which-key.nvim'         },
+   -- which-key removed: mini.clue (in plugins/mini.lua) handles the same
+   -- group-label popups. Evict the on-disk pack with
+   --   :lua vim.pack.del{'which-key.nvim'}
    { src = 'https://github.com/folke/noice.nvim'             },
    -- nvim-notify removed: snacks.notifier is the notification backend now.
    -- Evict with :lua vim.pack.del{'nvim-notify'}.
@@ -124,7 +126,7 @@ require('plugins.mini')          -- includes mini.icons + mock_nvim_web_devicons
 
 require('plugins.lualine')
 require('plugins.snacks')
-require('plugins.which-key')
+-- plugins.which-key removed; mini.clue (in plugins/mini.lua) takes over.
 require('plugins.noice')
 
 require('plugins.treesitter')

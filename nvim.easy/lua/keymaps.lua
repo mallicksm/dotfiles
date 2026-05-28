@@ -230,20 +230,15 @@ vim.keymap.set('n', '<leader>K', function()
    require('utils.smart_open').open()
 end, { noremap = true, silent = true, desc = 'Man page or help for word under cursor' })
 
--- Insert-mode <C-r>: snacks.picker.registers (used to be the telescope picker
--- in plugins/telescope.lua before the migration). which-key's registers preset
--- owns cmdline <C-r> and normal/visual "; we re-assert insert-mode <C-r> on
--- VimEnter so insert always lands on the picker.
-local function registers_picker()
+-- Insert-mode <C-r>: snacks.picker.registers.
+-- (Used to be the telescope picker; rewritten on the telescope -> snacks.picker
+-- migration. The VimEnter re-assertion that used to live here was a workaround
+-- for which-key's `registers` preset stealing the binding -- dropped on the
+-- which-key -> mini.clue migration since mini.clue doesn't remap <C-r>; it
+-- just shows a clue popup AFTER you press it.)
+vim.keymap.set('i', '<C-r>', function()
    require('snacks').picker.registers({ title = 'Registers (<CR> paste, <C-e> edit)' })
-end
-vim.keymap.set('i', '<C-r>', registers_picker, { desc = 'Picker: registers (<CR> paste, <C-e> edit)' })
-vim.api.nvim_create_autocmd('VimEnter', {
-   group    = vim.api.nvim_create_augroup('user-force-insert-registers-snacks', { clear = true }),
-   callback = function()
-      vim.keymap.set('i', '<C-r>', registers_picker, { desc = 'Picker: registers (<CR> paste, <C-e> edit)' })
-   end,
-})
+end, { desc = 'Picker: registers (<CR> paste, <C-e> edit)' })
 
 -- <C-g>: yank full path into the unnamed register """ and drop a quiet
 -- INFO notify so noice routes it to the bottom-right mini view (see

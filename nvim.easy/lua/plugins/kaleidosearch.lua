@@ -5,7 +5,7 @@
 -- Why <leader>s* and not the plugin's <leader>c* defaults: kaleidosearch's
 -- upstream defaults claim <leader>c* but we want that prefix free. <leader>s
 -- ("[S]earch") was unused, so we route there and disable the plugin's
--- keymaps.enabled. Group label is added in plugins/which-key.lua.
+-- keymaps.enabled. Group label is added in mini.clue setup (core_plugins/mini.lua).
 -- (LSP code action lives at <leader>pa now, under the ls[p] family.)
 --
 -- Optional dep: tpope/vim-repeat -> dot-repeat for AddCursorWord, so after
