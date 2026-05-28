@@ -1,18 +1,28 @@
--- Telescope-backed picker for the harpoon list. Bound below as <leader>Hl.
-local function harpoon_telescope_picker()
+-- snacks.picker-backed picker for the harpoon list. Bound below as <leader>Hl.
+-- (Used to be a telescope picker; rewritten on the telescope -> snacks.picker
+-- migration. Builds custom items with `file = <path>` so snacks's default
+-- file previewer Just Works.)
+local function harpoon_snacks_picker()
    local harpoon = require('harpoon')
-   local picker_files = harpoon:list()
-   local conf = require('telescope.config').values
-   local file_paths = {}
-   for _, item in ipairs(picker_files.items) do
-      table.insert(file_paths, item.value)
+   local items   = {}
+   for idx, item in ipairs(harpoon:list().items) do
+      items[#items + 1] = {
+         idx  = idx,
+         file = item.value,
+         text = item.value,
+      }
    end
-   require('telescope.pickers').new({}, {
-      prompt_title = 'Harpoon (<esc> to quit)',
-      finder = require('telescope.finders').new_table({ results = file_paths }),
-      previewer = conf.file_previewer({}),
-      sorter = conf.generic_sorter({}),
-   }):find()
+   require('snacks').picker.pick({
+      source  = 'harpoon',
+      title   = 'Harpoon (<esc> to quit)',
+      items   = items,
+      format  = 'file',
+      preview = 'file',
+      confirm = function(picker, item)
+         picker:close()
+         if item then vim.cmd.edit(vim.fn.fnameescape(item.file)) end
+      end,
+   })
 end
 
 return {
@@ -42,7 +52,7 @@ return {
             end,
             desc = 'Harpoon: quick [m]enu (native UI)',
          },
-         { '<leader>Hl', harpoon_telescope_picker, desc = 'Harpoon: telescope [l]ist' },
+         { '<leader>Hl', harpoon_snacks_picker, desc = 'Harpoon: snacks-picker [l]ist' },
          -- Slot jumps. Primeagen's convention is 4 slots; bump the upper bound
          -- below if you start carrying more around. select(N) is no-op when
          -- slot N is empty (logs to harpoon's internal log, not the UI).

@@ -1,9 +1,8 @@
 -- noice.nvim -- replaces nvim's cmdline / messages / popupmenu UIs.
--- Depends on MunifTanjim/nui.nvim and rcarriga/nvim-notify (added in plugins.lua).
--- nvim-notify needs a background_colour to silence its first-message warning.
-require('notify').setup({
-   background_colour = '#282828', -- gruvbox bg0; change with theme
-})
+-- Depends on MunifTanjim/nui.nvim (added in plugins.lua). nvim-notify is gone:
+-- snacks.notifier (enabled in plugins/snacks.lua) is now the notification
+-- backend, and snacks is required BEFORE noice in plugins.lua so it's already
+-- registered as the "notify" view sink by the time noice starts routing.
 
 require('noice').setup({
    lsp = {
@@ -29,10 +28,10 @@ require('noice').setup({
       view_search  = 'virtualtext',
    },
    -- vim.notify() routing:
-   --   WARN / ERROR  -> nvim-notify (big top-right popup, demands attention)
-   --   INFO / DEBUG  -> mini view   (small bottom-right toast, fades in ~2s)
-   -- Default `notify.view` is "notify"; per-level override happens in routes
-   -- below using a `cond` filter on message.level.
+   --   WARN / ERROR  -> snacks.notifier (big top-right popup, demands attention)
+   --   INFO / DEBUG  -> mini view       (small bottom-right toast, fades in ~2s)
+   -- noice's "notify" view name maps to whichever notifier is registered; with
+   -- snacks.notifier enabled in snacks.lua, that's snacks (not nvim-notify).
    notify = {
       enabled = true,
       view    = 'notify',

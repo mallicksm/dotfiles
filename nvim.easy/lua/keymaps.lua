@@ -198,14 +198,14 @@ end, { desc = 'Toggle Noice cmdline/messages UI' })
 -- default in vim; this gives the "show me current state" family a
 -- discoverable keybind home (and gets you out of typing `:registers<CR>`
 -- a hundred times a day). Most open as native vim listings; command/search
--- history use Telescope because fuzzy filtering is useful there.
+-- history use snacks.picker because fuzzy filtering is useful there.
 vim.keymap.set('n', '<leader>v:', function()
-   require('utils.telescope_history').command_history({ prompt_title = 'Command History (<CR> run, <esc> to quit)' })
-end, { desc = 'Telescope: command history (:)' })
+   require('snacks').picker.command_history({ title = 'Command History (<CR> run, <esc> to quit)' })
+end, { desc = 'Picker: command history (:)' })
 
 vim.keymap.set('n', '<leader>v/', function()
-   require('utils.telescope_history').search_history({ prompt_title = 'Search History (<CR> use, <esc> to quit)' })
-end, { desc = 'Telescope: search history (/ and ?)' })
+   require('snacks').picker.search_history({ title = 'Search History (<CR> use, <esc> to quit)' })
+end, { desc = 'Picker: search history (/ and ?)' })
 
 vim.keymap.set('n', '<leader>vm', function()
    local out = vim.fn.execute('messages'):gsub('^%s+', ''):gsub('%s+$', '')
@@ -229,6 +229,21 @@ vim.keymap.set('n', '<C-Up>',    '"<Cmd>resize +"          . v:count1 . "<CR>"',
 vim.keymap.set('n', '<leader>K', function()
    require('utils.smart_open').open()
 end, { noremap = true, silent = true, desc = 'Man page or help for word under cursor' })
+
+-- Insert-mode <C-r>: snacks.picker.registers (used to be the telescope picker
+-- in plugins/telescope.lua before the migration). which-key's registers preset
+-- owns cmdline <C-r> and normal/visual "; we re-assert insert-mode <C-r> on
+-- VimEnter so insert always lands on the picker.
+local function registers_picker()
+   require('snacks').picker.registers({ title = 'Registers (<CR> paste, <C-e> edit)' })
+end
+vim.keymap.set('i', '<C-r>', registers_picker, { desc = 'Picker: registers (<CR> paste, <C-e> edit)' })
+vim.api.nvim_create_autocmd('VimEnter', {
+   group    = vim.api.nvim_create_augroup('user-force-insert-registers-snacks', { clear = true }),
+   callback = function()
+      vim.keymap.set('i', '<C-r>', registers_picker, { desc = 'Picker: registers (<CR> paste, <C-e> edit)' })
+   end,
+})
 
 -- <C-g>: yank full path into the unnamed register """ and drop a quiet
 -- INFO notify so noice routes it to the bottom-right mini view (see

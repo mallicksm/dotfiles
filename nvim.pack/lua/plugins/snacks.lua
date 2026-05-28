@@ -78,6 +78,52 @@ require('snacks').setup({
       doc     = { enabled = true, inline = true, float = true, max_width = 80, max_height = 40 },
       convert = { magick = { 'magick' } },
    },
+
+   -- snacks.words: replaces the hand-rolled CursorHold/CursorMoved
+   -- document_highlight autocmd we had in plugins/lspconfig.lua. snacks.words
+   -- debounces the highlight call and adds ]] / [[ jumps between references.
+   words = {
+      enabled     = true,
+      debounce    = 200,   -- ms; default 100. Gentler on big SV files.
+      notify_jump = false,
+      notify_end  = true,
+   },
+
+   -- snacks.notifier: replaces rcarriga/nvim-notify as noice's notification
+   -- backend. Same top-right popup behavior; no NotifyBackground warning; one
+   -- fewer dep. Style 'compact' is the closest visual to nvim-notify.
+   notifier = {
+      enabled  = true,
+      style    = 'compact',
+      top_down = false,
+      margin   = { top = 0, right = 1, bottom = 0 },
+      level    = vim.log.levels.TRACE,
+      timeout  = 3000,
+   },
+
+   -- snacks.input: handles vim.ui.input AND vim.ui.select (when ui_select on
+   -- the picker is true, below). Replaces telescope-ui-select.
+   input = { enabled = true },
+
+   -- snacks.picker: replaces telescope.nvim + ui-select + fzf-native + live-
+   -- grep-args entirely. Keymaps follow this setup() call below.
+   picker = {
+      enabled   = true,
+      ui_select = true,
+      layout    = { preset = 'default', preview = true },
+      win       = {
+         input = {
+            keys = {
+               -- Close on <esc> in insert mode, matching old telescope behavior.
+               ['<esc>'] = { 'close', mode = { 'n', 'i' } },
+            },
+         },
+      },
+   },
+
+   -- snacks.explorer: file tree, bound to <leader>e below. Replaced neo-tree
+   -- (which was too slow on /project NFS paths).
+   explorer = { enabled = true },
 })
 
 vim.keymap.set('n', '<leader>gF', function() require('snacks').lazygit.log_file() end, { desc = 'Snacks: Lazygit: log current [F]ile' })
@@ -90,5 +136,59 @@ vim.keymap.set('n', '<leader>vt', function() require('snacks').terminal() end, {
 vim.keymap.set('n', '<leader>vi', function() require('snacks').toggle.indent():toggle() end, { desc = 'Vim: toggle [i]ndent lines (snacks)' })
 -- (snacks.bufdelete moved to <leader>vd in keymaps.lua under the
 --  <leader>v* "vim introspection / utilities" family.)
+
+-- ---------- snacks.picker bindings (replaces telescope) ----------
+-- <leader>t* family kept identical to the old telescope bindings so muscle
+-- memory survives the swap.
+vim.keymap.set('n', '<leader>tf', function()
+   require('snacks').picker.recent({ title = 'Oldfiles (<esc> to quit)' })
+end, { desc = 'Picker: old[f]iles' })
+
+vim.keymap.set('n', '<leader>tr', function()
+   require('snacks').picker.resume()
+end, { desc = 'Picker: [r]esume last picker' })
+
+vim.keymap.set('n', '<leader>te', function()
+   require('snacks').picker.files({ title = 'Find Files (<esc> to quit)' })
+end, { desc = 'Picker: [e]xplorer (find_files)' })
+
+vim.keymap.set('n', '<leader>tE', function()
+   require('snacks').picker.files({ title = 'Find Files - all', hidden = true, ignored = true })
+end, { desc = 'Picker: [E]xplorer all files (hidden + ignored)' })
+
+-- Live grep with current-buffer extension pre-seeded as a ripgrep glob,
+-- matching the old telescope-live-grep-args UX. Press <C-g> inside the
+-- picker to toggle the glob filter.
+vim.keymap.set('n', '<leader>tg', function()
+   local ext  = vim.fn.expand('%:e')
+   local args = (ext ~= '' and { '-g', '*.' .. ext }) or nil
+   require('snacks').picker.grep({
+      title = 'Live Grep' .. (ext ~= '' and (' (-g *.' .. ext .. ')') or ''),
+      args  = args,
+   })
+end, { desc = 'Picker: live [g]rep (with rg glob for current ext)' })
+
+vim.keymap.set('n', '<leader>tb', function()
+   require('snacks').picker.buffers({ title = 'Buffers (<esc> to quit)' })
+end, { desc = 'Picker: open [b]uffers' })
+
+-- <leader>td -- frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
+-- <CR> lcds; <C-f> chains into a files-picker scoped to that dir.
+-- Implementation now uses snacks.picker (utils/z_picker.lua).
+vim.keymap.set('n', '<leader>td', function()
+   require('utils.z_picker').open()
+end, { desc = 'Picker: z [d]irectories (frecency from ~/.z)' })
+
+vim.keymap.set('n', '<leader>po', function()
+   require('snacks').picker.lsp_symbols({ title = 'Document Symbols' })
+end, { desc = 'ls[p]: [o]utline -- document symbols' })
+
+-- ---------- file explorer ----------
+-- snacks.explorer owns <leader>e since neo-tree was retired (it was too slow
+-- on /project NFS paths; snacks.explorer is noticeably faster because the
+-- fuzzy filter pre-narrows the tree before any IO).
+vim.keymap.set('n', '<leader>e', function()
+   require('snacks').explorer({ cwd = vim.fn.getcwd() })
+end, { desc = 'Snacks: [e]xplorer (file browser)' })
 
 -- vim: ts=3 sts=3 sw=3 et

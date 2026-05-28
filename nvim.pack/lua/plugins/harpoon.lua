@@ -13,20 +13,30 @@ harpoon:extend({
    end,
 })
 
--- Telescope-backed picker for the harpoon list (alternative to the native UI).
-local function harpoon_telescope_picker()
-   local picker_files = harpoon:list()
-   local conf         = require('telescope.config').values
-   local file_paths   = {}
-   for _, item in ipairs(picker_files.items) do
-      table.insert(file_paths, item.value)
+-- snacks.picker-backed picker for the harpoon list (alternative to the native
+-- UI). Rewritten from a telescope picker on the telescope -> snacks.picker
+-- migration. Custom items with `file = <path>` so snacks's default file
+-- previewer Just Works.
+local function harpoon_snacks_picker()
+   local items = {}
+   for idx, item in ipairs(harpoon:list().items) do
+      items[#items + 1] = {
+         idx  = idx,
+         file = item.value,
+         text = item.value,
+      }
    end
-   require('telescope.pickers').new({}, {
-      prompt_title = 'Harpoon (<esc> to quit)',
-      finder       = require('telescope.finders').new_table({ results = file_paths }),
-      previewer    = conf.file_previewer({}),
-      sorter       = conf.generic_sorter({}),
-   }):find()
+   require('snacks').picker.pick({
+      source  = 'harpoon',
+      title   = 'Harpoon (<esc> to quit)',
+      items   = items,
+      format  = 'file',
+      preview = 'file',
+      confirm = function(picker, item)
+         picker:close()
+         if item then vim.cmd.edit(vim.fn.fnameescape(item.file)) end
+      end,
+   })
 end
 
 -- All harpoon bindings live under <leader>H* (group label in plugins/which-key.lua).
@@ -44,7 +54,7 @@ vim.keymap.set('n', '<leader>Hm', function()
    harpoon.ui:toggle_quick_menu(harpoon:list())
 end, { desc = 'Harpoon: quick [m]enu (native UI)' })
 
-vim.keymap.set('n', '<leader>Hl', harpoon_telescope_picker, { desc = 'Harpoon: telescope [l]ist' })
+vim.keymap.set('n', '<leader>Hl', harpoon_snacks_picker, { desc = 'Harpoon: snacks-picker [l]ist' })
 
 -- Slot jumps. Primeagen's convention is 4 slots; bump the upper bound below
 -- if you start carrying more around. select(N) is no-op when slot N is empty

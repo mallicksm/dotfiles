@@ -21,7 +21,9 @@ vim.pack.add({
    ----------------------------------------------------------------------------
    { src = 'https://github.com/nvim-lua/plenary.nvim'        },
    { src = 'https://github.com/MunifTanjim/nui.nvim'         },
-   { src = 'https://github.com/nvim-tree/nvim-web-devicons'  },
+   -- nvim-web-devicons removed: mini.icons replaces it AND calls
+   -- mock_nvim_web_devicons() so callers that `require('nvim-web-devicons')`
+   -- (neo-tree, lualine, snacks, render-markdown) still resolve transparently.
    { src = 'https://github.com/tpope/vim-repeat'             },
    { src = 'https://github.com/nvim-neotest/nvim-nio'        },
 
@@ -34,7 +36,8 @@ vim.pack.add({
    { src = 'https://github.com/folke/snacks.nvim'            },
    { src = 'https://github.com/folke/which-key.nvim'         },
    { src = 'https://github.com/folke/noice.nvim'             },
-   { src = 'https://github.com/rcarriga/nvim-notify'         },
+   -- nvim-notify removed: snacks.notifier is the notification backend now.
+   -- Evict with :lua vim.pack.del{'nvim-notify'}.
 
    ----------------------------------------------------------------------------
    -- Markdown rendering
@@ -58,11 +61,13 @@ vim.pack.add({
    { src = 'https://github.com/chentoast/marks.nvim'         },
    -- (mbbill/undotree removed -- replaced by nvim 0.12 built-in
    -- $VIMRUNTIME/pack/dist/opt/nvim.undotree, wired up in plugins/undotree.lua)
-   { src = 'https://github.com/nvim-neo-tree/neo-tree.nvim',    version = 'v3.x' },
-   { src = 'https://github.com/nvim-telescope/telescope.nvim' },
-   { src = 'https://github.com/nvim-telescope/telescope-ui-select.nvim' },
-   { src = 'https://github.com/nvim-telescope/telescope-fzf-native.nvim' },
-   { src = 'https://github.com/nvim-telescope/telescope-live-grep-args.nvim' },
+   -- neo-tree removed: snacks.explorer (<leader>e in plugins/snacks.lua) is
+   -- the file browser now. Evict the on-disk pack with
+   --   :lua vim.pack.del{'neo-tree.nvim'}
+   -- telescope + ui-select + fzf-native + live-grep-args removed: snacks.picker
+   -- + snacks.input (in plugins/snacks.lua) cover the same use cases. Evict with
+   --   :lua vim.pack.del{'telescope.nvim','telescope-ui-select.nvim',
+   --                     'telescope-fzf-native.nvim','telescope-live-grep-args.nvim'}
 
    ----------------------------------------------------------------------------
    -- LSP / completion / format / lint / debug
@@ -71,7 +76,8 @@ vim.pack.add({
    { src = 'https://github.com/mason-org/mason-lspconfig.nvim' },
    { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
    { src = 'https://github.com/neovim/nvim-lspconfig'        },
-   { src = 'https://github.com/j-hui/fidget.nvim'            },
+   -- fidget removed: noice.nvim renders LSP progress via lsp.progress (on by
+   -- default). Run :lua vim.pack.del{'fidget.nvim'} to evict the cached pack.
    { src = 'https://github.com/folke/lazydev.nvim'           },
    { src = 'https://github.com/saghen/blink.cmp',               version = vim.version.range('1') },
    { src = 'https://github.com/stevearc/conform.nvim'        },
@@ -99,30 +105,22 @@ vim.pack.add({
 -- Post-install build steps (lazy.nvim's `build = '...'` equivalent).
 -- These are idempotent: they only run if the artifact is missing.
 -- ----------------------------------------------------------------------------
-
--- telescope-fzf-native: needs `make` to compile libfzf.so.
-local fzf_dir = vim.fn.stdpath('data') .. '/site/pack/core/opt/telescope-fzf-native.nvim'
-if vim.uv.fs_stat(fzf_dir) and not vim.uv.fs_stat(fzf_dir .. '/build/libfzf.so') then
-   vim.notify('[pack] building telescope-fzf-native (one-time)...', vim.log.levels.INFO)
-   vim.fn.system({ 'make', '-C', fzf_dir })
-   if vim.v.shell_error ~= 0 then
-      vim.notify('[pack] fzf-native build failed; check `make` is on PATH', vim.log.levels.ERROR)
-   end
-end
+-- (telescope-fzf-native build step removed along with the telescope stack.)
 
 -- ----------------------------------------------------------------------------
 -- Per-plugin setup. ORDER MATTERS for a few:
 --   1. colorscheme  -- so subsequent setups can read theme colors
---   2. mini         -- wires base autocmds + mini.basics
---   3. devicons     -- needed by lualine, neo-tree (set up before them)
---   4. blink.cmp    -- lspconfig pulls capabilities from it (must precede LSP)
---   5. treesitter   -- render-markdown reads parsers (must precede it)
+--   2. mini         -- wires base autocmds + mini.basics + mini.icons
+--                     (mini.icons.mock_nvim_web_devicons() must run BEFORE
+--                      any plugin that does require('nvim-web-devicons') --
+--                      lualine, neo-tree, snacks, render-markdown)
+--   3. blink.cmp    -- lspconfig pulls capabilities from it (must precede LSP)
+--   4. treesitter   -- render-markdown reads parsers (must precede it)
 -- The rest are independent; alphabetical by plugin name within their group.
 -- ----------------------------------------------------------------------------
 
 require('plugins.colorscheme')
-require('plugins.mini')
-require('plugins.devicons')
+require('plugins.mini')          -- includes mini.icons + mock_nvim_web_devicons
 
 require('plugins.lualine')
 require('plugins.snacks')
@@ -142,8 +140,8 @@ require('plugins.kaleidosearch')
 require('plugins.harpoon')
 require('plugins.marks')
 require('plugins.undotree')
-require('plugins.neo-tree')
-require('plugins.telescope')
+-- plugins.neo-tree removed; snacks.explorer (<leader>e) is the file browser now.
+-- plugins.telescope removed;  snacks.picker keymaps live in plugins/snacks.lua
 
 require('plugins.completions')   -- blink.cmp -- before lspconfig
 require('plugins.lspconfig')      -- mason + mason-lspconfig + lspconfig

@@ -34,11 +34,9 @@ return {
       'neovim/nvim-lspconfig',
       event = { 'BufReadPre', 'BufNewFile' },
       dependencies = {
-         {
-            'j-hui/fidget.nvim',
-            event = 'LspAttach', -- only load once an LSP actually attaches
-            opts = {},
-         },
+         -- fidget.nvim removed: noice.nvim already renders LSP progress
+         -- (lsp.progress is enabled by default in noice). One dep, one set of
+         -- floating windows; no functional regression.
          {
             'folke/lazydev.nvim',
             ft = 'lua',
@@ -70,32 +68,21 @@ return {
                   vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
                end
 
-               -- Wrap telescope.builtin requires in function() so they're resolved
-               -- at keypress time, not LspAttach time. Future-proofs against making
-               -- telescope lazy-loaded later (today it's lazy=false so either works).
-               map('gd',         function() require('telescope.builtin').lsp_definitions() end,                '[G]oto [D]efinition')
-               map('gr',         function() require('telescope.builtin').lsp_references() end,                 '[G]oto [R]eferences')
-               map('<leader>pd', function() require('telescope.builtin').lsp_type_definitions() end,           'ls[p]: type [D]efinition')
-               map('<leader>ps', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end,  'ls[p]: workspace [S]ymbols')
+               -- LSP picker actions now go through snacks.picker (telescope removed).
+               -- Wrapping in function() defers the require() to keypress time.
+               map('gd',         function() require('snacks').picker.lsp_definitions() end,        '[G]oto [D]efinition')
+               map('gr',         function() require('snacks').picker.lsp_references() end,         '[G]oto [R]eferences')
+               map('<leader>pd', function() require('snacks').picker.lsp_type_definitions() end,   'ls[p]: type [D]efinition')
+               map('<leader>ps', function() require('snacks').picker.lsp_workspace_symbols() end,  'ls[p]: workspace [S]ymbols')
                map('<leader>pr', vim.lsp.buf.rename, 'ls[p]: [r]ename')
                map('<leader>pa', vim.lsp.buf.code_action, 'ls[p]: code [a]ction', { 'n', 'x' })
                map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
                map('K', function() vim.lsp.buf.hover({ border = 'rounded' }) end, 'Documentation')
 
-               local client = vim.lsp.get_client_by_id(event.data.client_id)
-               if client and client:supports_method('textDocument/documentHighlight') then
-                  local hl_group = vim.api.nvim_create_augroup('LspHighlight', { clear = false })
-                  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-                     buffer = event.buf,
-                     group = hl_group,
-                     callback = vim.lsp.buf.document_highlight,
-                  })
-                  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-                     buffer = event.buf,
-                     group = hl_group,
-                     callback = vim.lsp.buf.clear_references,
-                  })
-               end
+               -- The hand-rolled CursorHold/CursorMoved document_highlight pair
+               -- moved into snacks.words (configured in core_plugins/snacks.lua).
+               -- snacks.words attaches per-buf on LspAttach itself, debounces the
+               -- highlight call, and also gives us ]] / [[ jumps between references.
             end,
          })
 

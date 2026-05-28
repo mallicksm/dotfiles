@@ -10,18 +10,10 @@ return {
    dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      {
-         "rcarriga/nvim-notify",
-         -- Explicit background_colour: silences the "NotifyBackground has no
-         -- background" warning that fires the first time anything is notified.
-         -- #282828 = gruvbox bg0; change to match if you ever switch colorscheme.
-         opts = {
-            background_colour = '#282828',
-         },
-      },
+      -- nvim-notify removed: snacks.notifier (enabled in core_plugins/snacks.lua)
+      -- is now the notification backend. snacks gets a higher-priority load
+      -- order than noice (priority = 1000, lazy = false) so the notifier is
+      -- already running by the time noice starts routing messages to it.
    },
    config = function()
       require("noice").setup({
@@ -50,10 +42,11 @@ return {
             view_search = "virtualtext",
          },
          -- vim.notify() routing:
-         --   WARN / ERROR  -> nvim-notify (big top-right popup, demands attention)
-         --   INFO / DEBUG  -> mini view   (small bottom-right toast, fades in ~2s)
-         -- The default for `notify.view` is "notify" already; we override per-call
-         -- via the route below using a `cond` filter on message.level.
+         --   WARN / ERROR  -> snacks.notifier (big top-right popup, demands attention)
+         --   INFO / DEBUG  -> mini view       (small bottom-right toast, fades in ~2s)
+         -- noice's "notify" view name still maps to whichever notifier is
+         -- registered; with snacks.notifier enabled in snacks.lua, that's
+         -- snacks instead of nvim-notify.
          notify = {
             enabled = true,
             view = "notify",

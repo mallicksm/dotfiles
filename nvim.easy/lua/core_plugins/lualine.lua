@@ -32,8 +32,9 @@ return {
             component_separators = { left = '\u{2016}', right = '\u{2016}' },
             disabled_filetypes = {
                statusline = {
-                  "neo-tree",
-                  "nvim-undotree", -- nvim 0.12 built-in undotree (mbbill set 'undotree')
+                  "snacks_picker_list", -- snacks.explorer list pane
+                  "snacks_picker_input",
+                  "nvim-undotree",      -- nvim 0.12 built-in undotree
                   "diff",
                   "Outline",
                },

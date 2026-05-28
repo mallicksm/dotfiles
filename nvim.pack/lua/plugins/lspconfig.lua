@@ -15,8 +15,9 @@ require('mason-tool-installer').setup({
    run_on_start = true,
 })
 
--- fidget: progress UI for slow LSP startups. lazydev: types for vim.* in lua files.
-require('fidget').setup({})
+-- fidget removed: noice.nvim already renders LSP progress (lsp.progress is on
+-- by default in noice). The plugin is also dropped from plugins.lua's vim.pack
+-- spec list; remove the on-disk pack/ entry with :lua vim.pack.del{'fidget.nvim'}.
 require('lazydev').setup({
    library = { { path = '${3rd}/luv/library', words = { 'vim%.uv' } } },
 })
@@ -41,30 +42,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
          vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
       end
 
-      map('gd',         function() require('telescope.builtin').lsp_definitions() end,                '[G]oto [D]efinition')
-      map('gr',         function() require('telescope.builtin').lsp_references() end,                 '[G]oto [R]eferences')
-      map('<leader>pd', function() require('telescope.builtin').lsp_type_definitions() end,           'ls[p]: type [D]efinition')
-      map('<leader>ps', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end,  'ls[p]: workspace [S]ymbols')
+      -- LSP picker actions go through snacks.picker (telescope removed).
+      map('gd',         function() require('snacks').picker.lsp_definitions() end,        '[G]oto [D]efinition')
+      map('gr',         function() require('snacks').picker.lsp_references() end,         '[G]oto [R]eferences')
+      map('<leader>pd', function() require('snacks').picker.lsp_type_definitions() end,   'ls[p]: type [D]efinition')
+      map('<leader>ps', function() require('snacks').picker.lsp_workspace_symbols() end,  'ls[p]: workspace [S]ymbols')
       map('<leader>pr', vim.lsp.buf.rename, 'ls[p]: [r]ename')
       map('<leader>pa', vim.lsp.buf.code_action, 'ls[p]: code [a]ction', { 'n', 'x' })
-      map('gD',         vim.lsp.buf.declaration,                                                     '[G]oto [D]eclaration')
-      map('K',          function() vim.lsp.buf.hover({ border = 'rounded' }) end,                    'Documentation')
+      map('gD',         vim.lsp.buf.declaration,                                          '[G]oto [D]eclaration')
+      map('K',          function() vim.lsp.buf.hover({ border = 'rounded' }) end,         'Documentation')
 
-      -- Highlight references to symbol under cursor on idle, clear on cursor move.
-      local client = vim.lsp.get_client_by_id(event.data.client_id)
-      if client and client:supports_method('textDocument/documentHighlight') then
-         local hl_group = vim.api.nvim_create_augroup('LspHighlight', { clear = false })
-         vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-            buffer   = event.buf,
-            group    = hl_group,
-            callback = vim.lsp.buf.document_highlight,
-         })
-         vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-            buffer   = event.buf,
-            group    = hl_group,
-            callback = vim.lsp.buf.clear_references,
-         })
-      end
+      -- The hand-rolled CursorHold/CursorMoved document_highlight pair moved
+      -- into snacks.words (configured in plugins/snacks.lua). snacks.words
+      -- attaches per-buf on LspAttach, debounces the highlight call, and gives
+      -- us ]] / [[ jumps between references for free.
    end,
 })
 

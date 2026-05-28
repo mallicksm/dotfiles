@@ -33,6 +33,29 @@ return {
          require('mini.extra').setup()
 
          -------------------------------------------------------------
+         -- mini.icons -- replaces nvim-tree/nvim-web-devicons. We set up
+         -- mini.icons here AND call mock_nvim_web_devicons() so every other
+         -- plugin that still does `require('nvim-web-devicons')` (neo-tree,
+         -- lualine, snacks, render-markdown, ...) keeps working transparently.
+         -- One icons source, one set of highlight groups (MiniIconsRed/Blue/...).
+         --
+         -- The per-extension overrides below mirror what the old
+         -- nvim-web-devicons.setup({ override_by_extension = {...} }) block had
+         -- in plugins/neo-tree.lua: '.f' (verilog include), '.tdf' (tcl-driven
+         -- flows), '.cmm' (Trace32), '.qel' (Cadence emulator), '.bash'.
+         -------------------------------------------------------------
+         require('mini.icons').setup({
+            extension = {
+               ['f']    = { glyph = '',  hl = 'MiniIconsBlue'  },
+               ['tdf']  = { glyph = '', hl = 'MiniIconsGreen' },
+               ['cmm']  = { glyph = '⚒', hl = 'MiniIconsGreen' },
+               ['qel']  = { glyph = '󰛓', hl = 'MiniIconsOrange'},
+               ['bash'] = { glyph = '', hl = 'MiniIconsGreen' },
+            },
+         })
+         require('mini.icons').mock_nvim_web_devicons()
+
+         -------------------------------------------------------------
          -- <leader>K for more info on cWORD MiniAi-textobject-builtin
          -------------------------------------------------------------
          local ai = require('mini.ai')
@@ -83,9 +106,7 @@ return {
                ['`'] = false,
             },
             disable_filetypes = {
-               'TelescopePrompt',
-               'NvimTree',
-               'neo-tree',
+               'snacks_picker_input', -- don't auto-pair inside snacks picker prompts
             },
          })
 

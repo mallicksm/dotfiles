@@ -26,7 +26,7 @@ local default_config = {
       disabled_filetypes = {
          -- 'nvim-undotree' is the filetype set by nvim 0.12's built-in undotree
          -- (mbbill/undotree, now removed, used 'undotree').
-         statusline = { 'neo-tree', 'nvim-undotree', 'diff', 'Outline' },
+         statusline = { 'snacks_picker_list', 'snacks_picker_input', 'nvim-undotree', 'diff', 'Outline' },
       },
    },
    sections = {

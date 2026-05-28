@@ -19,6 +19,26 @@ vim.opt.smartindent = false
 
 require('mini.extra').setup()
 
+-- mini.icons -- replaces nvim-tree/nvim-web-devicons. We set up mini.icons here
+-- AND call mock_nvim_web_devicons() so every other plugin that still does
+-- require('nvim-web-devicons') (neo-tree, lualine, snacks, render-markdown,
+-- ...) keeps working transparently. One icons source, one set of highlight
+-- groups (MiniIconsRed / MiniIconsBlue / ...).
+--
+-- The per-extension overrides below mirror what the old devicons.lua had:
+-- '.f' (verilog include), '.tdf' (tcl-driven flows), '.cmm' (Trace32),
+-- '.qel' (Cadence emulator), '.bash'.
+require('mini.icons').setup({
+   extension = {
+      ['f']    = { glyph = '',  hl = 'MiniIconsBlue'   },
+      ['tdf']  = { glyph = '', hl = 'MiniIconsGreen'  },
+      ['cmm']  = { glyph = '⚒', hl = 'MiniIconsGreen'  },
+      ['qel']  = { glyph = '󰛓', hl = 'MiniIconsOrange' },
+      ['bash'] = { glyph = '', hl = 'MiniIconsGreen'  },
+   },
+})
+require('mini.icons').mock_nvim_web_devicons()
+
 local ai = require('mini.ai')
 local extra = require('mini.extra')
 local ts = ai.gen_spec.treesitter
@@ -58,7 +78,7 @@ require('mini.surround').setup({
 
 require('mini.pairs').setup({
    mappings          = { ['`'] = false },
-   disable_filetypes = { 'TelescopePrompt', 'NvimTree', 'neo-tree' },
+   disable_filetypes = { 'snacks_picker_input' }, -- don't auto-pair inside snacks picker prompts
 })
 
 require('mini.comment').setup()
