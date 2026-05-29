@@ -230,15 +230,93 @@ vim.keymap.set('n', '<leader>K', function()
    require('utils.smart_open').open()
 end, { noremap = true, silent = true, desc = 'Man page or help for word under cursor' })
 
--- Insert-mode <C-r>: snacks.picker.registers.
--- (Used to be the telescope picker; rewritten on the telescope -> snacks.picker
--- migration. The VimEnter re-assertion that used to live here was a workaround
--- for which-key's `registers` preset stealing the binding -- dropped on the
--- which-key -> mini.clue migration since mini.clue doesn't remap <C-r>; it
--- just shows a clue popup AFTER you press it.)
+-- Insert-mode <C-r>: snacks.picker.registers, floating tall+narrow toward the
+-- right (but with a margin off the right edge so the underlying code stays
+-- visible). mini.clue's insert-mode <C-r> trigger is removed in
+-- core_plugins/mini.lua so the two helpers don't double up.
+--
+-- Layout knobs (tune in place):
+--   width      -- columns of the picker (70 = wide enough for most register
+--                 contents, narrow enough to leave the buffer visible).
+--   height = 0 -- full editor height.
+--   position = 'float' + col = -2 -- floats anchored to the right edge with a
+--                 2-column gap (so the picker doesn't visually hug the screen).
+--   box = 'vertical' -- input on top, list filling the rest, no preview pane.
+--
+-- The custom `confirm` action replaces snacks's default `{ 'copy', 'close' }`
+-- (which only yanks to clipboard) with "insert the register content at the
+-- cursor and stay in insert mode" -- matching vim's native <C-r>X semantics.
 vim.keymap.set('i', '<C-r>', function()
-   require('snacks').picker.registers({ title = 'Registers (<CR> paste, <C-e> edit)' })
-end, { desc = 'Picker: registers (<CR> paste, <C-e> edit)' })
+   -- Capture position WHILE still in insert mode: `saved_pos[2]` (col) may
+   -- equal #line, meaning "ready to append at end-of-line". That's a valid
+   -- insert-mode position but not a valid normal-mode cursor pos (vim snaps
+   -- it one left). We track this to pick the right re-entry verb below.
+   local main_win  = vim.api.nvim_get_current_win()
+   local main_buf  = vim.api.nvim_get_current_buf()
+   local saved_pos = vim.api.nvim_win_get_cursor(main_win)
+   local line      = vim.api.nvim_buf_get_lines(main_buf, saved_pos[1] - 1, saved_pos[1], false)[1] or ''
+   local at_eol    = saved_pos[2] >= #line
+
+   require('snacks').picker.registers({
+      title = 'Registers',
+      layout = {
+         layout = {
+            backdrop  = false,
+            width     = 84,   -- ~20% wider than the old 70
+            min_width = 84,
+            height    = 0.8,  -- 80% of editor height
+            position  = 'float',
+            col       = -2,   -- 2-col gap from the right edge
+            row       = 0,    -- pinned to the top
+            border    = 'rounded',
+            box       = 'vertical',
+            { win = 'input', height = 1, border = 'bottom', title = '{title}' },
+            { win = 'list',  border = 'none' },
+         },
+      },
+      -- Bias the fuzzy matcher toward the register LETTER while STILL letting
+      -- content be searchable. Layout: "<reg> <content>" -- letter at position
+      -- 0 so a 1-char query like "a" ranks register 'a' first, but contents
+      -- are still in `text` from position 2 onward so typing words from the
+      -- value still narrows the list. (The visible row uses snacks's
+      -- `format = "register"` from the source spec -- rendering stays
+      -- "[<reg>] <content>".)
+      transform = function(item)
+         if item and item.reg then
+            item.text = item.reg .. ' ' .. (item.value or '')
+         end
+         return item
+      end,
+      -- Confirm: restore the EXACT insert-mode position the user was at,
+      -- enter insert mode with `i` (mid-line) or `a` (end-of-line) so the
+      -- byte position lands on saved_pos[2], then feed <C-r><reg>. mode='n'
+      -- on feedkeys blocks recursion into this same keymap.
+      confirm = function(picker, item)
+         picker:close()
+         if not item or not item.reg then return end
+         vim.schedule(function()
+            pcall(vim.api.nvim_set_current_win, main_win)
+            -- Trailing <Esc> drops back to normal mode after the paste, per
+            -- user preference (cursor lands ON the last inserted char as is
+            -- vim convention for Esc-from-insert).
+            if at_eol then
+               -- Park cursor on the last char (col = #line - 1), then `a`
+               -- enters insert mode at col = #line -- i.e. end-of-line.
+               local target_col = math.max(0, #line - 1)
+               pcall(vim.api.nvim_win_set_cursor, main_win, { saved_pos[1], target_col })
+               local keys = vim.api.nvim_replace_termcodes('a<C-r>' .. item.reg .. '<Esc>', true, false, true)
+               vim.api.nvim_feedkeys(keys, 'n', false)
+            else
+               -- Park cursor at saved_col; `i` enters insert mode before that
+               -- char -- exactly the position the user was at originally.
+               pcall(vim.api.nvim_win_set_cursor, main_win, saved_pos)
+               local keys = vim.api.nvim_replace_termcodes('i<C-r>' .. item.reg .. '<Esc>', true, false, true)
+               vim.api.nvim_feedkeys(keys, 'n', false)
+            end
+         end)
+      end,
+   })
+end, { desc = 'Picker: registers (tall right; <CR> pastes at cursor)' })
 
 -- <C-g>: yank full path into the unnamed register """ and drop a quiet
 -- INFO notify so noice routes it to the bottom-right mini view (see

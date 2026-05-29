@@ -156,10 +156,14 @@ return {
                   { mode = 'x', keys = "'" },
                   { mode = 'x', keys = '`' },
 
-                  -- Registers
+                  -- Registers. Insert-mode <C-r> is intentionally NOT a trigger
+                  -- here: we own that key with snacks.picker.registers (see
+                  -- lua/keymaps.lua), and a mini.clue popup competing with the
+                  -- picker doubles up "helpers". Cmdline-mode <C-r> stays --
+                  -- snacks isn't bound there, so the register clue is the only
+                  -- hint you get for :s/foo/<C-r>... and similar.
                   { mode = 'n', keys = '"' },
                   { mode = 'x', keys = '"' },
-                  { mode = 'i', keys = '<C-r>' },
                   { mode = 'c', keys = '<C-r>' },
 
                   -- Window commands
