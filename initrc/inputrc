@@ -1,2 +1,49 @@
-set show-all-if-ambiguous on
+# ----------------------------------------------------------------------------
+# readline / completion behavior (sourced by ~/.inputrc symlink)
+# ----------------------------------------------------------------------------
+
+# Case-insensitive: `cd Doc<Tab>` matches `documents/`.
 set completion-ignore-case on
+
+# If the first Tab is ever routed to `complete` (e.g. via Alt-? or anything
+# that calls possible-completions), show all matches immediately instead of
+# beep-then-second-Tab.
+set show-all-if-ambiguous on
+
+# When using menu-complete (rebound below), make the FIRST Tab insert the
+# longest common prefix of the candidate list (without committing to any
+# single match). The next Tab then starts cycling through matches.
+# Without this, the very first Tab silently jumps to the first match, which
+# feels jarring.
+set menu-complete-display-prefix on
+
+# ----------------------------------------------------------------------------
+# Tab = zsh/fish-style cycling
+#
+#   1st Tab          insert longest common prefix of all matches
+#   2nd Tab, 3rd ... walk forward through the candidate list
+#   Shift-Tab        walk backward
+#   Alt-?            (still) show full list of possible completions
+#   Ctrl-N / Ctrl-P  (still) cycle forward / backward (bash defaults)
+#
+# Bindings are repeated in all three keymaps because ~/.bashrc enables
+# `set -o vi`, which puts readline into vi-insert at the prompt; without
+# the explicit vi-insert / vi-command keymap blocks the rebind would only
+# take effect in emacs mode.
+# ----------------------------------------------------------------------------
+
+set keymap emacs
+"\t":   menu-complete
+"\e[Z": menu-complete-backward
+
+set keymap vi-insert
+"\t":   menu-complete
+"\e[Z": menu-complete-backward
+
+set keymap vi-command
+"\t":   menu-complete
+"\e[Z": menu-complete-backward
+
+# Leave readline in the default keymap so anything that parses this file
+# afterwards doesn't inherit vi-command.
+set keymap emacs

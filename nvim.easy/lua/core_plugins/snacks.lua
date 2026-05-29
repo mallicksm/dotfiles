@@ -318,6 +318,23 @@ return {
                return #items > 0 and items or nil
             end,
 
+            -- Documentation: reference material under $HOME/docs/. Same
+            -- deferred-isdirectory pattern as Workspaces/Projects -- no NFS
+            -- stat during render. Add more entries here as needed.
+            function()
+               local docs = {
+                  { key = 'd', label = 'Latest_docs', dir = vim.env.HOME .. '/docs/Latest_docs' },
+               }
+               local items = { title = 'Documentation', padding = 1 }
+               for _, d in ipairs(docs) do
+                  table.insert(items, {
+                     icon = '󰂺 ', key = d.key, desc = d.label,
+                     action = dashboard_open_dir(d.label, d.dir),
+                  })
+               end
+               return items
+            end,
+
             { section = 'keys', gap = 1, padding = 1 },
             { section = 'startup' },
          },
