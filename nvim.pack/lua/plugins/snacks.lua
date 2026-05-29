@@ -247,7 +247,24 @@ require('snacks').setup({
          end,
 
          { section = 'keys', gap = 1, padding = 1 },
-         { section = 'startup' },
+
+         -- Custom "startup" footer. The built-in `{ section = 'startup' }`
+         -- snacks section requires lazy.nvim's `lazy.stats` module, which
+         -- doesn't exist under vim.pack. Roll our own using vim.pack.get().
+         -- pcall'd so a future API change doesn't crash the dashboard --
+         -- the footer just disappears in that case.
+         function()
+            local ok, plugins = pcall(function() return vim.pack.get() end)
+            if not ok or type(plugins) ~= 'table' then return nil end
+            return {
+               align = 'center',
+               text = {
+                  { '⚡ Neovim · ',                 hl = 'footer' },
+                  { tostring(#plugins),             hl = 'special' },
+                  { ' plugins (vim.pack)',          hl = 'footer' },
+               },
+            }
+         end,
       },
    },
 })
