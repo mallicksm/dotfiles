@@ -112,7 +112,7 @@ do
             anchor = 'SW', -- bottom-left (default SE = bottom-right)
             row = 'auto',
             col = 'auto',
-            width = 60, -- default is 30; double for longer map descs
+            width = 70, -- mini.clue only (<Space> menu); default is 30
          },
       },
       triggers = {
@@ -174,7 +174,7 @@ do
          -- saturated gruvbox yellow so it pops vs leaf descs.
          { mode = 'n', keys = '<Leader>d', desc = '󰃤  +[D]ap' },
          { mode = 'n', keys = '<Leader>g', desc = '  +[G]it' },
-         { mode = 'n', keys = '<Leader>p', desc = '󰒋  +ls[p]' },
+         { mode = 'n', keys = '<Leader>c', desc = '󰘦  +[c]ode' },
          { mode = 'n', keys = '<Leader>t', desc = '󰍉  +[t]ools (picker)' },
          { mode = 'n', keys = '<Leader>s', desc = '󰫖  +[S]earch (kaleido)' },
          { mode = 'n', keys = '<Leader>H', desc = '󰀢  +[H]arpoon' },

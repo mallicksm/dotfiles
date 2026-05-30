@@ -2,11 +2,11 @@
 -- foreground AND background per highlight (highlighter-pen style), instead
 -- of upstream's algorithmic HSL fg-only colors.
 --
--- Why <leader>s* and not the plugin's <leader>c* defaults: kaleidosearch's
--- upstream defaults claim <leader>c* but we want that prefix free. <leader>s
--- ("[S]earch") was unused, so we route there and disable the plugin's
--- keymaps.enabled. Group label is added in mini.clue setup (core_plugins/mini.lua).
--- (LSP code action lives at <leader>pa now, under the ls[p] family.)
+-- Why <leader>s* and not the plugin's <leader>c* defaults: upstream uses
+-- <leader>c* for kaleidosearch, but <leader>c is our [c]ode family (LSP,
+-- format, lint). <leader>s ("[S]earch") routes kaleidosearch; plugin
+-- keymaps.enabled stays off. Group label is in mini.clue (core_plugins/mini.lua).
+-- (LSP code action: <leader>ca under +[c]ode.)
 --
 -- Optional dep: tpope/vim-repeat -> dot-repeat for AddCursorWord, so after
 -- <leader>sa on one word you can `.` on the next word and it picks the next

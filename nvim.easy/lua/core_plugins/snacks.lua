@@ -68,8 +68,8 @@ return {
       -- Implementation now uses snacks.picker (utils/z_picker.lua).
       { '<leader>td', function() require('utils.z_picker').open() end,
         desc = 'Picker: z [d]irectories (frecency from ~/.z)' },
-      { '<leader>po', function() require('snacks').picker.lsp_symbols({ title = 'Document Symbols' }) end,
-        desc = 'ls[p]: [o]utline -- document symbols' },
+      { '<leader>co', function() require('snacks').picker.lsp_symbols({ title = 'Document Symbols' }) end,
+        desc = '[c]ode: [o]utline -- document symbols' },
 
       -- ---------- file explorer ----------
       -- snacks.explorer owns <leader>e since neo-tree was retired (it was too

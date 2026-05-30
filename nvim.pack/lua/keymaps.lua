@@ -92,7 +92,7 @@ end, { desc = 'Toggle vertical cursor column ruler (this window)' })
 -- Diagnostics toggle is buffer-local via vim.diagnostic.{is_enabled,enable}.
 -- The 0.10+ API takes a boolean as the first arg; passing `not enabled`
 -- flips the state. bufnr=0 means "current buffer".
-vim.keymap.set('n', '<leader>pD', function()
+vim.keymap.set('n', '<leader>cD', function()
    local enabled = vim.diagnostic.is_enabled({ bufnr = 0 })
    vim.diagnostic.enable(not enabled, { bufnr = 0 })
    vim.notify('diagnostic = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
@@ -100,7 +100,7 @@ end, { desc = 'Toggle all LSP diagnostics (this buffer)' })
 
 -- LSP inlay hints (clangd, lua_ls, etc. emit these). Buffer-local.
 -- nvim 0.10+ API: vim.lsp.inlay_hint.{is_enabled, enable}.
-vim.keymap.set('n', '<leader>pi', function()
+vim.keymap.set('n', '<leader>ci', function()
    local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
    vim.lsp.inlay_hint.enable(not enabled, { bufnr = 0 })
    vim.notify('inlay hints = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
@@ -147,7 +147,7 @@ end, { desc = '[V]im tools: toggle treesitter highlight (vs regex syntax)' })
 -- "on" restores your custom prefix/spacing instead of nvim's default.
 do
    local prev_vt
-   vim.keymap.set('n', '<leader>pv', function()
+   vim.keymap.set('n', '<leader>cv', function()
       local cur = vim.diagnostic.config().virtual_text
       if cur then
          prev_vt = cur
@@ -164,7 +164,7 @@ end
 -- Strategy: register the BufWritePre autocmd ONCE here (always present),
 -- and gate it on vim.g.format_on_save. The toggle just flips the flag --
 -- no add/remove of the autocmd, so behavior is consistent and idempotent.
--- Default is OFF, matching your existing manual <leader>pf policy.
+-- Default is OFF, matching your existing manual <leader>cf policy.
 vim.api.nvim_create_autocmd('BufWritePre', {
    group = vim.api.nvim_create_augroup('user-format-on-save', { clear = true }),
    callback = function(args)

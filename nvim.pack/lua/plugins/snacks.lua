@@ -322,9 +322,9 @@ vim.keymap.set('n', '<leader>td', function()
    require('utils.z_picker').open()
 end, { desc = 'Picker: z [d]irectories (frecency from ~/.z)' })
 
-vim.keymap.set('n', '<leader>po', function()
+vim.keymap.set('n', '<leader>co', function()
    require('snacks').picker.lsp_symbols({ title = 'Document Symbols' })
-end, { desc = 'ls[p]: [o]utline -- document symbols' })
+end, { desc = '[c]ode: [o]utline -- document symbols' })
 
 -- ---------- file explorer ----------
 -- snacks.explorer owns <leader>e since neo-tree was retired (it was too slow

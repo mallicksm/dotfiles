@@ -72,10 +72,10 @@ return {
                -- Wrapping in function() defers the require() to keypress time.
                map('gd',         function() require('snacks').picker.lsp_definitions() end,        '[G]oto [D]efinition')
                map('gr',         function() require('snacks').picker.lsp_references() end,         '[G]oto [R]eferences')
-               map('<leader>pd', function() require('snacks').picker.lsp_type_definitions() end,   'ls[p]: type [D]efinition')
-               map('<leader>ps', function() require('snacks').picker.lsp_workspace_symbols() end,  'ls[p]: workspace [S]ymbols')
-               map('<leader>pr', vim.lsp.buf.rename, 'ls[p]: [r]ename')
-               map('<leader>pa', vim.lsp.buf.code_action, 'ls[p]: code [a]ction', { 'n', 'x' })
+               map('<leader>cd', function() require('snacks').picker.lsp_type_definitions() end,   '[c]ode: type [D]efinition')
+               map('<leader>cs', function() require('snacks').picker.lsp_workspace_symbols() end,  '[c]ode: workspace [S]ymbols')
+               map('<leader>cr', vim.lsp.buf.rename, '[c]ode: [r]ename')
+               map('<leader>ca', vim.lsp.buf.code_action, '[c]ode: code [a]ction', { 'n', 'x' })
                map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
                map('K', function() vim.lsp.buf.hover({ border = 'rounded' }) end, 'Documentation')
 
