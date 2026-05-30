@@ -228,16 +228,54 @@ function getfzf() {
    _dry_install "fzf  →  ~/.fzf (git clone)" && return
    [[ ! -d ~/.fzf ]] && git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 }
+# getfonts [-f|--force] [Family ...]
+# Install one or more Nerd Fonts from ryanoasis/nerd-fonts into
+# ~/.local/share/fonts/<Family>/. Each Family is the basename of the release
+# asset (e.g. FiraCode, Hack, JetBrainsMono, Meslo, Iosevka, CascadiaCode).
+# With no args, installs the default set. Skips families already present
+# unless -f/--force is passed. Refreshes fontconfig cache at the end.
 function getfonts() {
-   _dry_install "FiraCode Nerd Font  →  ~/.local/share/fonts/FiraCode" && return
-   # Create fonts directory if needed
-   mkdir -p ~/.local/share/fonts
+   # The bottom-of-file dispatcher `"${1:-all}" "$@"` passes the function
+   # name itself as $1; absorb it so it isn't treated as a font family.
+   [[ "${1:-}" == "getfonts" ]] && shift
+   local force="" arg families=()
+   for arg in "$@"; do
+      case "$arg" in
+         -f|--force) force="yes" ;;
+         -*) warn "getfonts: unknown flag $arg"; return 2 ;;
+         *) families+=("$arg") ;;
+      esac
+   done
+   [[ ${#families[@]} -eq 0 ]] && families=(FiraCode Hack)
 
-   # Download and unzip
-   src=https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip
-   Pushd ~/.local/share/fonts
-   download "$src" && unzip FiraCode.zip -d FiraCode && rm -f FiraCode.zip
-   Popd
+   local fontdir="$HOME/.local/share/fonts"
+   local fam target src zip
+   for fam in "${families[@]}"; do
+      target="$fontdir/$fam"
+      src="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${fam}.zip"
+      _dry_install "$fam Nerd Font  →  $target${force:+  (force)}" && continue
+      if [[ -d "$target" && -n "$(command ls -A "$target" 2>/dev/null)" && "$force" != "yes" ]]; then
+         info "$fam already installed at $target (pass -f to reinstall)"
+         continue
+      fi
+      info "Installing $fam Nerd Font"
+      mkdir -p "$target"
+      Pushd "$target"
+      zip="${src##*/}"
+      if download "$src" && unzip -oq "$zip"; then
+         rm -f "$zip"
+         completed "$fam → $target"
+      else
+         error "$fam install failed (download or unzip)"
+         rm -f "$zip"
+      fi
+      Popd
+   done
+
+   if has fc-cache; then
+      info "Refreshing fontconfig cache"
+      fc-cache -f "$fontdir" >/dev/null 2>&1
+   fi
 }
 getnpm() {
    local NODE_VERSION="v20.12.2"

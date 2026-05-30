@@ -15,9 +15,14 @@ _z_recent_dirs() {
 
 _z_pick_recent_dir() {
   local query="$1"
+  # Extract the path column up front. The old version used
+  #   fzf --delimiter=$'\t' --with-nth=3.. --nth=3..
+  # which silently matched nothing for any query (looked like fuzzy was
+  # dead). Pre-projecting to a single column avoids fzf's --nth quirk on
+  # newline-terminated last fields and is easier to reason about.
   _z_recent_dirs \
-    | fzf +s --no-sort --delimiter=$'\t' --with-nth=3.. --nth=3.. -q "$query" \
-    | awk -F'\t' '{ print $3 }'
+    | awk -F'\t' '{ print $3 }' \
+    | fzf +s --no-sort -q "$query"
 }
 
 z() {
