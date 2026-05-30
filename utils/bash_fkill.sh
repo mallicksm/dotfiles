@@ -20,7 +20,7 @@ fkill() {
       header_printed=false
       for id in $pid; do
          description=$(ps -p "$id" -o user,pid,vsz=MEM -o comm,args=ARG)
-         
+
          # Print header if not printed yet
          if [ "$header_printed" = false ]; then
             echo "$description"

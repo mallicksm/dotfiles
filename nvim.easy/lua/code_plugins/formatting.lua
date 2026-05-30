@@ -4,12 +4,12 @@ return {
       event = { 'BufReadPre', 'BufNewFile' },
       keys = {
          {
-            '<leader>Cf',
+            '<leader>cf',
             function()
                require('conform').format({ async = true, lsp_format = 'fallback', timeout_ms = 1800 })
             end,
             mode = { 'n', 'v' },
-            desc = '[C]ode: format file (conform; LSP fallback)',
+            desc = '[c]ode: format file (conform; LSP fallback)',
          },
       },
       config = function()
