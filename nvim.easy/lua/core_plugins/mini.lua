@@ -130,7 +130,7 @@ return {
          -- window after `delay` ms when a registered trigger key has been
          -- pressed and there are pending child keymaps. Reads every
          -- vim.keymap.set() description automatically, so we only need to
-         -- declare GROUP LABELS (e.g. "<Leader>g = +Git") and the trigger
+         -- declare GROUP LABELS (e.g. "<Leader>g = +[g]it") and the trigger
          -- list -- individual leaf keys come along for free.
          --
          -- Notable diffs vs which-key:
@@ -211,16 +211,16 @@ return {
                   -- colors do not. We retune MiniClueDescGroup in the
                   -- ColorScheme autocmd below to a saturated gruvbox yellow so
                   -- it at least stands out against the leaf descs.
-                  { mode = 'n', keys = '<Leader>g', desc = '  +[G]it' },
+                  { mode = 'n', keys = '<Leader>g', desc = '  +[g]it' },
                   { mode = 'n', keys = '<Leader>c', desc = '󰘦  +[c]ode' },
                   { mode = 'n', keys = '<Leader>C', desc = '󰘦  +[C]ode (extras)' },
                   { mode = 'n', keys = '<Leader>cd', desc = '󰃤  +[d]ap' },
                   { mode = 'n', keys = '<Leader>e', desc = '󰙅  +[e]xplorer' },
                   -- Collapse <leader>eh* in the clue window (else mini.clue shows "+9 choices").
                   { mode = 'n', keys = '<Leader>eh', desc = '󰀢  harpoon marks' },
-                  { mode = 'n', keys = '<Leader>s', desc = '󰫖  +[S]earch (kaleido)' },
-                  { mode = 'n', keys = '<Leader>v', desc = '󰈈  +[V]im' },
-                  { mode = 'n', keys = '<Leader>V', desc = '󰈉  +[V]im tools' },
+                  { mode = 'n', keys = '<Leader>s', desc = '󰫖  +[s]earch' },
+                  { mode = 'n', keys = '<Leader>v', desc = '󰈈  +[v]im' },
+                  { mode = 'n', keys = '<Leader>V', desc = '󰈉  +[V]im (extras)' },
 
                   -- mini.surround (tpope / vim-surround style)
                   { mode = 'n', keys = 'ys', desc = '󰅪  +surround [y]ank/add' },

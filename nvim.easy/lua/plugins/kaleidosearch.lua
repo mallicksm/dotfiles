@@ -4,7 +4,7 @@
 --
 -- Why <leader>s* and not upstream <leader>c*: <leader>c is essential [c]ode
 -- (LSP actions, format, lint); <leader>C is extras (diag/inlay toggles); <leader>cd*
--- is DAP. <leader>s ("[S]earch") routes kaleidosearch. (Code action: <leader>ca.)
+-- is DAP. <leader>s ("[s]earch") routes kaleidosearch. (Code action: <leader>ca.)
 --
 -- Optional dep: tpope/vim-repeat -> dot-repeat for AddCursorWord, so after
 -- <leader>sa on one word you can `.` on the next word and it picks the next
