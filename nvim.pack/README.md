@@ -1,10 +1,19 @@
 # nvim.pack
 
-Same configuration as `nvim.easy`, but powered by Neovim's built-in
-**`vim.pack`** package manager (Neovim 0.12+) instead of `lazy.nvim`.
+Same editor behavior as [`~/dotfiles/nvim.easy`](../nvim.easy/README.md), but
+plugins are installed with Neovim’s built-in **`vim.pack`** package manager
+(**Neovim 0.12+**) instead of lazy.nvim. No external bootstrap: one file
+declares every repository; each plugin’s `setup()` lives in
+`lua/plugins/<name>.lua`.
 
-Modern, minimal, no external bootstrap. One file declares every plugin;
-each plugin's setup lives next to it.
+Use this tree to try the native pack workflow, or as the target if you
+migrate off lazy.nvim. Day-to-day switching does not mix plugin data dirs.
+
+## Requirements
+
+- Neovim **0.12+** (`vim.pack.add`)
+- `git` on `PATH`
+- Same optional tooling as nvim.easy (Mason, tree-sitter CLI, etc.)
 
 ## Activate
 
@@ -12,128 +21,146 @@ each plugin's setup lives next to it.
 XDG_CONFIG_HOME=~/dotfiles NVIM_APPNAME=nvim.pack nvim
 ```
 
-Or add a function to your shellrc:
+Shell helper (from `~/dotfiles/utils/bash_nvim.sh`):
 
 ```bash
-function nvp() {
-   XDG_CONFIG_HOME=$HOME/dotfiles NVIM_APPNAME=nvim.pack nvim "$@"
-}
+vi -p              # nvim.pack (note: consumes bare -p; use -p5 for nvim tabs)
 ```
 
-First launch will:
+Or a dedicated function:
 
-1. Clone every plugin to `~/.local/share/nvim.pack/site/pack/core/opt/`.
-2. Build `telescope-fzf-native`'s `libfzf.so` (via `make`, idempotent).
-3. Download required tree-sitter parsers via `nvim-treesitter`.
-4. Run `mason-tool-installer` to fetch `tree-sitter-cli`, `shfmt`, etc.
+```bash
+nvp() { XDG_CONFIG_HOME=$HOME/dotfiles NVIM_APPNAME=nvim.pack nvim "$@"; }
+```
 
-Subsequent launches: nothing reinstalls, just `vim.pack.add` checks rtp.
+### Data directories
 
-## Layout
+Plugins clone to:
+
+`~/.local/share/nvim.pack/site/pack/core/opt/<repo-name>/`
+
+Other state (Mason, shada, undo) uses `~/.local/{share,state,cache}/nvim.pack/`
+— separate from `nvim.easy`.
+
+## First launch
+
+1. `init.lua` loads options → autocmds → user commands → **`plugins`** → keymaps.
+2. `lua/plugins.lua` calls `vim.pack.add({...})` — missing repos are cloned
+   synchronously into `site/pack/core/opt/`.
+3. The same file `require()`s each `lua/plugins/*.lua` setup in a fixed
+   order (colorscheme → mini/icons → … → blink before lspconfig → treesitter
+   before render-markdown).
+4. Treesitter parsers and Mason tools may install on early sessions (same as
+   nvim.easy).
+
+Subsequent launches: `vim.pack.add` only verifies rtp; no reinstall unless
+you update or delete packs.
+
+## Directory structure
 
 ```
 ~/dotfiles/nvim.pack/
-├── init.lua                     entry point
-├── README.md                    this file
+├── init.lua                     Entry point (no bootstrap.lua)
+├── nvim-pack-lock.json          Pinned plugin revisions (optional record)
 ├── lua/
-│   ├── options.lua              vim.opt.* (verbatim from nvim.easy)
-│   ├── autocmds.lua             real autocmds (PDF reader, last-loc restore)
-│   ├── user_commands.lua        :Utilities / :FormatAllSV
-│   ├── keymaps.lua              basic, plugin-agnostic keymaps
-│   ├── plugins.lua              vim.pack.add() of every repo + post-build steps
-│   ├── plugins/                 per-plugin setup, one file each
+│   ├── options.lua              vim.opt.* (kept in sync with nvim.easy)
+│   ├── autocmds.lua
+│   ├── user_commands.lua        :Utilities, :FormatAllSV
+│   ├── keymaps.lua              Basic, plugin-agnostic maps
+│   ├── plugins.lua              vim.pack.add() manifest + setup load order
+│   ├── plugins/                 One setup file per plugin
 │   │   ├── colorscheme.lua      gruvbox
-│   │   ├── mini.lua             mini.{basics,extra,ai,surround,pairs,comment,hipatterns}
-│   │   ├── devicons.lua         nvim-web-devicons + custom file-type icons
-│   │   ├── lualine.lua          + :LualineToggle command + \\\\ key
-│   │   ├── snacks.lua           lazygit / terminal / dim / image / bufdelete
-│   │   ├── which-key.lua
-│   │   ├── noice.lua            + nvim-notify
-│   │   ├── treesitter.lua       fold via TS, parser install, FT autocmd
-│   │   ├── render-markdown.lua  + gruvbox-tuned highlights
-│   │   ├── gitsigns.lua
-│   │   ├── neogit.lua           + diffview
-│   │   ├── flash.lua            s/S/r/R/<C-s>
-│   │   ├── kaleidosearch.lua    custom 8-color highlighter palette
-│   │   ├── harpoon.lua
-│   │   ├── marks.lua
-│   │   ├── undotree.lua
-│   │   ├── neo-tree.lua         + per-extension filename colors
-│   │   ├── telescope.lua        <leader>t{g,b} -- live_grep / buffers
-│   │   ├── completions.lua      blink.cmp (must precede lspconfig)
-│   │   ├── lspconfig.lua        mason + mason-lspconfig + nvim-lspconfig
-│   │   ├── formatting.lua       conform.nvim
-│   │   ├── linting.lua          nvim-lint
-│   │   ├── debugging.lua        nvim-dap + dap-ui + dap-virtual-text
-│   │   └── verilog.lua          vhda/verilog_systemverilog.vim global
-│   ├── markdown/links.lua       (verbatim from nvim.easy)
-│   ├── utils/                   helper utilities (z_picker, format_sv, etc.)
-│   └── user_plugins/            (verbatim) nvim_notes blink source
-├── after/
-│   ├── ftdetect/filetype.lua    (verbatim)
-│   └── ftplugin/*.lua           (verbatim) markdown / jira / verilog / tdf / ...
-└── syntax/*.vim                 (verbatim) jira / map / semifore / scat / trace32 / tdf / f
+│   │   ├── mini.lua             mini.* + mini.clue (replaces which-key)
+│   │   ├── lualine.lua
+│   │   ├── snacks.lua           picker, explorer, lazygit (replaces telescope/neo-tree)
+│   │   ├── noice.lua
+│   │   ├── treesitter.lua
+│   │   ├── render-markdown.lua
+│   │   ├── gitsigns.lua / neogit.lua / diffview.lua
+│   │   ├── flash.lua / kaleidosearch.lua
+│   │   ├── harpoon.lua / marks.lua / undotree.lua
+│   │   ├── completions.lua      blink.cmp (before lspconfig)
+│   │   ├── lspconfig.lua        mason + mason-lspconfig + lspconfig
+│   │   ├── formatting.lua / linting.lua / debugging.lua
+│   │   └── verilog.lua          verilog_systemverilog.vim globals
+│   ├── utils/                   Shared helpers (z_picker, format_sv, …)
+│   ├── markdown/links.lua
+│   └── user_plugins/
+├── after/                       ftdetect + ftplugin (mirrors nvim.easy)
+├── queries/systemverilog/
+└── syntax/*.vim                 Vendored syntax files
 ```
+
+Shared with nvim.easy: `after/`, `syntax/`, most `lua/utils/` and
+filetype-specific behavior. When changing behavior for both configs, edit
+the corresponding file in each tree (or symlink if you later unify).
 
 ## Differences vs nvim.easy
 
-Functionally identical -- same plugins, same keymaps, same behavior. Only the
-**loading mechanism** differs:
+Functionally the same plugins and keymaps; only the **loading mechanism**
+differs:
 
-| Concept             | nvim.easy (lazy.nvim)                        | nvim.pack (vim.pack)                  |
-|---------------------|----------------------------------------------|---------------------------------------|
-| Plugin manager      | external (lazy.nvim cloned in `bootstrap.lua`) | built-in `vim.pack.add({...})`        |
-| Plugin discovery    | `{ import = 'plugins' }` walks `lua/plugins/` | explicit list in `lua/plugins.lua`    |
-| Lazy loading        | per-plugin via `keys = / event = / cmd = `   | none -- everything eager (fast on SSD)|
-| Dependencies        | declared in spec; resolved automatically     | declare every transitive dep yourself |
-| `build = '...'` hook| automatic                                    | explicit, in `lua/plugins.lua`        |
-| Keymaps             | `keys = {...}` table                         | `vim.keymap.set(...)` in setup file   |
-| Update              | `:Lazy update`                               | `:lua vim.pack.update()`              |
-| Browse installed    | `:Lazy`                                      | `~/.local/share/nvim.pack/site/pack/core/opt/` |
+| Concept              | nvim.easy (lazy.nvim)              | nvim.pack (`vim.pack`)                |
+|----------------------|------------------------------------|---------------------------------------|
+| Bootstrap            | `lua/bootstrap.lua` clones lazy    | none                                  |
+| Plugin discovery     | `import` of `plugins/`, `core_plugins/`, `code_plugins/` | explicit list in `lua/plugins.lua` |
+| Deferred load        | `keys` / `event` / `cmd` in spec   | none — eager load at startup          |
+| Transitive deps      | lazy resolves                      | list every repo in `plugins.lua`      |
+| Post-install builds  | `build = '...'` in spec            | idempotent steps at bottom of `plugins.lua` |
+| Lockfile             | `lazy-lock.json`                   | `nvim-pack-lock.json`                 |
+| Update all           | `:Lazy update` then `:Lazy sync`   | `:lua vim.pack.update()`              |
+| Browse on disk       | `:Lazy`                            | `~/.local/share/nvim.pack/site/pack/core/opt/` |
+| Remove from disk     | `:Lazy clean`                      | `:lua vim.pack.del({'plugin-dir-name'})` |
 
-## Maintenance
+Removed vs older lazy-era stacks (both configs): **telescope**, **neo-tree**,
+**which-key**, **nvim-notify**, **nvim-web-devicons** — replaced by
+snacks.picker/explorer, mini.clue, snacks.notifier, and mini.icons.
 
-Update everything:
+## Upgrade and maintenance
 
-```vim
-:lua vim.pack.update()
-```
-
-Update one plugin (interactive prompt):
-
-```vim
-:lua vim.pack.update({'flash.nvim'})
-```
-
-Remove a plugin (deletes from disk):
+### Plugins (`vim.pack`)
 
 ```vim
-:lua vim.pack.del({'flash.nvim'})
+:lua vim.pack.update()                    " all plugins
+:lua vim.pack.update({'flash.nvim'})      " one plugin (interactive)
+:lua vim.pack.del({'flash.nvim'})         " remove clone from pack path
 ```
 
-After a mason-managed binary or a tree-sitter parser stops working:
+Record results in `nvim-pack-lock.json` when you want reproducible SHAs
+across machines (analogous to `lazy-lock.json` in nvim.easy).
+
+### Tooling
 
 ```vim
-:Mason            " inspect / re-install via the UI
-:TSUpdate         " refresh treesitter parsers
+:Mason
+:TSUpdate
+:FormatAllSV
+:Utilities
 ```
 
-## Known caveats vs lazy.nvim
+### Adding a new plugin
 
-1. **Eager load = ~50-150 ms slower startup** vs a lazy-loaded config.
-   On modern nvim with SSD this is invisible. If you want it back, wrap
-   slow plugin setups in autocmds (`event = 'VeryLazy'` becomes
-   `vim.api.nvim_create_autocmd('User', { pattern = 'VeryLazy', ... })`).
+1. Add `{ src = 'https://github.com/...' }` to the `vim.pack.add({...})`
+   table in `lua/plugins.lua` (respect dependency order).
+2. Create `lua/plugins/<name>.lua` with `require(...).setup({...})` and
+   any `vim.keymap.set` calls.
+3. Restart nvim; run `:lua vim.pack.update()` if the clone failed mid-flight.
 
-2. **No build hook for treesitter**: `nvim-treesitter` (main branch) self-
-   manages parsers via `ts.install(...)` in `plugins/treesitter.lua`. The
-   first launch on a fresh checkout will pull parsers in the background.
+## Known caveats
 
-3. **`telescope-fzf-native` build runs once at startup** if `libfzf.so` is
-   missing (see plugins.lua). If it fails (no `make` on PATH), the fzf
-   sorter falls back to telescope's default sorter.
+1. **Eager load** — startup is ~50–150 ms slower than a heavily
+   lazy-deferred config; usually fine on SSD.
+2. **Treesitter** — parsers install via `plugins/treesitter.lua` on first
+   use; no lazy `build` hook.
+3. **`mason-tool-installer`** — `run_on_start = true` in
+   `plugins/lspconfig.lua`; no-op once tools exist. Set `false` if you
+   prefer manual `:Mason` only.
+4. **Evicted plugins** — old packs may remain on disk until
+   `:lua vim.pack.del({'name'})` (comments in `plugins.lua` list retired
+   repos: which-key, neo-tree, telescope, fidget, etc.).
 
-4. **`mason-tool-installer` runs on every startup** (`run_on_start = true`,
-   inherited from nvim.easy). It's a no-op once tools are installed; if
-   you find this annoying, set `run_on_start = false` in
-   `plugins/lspconfig.lua`.
+## Primary config: nvim.easy
+
+Daily `vi` without `-p` uses lazy.nvim:
+
+[`../nvim.easy/README.md`](../nvim.easy/README.md)

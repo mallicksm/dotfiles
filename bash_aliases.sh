@@ -17,8 +17,6 @@ alias grep='grep --color=auto'
 alias mkdir='\mkdir -pv'
 alias wget='wget -c'
 alias trim="sed -e 's/^[[:space:]]*//g' -e 's/[[:space:]]*\$//g'"
-alias head='head -n $((${LINES:-12}-2))'
-alias tail='tail -n $((${LINES:-12}-2))'
 alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -'
 alias ipup="ifconfig $(ip -br addr show 2> /dev/null | grep UP|awk '{print $1}')"
 alias upip="echo $(hostname -I 2> /dev/null | awk '{print $1}')"
