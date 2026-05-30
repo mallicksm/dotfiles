@@ -144,7 +144,12 @@ return {
             miniclue.setup({
                window = {
                   delay = 200, -- ms; matches the which-key feel we had
-                  config = { border = 'rounded' },
+                  config = {
+                     border = 'rounded',
+                     anchor = 'SW', -- bottom-left (default SE = bottom-right)
+                     row = 'auto',
+                     col = 'auto',
+                  },
                },
                triggers = {
                   -- Leader (n + x covers normal AND visual-mode leader chains)
