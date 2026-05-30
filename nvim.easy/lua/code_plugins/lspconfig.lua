@@ -72,7 +72,7 @@ return {
                -- Wrapping in function() defers the require() to keypress time.
                map('gd',         function() require('snacks').picker.lsp_definitions() end,        '[G]oto [D]efinition')
                map('gr',         function() require('snacks').picker.lsp_references() end,         '[G]oto [R]eferences')
-               map('<leader>cd', function() require('snacks').picker.lsp_type_definitions() end,   '[c]ode: type [D]efinition')
+               map('<leader>cc', function() require('snacks').picker.lsp_type_definitions() end,   '[c]ode: type definition ([c][c])')
                map('<leader>cs', function() require('snacks').picker.lsp_workspace_symbols() end,  '[c]ode: workspace [S]ymbols')
                map('<leader>cr', vim.lsp.buf.rename, '[c]ode: [r]ename')
                map('<leader>ca', vim.lsp.buf.code_action, '[c]ode: code [a]ction', { 'n', 'x' })

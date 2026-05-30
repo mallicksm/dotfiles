@@ -1,5 +1,5 @@
 -- conform.nvim -- format on demand (no on-save by design).
--- Trigger via <leader>cf; the recursive `:FormatAllSV` user command lives
+-- Trigger via <leader>Cf; the recursive `:FormatAllSV` user command lives
 -- in lua/user_commands.lua and delegates to lua/utils/format_sv.lua.
 require('conform').setup({
    formatters = {
@@ -64,8 +64,8 @@ require('conform').setup({
    notify_on_error = true,
 })
 
-vim.keymap.set({ 'n', 'v' }, '<leader>cf', function()
+vim.keymap.set({ 'n', 'v' }, '<leader>Cf', function()
    require('conform').format({ async = true, lsp_format = 'fallback', timeout_ms = 1800 })
-end, { desc = '[c]ode: format file (conform; LSP fallback)' })
+end, { desc = '[C]ode: format file (conform; LSP fallback)' })
 
 -- vim: ts=3 sts=3 sw=3 et

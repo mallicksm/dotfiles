@@ -172,9 +172,10 @@ do
          -- (MiniClueDescGroup); glyphs come back, per-group colors do not.
          -- The set_clue_hl() block below retunes MiniClueDescGroup to a
          -- saturated gruvbox yellow so it pops vs leaf descs.
-         { mode = 'n', keys = '<Leader>d', desc = '󰃤  +[D]ap' },
          { mode = 'n', keys = '<Leader>g', desc = '  +[G]it' },
          { mode = 'n', keys = '<Leader>c', desc = '󰘦  +[c]ode' },
+         { mode = 'n', keys = '<Leader>C', desc = '󰘦  +[C]ode (extras)' },
+         { mode = 'n', keys = '<Leader>cd', desc = '󰃤  +[d]ap' },
          { mode = 'n', keys = '<Leader>e', desc = '󰙅  +[e]xplorer' },
          -- Collapse <leader>eh* in the clue window (else mini.clue shows "+9 choices").
          { mode = 'n', keys = '<Leader>eh', desc = '󰀢  harpoon marks' },

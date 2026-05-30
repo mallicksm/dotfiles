@@ -1,9 +1,9 @@
 return {
    'mfussenegger/nvim-dap',
    keys = {
-      { '<leader>db', function() require('dap').toggle_breakpoint() end, desc = 'DAP: toggle breakpoint' },
-      { '<leader>dc', function() require('dap').continue() end,         desc = 'DAP: continue' },
-      { '<leader>dr', function() require('dap').restart() end,          desc = 'DAP: restart' },
+      { '<leader>cdb', function() require('dap').toggle_breakpoint() end, desc = '[c]ode [d]ap: toggle breakpoint' },
+      { '<leader>cdc', function() require('dap').continue() end,         desc = '[c]ode [d]ap: continue' },
+      { '<leader>cdr', function() require('dap').restart() end,          desc = '[c]ode [d]ap: restart' },
    },
    dependencies = {
       'rcarriga/nvim-dap-ui',

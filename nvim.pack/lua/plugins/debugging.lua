@@ -37,8 +37,8 @@ if vim.fn.exepath('lldb-dap') ~= '' then
    dap.listeners.before.event_exited.dapui_config     = function() dapui.close() end
 end
 
-vim.keymap.set('n', '<leader>db', function() require('dap').toggle_breakpoint() end, { desc = 'DAP: toggle breakpoint' })
-vim.keymap.set('n', '<leader>dc', function() require('dap').continue() end,         { desc = 'DAP: continue' })
-vim.keymap.set('n', '<leader>dr', function() require('dap').restart() end,          { desc = 'DAP: restart' })
+vim.keymap.set('n', '<leader>cdb', function() require('dap').toggle_breakpoint() end, { desc = '[c]ode [d]ap: toggle breakpoint' })
+vim.keymap.set('n', '<leader>cdc', function() require('dap').continue() end,         { desc = '[c]ode [d]ap: continue' })
+vim.keymap.set('n', '<leader>cdr', function() require('dap').restart() end,          { desc = '[c]ode [d]ap: restart' })
 
 -- vim: ts=3 sts=3 sw=3 et

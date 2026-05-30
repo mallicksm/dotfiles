@@ -92,19 +92,19 @@ end, { desc = 'Toggle vertical cursor column ruler (this window)' })
 -- Diagnostics toggle is buffer-local via vim.diagnostic.{is_enabled,enable}.
 -- The 0.10+ API takes a boolean as the first arg; passing `not enabled`
 -- flips the state. bufnr=0 means "current buffer".
-vim.keymap.set('n', '<leader>cD', function()
+vim.keymap.set('n', '<leader>Cd', function()
    local enabled = vim.diagnostic.is_enabled({ bufnr = 0 })
    vim.diagnostic.enable(not enabled, { bufnr = 0 })
    vim.notify('diagnostic = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
-end, { desc = 'Toggle all LSP diagnostics (this buffer)' })
+end, { desc = '[C]ode: toggle diagnostics (this buffer)' })
 
 -- LSP inlay hints (clangd, lua_ls, etc. emit these). Buffer-local.
 -- nvim 0.10+ API: vim.lsp.inlay_hint.{is_enabled, enable}.
-vim.keymap.set('n', '<leader>ci', function()
+vim.keymap.set('n', '<leader>Ci', function()
    local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
    vim.lsp.inlay_hint.enable(not enabled, { bufnr = 0 })
    vim.notify('inlay hints = ' .. tostring(not enabled) .. ' (this buffer)', vim.log.levels.INFO)
-end, { desc = 'Toggle LSP inlay hints (this buffer)' })
+end, { desc = '[C]ode: toggle inlay hints (this buffer)' })
 
 -- Render-markdown.nvim on/off. After :RenderMarkdown toggle we read the
 -- updated state.enabled to print the new value (instead of guessing).
@@ -140,14 +140,14 @@ vim.keymap.set('n', '<leader>Vx', function()
    end
 end, { desc = '[V]im tools: toggle treesitter highlight (vs regex syntax)' })
 
--- LSP virtual_text on/off (global). Different from <leader>cD which toggles
+-- LSP virtual_text on/off (global). Different from <leader>Cd which toggles
 -- ALL diagnostics in the buffer; this only hides the inline `●` text and
 -- keeps signs / underlines so you still know where issues are. We snapshot
 -- the previous virtual_text config in a closure-local var so subsequent
 -- "on" restores your custom prefix/spacing instead of nvim's default.
 do
    local prev_vt
-   vim.keymap.set('n', '<leader>cv', function()
+   vim.keymap.set('n', '<leader>Cv', function()
       local cur = vim.diagnostic.config().virtual_text
       if cur then
          prev_vt = cur
@@ -157,14 +157,14 @@ do
          vim.diagnostic.config({ virtual_text = prev_vt or { prefix = '●', spacing = 2 } })
          vim.notify('LSP virtual_text = true', vim.log.levels.INFO)
       end
-   end, { desc = 'Toggle LSP inline diagnostic text (signs/underlines stay)' })
+   end, { desc = '[C]ode: toggle inline diagnostic text' })
 end
 
 -- Format-on-save (conform.nvim) -- session-local opt-in.
 -- Strategy: register the BufWritePre autocmd ONCE here (always present),
 -- and gate it on vim.g.format_on_save. The toggle just flips the flag --
 -- no add/remove of the autocmd, so behavior is consistent and idempotent.
--- Default is OFF, matching your existing manual <leader>cf policy.
+-- Default is OFF, matching your existing manual <leader>Cf policy.
 vim.api.nvim_create_autocmd('BufWritePre', {
    group = vim.api.nvim_create_augroup('user-format-on-save', { clear = true }),
    callback = function(args)
