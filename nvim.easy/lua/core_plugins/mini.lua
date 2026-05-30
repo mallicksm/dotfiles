@@ -86,17 +86,27 @@ return {
          -------------------------------------------------------
          -- <leader>K for more info on cWORD MiniSurround.config
          -------------------------------------------------------
-         -- mini.surround moved to gs* so visual-mode `s` stays Vim substitute.
+         -- tpope/vim-surround-style chords (see :h MiniSurround-vim-surround-config).
+         -- ys/ds/cs avoid the `g`/`gh`/`gsh` clash with mini.clue + built-in g*.
          require('mini.surround').setup({
             mappings = {
-               add = 'gsa',
-               delete = 'gsd',
-               find = 'gsf',
-               find_left = 'gsF',
-               highlight = 'gsh',
-               replace = 'gsr',
+               add = 'ys',
+               delete = 'ds',
+               find = '',
+               find_left = '',
+               highlight = '',
+               replace = 'cs',
+               suffix_last = '',
+               suffix_next = '',
             },
+            search_method = 'cover_or_next',
          })
+         vim.keymap.del('x', 'ys')
+         vim.keymap.set('x', 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], {
+            silent = true,
+            desc = 'Surround visual selection (vim-surround S)',
+         })
+         vim.keymap.set('n', 'yss', 'ys_', { remap = true, desc = 'Surround current line (yss)' })
 
          ----------------------------------------------------
          -- <leader>K for more info on cWORD MiniPairs.config
@@ -141,8 +151,8 @@ return {
                   { mode = 'n', keys = '<Leader>' },
                   { mode = 'x', keys = '<Leader>' },
 
-                  -- `g` chain. Covers built-in `g*` and our gs* (mini.surround)
-                  -- + gc* (mini.comment) chains.
+                  -- `g` chain. Built-in `g*` + gc* (mini.comment). Surround is
+                  -- ys/ds/cs (tpope), not under `g`.
                   { mode = 'n', keys = 'g' },
                   { mode = 'x', keys = 'g' },
 
@@ -204,9 +214,11 @@ return {
                   { mode = 'n', keys = '<Leader>v', desc = '󰈈  +[V]im' },
                   { mode = 'n', keys = '<Leader>V', desc = '󰈉  +[V]im tools' },
 
-                  -- mini.surround sub-prefix (gs* lives under the `g` trigger).
-                  { mode = 'n', keys = 'gs', desc = '󰅪  +[S]urround (mini)' },
-                  { mode = 'x', keys = 'gs', desc = '󰅪  +[S]urround (mini)' },
+                  -- mini.surround (tpope / vim-surround style)
+                  { mode = 'n', keys = 'ys', desc = '󰅪  +surround [y]ank/add' },
+                  { mode = 'n', keys = 'ds', desc = '󰅪  delete surround' },
+                  { mode = 'n', keys = 'cs', desc = '󰅪  change surround' },
+                  { mode = 'x', keys = 'S',  desc = '󰅪  surround visual selection' },
                },
             })
 
