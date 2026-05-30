@@ -33,7 +33,9 @@ vim.api.nvim_create_autocmd('FileType', {
       local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
       if not lang then return end
       local ok = pcall(vim.treesitter.start, args.buf, lang)
-      if ok then
+      if ok and vim.bo[args.buf].filetype ~= 'verilog_systemverilog' then
+         -- SV: no treesitter indents.scm; TS indentexpr returns 0 and fights
+         -- vhda indent (indentkeys includes ';'). Keep GetVerilogSystemVerilogIndent().
          vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       end
    end,

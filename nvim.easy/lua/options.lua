@@ -47,6 +47,14 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+-- Indent: 3 spaces, never literal TAB (nvim.vim had this; modelines like
+-- "vim: ts=3 sts=3 sw=3 et" at the bottom of Lua files only affect that file).
+vim.opt.tabstop = 3
+vim.opt.softtabstop = 3
+vim.opt.shiftwidth = 3
+vim.opt.expandtab = true
+vim.opt.autoindent = true
+
 -- Sets how neovim will display certain whitespace in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
