@@ -63,7 +63,7 @@ vim.pack.add({
    { src = 'https://github.com/chentoast/marks.nvim'         },
    -- (mbbill/undotree removed -- replaced by nvim 0.12 built-in
    -- $VIMRUNTIME/pack/dist/opt/nvim.undotree, wired up in plugins/undotree.lua)
-   -- neo-tree removed: snacks.explorer (<leader>e in plugins/snacks.lua) is
+   -- neo-tree removed: snacks.explorer (<leader>ee in plugins/snacks.lua) is
    -- the file browser now. Evict the on-disk pack with
    --   :lua vim.pack.del{'neo-tree.nvim'}
    -- telescope + ui-select + fzf-native + live-grep-args removed: snacks.picker
@@ -142,7 +142,7 @@ require('plugins.kaleidosearch')
 require('plugins.harpoon')
 require('plugins.marks')
 require('plugins.undotree')
--- plugins.neo-tree removed; snacks.explorer (<leader>e) is the file browser now.
+-- plugins.neo-tree removed; snacks.explorer (<leader>ee) is the file browser now.
 -- plugins.telescope removed;  snacks.picker keymaps live in plugins/snacks.lua
 
 require('plugins.completions')   -- blink.cmp -- before lspconfig

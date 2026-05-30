@@ -1,4 +1,4 @@
--- snacks.picker-backed picker for the harpoon list. Bound below as <leader>Hl.
+-- snacks.picker-backed picker for the harpoon list. Bound below as <leader>ehl.
 -- (Used to be a telescope picker; rewritten on the telescope -> snacks.picker
 -- migration. Builds custom items with `file = <path>` so snacks's default
 -- file previewer Just Works.)
@@ -30,36 +30,35 @@ return {
       'ThePrimeagen/harpoon',
       branch = 'harpoon2',
       dependencies = { 'nvim-lua/plenary.nvim' },
-      -- All harpoon bindings live under <leader>H* (group label in mini.clue setup, core_plugins/mini.lua).
-      -- Bare <leader>H is intentionally NOT bound -- keeping it as a pure prefix
-      -- avoids the 300ms timeout that would otherwise hit every <leader>HX press.
+      -- Harpoon under <leader>eh* (nested in the +[e]xplorer family). No bare
+      -- <leader>eh binding -- prefix only, same timeout rationale as old <leader>H*.
       keys = {
          {
-            '<leader>Ha',
+            '<leader>eha',
             function()
                require('harpoon'):list():add()
                vim.notify('Harpoon: added ' .. vim.fn.expand('%:t'), vim.log.levels.INFO)
             end,
-            desc = 'Harpoon: [a]dd current file',
+            desc = '[e]xplorer: harpoon [a]dd current file',
          },
-         { '<leader>Hn', function() require('harpoon'):list():next() end, desc = 'Harpoon: [n]ext mark' },
-         { '<leader>Hp', function() require('harpoon'):list():prev() end, desc = 'Harpoon: [p]rev mark' },
+         { '<leader>ehn', function() require('harpoon'):list():next() end, desc = '[e]xplorer: harpoon [n]ext mark' },
+         { '<leader>ehp', function() require('harpoon'):list():prev() end, desc = '[e]xplorer: harpoon [p]rev mark' },
          {
-            '<leader>Hm',
+            '<leader>ehm',
             function()
                local harpoon = require('harpoon')
                harpoon.ui:toggle_quick_menu(harpoon:list())
             end,
-            desc = 'Harpoon: quick [m]enu (native UI)',
+            desc = '[e]xplorer: harpoon quick [m]enu (native UI)',
          },
-         { '<leader>Hl', harpoon_snacks_picker, desc = 'Harpoon: snacks-picker [l]ist' },
+         { '<leader>ehl', harpoon_snacks_picker, desc = '[e]xplorer: harpoon snacks-picker [l]ist' },
          -- Slot jumps. Primeagen's convention is 4 slots; bump the upper bound
          -- below if you start carrying more around. select(N) is no-op when
          -- slot N is empty (logs to harpoon's internal log, not the UI).
-         { '<leader>H1', function() require('harpoon'):list():select(1) end, desc = 'Harpoon: jump to slot [1]' },
-         { '<leader>H2', function() require('harpoon'):list():select(2) end, desc = 'Harpoon: jump to slot [2]' },
-         { '<leader>H3', function() require('harpoon'):list():select(3) end, desc = 'Harpoon: jump to slot [3]' },
-         { '<leader>H4', function() require('harpoon'):list():select(4) end, desc = 'Harpoon: jump to slot [4]' },
+         { '<leader>eh1', function() require('harpoon'):list():select(1) end, desc = '[e]xplorer: harpoon slot [1]' },
+         { '<leader>eh2', function() require('harpoon'):list():select(2) end, desc = '[e]xplorer: harpoon slot [2]' },
+         { '<leader>eh3', function() require('harpoon'):list():select(3) end, desc = '[e]xplorer: harpoon slot [3]' },
+         { '<leader>eh4', function() require('harpoon'):list():select(4) end, desc = '[e]xplorer: harpoon slot [4]' },
       },
 
       config = function()

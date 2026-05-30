@@ -16,8 +16,8 @@ return {
                -- Window navigation with <C-hjkl>, resize with <C-arrow>
                -- windows = true,
                -- Disable the entire `\X` option-toggle family (\w \h \c \r \n
-               -- \l \i \s \d \b \C). We have our own <leader>t* equivalents in
-               -- keymaps.lua (toggle wrap / hlsearch / cursorline / relnum /
+               -- \l \i \s \d \b \C). We have our own <leader>v* / <leader>V*
+               -- equivalents in keymaps.lua (toggle wrap / hlsearch / cursorline /
                -- case) and prefer one consistent prefix. Empty string =
                -- "do not install any of the option_toggle mappings".
                option_toggle_prefix = '',
@@ -214,9 +214,10 @@ return {
                   { mode = 'n', keys = '<Leader>d', desc = '󰃤  +[D]ap' },
                   { mode = 'n', keys = '<Leader>g', desc = '  +[G]it' },
                   { mode = 'n', keys = '<Leader>c', desc = '󰘦  +[c]ode' },
-                  { mode = 'n', keys = '<Leader>t', desc = '󰍉  +[t]ools (picker)' },
+                  { mode = 'n', keys = '<Leader>e', desc = '󰙅  +[e]xplorer' },
+                  -- Collapse <leader>eh* in the clue window (else mini.clue shows "+9 choices").
+                  { mode = 'n', keys = '<Leader>eh', desc = '󰀢  harpoon marks' },
                   { mode = 'n', keys = '<Leader>s', desc = '󰫖  +[S]earch (kaleido)' },
-                  { mode = 'n', keys = '<Leader>H', desc = '󰀢  +[H]arpoon' },
                   { mode = 'n', keys = '<Leader>v', desc = '󰈈  +[V]im' },
                   { mode = 'n', keys = '<Leader>V', desc = '󰈉  +[V]im tools' },
 

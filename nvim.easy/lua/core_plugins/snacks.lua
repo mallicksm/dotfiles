@@ -35,22 +35,20 @@ return {
       -- (snacks.bufdelete moved to <leader>vd; lives in keymaps.lua under
       --  the <leader>v* "vim introspection / utilities" family.)
 
-      -- ---------- snacks.picker bindings (replaces telescope) ----------
-      -- <leader>t* family kept identical to the old telescope bindings so
-      -- muscle memory survives the swap.
-      { '<leader>tf', function() require('snacks').picker.recent({ title = 'Oldfiles (<esc> to quit)' }) end,
-        desc = 'Picker: old[f]iles' },
-      { '<leader>tr', function() require('snacks').picker.resume() end,
-        desc = 'Picker: [r]esume last picker' },
-      { '<leader>te', function() require('snacks').picker.files({ title = 'Find Files (<esc> to quit)' }) end,
-        desc = 'Picker: [e]xplorer (find_files)' },
-      { '<leader>tE', function() require('snacks').picker.files({ title = 'Find Files - all', hidden = true, ignored = true }) end,
-        desc = 'Picker: [E]xplorer all files (hidden + ignored)' },
+      -- ---------- [e]xplorer / file pickers (was <leader>t* / lone <leader>e) ----------
+      { '<leader>ee', function() require('snacks').explorer({ cwd = vim.fn.getcwd() }) end,
+        desc = '[e]xplorer: file [e]browser (snacks tree)' },
+      { '<leader>eo', function() require('snacks').picker.recent({ title = 'Oldfiles (<esc> to quit)' }) end,
+        desc = '[e]xplorer: [o]ld files' },
+      { '<leader>ef', function() require('snacks').picker.files({ title = 'Find Files (<esc> to quit)' }) end,
+        desc = '[e]xplorer: [f]ind files' },
+      { '<leader>eF', function() require('snacks').picker.files({ title = 'Find Files - all', hidden = true, ignored = true }) end,
+        desc = '[e]xplorer: [F]ind files (hidden + ignored)' },
       {
          -- live grep with current-buffer extension pre-seeded as a ripgrep
          -- glob, matching the old telescope-live-grep-args UX. Press <C-g>
          -- inside the picker to toggle the glob filter.
-         '<leader>tg',
+         '<leader>eg',
          function()
             local ext = vim.fn.expand('%:e')
             local args = (ext ~= '' and { '-g', '*.' .. ext }) or nil
@@ -59,24 +57,17 @@ return {
                args = args,
             })
          end,
-         desc = 'Picker: live [g]rep (with rg glob for current ext)',
+         desc = '[e]xplorer: live [g]rep (rg glob for current ext)',
       },
-      { '<leader>tb', function() require('snacks').picker.buffers({ title = 'Buffers (<esc> to quit)' }) end,
-        desc = 'Picker: open [b]uffers' },
-      -- <leader>td -- frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
-      -- <CR> lcds; <C-f> chains into a files-picker scoped to that dir.
-      -- Implementation now uses snacks.picker (utils/z_picker.lua).
-      { '<leader>td', function() require('utils.z_picker').open() end,
-        desc = 'Picker: z [d]irectories (frecency from ~/.z)' },
+      { '<leader>eb', function() require('snacks').picker.buffers({ title = 'Buffers (<esc> to quit)' }) end,
+        desc = '[e]xplorer: open [b]uffers' },
+      -- <leader>ed -- frecency-ranked DIRECTORIES from rupa/z's database (~/.z).
+      { '<leader>ed', function() require('utils.z_picker').open() end,
+        desc = '[e]xplorer: z [d]irectories (frecency from ~/.z)' },
+      { '<leader>er', function() require('snacks').picker.resume() end,
+        desc = '[e]xplorer: [r]esume last picker' },
       { '<leader>co', function() require('snacks').picker.lsp_symbols({ title = 'Document Symbols' }) end,
         desc = '[c]ode: [o]utline -- document symbols' },
-
-      -- ---------- file explorer ----------
-      -- snacks.explorer owns <leader>e since neo-tree was retired (it was too
-      -- slow on /project NFS paths; snacks.explorer is noticeably faster
-      -- because the fuzzy filter pre-narrows the tree before any IO).
-      { '<leader>e', function() require('snacks').explorer({ cwd = vim.fn.getcwd() }) end,
-        desc = 'Snacks: [e]xplorer (file browser)' },
 
       -- ---------- dashboard reopener ----------
       -- snacks.dashboard auto-opens when nvim launches with no file argument.
@@ -224,7 +215,7 @@ return {
          },
       },
 
-      -- snacks.explorer: file tree, bound to <leader>e in the `keys` table
+      -- snacks.explorer: file tree, bound to <leader>ee in the `keys` table
       -- above. Replaced neo-tree (which was too slow on /project NFS paths).
       explorer = { enabled = true },
 
@@ -263,7 +254,7 @@ return {
             }, '\n'),
             -- Slim action list: just the two the user reaches for daily.
             -- (Find File / Find Text / New File / Edit Config / Lazy were
-            -- removed -- the picker keys <leader>te/tg/tf/po cover them.)
+            -- removed -- the picker keys <leader>ef/eg/eo cover them.)
             keys = {
                { icon = ' ', key = 'r', desc = 'Recent Files', action = function() require('snacks').picker.recent() end },
                { icon = ' ', key = 'q', desc = 'Quit',         action = ':qa' },

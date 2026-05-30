@@ -9,7 +9,7 @@
 ---   rank is incremented on each cd, decayed by sqrt of $_Z_MAX_SCORE (default
 ---   9000) so frequently+recently used dirs bubble to the top.
 ---
---- Bound from keymaps.lua (or snacks.lua keys table) as <leader>td.
+--- Bound from snacks.lua keys table as <leader>ed.
 --- Telescope-version replaced on the telescope -> snacks.picker migration.
 
 local M = {}

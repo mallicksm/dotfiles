@@ -140,7 +140,7 @@ vim.keymap.set('n', '<leader>Vx', function()
    end
 end, { desc = '[V]im tools: toggle treesitter highlight (vs regex syntax)' })
 
--- LSP virtual_text on/off (global). Different from <leader>td which kills
+-- LSP virtual_text on/off (global). Different from <leader>cD which toggles
 -- ALL diagnostics in the buffer; this only hides the inline `●` text and
 -- keeps signs / underlines so you still know where issues are. We snapshot
 -- the previous virtual_text config in a closure-local var so subsequent
