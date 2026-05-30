@@ -149,6 +149,7 @@ return {
                      anchor = 'SW', -- bottom-left (default SE = bottom-right)
                      row = 'auto',
                      col = 'auto',
+                     width = 60, -- mini.clue only (<Space> menu); default is 30
                   },
                },
                triggers = {

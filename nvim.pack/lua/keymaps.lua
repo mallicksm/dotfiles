@@ -236,8 +236,7 @@ end, { noremap = true, silent = true, desc = 'Man page or help for word under cu
 -- plugins/mini.lua so the two helpers don't double up.
 --
 -- Layout knobs (tune in place):
---   width      -- columns of the picker (70 = wide enough for most register
---                 contents, narrow enough to leave the buffer visible).
+--   width      -- columns of the picker (84 = wide enough for register contents).
 --   height = 0 -- full editor height.
 --   position = 'float' + col = -2 -- floats anchored to the right edge with a
 --                 2-column gap (so the picker doesn't visually hug the screen).
@@ -262,7 +261,7 @@ vim.keymap.set('i', '<C-r>', function()
       layout = {
          layout = {
             backdrop  = false,
-            width     = 84,   -- ~20% wider than the old 70
+            width     = 84,
             min_width = 84,
             height    = 0.8,  -- 80% of editor height
             position  = 'float',

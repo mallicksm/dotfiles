@@ -112,6 +112,7 @@ do
             anchor = 'SW', -- bottom-left (default SE = bottom-right)
             row = 'auto',
             col = 'auto',
+            width = 60, -- default is 30; double for longer map descs
          },
       },
       triggers = {

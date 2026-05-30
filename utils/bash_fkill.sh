@@ -19,7 +19,7 @@ fkill() {
       info "Killing selected processes:"
       header_printed=false
       for id in $pid; do
-         description=$(ps -p $id -o user,pid,vsz=MEM -o comm,args=ARG)
+         description=$(ps -p "$id" -o user,pid,vsz=MEM -o comm,args=ARG)
          
          # Print header if not printed yet
          if [ "$header_printed" = false ]; then
@@ -29,7 +29,7 @@ fkill() {
             echo "$description" | sed 1d
          fi
       done
-      echo $pid | xargs kill -${1:-9}
+      echo "$pid" | xargs kill -"${1:-9}"
    else
       echo "No process selected."
    fi
