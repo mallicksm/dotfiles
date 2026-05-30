@@ -287,36 +287,29 @@ vim.keymap.set('i', '<C-r>', function()
          end
          return item
       end,
-      -- Confirm: restore the EXACT insert-mode position the user was at,
-      -- enter insert mode with `i` (mid-line) or `a` (end-of-line) so the
-      -- byte position lands on saved_pos[2], then feed <C-r><reg>. mode='n'
-      -- on feedkeys blocks recursion into this same keymap.
+      -- Confirm: restore the insert-mode cursor, re-enter insert (`i` / `a`),
+      -- then native <C-r><reg> so register contents land at the cursor and
+      -- insert mode stays active (same as built-in i_CTRL-R). feedkeys mode
+      -- `n` avoids re-entering this picker keymap.
       confirm = function(picker, item)
          picker:close()
          if not item or not item.reg then return end
          vim.schedule(function()
             pcall(vim.api.nvim_set_current_win, main_win)
-            -- Trailing <Esc> drops back to normal mode after the paste, per
-            -- user preference (cursor lands ON the last inserted char as is
-            -- vim convention for Esc-from-insert).
             if at_eol then
-               -- Park cursor on the last char (col = #line - 1), then `a`
-               -- enters insert mode at col = #line -- i.e. end-of-line.
                local target_col = math.max(0, #line - 1)
                pcall(vim.api.nvim_win_set_cursor, main_win, { saved_pos[1], target_col })
-               local keys = vim.api.nvim_replace_termcodes('a<C-r>' .. item.reg .. '<Esc>', true, false, true)
+               local keys = vim.api.nvim_replace_termcodes('a<C-r>' .. item.reg, true, false, true)
                vim.api.nvim_feedkeys(keys, 'n', false)
             else
-               -- Park cursor at saved_col; `i` enters insert mode before that
-               -- char -- exactly the position the user was at originally.
                pcall(vim.api.nvim_win_set_cursor, main_win, saved_pos)
-               local keys = vim.api.nvim_replace_termcodes('i<C-r>' .. item.reg .. '<Esc>', true, false, true)
+               local keys = vim.api.nvim_replace_termcodes('i<C-r>' .. item.reg, true, false, true)
                vim.api.nvim_feedkeys(keys, 'n', false)
             end
          end)
       end,
    })
-end, { desc = 'Picker: registers (tall right; <CR> pastes at cursor)' })
+end, { desc = 'Picker: registers (insert <C-r>; stay in insert after <CR>)' })
 
 -- <C-g>: yank full path into the unnamed register """ and drop a quiet
 -- INFO notify so noice routes it to the bottom-right mini view (see
