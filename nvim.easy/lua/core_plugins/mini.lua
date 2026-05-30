@@ -246,6 +246,56 @@ return {
                callback = set_clue_hl,
                desc     = 'mini.clue: re-apply gruvbox highlights after theme switch',
             })
+
+            -- snacks.dashboard: buflisted=false (like help). mini.clue skips those on
+            -- BufWinEnter; ft snacks_dashboard is not in upstream ft_to_enable.
+            local function clue_enable_dashboard(buf)
+               buf = buf or vim.api.nvim_get_current_buf()
+               if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == 'snacks_dashboard' then
+                  miniclue.ensure_buf_triggers(buf)
+               end
+            end
+            local function clue_refresh_dashboard_bufs()
+               for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                  clue_enable_dashboard(buf)
+               end
+            end
+
+            -- Same group mini.clue uses for FileType ensure_triggers (help, git, …).
+            vim.api.nvim_create_autocmd('FileType', {
+               group   = 'MiniClue',
+               pattern = 'snacks_dashboard',
+               callback = function(ev)
+                  vim.schedule(function() clue_enable_dashboard(ev.buf) end)
+               end,
+               desc    = 'mini.clue: snacks dashboard triggers',
+            })
+            -- mini.clue skips unlisted buffers on BufWinEnter (did_ensure); re-ensure on focus.
+            vim.api.nvim_create_autocmd('BufWinEnter', {
+               group   = 'MiniClue',
+               callback = function(ev)
+                  if vim.bo[ev.buf].filetype == 'snacks_dashboard' then
+                     vim.schedule(function() clue_enable_dashboard(ev.buf) end)
+                  end
+               end,
+               desc    = 'mini.clue: snacks dashboard triggers (focus)',
+            })
+            -- snacks re-renders the dashboard after open (keys, extmarks); re-ensure.
+            vim.api.nvim_create_autocmd('User', {
+               group   = vim.api.nvim_create_augroup('user-mini-clue-snacks-dashboard', { clear = true }),
+               pattern = 'SnacksDashboardOpened,SnacksDashboardUpdatePost',
+               callback = function()
+                  vim.schedule(clue_refresh_dashboard_bufs)
+               end,
+               desc    = 'mini.clue: snacks dashboard triggers (lifecycle)',
+            })
+
+            local enable_all_triggers = miniclue.enable_all_triggers
+            miniclue.enable_all_triggers = function()
+               enable_all_triggers()
+               clue_refresh_dashboard_bufs()
+            end
+            vim.schedule(clue_refresh_dashboard_bufs)
          end
 
          ---------------------------------------------------
