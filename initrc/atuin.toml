@@ -147,10 +147,42 @@ strip_trailing_whitespace = true
 secrets_filter = true
 
 ## Per-command blacklist (regexes, unanchored). Commands matching are NOT
-## written to history.
+## written to atuin's DB. Use TOML literal strings (single-quoted) so regex
+## backslashes pass through verbatim.
+##
+## ACTIVE: mirror of bash's HISTIGNORE so atuin's DB stays clean. Every
+## pattern is anchored ^...$ and tolerates trailing whitespace, so the
+## bare form is dropped but variants with args (`cd /tmp`, `ls -la`,
+## `history | grep foo`) are still recorded.
+##
+## Source of truth for the bare-command list:
+##   ~/dotfiles/initrc/bashrc:HISTIGNORE
+##     = 'pwd:exit:fg:bg:top:c:clear::b:.:..:...:....:z:h:history:ls:ll:ld'
 history_filter = [
-  "^secret-cmd",
-  "^innocuous-cmd .*--secret=.+",
+  # Navigation
+  '^b\s*$',           # alias: `cd -` (back to previous dir)
+  '^cd\s*$',          # bare `cd` (no args; goes to $HOME)
+  '^\.\s*$',          # `.` source-file shorthand, rarely meaningful as bare
+  '^\.\.\s*$',        # alias: `cd ../`
+  '^\.\.\.\s*$',      # alias: `cd ../../`
+  '^\.\.\.\.\s*$',    # alias: `cd ../../../`
+  '^z\s*$',           # bare `z` opens the fzf jump picker — no need to recall
+  # Listing
+  '^ls\s*$',          # bare `ls`
+  '^ll\s*$',
+  '^ld\s*$',
+  # Info / shell builtins
+  '^pwd\s*$',
+  '^h\s*$',           # alias: `history | tail -n 60`
+  '^history\s*$',
+  # Job control / interactive
+  '^exit\s*$',
+  '^fg\s*$',
+  '^bg\s*$',
+  '^top\s*$',
+  # Screen housekeeping
+  '^c\s*$',           # alias: `clear`
+  '^clear\s*$',
 ]
 
 ## Per-directory blacklist (regexes, unanchored).
