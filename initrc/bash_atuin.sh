@@ -42,20 +42,23 @@ eval "$(atuin init bash --disable-up-arrow --disable-ctrl-r --disable-ai)"
 
 # --- 4. Keybindings (the only place atuin touches the keymap) ---------------
 # Final desired keymap (these are the only atuin-related keys):
-#   Ctrl-A -> atuin GLOBAL picker (rich metadata, fuzzy)
+#   Ctrl-R -> atuin picker (rich metadata, fuzzy)
 #
 # Everything else stays as the rest of the shell config left it:
 #   Up / Down -> history-search-{backward,forward}  (from ~/.bashrc)
-#   Ctrl-R    -> __fzf_history__                    (from bash_fzf.sh)
+#   Ctrl-F    -> __fzf_history__                    (from bash_fzf.sh)
+#   Ctrl-A    -> bash default (emacs: beginning-of-line; vi modes: unbound)
 #   ?         -> bash native (vi-search-again in vi-command, self-insert elsewhere)
 #
-# Side effect of direct bind -x for Ctrl-A (vs atuin's two-step macro chain
+# We run AFTER bash_fzf.sh (which is sourced via bash_functions.sh during
+# .bashrc), so our Ctrl-R bind overwrites whatever fzf's key-bindings.bash
+# installed on Ctrl-R during its init. fzf's history widget remains
+# reachable via Ctrl-F (see bash_fzf.sh).
+#
+# Side effect of direct bind -x for atuin (vs atuin's two-step macro chain
 # that we're no longer using): pressing Enter on a selected entry in the
 # picker INSERTS the command at the prompt without auto-running it. Press
 # Enter a second time to execute.
-#
-# Note: emacs-mode Ctrl-A was beginning-of-line; in vi-insert (set -o vi
-# in ~/.bashrc) it was unused, so reclaiming it is essentially free.
-bind -m vi-insert  -x '"\C-a": __atuin_history --keymap-mode=vim-insert'
-bind -m vi-command -x '"\C-a": __atuin_history --keymap-mode=vim-normal'
-bind -m emacs      -x '"\C-a": __atuin_history --keymap-mode=emacs'
+bind -m vi-insert  -x '"\C-r": __atuin_history --keymap-mode=vim-insert'
+bind -m vi-command -x '"\C-r": __atuin_history --keymap-mode=vim-normal'
+bind -m emacs      -x '"\C-r": __atuin_history --keymap-mode=emacs'

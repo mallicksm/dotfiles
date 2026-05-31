@@ -94,6 +94,13 @@ bind -m vi-command -x '"\C-e": fzf-file-widget'
 bind -m vi-insert  -x '"\C-g": rgrep'
 bind -m vi-command -x '"\C-g": rgrep'
 
+# Ctrl+F ("F for Find") -> fzf history widget (fuzzy text over ~/.bash_history).
+# Moved off Ctrl+R because atuin owns Ctrl+R (see bash_atuin.sh). Ctrl+F's
+# previous bash default was forward-char which is redundant with Right arrow.
+bind -m vi-insert  -x '"\C-f": __fzf_history__'
+bind -m vi-command -x '"\C-f": __fzf_history__'
+bind -m emacs      -x '"\C-f": __fzf_history__'
+
 # Drop the fzf installer's bindings I never use:
 #   Ctrl+T -> file picker  (replaced by Ctrl+E above; dual binding would confuse)
 #   Alt+C  -> fuzzy cd     (redundant with z, b, cd.., bash_cd_func.sh)
