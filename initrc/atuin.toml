@@ -5,34 +5,279 @@
 # (atuin v18 reads only ~/.config/atuin/config.toml; ATUIN_CONFIG_DIR is
 # ignored).
 #
-# Atuin's data (sqlite DB, encryption key) lives in ~/.local/share/atuin/,
-# which intentionally stays machine-local — not in this repo.
+# Atuin's data (sqlite DB, encryption key) lives in ~/.local/share/atuin/
+# by default — we override below via `data_dir` to keep it off NFS.
 #
 # Reload by opening a fresh shell, or `exec bash` in the current one.
+#
+# Layout below mirrors `atuin default-config` (`atuin default-config | less`
+# to compare). Every option is listed; ACTIVE settings are uncommented and
+# explained, defaults are commented out with `# default:` lines so you can
+# flip anything on without leaving the file.
 
-# --- key bindings -------------------------------------------------------------
-# Up-arrow opens the picker filtered to commands you ran in the CURRENT
-# directory (newest first). This is the workflow you actually want most of
-# the time: "what did I run here last?"
-filter_mode_shell_up_key_binding = "directory"
+#==============================================================================
+# Data locations
+#==============================================================================
 
-# Ctrl-R opens the picker in GLOBAL mode so your imported bash legacy
-# (21,730 commands without cwd metadata) is reachable. While the picker
-# is open, press Ctrl-R again to cycle: global → host → session → directory.
+## Base directory for Atuin data files (databases, keys, session, etc.).
+## ACTIVE: redirect off NFS $HOME. SQLite WAL locking on NFSv3 leaves stale
+## locks and causes "pool timed out while waiting for an open connection".
+## Data is machine-local by design; dotfiles track config only.
+data_dir = "/var/tmp/smallick/atuin"
+
+## Individual file paths (override only if you want to split files away
+## from data_dir). All default to relative-to-data_dir.
+# db_path      = "~/.local/share/atuin/history.db"
+# key_path     = "~/.local/share/atuin/key"
+# session_path = "~/.local/share/atuin/session"
+
+#==============================================================================
+# Display / locale
+#==============================================================================
+
+## Date format. "us" or "uk".
+# dialect = "us"
+
+## Timezone for displayed timestamps. "local" or UTC offset like "+9", "-05".
+# timezone = "local"
+
+#==============================================================================
+# Sync (cloud history)
+#==============================================================================
+
+## ACTIVE: local-only; opt into sync explicitly via `atuin login`.
+auto_sync = false
+
+## ACTIVE: no phone-home for new-version checks.
+update_check = false
+
+# sync_address   = "https://api.atuin.sh"
+# sync_frequency = "10m"    # 0 = sync after every command
+
+#==============================================================================
+# Search behavior (picker)
+#==============================================================================
+
+## Search algorithm. "prefix", "fulltext", "fuzzy", "skim".
+## ACTIVE: fuzzy = fzf-style multi-token matching.
+search_mode = "fuzzy"
+
+## Filter scope at picker startup.
+## "global" | "host" | "session" | "session-preload" | "directory" | "workspace"
+## ACTIVE: global so the imported pre-atuin bash history (~21k commands
+## without cwd metadata) is reachable. Inside the picker, Ctrl-R cycles
+## through the modes listed in [search].filters.
 filter_mode = "global"
 
-# --- search behavior ----------------------------------------------------------
-search_mode    = "fuzzy"          # fzf-style multi-token; alts: "prefix", "fulltext", "skim"
-style          = "compact"        # less vertical space than "auto"
-inline_height  = 20               # picker height; 0 = full-screen
-show_preview   = true             # show full command + metadata in a preview pane
-exit_mode      = "return-original" # Esc returns whatever you had typed, not nothing
+## When invoked by the shell up-arrow binding (atuin's default).
+## ACTIVE: "directory" = show what you ran in *this* directory, newest first.
+## (Note: bash_atuin.sh restores plain history-search-backward on Up by
+## default, so this only matters if you ever unbind that override.)
+filter_mode_shell_up_key_binding = "directory"
 
-# --- privacy / network --------------------------------------------------------
-update_check   = false            # no phone-home for new versions
-auto_sync      = false            # local-only; opt into sync explicitly via `atuin login`
+## Up-binding search mode (defaults to whatever search_mode is set to).
+# search_mode_shell_up_key_binding = "fuzzy"
 
-# Store Atuin sqlite DBs on local disk, not NFS $HOME. SQLite WAL locking on
-# NFSv3 can leave stale locks and cause: "pool timed out while waiting for an
-# open connection". Data is machine-local by design; dotfiles track config only.
-data_dir = "/var/tmp/smallick/atuin"
+## When in workspace-aware mode, treat any dir inside a git repo as the
+## same scope.
+# workspaces = false
+
+#==============================================================================
+# Picker UI
+#==============================================================================
+
+## Visual density. "auto", "full", "compact".
+## ACTIVE: compact = less vertical chrome.
+style = "compact"
+
+## Picker height in lines. 0 = full-screen.
+## ACTIVE: 20 lines — fits inline without taking over the screen.
+inline_height = 20
+
+# inline_height_shell_up_key_binding = 0
+
+## Flip layout (search bar at top).
+# invert = false
+
+## Show selected command in a preview pane below the list.
+## ACTIVE: yes.
+show_preview = true
+
+## Esc behavior in the picker. "return-original" | "return-query".
+## ACTIVE: return-original — Esc gives you back what you'd typed, not nothing.
+exit_mode = "return-original"
+
+## Word-boundary jump semantics for Ctrl-←/→. "emacs" | "subl".
+# word_jump_mode = "emacs"
+
+# word_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+## Context lines preserved when scrolling by pages.
+scroll_context_lines = 1
+
+## Use Ctrl-N instead of Alt-N for the numeric-jump shortcuts.
+ctrl_n_shortcuts = false
+
+## Display "1." "2." etc. next to list items.
+show_numeric_shortcuts = true
+
+## Format string for `atuin history list` output.
+# history_format = "{time}\t{command}\t{duration}"
+
+## Cap preview pane height.
+# max_preview_height = 4
+
+## Help row at the bottom (version, keymap hint, total count).
+show_help = true
+
+## Tab row (Search / Inspect).
+show_tabs = true
+
+## Auto-hide tabs when terminal has fewer than N lines (compact mode only).
+auto_hide_height = 8
+
+#==============================================================================
+# History recording
+#==============================================================================
+
+## Strip trailing whitespace from commands before saving.
+strip_trailing_whitespace = true
+
+## Built-in regex matcher for AWS keys, GH PATs, Slack tokens, Stripe keys.
+secrets_filter = true
+
+## Per-command blacklist (regexes, unanchored). Commands matching are NOT
+## written to history.
+history_filter = [
+  "^secret-cmd",
+  "^innocuous-cmd .*--secret=.+",
+]
+
+## Per-directory blacklist (regexes, unanchored).
+# cwd_filter = [
+#   "^/very/secret/area",
+# ]
+
+#==============================================================================
+# Keybindings & cursor (picker-internal)
+#==============================================================================
+
+## Enter in picker: true = execute immediately, false = paste to prompt
+## (your bash_atuin.sh uses `bind -x` which forces false regardless; this
+## key is only honored by atuin's own bindings).
+enter_accept = true
+
+## After &&, ||, or | atuin can append rather than replace the line.
+# command_chaining = false
+
+## Picker startup keymap. "auto" | "emacs" | "vim-insert" | "vim-normal".
+## bash_atuin.sh sets this explicitly per-keymap in `bind -x` calls.
+# keymap_mode = "auto"
+
+## Cursor shape per mode.
+# keymap_cursor = { emacs = "blink-block", vim_insert = "blink-block", vim_normal = "steady-block" }
+
+#==============================================================================
+# Network / timeouts
+#==============================================================================
+
+# network_connect_timeout = 5
+# network_timeout         = 5
+# local_timeout           = 5
+
+## Drop animations (or set NO_MOTION=true in the env).
+# prefers_reduced_motion = false
+
+#==============================================================================
+# [stats] — `atuin stats` aggregation rules
+#==============================================================================
+
+[stats]
+# common_subcommands = ["apt","cargo","composer","dnf","docker","dotnet","git","go","ip","jj","kubectl","nix","nmcli","npm","pecl","pnpm","podman","port","systemctl","tmux","yarn"]
+# common_prefix      = ["sudo"]
+# ignored_commands   = ["cd", "ls", "vi"]
+
+#==============================================================================
+# [keys] — arrow-key navigation behavior in the picker
+#==============================================================================
+
+[keys]
+# scroll_exits             = true
+# exit_past_line_start     = true
+# accept_past_line_end     = true
+# accept_past_line_start   = false
+# accept_with_backspace    = false
+
+#==============================================================================
+# [sync] — sync protocol version
+#==============================================================================
+
+[sync]
+## Sync v2 enabled for new installs.
+records = true
+
+#==============================================================================
+# [preview] — preview-pane height strategy
+#==============================================================================
+
+[preview]
+## "auto" (height of selected cmd) | "static" (longest cmd) | "fixed" (max_preview_height)
+# strategy = "auto"
+
+#==============================================================================
+# [daemon] — background sync daemon (off by default)
+#==============================================================================
+
+[daemon]
+# enabled        = false
+# autostart      = false
+# sync_frequency = 300
+# socket_path    = "~/.local/share/atuin/atuin.sock"
+# pidfile_path   = "~/.local/share/atuin/atuin-daemon.pid"
+# systemd_socket = false
+# tcp_port       = 8889
+
+#==============================================================================
+# [theme] — UI color theme
+#==============================================================================
+
+# [theme]
+## Built-ins: "default", "autumn", "marine". Custom themes go in
+## $ATUIN_THEME_DIR/<name>.toml (or ./themes/<name>.toml under config dir).
+# name  = "default"
+# debug = false
+
+#==============================================================================
+# [search] — filter-mode order shown when cycling with Ctrl-R inside picker
+#==============================================================================
+
+[search]
+# filters = ["global", "host", "session", "session-preload", "workspace", "directory"]
+
+#==============================================================================
+# [tmux] — popup window when running under tmux >= 3.2
+#==============================================================================
+
+[tmux]
+# enabled = false
+# width   = "80%"
+# height  = "60%"
+
+#==============================================================================
+# [ui] — column layout in the picker
+#==============================================================================
+
+[ui]
+## Available column types (default widths in parens):
+##   duration(5)  time(8)  datetime(16)  directory(20)  host(15)
+##   user(10)     exit(3)  command(*expand)
+##
+## Each entry is a string (default width) or { type = "...", width = N, expand = true|false }.
+## Default layout:
+# columns = ["duration", "time", "command"]
+##
+## A few popular variants:
+# columns = ["duration", "command"]                                              # minimal
+# columns = ["duration", { type = "directory", width = 30 }, "command"]           # wider cwd
+# columns = ["duration", "time", "host", "command"]                              # multi-host sync
+# columns = ["exit", "duration", "command"]                                      # exit-code focus
