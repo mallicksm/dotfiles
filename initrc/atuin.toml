@@ -252,7 +252,11 @@ records = true
 #==============================================================================
 
 [search]
-# filters = ["global", "host", "session", "session-preload", "workspace", "directory"]
+## Ctrl-R inside the picker cycles through this list in order.
+## ACTIVE: just two modes — toggle between "what did I run in THIS pane"
+## (session) and "everything ever recorded" (global). Skips host /
+## session-preload / workspace / directory entirely.
+filters = ["session", "global"]
 
 #==============================================================================
 # [tmux] — popup window when running under tmux >= 3.2
