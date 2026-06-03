@@ -8,12 +8,18 @@
 #   Alt+C  -> fuzzy cd                (never used -- have z, b, cd.., cd_func)
 # See the "Personal rebinds" block at the bottom for the real key map.
 #-------------------------------------------------------------------------------
+
+# This file only configures interactive line editing (fzf keybindings and
+# completions). Bail in non-interactive shells (rsync/scp/cron/ssh-exec) so
+# the `bind` calls below don't emit "line editing not enabled" warnings.
+case $- in *i*) ;; *) return 0 ;; esac
+
 # Configuration
 # -------------
 # Auto-completion
 # ---------------
 modpath ~/.fzf/bin b
-[[ $- == *i* ]] && source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
+source "${HOME}/.fzf/shell/completion.bash" 2> /dev/null
 
 # Key bindings
 # ------------
