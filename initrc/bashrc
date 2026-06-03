@@ -52,6 +52,3 @@ export IGNOREEOF=1 # use exit to leave shell
 # intact. Sourced near the end purely for tidy grouping; ordering no
 # longer matters for correctness.
 [[ -f ~/.bash_atuin.sh ]] && source ~/.bash_atuin.sh
-
-# xPack RISC-V bare-metal GCC (for cv32e40p / PULP)
-export PATH="$HOME/.local/riscv-none-elf/bin:$PATH"
