@@ -10,7 +10,8 @@ alias mv='\mv -f'
 alias rm='\rm -f'
 alias pkill='\pkill -f'
 alias top='\top -u $USER -d 1'
-alias h='history | tail -n 60'
+# h(): promoted to a function in utils/bash_utils.sh (does two things:
+# pulls sibling-shell additions via `history -n`, then prints the tail).
 alias k='kill -9 %1'
 alias ping='ping -c 4'
 alias grep='grep --color=auto'
