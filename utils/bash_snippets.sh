@@ -203,13 +203,6 @@ function modpath () {
    fi
 }
 #-------------------------------------------------------------------------------
-function sa() {
-   ./pal vcat_exec "$*"
-}
-function sj() {
-   ./pal vcat_exec "ps aux | grep '^soummya'|grep -v 'soummya@'|grep -v export"
-}
-#-------------------------------------------------------------------------------
 build_from_recipe() {
    local name="$1"
    local version_var="${name^^}_VERSION"
