@@ -9,8 +9,12 @@
 # Description: dotfiles executor to setup Unix environment.
 #
 #===============================================================================
-# shellcheck source=utils/bash_snippets.sh
-source ~/dotfiles/utils/bash_snippets.sh 2> /dev/null
+# shellcheck source=utils/bash_first.sh
+# bash_first.sh provides everything dotfiles.sh needs at install/link time:
+# colors, info/warn/error/completed/print/printne, has, Pushd/Popd, download.
+# Domain-specific helpers (build_from_recipe, ifont, ...) remain in
+# bash_snippets.sh and are NOT needed here.
+source ~/dotfiles/utils/bash_first.sh 2> /dev/null
 cdir=$(dirname "$(realpath "$0")")
 
 #-------------------------------------------------------------------------------

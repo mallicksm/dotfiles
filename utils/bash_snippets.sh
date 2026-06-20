@@ -1,38 +1,24 @@
-BOLD="$(tput bold 2>/dev/null || printf '')"
-BLACK="$(tput setaf 240 2>/dev/null || printf '')"
-UNDERLINE="$(tput smul 2>/dev/null || printf '')"
-RED="$(tput setaf 1 2>/dev/null || printf '')"
-GREEN="$(tput setaf 2 2>/dev/null || printf '')"
-YELLOW="$(tput setaf 3 2>/dev/null || printf '')"
-BLUE="$(tput setaf 4 2>/dev/null || printf '')"
-MAGENTA="$(tput setaf 5 2>/dev/null || printf '')"
-CYAN="$(tput setaf 6 2>/dev/null || printf '')"
-WHITE="$(tput setaf 7 2>/dev/null || printf '')"
-GRAY="$(tput setaf 8 2>/dev/null || printf '')"
-NO_COLOR="$(tput sgr0 2>/dev/null || printf '')"
-export BAT_THEME=gruvbox-dark
-function printne() {
-   color=$1
-   str="${@:2}"
-   printf "${!color}$str$NO_COLOR"
-}
-function print() {
-   color=$1
-   str="${@:2}"
-   printf "${!color}$str$NO_COLOR\n"
-}
-function info() {
-   printf '%s\n' "$BOLD$WHITE> $@$NO_COLOR"
-}
-function warn() {
-   printf '%s\n' "$YELLOW! $@$NO_COLOR"
-}
-function error() {
-   printf '%s\n' "${RED}x $@$NO_COLOR" >&2
-}
-function completed() {
-   printf '%s\n' "$GREEN✓ $@$NO_COLOR"
-}
+# bash_snippets.sh -- domain-specific helper functions.
+#
+# Fundamentals (colors, info/warn/error/completed/print/printne, has, Pushd,
+# Popd, download, modpath, var) live in bash_first.sh and are sourced first
+# below so anything still loading bash_snippets directly (e.g. daily_build.sh)
+# keeps working without changes.
+#
+# Loader contract:
+#   * ~/dotfiles/bash_functions.sh sources bash_first.sh BEFORE the
+#     alphabetical bash_*.sh loop and SKIPS bash_snippets.sh in the loop
+#     (the historical pattern -- snippets aren't part of the per-shell init).
+#   * ~/dotfiles/dotfiles.sh sources bash_first.sh directly for its own
+#     install/link output (no longer goes via bash_snippets).
+#   * Standalone scripts (e.g. daily_build.sh) can still
+#     `source bash_snippets.sh` and get the fundamentals via the back-compat
+#     source below.
+# shellcheck source=bash_first.sh
+source ~/dotfiles/utils/bash_first.sh
+
+# print_sequence BIN_STR [GROUP=4] : binary string in alternating red/blue
+# nibble-wide groups. Used for visual debug of bit fields.
 function print_sequence() {
    binary_sequence="$1"
    group_size="${2:-4}"
@@ -65,20 +51,12 @@ function print_sequence() {
    done
    echo
 }
-function var () {
-   VAR=${1:-PATH}
-   DOLLARVAR=${!VAR}
-   echo -e ${DOLLARVAR//:/\\n}
-}
-function has() {
-   command -v "$1" 1>/dev/null 2>&1
-}
-function Pushd() {
-   command pushd "$@" >/dev/null 2>&1
-}
-function Popd() {
-   command popd >/dev/null 2>&1
-}
+
+# xpushd / xpopd : per-process directory-stack persisted to a tempfile under
+# ~. Distinct from Pushd/Popd (which use bash's own builtin stack); xpushd
+# survives across shells (so you can `xpushd` here, switch terminals, then
+# `xpopd` there and return). The stack is a SINGLE slot -- xpushd overwrites
+# whatever was there.
 function xpushd () {
    dir=${1:-.}
    echo "pushing: ~/.x_push_pop_stack"
@@ -109,26 +87,6 @@ function timestamp() {
    fi
 }
 
-function download() {
-   url="$1"
-   file="${url##*/}"
-
-   if has curl; then
-      cmd="curl --fail --silent --location --output $file $url"
-   elif has wget; then
-      cmd="wget --quiet --output-document=$file $url"
-   elif has fetch; then
-      cmd="fetch --quiet --output=$file $url"
-   else
-      error "No HTTP download program (curl, wget, fetch) found, exiting…"
-      return 1
-   fi
-
-   $cmd && return 0 || rc=$?
-
-   error "Command failed (exit code $rc): ${BLUE}${cmd}${NO_COLOR}"
-   return $rc
-}
 function wget4me() {
    urltype=$1
    url=$2
@@ -174,34 +132,6 @@ function duration() {
 # in the system clipboard. If you ever need raw clipboard text in a script,
 # use:   xclip -selection clipboard -o
 #-------------------------------------------------------------------------------
-function modpath () {
-   loc=$1
-   cmd=${2:-"d"}
-   var=${3:-PATH}
-   eval PATHv=\$$var    # set PATHv to the var reference (double indirection)
-   NEW_PATH=${PATHv/#"$loc:"}         #    Begining
-   NEW_PATH=${NEW_PATH/#"$loc"}       #    Solo
-   NEW_PATH=${NEW_PATH/%":$loc"}      #    Ending
-   NEW_PATH=${NEW_PATH//":$loc:"/:}   #    Multiple middles
-
-   if [ $cmd = "d" ]; then
-      export ${var}=$NEW_PATH
-   elif [ $cmd = "b" ]; then
-      if [ -z $NEW_PATH ]; then
-         export ${var}=$loc   # old PATH empty
-      else
-         export ${var}=$loc:$NEW_PATH
-      fi
-   elif [ $cmd = "a" ]; then
-      if [ -z $NEW_PATH ]; then
-         export ${var}=$loc   # old PATH empty
-      else
-         export ${var}=$NEW_PATH:$loc
-      fi
-   else
-      echo "usage: modpath [location] [d elete|b efore|a fter] [VARIABLE]"
-   fi
-}
 #-------------------------------------------------------------------------------
 build_from_recipe() {
    local name="$1"
