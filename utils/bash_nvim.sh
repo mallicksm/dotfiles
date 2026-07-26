@@ -57,9 +57,12 @@ vi() {
    # Detect a user-supplied layout flag so we don't double up. Bare -p is
    # consumed earlier as the appname switch; any -p<N> form falls through into
    # extra_opts and counts as an explicit tabs request.
+   #   -O  vertical split          -o  horizontal split
+   #   -d  diff mode (implies -O)  -p<N>  explicit tabs
+   # All four suppress the auto -O / -p prepend below.
    local has_layout=0 o
    for o in "${extra_opts[@]}"; do
-      [[ $o == -O || $o == -p* ]] && has_layout=1
+      [[ $o == -O || $o == -o || $o == -d || $o == -p* ]] && has_layout=1
    done
 
    local -a auto_layout=()

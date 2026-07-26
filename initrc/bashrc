@@ -52,3 +52,12 @@ export IGNOREEOF=1 # use exit to leave shell
 # intact. Sourced near the end purely for tidy grouping; ordering no
 # longer matters for correctness.
 [[ -f ~/.bash_atuin.sh ]] && source ~/.bash_atuin.sh
+export PATH="$HOME/bin:$PATH"
+
+# Verdi/nWave: auto-source custom Tcl (defines count_edges, etc.) at startup
+export NOVAS_AUTO_SOURCE="$HOME/waves/count_edges.tcl"
+# Verdi/nWave: always use the home prefs (novas.rc) + GUI layout (novas.conf),
+# regardless of the directory Verdi is launched from. This keeps the Tcl
+# command entry (cmd_enter_form=TRUE) and Interactive Console dock enabled.
+export NOVAS_RC="$HOME/novas.rc"
+export NOVAS_GUICONF="$HOME/novas.conf"

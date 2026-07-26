@@ -105,6 +105,9 @@
 [safe]
 	directory = /project/ai/bugatti/users
 	directory = /project/bugatti
+	directory = /project/bugatti/users/akumar/2706iodmasram/bugatti-asic
+	directory = /project/bugatti/users/abharat/bugatti_072226
+	directory = /project/bugatti/users/abharat/bugatti_072226
 [color "status"]
 	untracked = bold 15
 	added     = bold 34
