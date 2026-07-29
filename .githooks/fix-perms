@@ -1,0 +1,17 @@
+#!/bin/bash
+# Reapply correct permissions on sensitive dotfiles.
+# Invoked by the post-checkout and post-merge hooks so perms survive
+# clone / checkout / pull (git does not track or restore file modes beyond
+# the executable bit, and never tracks directory modes at all).
+root="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+
+# SSH config: tracked as initrc/config.ssh, symlinked to ~/.ssh/config.
+# ssh refuses to use a group/world-accessible config; 600 = owner rw only.
+# (chmod on the symlink target == chmod here, same inode.)
+[ -f "$root/initrc/config.ssh" ] && chmod 600 "$root/initrc/config.ssh"
+
+# The ~/.ssh directory itself must be 700 or ssh ignores keys /
+# authorized_keys. Only touch it if it exists (fresh box may not have one).
+[ -d "$HOME/.ssh" ] && chmod 700 "$HOME/.ssh"
+
+exit 0
