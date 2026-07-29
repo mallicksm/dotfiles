@@ -1,13 +1,16 @@
 # Read more about SSH config files: https://linux.die.net/man/5/ssh_config
+#
+# Corp overlay: work-only host blocks (github.com upscale identity, internal
+# hosts) live in ~/corp/corp_hosts.txt. Include it FIRST so its per-host
+# matches win before the catch-all `Host *` below (ssh takes the first-obtained
+# value per keyword). Missing on a non-corp box -> ssh silently skips it.
+Include ~/corp/corp_hosts.txt
+
+# github.sm is my PERSONAL git space, so its key config stays in portable
+# dotfiles (not corp). Placed before `Host *` so its identity wins.
 Host github.sm
    Hostname github.com
    IdentityFile ~/.ssh/github.sm
-   ForwardX11 no
-   IdentitiesOnly yes
-   IdentityAgent none
-Host github.com
-   Hostname github.com
-   IdentityFile ~/.ssh/github-upscale
    ForwardX11 no
    IdentitiesOnly yes
    IdentityAgent none
@@ -22,4 +25,3 @@ Host *
    ServerAliveCountMax 3600
    ServerAliveInterval 240
    StrictHostKeyChecking no
-Include ~/corp/corp_hosts.txt

@@ -101,13 +101,10 @@
    name = mallicksm
    email = mallicksm@gmail.com
 [include]
+   # Corp overlay: [user] identity + [safe] directory entries for the
+   # /project/bugatti EDA tree. Kept out of portable dotfiles. Absent on a
+   # non-corp box -> git silently ignores the missing include.
    path = ~/corp/corp_gitconfig.txt
-[safe]
-	directory = /project/ai/bugatti/users
-	directory = /project/bugatti
-	directory = /project/bugatti/users/akumar/2706iodmasram/bugatti-asic
-	directory = /project/bugatti/users/abharat/bugatti_072226
-	directory = /project/bugatti/users/abharat/bugatti_072226
 [color "status"]
 	untracked = bold 15
 	added     = bold 34

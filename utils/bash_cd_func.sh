@@ -6,14 +6,15 @@
 
 # CDPATH: directories `cd` searches when given a relative path (no leading /).
 # Order matters -- bash searches them in order and stops at the first match.
-#   .                                    -> cwd first (cwd-relative wins)
-#   $HOME                                -> `cd dotfiles` -> ~/dotfiles
-#   /project/bugatti/users/$USER         -> `cd <whatever>` for user-level project files
-#   /project/bugatti/users/$USER/sparews -> `cd serdes`, `cd dw_ss_DWC...` etc. (workspace IPs)
-# Built incrementally with += for clarity; one concept per line, easy to add/remove.
+#   .      -> cwd first (cwd-relative wins)
+#   $HOME  -> `cd dotfiles` -> ~/dotfiles
+# Site-specific roots (EDA workspaces, etc.) are NOT hardcoded here -- they
+# live in ~/corp/corp_settings.sh, which exports $CORP_CDPATH (a colon-list)
+# BEFORE this file is sourced (bashrc sources corp_settings.sh first). We
+# append it after the portable base so `.` always wins. Unset on non-corp
+# boxes -> the append is a no-op and dotfiles stays fully portable.
 export CDPATH=".:$HOME"
-CDPATH+=":/project/bugatti/users/$USER"
-CDPATH+=":/project/bugatti/users/$USER/sparews"
+[[ -n ${CORP_CDPATH:-} ]] && CDPATH+=":$CORP_CDPATH"
 
 function cd () {
    # replace "builtin cd" with cd_func() to enable "cd with history"

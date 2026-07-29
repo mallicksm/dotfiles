@@ -184,17 +184,20 @@ require('snacks').setup({
       sections = {
          { section = 'header' },
 
-         -- Workspaces: hardcoded paths. NO fs probe in the generator --
-         -- the dir check lives in dashboard_open_dir() at file scope. A
-         -- missing workspace shows a "[label] not a directory" toast on
-         -- keypress instead of blocking the first paint with an NFS stat.
+         -- Workspaces: site-specific roots come from the corp overlay
+         -- (~/corp/nvim_workspaces.lua returns a list of {key,label,dir}), so
+         -- no /project/bugatti paths are hardcoded in portable dotfiles.
+         -- Absent on a non-corp box -> pcall falls back to {} and this section
+         -- renders nothing. NO fs probe in the generator -- the dir check
+         -- lives in dashboard_open_dir() at file scope; a missing workspace
+         -- shows a "[label] not a directory" toast on keypress instead of
+         -- blocking the first paint with an NFS stat.
          function()
-            local workspaces = {
-               { key = '0', label = 'bugatti_ws0', dir = '/project/bugatti/users/smallick/bugatti_ws0' },
-               { key = '1', label = 'bugatti_ws1', dir = '/project/bugatti/users/smallick/bugatti_ws1' },
-               { key = '2', label = 'sparews/ws0', dir = '/project/bugatti/users/smallick/sparews/ws0' },
-               { key = '3', label = 'sparews/ws1', dir = '/project/bugatti/users/smallick/sparews/ws1' },
-            }
+            local ok, ws = pcall(dofile, vim.fn.expand('~/corp/nvim_workspaces.lua'))
+            local workspaces = (ok and type(ws) == 'table') and ws or {}
+            if #workspaces == 0 then
+               return
+            end
             local items = { title = 'Workspaces', padding = 1 }
             for _, w in ipairs(workspaces) do
                table.insert(items, {
