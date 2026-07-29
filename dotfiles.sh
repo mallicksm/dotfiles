@@ -52,7 +52,7 @@ function linkrc() {
       ["atuin.toml"]="$HOME/.config/atuin/config.toml"
       ["bash_atuin.sh"]="$HOME/.bash_atuin.sh"
       ["kitty"]="$HOME/.config/kitty"
-      ["gitk"]="$HOME/.config/git/gitk"
+      ["git"]="$HOME/.config/git"
       ["config.ssh"]="$HOME/.ssh/config"
       ["cc"]="$HOME/.local/bin/c99/cc"
       ["z.sh"]="/dev/null"
@@ -102,12 +102,22 @@ function link_kitty_os() {
    ln -sf "$src" "$target"
 }
 function linkup() {
-   s=$1 # Source
-   d=$2 # Destination
+   local s=$1 # Source
+   local d=$2 # Destination
 
    if [[ "$d" == "/dev/null" ]]; then
       echo "Info: Skipping link for $s → $d"
       return
+   fi
+
+   # Trailing slash makes ln treat dest as a directory and nest the link
+   # (e.g. ~/.config/kitty/kitty). Same rule for files and dirs.
+   d="${d%/}"
+   s="${s%/}"
+
+   if [[ ! -e "$s" && ! -L "$s" ]]; then
+      warn "linkup: source missing: $s  (skipping $d)"
+      return 1
    fi
 
    local curr
@@ -121,20 +131,46 @@ function linkup() {
       curr="(absent)"
    fi
 
-   if [[ -L "$d" && "$(readlink "$d")" == "$s" ]]; then
-      [[ "$DRY_RUN" == "1" ]] && completed "  [dry-run] keep   $d  →  $s"
-      return
+   # Already correct (match literal target, or same resolved path).
+   if [[ -L "$d" ]]; then
+      local cur_target resolved_d resolved_s
+      cur_target="$(readlink "$d")"
+      resolved_d="$(realpath "$d" 2>/dev/null || true)"
+      resolved_s="$(realpath "$s" 2>/dev/null || true)"
+      if [[ "$cur_target" == "$s" || ( -n "$resolved_d" && "$resolved_d" == "$resolved_s" ) ]]; then
+         [[ "$DRY_RUN" == "1" ]] && completed "  [dry-run] keep   $d  →  $s"
+         return
+      fi
+   fi
+
+   # Anything already at $d (file, real dir, or wrong symlink) is moved aside.
+   # Never `rm -f` a directory and never `ln` into an existing directory —
+   # that creates the nested ~/.config/{kitty/kitty,git/git} bug.
+   # Also never let ln follow an existing dest symlink (use -n below).
+   local backup=
+   if [[ -e "$d" || -L "$d" ]]; then
+      backup="${d}.$(date +%Y%m%d.%H%M%S)"
    fi
 
    if [[ "$DRY_RUN" == "1" ]]; then
-      warn "  [dry-run] link   $d  →  $s    [was: $curr]"
+      if [[ -n "$backup" ]]; then
+         warn "  [dry-run] backup $d  →  $backup    [was: $curr]"
+      fi
+      warn "  [dry-run] link   $d  →  $s"
       return
    fi
 
+   if [[ -n "$backup" ]]; then
+      info "Backing up $d → $backup    [was: $curr]"
+      mv "$d" "$backup"
+   fi
+
+   local parent_dir
    parent_dir=$(dirname "$d")
    mkdir -p "$parent_dir"
-   rm -f "$d"
-   ln -fs "$s" "$d"
+   # -n/--no-target-directory: if $d is somehow still a symlink-to-dir,
+   # replace that symlink instead of creating $d/$(basename $s) inside it.
+   ln -sfn "$s" "$d"
 }
 
 #-------------------------------------------------------------------------------
