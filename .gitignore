@@ -2,3 +2,9 @@ tags
 */lazy-lock.json
 .DS_Store
 initrc/kitty/kitty.os.conf
+# XDG_CONFIG_HOME is set to ~/dotfiles for nvim, so apps that honor XDG (ibus
+# input-method, lazygit launched from inside nvim, etc.) drop runtime/state
+# dirs here. Ignore them so they never get accidentally committed.
+# Clean up strays with: rmdir ibus/bus ibus lazygit
+/ibus/
+/lazygit/

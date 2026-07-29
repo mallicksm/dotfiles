@@ -33,16 +33,14 @@ vim.api.nvim_create_autocmd('BufReadCmd', {
       -- warnings. Plain shell `xdg-open foo.pdf` is clean because stdio is
       -- just the tty -- jobstart+detach mirrors that.
       --
-      -- On Linux, launch zathura via the ~/.local/bin/zathura wrapper
-      -- (sets ZATHURA_PLUGINS_PATH for the EPEL-9 plugin and exec's the
-      -- patched binary -- see ~/.local/README.md and the wrapper itself
-      -- for the patchelf / glibc-2.40 setup). To use a different viewer,
-      -- swap 'zathura' below for whatever's in PATH.
+      -- On Linux, open in evince. To use a different viewer, swap 'evince'
+      -- below for whatever's in PATH (or use 'xdg-open' to follow the system
+      -- default association).
       local cmd
       if vim.fn.has('mac') == 1 then
          cmd = { 'open', fname }
       else
-         cmd = { 'zathura', fname }
+         cmd = { 'evince', fname }
       end
       local ok, jid = pcall(vim.fn.jobstart, cmd, { detach = true })
       if not ok or jid <= 0 then
