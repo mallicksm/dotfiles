@@ -199,11 +199,18 @@ require('snacks').setup({
                return
             end
             local items = { title = 'Workspaces', padding = 1 }
-            for _, w in ipairs(workspaces) do
-               table.insert(items, {
+            for i, w in ipairs(workspaces) do
+               local item = {
                   icon = '󰉋 ', key = w.key, desc = w.label,
                   action = dashboard_open_dir(w.label, w.dir),
-               })
+               }
+               -- Blank line between groups: pad the last row of each group
+               -- (i.e. when the next entry belongs to a different group).
+               local nxt = workspaces[i + 1]
+               if nxt and nxt.group ~= w.group then
+                  item.padding = 1
+               end
+               table.insert(items, item)
             end
             return items
          end,
