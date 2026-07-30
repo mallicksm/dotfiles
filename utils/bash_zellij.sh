@@ -14,8 +14,8 @@ function common_options () {
    esac
 }
 declare -gA helpstr 2>/dev/null  # ensure global assoc array exists; do NOT reset
-helpstr["zm"]="\
-   usage: zm [options|-h]
+helpstr["zz_zellij"]="\
+   usage: zz_zellij [options|-h]
    create or attach to zellij session
 
       ------
@@ -25,7 +25,7 @@ helpstr["zm"]="\
       -K|--kill-all-sessions                     -kill all sessions (Not within zellij)
       -l|--layout                                -def(default)|def
 "
-function zm () {
+function zz_zellij () {
    # Preserve DISPLAY at function entry to restore if it gets cleared
    local saved_display="${DISPLAY:-}"
    declare -A opt=([ZELLIJ_LAYOUT]=def)
@@ -35,7 +35,7 @@ function zm () {
          -s|--create-session)
             if [[ -z "$2" || "$2" =~ ^- ]]; then
                echo "Error: -s|--create-session requires a session name"
-               echo "Usage: zm -s <session-name>"
+               echo "Usage: zz_zellij -s <session-name>"
                return 1
             fi
             opt[ZELLIJ_SESSION_NAME]="$2"
@@ -44,7 +44,7 @@ function zm () {
          -k|--kill-session)
             if [[ -z "$2" || "$2" =~ ^- ]]; then
                echo "Error: -k|--kill-session requires a session name"
-               echo "Usage: zm -k <session-name>"
+               echo "Usage: zz_zellij -k <session-name>"
                return 1
             fi
             opt[ZELLIJ_KILL_SESSION]="$2"
@@ -57,7 +57,7 @@ function zm () {
          -l|--layout)
             if [[ -z "$2" || "$2" =~ ^- ]]; then
                echo "Error: -l|--layout requires a layout name"
-               echo "Usage: zm -l <layout-name>"
+               echo "Usage: zz_zellij -l <layout-name>"
                return 1
             fi
             opt[ZELLIJ_LAYOUT]="$2"
@@ -206,6 +206,9 @@ zrf() {
          -- bash -ic "$cmd; exec bash -i"
    fi
 }
+# zz_* : user-facing command namespace (type `zz_<TAB>` to discover them).
+# zm kept as a back-compat alias for muscle memory.
+alias zm='zz_zellij'
 function zmv() {
    dir="${1:-right}"
 

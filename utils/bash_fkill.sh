@@ -83,7 +83,7 @@ _fkill_ps_list() {
    ps $ps_scope -o pid=,user=,pcpu=,comm=,args= --no-headers 2>/dev/null | _fkill_fmt_line
 }
 
-fkill() {
+zz_kill() {
    local pid col_header
 
    export COLUMNS="$(_fkill_cols)"
@@ -118,3 +118,6 @@ CTRL-R to refresh
       echo "No process selected."
    fi
 }
+# zz_* : user-facing command namespace (type `zz_<TAB>` to discover them).
+# fkill kept as a back-compat alias for muscle memory.
+alias fkill='zz_kill'
