@@ -116,6 +116,34 @@ vi() {
 export -f vi
 
 #-------------------------------------------------------------------------------
+# zz_explorer : fzf file picker that opens the selection in the REAL nvim
+# wrapper (vi), with full interactive environment.
+#
+# It is bound to Ctrl-E (and, under kitty, Ctrl-3) via `bind -x` in
+# bash_fzf.sh. `bind -x` runs the function in the CURRENT interactive shell,
+# so `vi` resolves to the wrapper above (config/appname/env) and the tty is
+# handed straight to fzf and nvim -- unlike fzf's `become(bash -c "vi ...")`,
+# which spawns a fresh non-interactive shell ("canned" nvim, missing env).
+#
+# TAB multi-selects; the vi() wrapper then auto-splits (1-3 files) or opens
+# tabs (4+). Callable by name too: `zz_explorer`.
+#-------------------------------------------------------------------------------
+zz_explorer() {
+   local out
+   local -a files
+   out=$(
+      FZF_DEFAULT_COMMAND="${FZF_CTRL_T_COMMAND:-fd --type f --follow --exclude .git}" \
+      fzf --multi --height=100% --layout=reverse --border=double \
+          --preview 'bat -n --color=always {} 2>/dev/null || cat {}' \
+          --preview-window='right,60%,wrap' \
+          --header 'File explorer  |  TAB=multi-select  |  Enter=open in nvim  |  esc=cancel'
+   ) || return
+   [[ -n $out ]] || return
+   mapfile -t files <<<"$out"
+   vi "${files[@]}"
+}
+
+#-------------------------------------------------------------------------------
 # vim alias -- vimscript-based original nvim installation (nvim.vim)
 #-------------------------------------------------------------------------------
 vim() {

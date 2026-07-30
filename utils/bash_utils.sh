@@ -237,7 +237,7 @@ type to fuzzy-match the name  ·  preview shows the definition'
    sel=$(_zz_which_func_candidates "$all" \
       | fzf --ansi --delimiter='\t' --with-nth=2,3,1 --nth=2 \
             --header="$header" \
-            --preview="$preview" --preview-window='right,60%,wrap') || return
+            --preview="$preview" --preview-window='down,60%,wrap') || return
    [[ -n $sel ]] || return
 
    IFS=$'\t' read -r typ nm loc <<<"$sel"

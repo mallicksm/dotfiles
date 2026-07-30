@@ -86,12 +86,14 @@ _fzf_comprun() {
 # above, so they override whatever fzf installed.
 #-------------------------------------------------------------------------------
 
-# Ctrl+E ("E for Edit") -> fzf file picker (preview via bat, Enter opens in
-# the `vi` wrapper from bash_nvim.sh). Bound only in vi modes; emacs-standard
-# keeps its default end-of-line so Ctrl+Z (toggle to emacs editing) still
-# behaves normally.
-bind -m vi-insert  -x '"\C-e": fzf-file-widget'
-bind -m vi-command -x '"\C-e": fzf-file-widget'
+# Ctrl+E ("E for Edit") -> zz_explorer (bash_nvim.sh): fzf file picker whose
+# selection opens in the REAL `vi` wrapper. Using `bind -x` to a shell function
+# (not fzf's fzf-file-widget / become(bash -c "vi ...")) means the open runs in
+# THIS interactive shell -- full env, aliases, and vi() split/tab logic, not a
+# "canned" non-interactive nvim. Bound only in vi modes; emacs-standard keeps
+# its default end-of-line so Ctrl+Z (toggle to emacs editing) still behaves.
+bind -m vi-insert  -x '"\C-e": zz_explorer'
+bind -m vi-command -x '"\C-e": zz_explorer'
 
 # Ctrl+G ("G for grep") -> live ripgrep + fzf with type-filter hotkeys.
 # Defined in ~/dotfiles/utils/bash_vgrep.sh (function rgrep). F1-F6 inside
