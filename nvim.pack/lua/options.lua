@@ -15,6 +15,14 @@ vim.opt.mouse = 'a'
 -- Don't show the mode, since it's already in status line
 vim.opt.showmode = false
 
+-- Suppress Neovim's built-in intro screen ("~ NVIM ... type :help").
+-- snacks.dashboard opens on UIEnter and does NOT hide the intro, so without
+-- this you see the intro painted on the empty startup buffer for a moment
+-- before the dashboard replaces it (the "default starter -> my dashboard"
+-- flash). `I` = skip the intro message. Set here in options.lua (required
+-- first in init.lua) so it takes effect before the first screen is drawn.
+vim.opt.shortmess:append('I')
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.

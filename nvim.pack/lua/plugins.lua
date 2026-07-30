@@ -15,6 +15,11 @@
 --     fzf-native (`make`) and treesitter (parser install).
 -- ----------------------------------------------------------------------------
 
+-- NFS d_type workaround: MUST run before vim.pack.add() so lock_sync() sees
+-- real directory types instead of nil and stops "reinstalling" already-cloned
+-- plugins on every launch. See lua/pack_nfs_dtype_fix.lua for the full writeup.
+require('pack_nfs_dtype_fix')
+
 vim.pack.add({
    ----------------------------------------------------------------------------
    -- Core libraries (no setup() needed; pulled in by other plugins)
@@ -110,28 +115,34 @@ vim.pack.add({
 -- (telescope-fzf-native build step removed along with the telescope stack.)
 
 -- ----------------------------------------------------------------------------
--- Per-plugin setup. ORDER MATTERS for a few:
---   1. colorscheme  -- so subsequent setups can read theme colors
---   2. mini         -- wires base autocmds + mini.basics + mini.icons
---                     (mini.icons.mock_nvim_web_devicons() must run BEFORE
---                      any plugin that does require('nvim-web-devicons') --
---                      lualine, neo-tree, snacks, render-markdown)
---   3. blink.cmp    -- lspconfig pulls capabilities from it (must precede LSP)
---   4. treesitter   -- render-markdown reads parsers (must precede it)
--- The rest are independent; alphabetical by plugin name within their group.
+-- Per-plugin setup, split into TWO phases.
+--
+-- WHY: vim.pack has no lazy-loading, so require()ing every plugin's setup() in
+-- init.lua ran the whole ~340ms toolchain BEFORE VimEnter fired -- and the
+-- dashboard only opens on VimEnter. Result: nvim's built-in intro sat on screen
+-- for ~1s, then the dashboard painted over it (the "default starter -> my
+-- starter" flash). lazy.nvim avoids this by giving snacks priority=1000; vim.pack
+-- has no such knob, so we defer the heavy setups ourselves.
+--
+-- The vim.pack.add({...}) above is UNCHANGED -- every plugin is still added to
+-- runtimepath at startup (add is only ~24ms and keeps :packadd-free access +
+-- an accurate dashboard plugin count). We only defer the expensive setup()
+-- CALLS (lspconfig/mason ~68ms, debugging ~27, completions ~18, treesitter,
+-- render-markdown, formatting, linting) to just after the first UI paint.
+--
+-- PHASE 1 setup -- runs now. ORDER MATTERS:
+--   1. colorscheme -- so subsequent setups can read theme colors
+--   2. mini        -- mini.icons.mock_nvim_web_devicons() must run BEFORE any
+--                     plugin that require('nvim-web-devicons') (lualine, snacks)
+-- The rest are independent; grouped by role.
 -- ----------------------------------------------------------------------------
-
 require('plugins.colorscheme')
 require('plugins.mini')          -- includes mini.icons + mock_nvim_web_devicons
 
 require('plugins.lualine')
-require('plugins.snacks')
+require('plugins.snacks')        -- dashboard: paints as soon as VimEnter fires
 -- plugins.which-key removed; mini.clue (in plugins/mini.lua) takes over.
 require('plugins.noice')
-
-require('plugins.treesitter')
-require('plugins.render-markdown')
--- (plugins.markview removed; markview.nvim is no longer in the spec list)
 
 require('plugins.gitsigns')
 require('plugins.neogit')
@@ -145,12 +156,47 @@ require('plugins.undotree')
 -- plugins.neo-tree removed; snacks.explorer (<leader>ee) is the file browser now.
 -- plugins.telescope removed;  snacks.picker keymaps live in plugins/snacks.lua
 
-require('plugins.completions')   -- blink.cmp -- before lspconfig
-require('plugins.lspconfig')      -- mason + mason-lspconfig + lspconfig
-require('plugins.formatting')
-require('plugins.linting')
-require('plugins.debugging')
+require('plugins.verilog')       -- vim.g.verilog_syntax_fold_lst (vimscript syntax)
 
-require('plugins.verilog')        -- vim.g.verilog_syntax_fold_lst
+-- ----------------------------------------------------------------------------
+-- PHASE 2 setup -- deferred toolchain (LSP / completion / format / lint / dap /
+-- treesitter / render-markdown). Loaded after the first paint. Intra-group
+-- order still matters:
+--   * treesitter BEFORE render-markdown (parsers)
+--   * blink.cmp (completions) BEFORE lspconfig (capabilities)
+-- ----------------------------------------------------------------------------
+local function load_deferred()
+   if vim.g._pack_deferred_loaded then return end
+   vim.g._pack_deferred_loaded = true
+
+   require('plugins.treesitter')
+   require('plugins.render-markdown')
+   require('plugins.completions')   -- blink.cmp -- before lspconfig
+   require('plugins.lspconfig')     -- mason + mason-lspconfig + lspconfig
+   require('plugins.formatting')
+   require('plugins.linting')
+   require('plugins.debugging')
+
+   -- Attach the freshly-loaded LSP + treesitter to any REAL file that was
+   -- already opened before deferral ran (the `vi file` path). Their FileType
+   -- handlers were only just registered -- after this buffer's original
+   -- FileType fired -- so re-fire it per loaded buffer to trigger
+   -- vim.treesitter.start() and the LSP FileType launch.
+   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_loaded(buf)
+         and vim.bo[buf].buftype == ''
+         and vim.bo[buf].filetype ~= '' then
+         vim.api.nvim_exec_autocmds('FileType', { buffer = buf, modeline = false })
+      end
+   end
+end
+
+-- Trigger on VimEnter (startup done -> dashboard/first buffer about to paint),
+-- deferred one event-loop tick via vim.schedule so the paint happens FIRST.
+-- once=true + the vim.g guard make this idempotent.
+vim.api.nvim_create_autocmd('VimEnter', {
+   once     = true,
+   callback = function() vim.schedule(load_deferred) end,
+})
 
 -- vim: ts=3 sts=3 sw=3 et
