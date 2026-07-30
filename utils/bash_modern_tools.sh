@@ -2,7 +2,7 @@
 # Note: cat ll la and lt aliases
 unalias cat 2> /dev/null # blow away any previous aliases if any
 function cat() {
-   if command -v bat >/dev/null ; then
+   if has bat ; then
       command bat "$@"
    else
       command cat "$@"
@@ -11,21 +11,21 @@ function cat() {
 unalias ll 2> /dev/null
 source $HOME/dotfiles/utils/ucol.sh
 function l() {
-   if command -v eza >/dev/null ; then
+   if has eza ; then
       command eza --color=always --classify --icons --sort=Ext --group-directories-first --time-style=long-iso "$@"
    else
       command ls -Fslr --color=auto "$@"
    fi
 }
 function ll() {
-   if command -v eza >/dev/null ; then
+   if has eza ; then
       command eza --long --classify --header -s modified --time-style=long-iso "$@"
    else
       command ls -Fslr --color=auto "$@"
    fi
 }
 function lsd() {
-   if command -v eza >/dev/null ; then
+   if has eza ; then
       args=$@*/
       command eza --long --classify --header -s modified -d --time-style=long-iso $args
    else
@@ -34,7 +34,7 @@ function lsd() {
 }
 unalias la 2> /dev/null
 function la() {
-   if command -v eza >/dev/null ; then
+   if has eza ; then
       command eza --long --classify --header -s modified -a --time-style=long-iso "$@"
    else
       command ls -Fslra --color=auto "$@"
@@ -42,7 +42,7 @@ function la() {
 }
 unalias lt 2> /dev/null
 function lt() {
-   if command -v eza >/dev/null ; then
+   if has eza ; then
       command eza --tree "$@"
    else
       command tree
@@ -50,7 +50,7 @@ function lt() {
 }
 unalias du 2> /dev/null
 function du() {
-   if command -v ncdu >/dev/null ; then
+   if has ncdu ; then
       command ncdu "$@"
    else
       command du -k "$@"
@@ -58,7 +58,7 @@ function du() {
 }
 unalias df 2> /dev/null
 function df() {
-   if command -v pydf >/dev/null ; then
+   if has pydf ; then
       command pydf "$@"
    else
       command df -h --total "$@"
@@ -84,7 +84,7 @@ function df() {
 function psh() {
    local n=${1:-10}
    local scope=${2:-self}
-   if command -v procs >/dev/null ; then
+   if has procs ; then
       if [[ "$scope" == "all" ]]; then
          command procs --sortd cpu | head -n $((n + 1))   # +1 for header
       else
@@ -102,7 +102,7 @@ function psh() {
 function psm() {
    local n=${1:-10}
    local scope=${2:-self}
-   if command -v procs >/dev/null ; then
+   if has procs ; then
       if [[ "$scope" == "all" ]]; then
          command procs --sortd mem | head -n $((n + 1))
       else
@@ -122,7 +122,7 @@ function psg() {
       echo "usage: psg <pattern>" >&2
       return 1
    fi
-   if command -v procs >/dev/null ; then
+   if has procs ; then
       command procs "$1"
    else
       command pgrep -af "$1"

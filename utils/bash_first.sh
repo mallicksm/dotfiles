@@ -16,6 +16,7 @@
 #
 #   * tput color constants    (BOLD/RED/GREEN/.../NO_COLOR)
 #   * pretty-print helpers    (info / warn / error / completed / print / printne)
+#   * print_sequence          (colored binary-nibble dump; used by `num`)
 #   * has                     (command existence check)
 #   * Pushd / Popd            (silent pushd/popd)
 #   * download                (curl/wget/fetch dispatcher)
@@ -23,7 +24,7 @@
 #   * var                     (colon-var inspector; paired with var_dd in bash_utils.sh)
 #
 # Everything else (xpushd/xpopd, tempfile, timestamp, wget4me, latest_file,
-# ifont, xvim, duration, print_sequence, build_*) is non-fundamental and lives
+# ifont, xvim, duration, build_*) is non-fundamental and lives
 # in bash_snippets.sh.
 #
 # Guard: sourcing this file multiple times is harmless (function redefinition).
@@ -88,6 +89,31 @@ error() {
 }
 completed() {
    printf '%s\n' "${GREEN}✓ $*${NO_COLOR}"
+}
+
+# print_sequence BIN_STR [GROUP=4] : print a binary string in alternating
+# red/blue nibble-wide groups (visual debug of bit fields). Lives here (not in
+# bash_snippets.sh) because it's consumed by a per-shell command -- `num` in
+# bash_num.sh -- and bash_snippets is intentionally NOT sourced by the per-shell
+# loader. Keeping it in the foundation makes `num` work on non-corp boxes too.
+print_sequence() {
+   local binary_sequence="$1"
+   local group_size="${2:-4}"
+   local padded_sequence color color1="$RED" color2="$BLUE" digit i
+
+   # Left-pad with zeros to a whole multiple of group_size.
+   if (( ${#binary_sequence} % group_size != 0 )); then
+      padded_sequence=$(printf "%0$((group_size - ${#binary_sequence} % group_size))d%s" 0 "$binary_sequence")
+   else
+      padded_sequence=$binary_sequence
+   fi
+
+   for (( i = 0; i < ${#padded_sequence}; i++ )); do
+      digit="${padded_sequence:i:1}"
+      if (( i % (group_size * 2) < group_size )); then color="$color1"; else color="$color2"; fi
+      echo -ne "${color}${digit}${NO_COLOR}"
+   done
+   echo
 }
 
 # --- shell utility primitives --------------------------------------------------

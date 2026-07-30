@@ -17,40 +17,9 @@
 # shellcheck source=bash_first.sh
 source ~/dotfiles/utils/bash_first.sh
 
-# print_sequence BIN_STR [GROUP=4] : binary string in alternating red/blue
-# nibble-wide groups. Used for visual debug of bit fields.
-function print_sequence() {
-   binary_sequence="$1"
-   group_size="${2:-4}"
-
-   # Pad the sequence with zeros to the left with a multiple of 4
-   if [[ $((${#binary_sequence}%${group_size}))  != 0 ]]; then
-      padded_sequence=$(printf "%0$((${group_size} - ${#binary_sequence} % ${group_size}))d%s" 0 "$binary_sequence")
-   else
-      padded_sequence=$binary_sequence
-   fi
-
-   # Set the colors
-   color1=$RED
-   color2=$BLUE
-   resetc=$NO_COLOR
-   # Loop through the padded sequence
-   for ((i = 0; i < ${#padded_sequence}; i++)); do
-      # Get the current binary digit
-      digit="${padded_sequence:i:1}"
-
-      # Set the color based on the index
-      if ((i % $(($group_size * 2)) < $group_size)); then
-         color="$color1"
-      else
-         color="$color2"
-      fi
-
-      # Print the digit with the appropriate color
-      echo -ne "${color}${digit}${resetc}"
-   done
-   echo
-}
+# NOTE: print_sequence moved to bash_first.sh (it's consumed by the per-shell
+# `num` command in bash_num.sh, and bash_first is the always-loaded foundation).
+# It remains available here too since this file sources bash_first at the top.
 
 # xpushd / xpopd : per-process directory-stack persisted to a tempfile under
 # ~. Distinct from Pushd/Popd (which use bash's own builtin stack); xpushd

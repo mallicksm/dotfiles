@@ -1,6 +1,12 @@
 # Starship configuration
 export STARSHIP_CONFIG=$HOME/corp/starship.toml
 export STARSHIP_LOG=error
+
+# Prompt/keybinding setup only matters interactively. Bail out in
+# non-interactive shells (scp/rsync/cron/ssh-exec) so we don't fork a
+# `starship init bash` process for a shell that will never draw a prompt.
+case $- in *i*) ;; *) return 0 ;; esac
+
 function set_win_title(){
    # set title
    echo -ne "\033]0; [$SHLVL] $USER@$(hostname -s)  $PWD\007"
