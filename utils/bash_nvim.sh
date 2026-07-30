@@ -4,9 +4,10 @@
 #
 # Flags:
 #   -x   wrap launch in xterm (backgrounded)
-#   -p   use ~/dotfiles/nvim.pack (vim.pack-based config) instead of nvim.easy
-#        (note: nvim's own -p "open in tabs" is consumed by this wrapper. To
-#         force tabs explicitly, pass -p<N> e.g. -p5 -- it falls through to nvim.)
+#   -p   "previous": use ~/dotfiles/nvim.easy (lazy.nvim-based config) instead
+#        of the now-default nvim.pack. (note: nvim's own -p "open in tabs" is
+#        consumed by this wrapper. To force tabs explicitly, pass -p<N> e.g. -p5
+#        -- it falls through to nvim.)
 #   -O   explicit vertical split (suppresses auto split/tab behavior below)
 #   anything else starting with - is forwarded verbatim to nvim
 #
@@ -22,7 +23,7 @@ vi() {
    local -a args=()
    local -a extra_opts=()
    local nfiles=0
-   local appname='nvim.easy'   # default config (lazy.nvim-based)
+   local appname='nvim.pack'   # default config (vim.pack-based)
 
    while (( $# )); do
       case $1 in
@@ -31,11 +32,12 @@ vi() {
             shift
          ;;
          -p)
-            # -p selects nvim.pack -- the parallel config powered by nvim's
-            # built-in vim.pack package manager (see ~/dotfiles/nvim.pack/).
-            # Plugins/state are isolated under ~/.local/{share,state,cache}/nvim.pack/
-            # so toggling between vi and `vi -p` will not touch the .easy data dir.
-            appname='nvim.pack'
+            # -p = "previous": fall back to nvim.easy -- the lazy.nvim-based
+            # config (see ~/dotfiles/nvim.easy/). The default is now nvim.pack
+            # (nvim's built-in vim.pack package manager). Plugins/state are
+            # isolated under ~/.local/{share,state,cache}/{nvim.easy,nvim.pack}/
+            # so toggling between `vi` and `vi -p` never touches the other's data.
+            appname='nvim.easy'
             shift
          ;;
          -*)
