@@ -1,0 +1,28 @@
+# Python tools that surface as console scripts in ~/.local/bin.
+# Installed non-root (pip --user) by pip_local_install.sh. These are the
+# packages behind the entry-point scripts found in ~/.local/bin -- grouped by
+# what provides them. Unpinned = latest; pin a line (pkg==x.y.z) for repro.
+
+# --- docs / markdown / rst -----------------------------------------------------
+mkdocs                 # mkdocs, mkdocs-get-deps
+Sphinx                 # sphinx-build, sphinx-apidoc, sphinx-autogen, sphinx-quickstart
+docutils               # rst2html.py, rst2latex.py, rst2man.py, ... rstpep2html.py
+Markdown               # markdown_py
+Pygments               # pygmentize
+grip                   # grip (github-flavored markdown preview)
+ghp-import             # ghp-import
+tabulate               # tabulate
+
+# --- pdf / ocr (used by pdf2md / snps skills) ---------------------------------
+PyMuPDF                # pymupdf (fitz)
+rapidocr-onnxruntime   # rapidocr_onnxruntime
+onnxruntime            # onnxruntime_test
+
+# --- misc utilities ------------------------------------------------------------
+tqdm                   # tqdm
+watchdog               # watchmedo
+Babel                  # pybabel
+jsonschema             # jsonschema
+Flask                  # flask
+numpy                  # f2py
+pyucis                 # pyucis (UCIS coverage)

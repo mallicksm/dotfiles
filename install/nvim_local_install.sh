@@ -1,26 +1,34 @@
 #!/usr/bin/env bash
 #===============================================================================
-# Bash Script
-# Created: Jan-02-2024
-# Author: soummya
+# nvim_local_install.sh -- Neovim, non-root into ~/.local/tools + ~/.local/bin.
 #
-# Note:
-#
-# Description: nvim install
-#
+# Uses the neovim/neovim-releases repo (static builds that run on older glibc,
+# e.g. EL8) by default. Grabs the LATEST release; pin with NVIM_VERSION, e.g.:
+#     NVIM_VERSION=v0.11.3 ./nvim_local_install.sh
+# Set NVIM_REPO=neovim/neovim to use the mainline (newer-glibc) builds instead.
 #===============================================================================
-source ~/dotfiles/utils/bash_snippets.sh 2>/dev/null
-# Latest glibc
-src=https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz
-# Unsupported builds for legacy glibc
-src=https://github.com/neovim/neovim-releases/releases/download/v0.11.2/nvim-linux-x86_64.tar.gz
-src=https://github.com/neovim/neovim-releases/releases/download/v0.11.3/nvim-linux-x86_64.tar.gz
-dst=~/.local/tools/nvim_$(date +"%b%d_%I%M%P")
-command mkdir -pv $dst && command cd $dst && command rm -rf $(pwd)/../nvim_latest && command ln -sf $(pwd) $(pwd)/../nvim_latest
-download $src $(basename $src)
-tar -xvf $(basename $src) > nvim_tar.log
-loc=$(find . -print | grep 'bin/nvim')
-mkdir -p ~/.local/bin
-Pushd ~/.local/bin
-ln -s $(dirname $dst)/nvim_latest/$loc .
+set -euo pipefail
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
+
+sm_require curl tar
+
+repo="${NVIM_REPO:-neovim/neovim-releases}"
+tag="$(sm_resolve_version "${NVIM_VERSION:-}" "$repo")"
+sm_banner neovim "$tag"
+
+dst="$TOOLSDIR/nvim_${tag}"
+rm -rf "$dst" && mkdir -p "$dst"
+Pushd "$dst"
+
+asset="nvim-linux-x86_64.tar.gz"
+sm_fetch_extract "https://github.com/${repo}/releases/download/${tag}/${asset}"
+
+# The tarball unpacks to nvim-linux-x86_64/; keep a stable nvim_latest symlink
+# alongside the versioned dir so the bin symlink never needs updating.
+extracted="$(find . -maxdepth 1 -type d -name 'nvim-linux*' | head -1)"
+ln -sfn "$dst/${extracted#./}" "$TOOLSDIR/nvim_latest"
 Popd
+
+sm_link_bin "$TOOLSDIR/nvim_latest/bin/nvim" nvim
+completed "nvim ${tag} ready: $("$BIN/nvim" --version | head -1)"
+# vim: ts=3 sts=3 sw=3 et

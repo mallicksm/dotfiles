@@ -1,33 +1,27 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+#===============================================================================
+# xclip_local_install.sh -- xclip via non-root RPM extraction into ~/.local/bin.
+#
+# There's no upstream static xclip binary, so we pull the EPEL RPM and extract
+# just the binary (no root / rpm database needed). Override the RPM URL with
+# XCLIP_RPM_URL if the EPEL path changes.
+#===============================================================================
+set -euo pipefail
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-# Set target RPM URL and filename
-URL="https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/x/xclip-0.13-8.el8.x86_64.rpm"
-RPM_FILE="xclip-0.13-8.el8.x86_64.rpm"
-EXTRACT_DIR="~/build-xclip"
+sm_require curl rpm2cpio cpio
 
-# Create extract directory if it doesn't exist
-mkdir -p "$EXTRACT_DIR" && pushd "$EXTRACT_DIR"
+URL="${XCLIP_RPM_URL:-https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/x/xclip-0.13-8.el8.x86_64.rpm}"
+sm_banner xclip "$(basename "$URL")"
+sm_workdir xclip >/dev/null
 
-# Download the RPM
-echo "📥 Downloading $RPM_FILE..."
-curl -LO "$URL"
+sm_fetch "$URL" xclip.rpm
+rpm2cpio xclip.rpm | cpio -idmv > /dev/null 2>&1
 
-# Extract binary non-root
-echo "📦 Extracting $RPM_FILE to $EXTRACT_DIR..."
-rpm2cpio "$RPM_FILE" | cpio -idmv
-
-# Move xclip binary to target dir
-if [ -f "./usr/bin/xclip" ]; then
-   echo "✅ xclip extracted to ./usr/bin/xclip"
+if [[ -x ./usr/bin/xclip ]]; then
+   sm_install_bin ./usr/bin/xclip
 else
-   echo "❌ Failed to extract xclip"
-   exit 1
+   error "xclip binary not found after extraction"; exit 1
 fi
-popd
-
-# Optional: Show usage
-echo -e "\nTo use xclip:"
-echo "   cp ./usr/bin/xclip ~/.local/bin/"
-echo "   xclip -selection clipboard <<< \"hello world\""
-
+completed "xclip installed: $("$BIN/xclip" -version 2>&1 | head -1)"
+# vim: ts=3 sts=3 sw=3 et
