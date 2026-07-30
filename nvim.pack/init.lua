@@ -15,7 +15,7 @@
    │   lua/plugins.lua         vim.pack.add() of every repo       │
    │   lua/plugins/<name>.lua  per-plugin setup (one file each)   │
    │   lua/keymaps.lua         basic, plugin-agnostic keymaps     │
-   │   lua/{utils,markdown,user_plugins}/  unchanged from .easy   │
+   │   lua/{utils,markdown}/  unchanged from .easy               │
    │   after/, syntax/         unchanged from .easy               │
    ╰──────────────────────────────────────────────────────────────╯
 --]]

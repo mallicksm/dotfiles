@@ -102,8 +102,7 @@ lockfile changes after a git pull.
 │   │   ├── linting.lua
 │   │   └── debugging.lua    nvim-dap stack
 │   ├── utils/               Pickers and one-off tools (`format_sv`, …)
-│   ├── markdown/links.lua   Markdown link helpers
-│   └── user_plugins/        Local/experimental specs (e.g. nvim_notes)
+│   └── markdown/links.lua   Markdown link helpers
 ├── after/
 │   ├── ftdetect/filetype.lua
 │   └── ftplugin/*.lua       Per-filetype settings (markdown, SV, jira, …)

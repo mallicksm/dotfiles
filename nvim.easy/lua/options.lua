@@ -47,7 +47,7 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
--- Indent: 3 spaces, never literal TAB (nvim.vim had this; modelines like
+-- Indent: 3 spaces, never literal TAB (modelines like
 -- "vim: ts=3 sts=3 sw=3 et" at the bottom of Lua files only affect that file).
 vim.opt.tabstop = 3
 vim.opt.softtabstop = 3

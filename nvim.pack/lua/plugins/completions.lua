@@ -17,7 +17,7 @@ require('blink.cmp').setup({
    snippets = { preset = 'default' }, -- vim.snippet expansion engine
 
    sources = {
-      default = { 'lsp', 'snippets', 'directory', 'path', 'buffer' },
+      default = { 'lsp', 'snippets', 'path', 'buffer' },
       providers = {
          lsp = { score_offset = 100 },
          -- VS Code-format snippet collection at ~/dotfiles/snippets/vscode_snippets/
@@ -31,11 +31,6 @@ require('blink.cmp').setup({
                global_snippets   = { 'all' },
                search_paths      = { vim.fn.expand('~/dotfiles/snippets/vscode_snippets') },
             },
-         },
-         directory = {
-            name         = 'Directory',
-            module       = 'user_plugins.nvim_notes',
-            score_offset = 80,
          },
          path   = { score_offset = 70 },
          buffer = { score_offset = 60, max_items = 3 },

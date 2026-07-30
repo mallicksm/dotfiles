@@ -21,7 +21,7 @@ return {
          appearance = { nerd_font_variant = 'mono' },
          snippets = { preset = 'default' }, -- vim.snippet; the engine that *expands* snippets (LSP-provided + ours)
          sources = {
-            default = { 'lsp', 'snippets', 'directory', 'path', 'buffer' },
+            default = { 'lsp', 'snippets', 'path', 'buffer' },
             providers = {
                lsp = { score_offset = 100 },
                -- blink.cmp's built-in snippets source. Reads VS Code-format
@@ -46,11 +46,6 @@ return {
                      global_snippets   = { 'all' },
                      search_paths      = { vim.fn.expand('~/dotfiles/snippets/vscode_snippets') },
                   },
-               },
-               directory = {
-                  name = 'Directory',
-                  module = 'user_plugins.nvim_notes',
-                  score_offset = 80,
                },
                path = { score_offset = 70 },
                buffer = { score_offset = 60, max_items = 3 },

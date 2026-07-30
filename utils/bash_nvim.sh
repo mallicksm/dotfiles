@@ -144,32 +144,3 @@ zz_explorer() {
    mapfile -t files <<<"$out"
    vi "${files[@]}"
 }
-
-#-------------------------------------------------------------------------------
-# vim alias -- vimscript-based original nvim installation (nvim.vim)
-#-------------------------------------------------------------------------------
-vim() {
-   local -a extra_opts=()
-   local -a args=()
-   while (( $# )); do
-      case $1 in
-         -*) extra_opts+=("$1"); shift ;;
-         *)  args+=("$1");       shift ;;
-      esac
-   done
-
-   (
-      # shellcheck disable=SC2030,SC2031
-      export XDG_CONFIG_HOME=~/dotfiles/
-      # shellcheck disable=SC2030,SC2031
-      export NVIM_APPNAME=nvim.vim
-      # See `vi()` above for rationale -- silences the DSR hit-enter prompt
-      # over X-forwarded SSH and skips the truecolor DECRQSS probe.
-      # shellcheck disable=SC2030,SC2031
-      export NVIM_TEST=1
-      # shellcheck disable=SC2030,SC2031
-      export COLORTERM=${COLORTERM:-truecolor}
-      printf 'Note: nvim %s %s\n' "${extra_opts[*]}" "${args[*]}"
-      nvim "${extra_opts[@]}" "${args[@]}"
-   )
-}

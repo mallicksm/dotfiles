@@ -84,8 +84,7 @@ you update or delete packs.
 │   │   ├── formatting.lua / linting.lua / debugging.lua
 │   │   └── verilog.lua          verilog_systemverilog.vim globals
 │   ├── utils/                   Shared helpers (z_picker, format_sv, …)
-│   ├── markdown/links.lua
-│   └── user_plugins/
+│   └── markdown/links.lua
 ├── after/                       ftdetect + ftplugin (mirrors nvim.easy)
 ├── queries/systemverilog/
 └── syntax/*.vim                 Vendored syntax files
