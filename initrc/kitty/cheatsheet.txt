@@ -35,7 +35,10 @@ WINDOWS  (splits inside one OS window) ─────────────�
   cs+j / cs+k       focus window DOWN / UP (no tab fallthrough; mirrors nvim)
   cs+] / cs+[       focus next / previous window (layout order, not directional)
   cs+1 .. cs+9      focus window N
-  cs+f / cs+b       move window forward / backward in layout
+  cs+f              zoom: toggle active window to fill the layout / restore
+                    (kitty's stack-layout toggle; like zellij alt+f)
+  csa+f / csa+b     move window forward / backward in layout
+                    (cs+b is disabled -- its old action moved to csa+b)
   cs+r              start interactive resize (arrows, then enter)
   cs+f7             visually pick window to focus
   cs+f8             visually pick window to swap with

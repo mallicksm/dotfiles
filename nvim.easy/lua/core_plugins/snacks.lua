@@ -336,7 +336,23 @@ return {
             end,
 
             { section = 'keys', gap = 1, padding = 1 },
-            { section = 'startup' },
+
+            -- Custom startup footer mirroring nvim.pack's, but with the plugin
+            -- count sourced from lazy.nvim (lazy.stats) and tagged (vim.easy)
+            -- so it's obvious at a glance which flavor launched (vi -p here vs
+            -- the default vi -> vim.pack). left-align matches formats.footer.
+            function()
+               local ok, stats = pcall(function() return require('lazy').stats() end)
+               if not ok or type(stats) ~= 'table' then return nil end
+               return {
+                  align = 'left',
+                  text = {
+                     { '⚡ Neovim · ',        hl = 'footer' },
+                     { tostring(stats.count), hl = 'special' },
+                     { ' plugins (vim.easy)', hl = 'footer' },
+                  },
+               }
+            end,
          },
       },
    },
