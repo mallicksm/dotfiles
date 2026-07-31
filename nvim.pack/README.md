@@ -98,17 +98,18 @@ the corresponding file in each tree (or symlink if you later unify).
 Functionally the same plugins and keymaps; only the **loading mechanism**
 differs:
 
-| Concept              | nvim.easy (lazy.nvim)              | nvim.pack (`vim.pack`)                |
-|----------------------|------------------------------------|---------------------------------------|
-| Bootstrap            | `lua/bootstrap.lua` clones lazy    | none                                  |
-| Plugin discovery     | `import` of `plugins/`, `core_plugins/`, `code_plugins/` | explicit list in `lua/plugins.lua` |
-| Deferred load        | `keys` / `event` / `cmd` in spec   | none — eager load at startup          |
-| Transitive deps      | lazy resolves                      | list every repo in `plugins.lua`      |
-| Post-install builds  | `build = '...'` in spec            | idempotent steps at bottom of `plugins.lua` |
-| Lockfile             | `lazy-lock.json`                   | `nvim-pack-lock.json`                 |
-| Update all           | `:Lazy update` then `:Lazy sync`   | `:lua vim.pack.update()`              |
-| Browse on disk       | `:Lazy`                            | `~/.local/share/nvim.pack/site/pack/core/opt/` |
-| Remove from disk     | `:Lazy clean`                      | `:lua vim.pack.del({'plugin-dir-name'})` |
+| Concept             | nvim.easy (lazy.nvim)                         | nvim.pack (`vim.pack`)                         |
+| ------------------- | --------------------------------------------- | ---------------------------------------------- |
+| Bootstrap           | `lua/bootstrap.lua` clones lazy               | none                                           |
+| Plugin discovery    | `import` of `plugins/`, `core_plugins/`,      | explicit list in `lua/plugins.lua`             |
+|                     | `code_plugins/`                               |                                                |
+| Deferred load       | `keys` / `event` / `cmd` in spec              | none — eager load at startup                   |
+| Transitive deps     | lazy resolves                                 | list every repo in `plugins.lua`               |
+| Post-install builds | `build = '...'` in spec                       | idempotent steps at bottom of `plugins.lua`    |
+| Lockfile            | `lazy-lock.json`                              | `nvim-pack-lock.json`                          |
+| Update all          | `:Lazy update` then `:Lazy sync`              | `:lua vim.pack.update()`                       |
+| Browse on disk      | `:Lazy`                                       | `~/.local/share/nvim.pack/site/pack/core/opt/` |
+| Remove from disk    | `:Lazy clean`                                 | `:lua vim.pack.del({'plugin-dir-name'})`       |
 
 Removed vs older lazy-era stacks (both configs): **telescope**, **neo-tree**,
 **which-key**, **nvim-notify**, **nvim-web-devicons** — replaced by

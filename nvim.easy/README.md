@@ -43,12 +43,12 @@ name for `git difftool`.
 With `NVIM_APPNAME=nvim.easy`, Neovim isolates state under your XDG dirs,
 for example:
 
-| Purpose        | Typical path                                      |
-|----------------|---------------------------------------------------|
-| lazy.nvim      | `~/.local/share/nvim.easy/lazy/lazy.nvim`         |
-| Plugin clones  | `~/.local/share/nvim.easy/lazy/<plugin>`          |
-| Mason packages | `~/.local/share/nvim.easy/mason/`                 |
-| Undo / shada   | `~/.local/state/nvim.easy/`                       |
+| Purpose        | Typical path                              |
+| -------------- | ----------------------------------------- |
+| lazy.nvim      | `~/.local/share/nvim.easy/lazy/lazy.nvim` |
+| Plugin clones  | `~/.local/share/nvim.easy/lazy/<plugin>`  |
+| Mason packages | `~/.local/share/nvim.easy/mason/`         |
+| Undo / shada   | `~/.local/state/nvim.easy/`               |
 
 `nvim.pack` uses parallel `~/.local/{share,state,cache}/nvim.pack/` trees;
 switching `vi` vs `vi -p` does not cross-contaminate plugin installs.
@@ -136,13 +136,13 @@ dependency graph (already satisfied via mason/lspconfig’s own deps).
 
 ### Plugins (lazy.nvim)
 
-| Task              | Command              | Notes |
-|-------------------|----------------------|-------|
-| Update all        | `:Lazy update`       | Fetches newer commits; review then sync |
-| Install / repair  | `:Lazy sync`         | Installs missing; updates `lazy-lock.json` |
-| Inspect           | `:Lazy`              | UI: enable/disable, logs, profiling |
-| Single plugin     | `:Lazy update <name>`| e.g. `snacks.nvim` |
-| Health            | `:checkhealth lazy`  | |
+| Task             | Command               | Notes                                      |
+| ---------------- | --------------------- | ------------------------------------------ |
+| Update all       | `:Lazy update`        | Fetches newer commits; review then sync    |
+| Install / repair | `:Lazy sync`          | Installs missing; updates `lazy-lock.json` |
+| Inspect          | `:Lazy`               | UI: enable/disable, logs, profiling        |
+| Single plugin    | `:Lazy update <name>` | e.g. `snacks.nvim`                         |
+| Health           | `:checkhealth lazy`   |                                            |
 
 After updating, **commit `lazy-lock.json`** with your dotfiles so other
 machines reproduce the same plugin SHAs.
@@ -175,12 +175,12 @@ cd ~/dotfiles && git add nvim.easy/lazy-lock.json && git commit -m "nvim: bump l
 
 ## Sibling config: nvim.pack
 
-| Topic            | nvim.easy (this tree)     | nvim.pack                    |
-|------------------|---------------------------|------------------------------|
-| Package manager  | lazy.nvim                 | built-in `vim.pack` (0.12+)  |
-| Plugin list      | auto-discovered specs     | explicit `lua/plugins.lua`   |
-| Lockfile         | `lazy-lock.json`          | `nvim-pack-lock.json`        |
-| Update command   | `:Lazy update` / `sync`   | `:lua vim.pack.update()`     |
-| Lazy loading     | per-spec `keys` / `event` | eager (all plugins at start) |
+| Topic           | nvim.easy (this tree)     | nvim.pack                    |
+| --------------- | ------------------------- | ---------------------------- |
+| Package manager | lazy.nvim                 | built-in `vim.pack` (0.12+)  |
+| Plugin list     | auto-discovered specs     | explicit `lua/plugins.lua`   |
+| Lockfile        | `lazy-lock.json`          | `nvim-pack-lock.json`        |
+| Update command  | `:Lazy update` / `sync`   | `:lua vim.pack.update()`     |
+| Lazy loading    | per-spec `keys` / `event` | eager (all plugins at start) |
 
 Details: [`../nvim.pack/README.md`](../nvim.pack/README.md).
