@@ -1,102 +1,71 @@
                        KITTY CHEATSHEET                       cs+/  to reopen
 
-cs   = ctrl+shift   (kitty_mod)         csa  = ctrl+shift+alt
-press q to close this overlay
+cs = ctrl+shift   csa = ctrl+shift+alt   ca = ctrl+alt   (press q to close)
 
 
 CLIPBOARD ───────────────────────────────────────────────────────────────────
-  cs+c              copy selection to clipboard
-  csa+v             paste from clipboard           (cs+v is vsplit; see WINDOWS)
-  csa+s             paste from PRIMARY selection   (cs+s is hsplit; see WINDOWS)
-  shift+insert      paste from PRIMARY selection   (kitty default, kept)
-  cs+o              pass selection to xdg-open
+  double-click / drag   selecting auto-copies to clipboard (copy_on_select)
+  middle-click          paste clipboard (works in zellij / vim too)
+  cmd+v  /  ca+v        paste clipboard from keyboard
+  shift+insert / ca+s   paste PRIMARY selection (X11)
+  cs+o                  pass selection to xdg-open
 
-TABS ────────────────────────────────────────────────────────────────────────
-  cs+left           previous tab    (pure tab nav, no window step)
-  cs+right          next tab        (pure tab nav, no window step)
-  cs+t              new tab
-  cs+q              close tab (keyboard)
-  middle-click      close any tab from the mouse (kitty built-in)
-  cs+. / cs+,       move tab forward / backward
-  csa+t             rename tab interactively (kitty overlay)
-  $ kktabname [name]  rename current tab from shell (any window in the tab)
-                    -r resets; no args = prompt; needs allow_remote_control yes
-                    defined in ~/dotfiles/utils/bash_kitty.sh
-  (cs+h / cs+l also reach adjacent tabs -- but only when no window neighbor;
-   see WINDOWS below.)
+TABS ─────────────────────────────────────────────────────────────────────────
+  cs+t                  new tab            cs+q         close tab
+  cs+left / cs+right    prev / next tab    cs+. / cs+,  move tab fwd / back
+  csa+t                 rename tab (overlay)
+  kktabname [name]      rename tab from the shell (see kk<tab> below)
 
-WINDOWS  (splits inside one OS window) ──────────────────────────────────────
-  cs+s              :sp  -- horizontal split (new window BELOW; divider --)
-  cs+v              :vsp -- vertical split   (new window RIGHT; divider | )
-  cs+enter          new window (layout-default placement; pre-vim-mapping)
-  cs+w              close window
-  cs+h / cs+l       focus window LEFT / RIGHT, falls through to prev/next tab
-                    when there is no window neighbor in that direction
-  cs+j / cs+k       focus window DOWN / UP (no tab fallthrough; mirrors nvim)
-  cs+] / cs+[       focus next / previous window (layout order, not directional)
-  cs+1 .. cs+9      focus window N
-  cs+f              zoom: toggle active window to fill the layout / restore
-                    (kitty's stack-layout toggle; like zellij alt+f)
-  csa+f / csa+b     move window forward / backward in layout
-                    (cs+b is disabled -- its old action moved to csa+b)
-  cs+r              start interactive resize (arrows, then enter)
-  cs+f7             visually pick window to focus
-  cs+f8             visually pick window to swap with
-  csa+l             cycle layouts (stack / tall / grid / ...)
+WINDOWS  (splits inside one OS window) ───────────────────────────────────────
+  cs+s / cs+v           split horizontal (below) / vertical (right)
+  cs+enter              new window         cs+w         close window
+  cs+h / cs+l           focus left / right (falls through to prev/next tab)
+  cs+j / cs+k           focus down / up    (no tab fallthrough; mirrors nvim)
+  cs+[ / cs+]           focus prev / next window (layout order)
+  cs+1 .. cs+9          focus window N
+  cs+f                  zoom: fill layout / restore   (like zellij alt+f)
+  csa+f / csa+b         move window fwd / back  (cs+b is disabled)
+  cs+r                  interactive resize (arrows, enter)
+  cs+f7 / cs+f8         visually pick window to focus / swap
+  csa+l                 cycle layouts (stack / tall / fat / grid)
 
 SCROLLING & HISTORY ─────────────────────────────────────────────────────────
-  cs+up / cs+k      scroll one line up
-  cs+down / cs+j    scroll one line down
-  cs+page_up        scroll one screen up
-  cs+page_down      scroll one screen down
-  cs+home / cs+end  jump to top / bottom of scrollback
-  cs+z / cs+x       jump to previous / next shell prompt   (shell-int)
-  csa+h             open scrollback buffer in pager (less; q to quit)
-  cs+g              open last command's output in pager    (shell-int)
+  cs+up / cs+down       line up / down    cs+pgup / cs+pgdn   screen up / down
+  cs+home / cs+end      top / bottom of scrollback
+  cs+z / cs+x           prev / next shell prompt   (shell-integration)
+  csa+h                 open scrollback in pager (less)
+  cs+g                  last command output in pager
 
-HINTS  (pick things off the screen with the keyboard) ──────────────────────
-  cs+e              open URL under or near cursor
-  cs+p, f           pick a file path -> insert at prompt
-  cs+p, shift+f     pick a file path -> open with default app
-  cs+p, l           pick a line -> insert
-  cs+p, w           pick a word -> insert
-  cs+p, h           pick a git-hash-shaped string -> insert
-  cs+p, n           pick file:line -> open in $EDITOR at that line
-  cs+p, y           pick an OSC-8 hyperlink
+HINTS  (keyboard-pick things off screen) ────────────────────────────────────
+  cs+e                  open URL under cursor
+  cs+p then: f=path  shift+f=path→open  l=line  w=word  h=git-hash
+             n=file:line→$EDITOR   y=OSC-8 link
 
-OS WINDOWS / FONT ───────────────────────────────────────────────────────────
-  cs+n              new OS window
-  cs++ / cs+=       bigger font
-  cs+-              smaller font
-  cs+0              reset font size                    (your remap)
+FONT / OS WINDOWS ───────────────────────────────────────────────────────────
+  cs++ / cs+-           bigger / smaller font    cs+0   reset font size
+  cs+n                  new OS window
 
-OPACITY  (dynamic_background_opacity is now ON; default = 0.9) ─────────────
-  cs+a, m / cs+a, l increase / decrease background opacity
-  cs+a, 1 / cs+a, d force opaque / reset to config default
+OPACITY  (default 0.9) ───────────────────────────────────────────────────────
+  cs+a,m / cs+a,l       opacity up / down     cs+a,1 / cs+a,d   opaque / reset
 
-DECORATIONS  (visible cues, no keybindings -- just so you know what changed)
-  active split      purple  (#bd93f9) 2pt border on the focused split
-  inactive splits   slate   (#3a3c4e) border + text dimmed to 0.85 alpha
-  bell border       pink    (#ff79c6) when an inactive window rings
-  tab bar           hidden when only 1 tab; angled (>) powerline separators
-                    each tab pinned to 20-cell width (no bouncing)
-                    right side shows: cwd | host | HH:MM   (muted slate fg)
-                    custom drawer: ~/dotfiles/initrc/kitty/tab_bar.py
-  titlebar          shown (default) -- WM provides drag/close/min/max
-  background        90% opaque + 20-radius blur (compositor-dependent on X11)
-                    cs+a,d to reset, cs+a,1 for fully opaque
+META  ("i forgot" buttons) ──────────────────────────────────────────────────
+  cs+/  cs+f1           show this cheatsheet       cs+f2   edit kitty.conf
+  cs+f5                 reload kitty.conf          cs+f6   dump active config
+  cs+f10 / cs+f11       toggle maximised / fullscreen
+  cs+escape             remote-control shell (REPL)
+  cs+u                  unicode input by name      cs+delete  reset terminal
 
-META  (your "i forgot" panic buttons) ───────────────────────────────────────
-  cs+/    cs+f1     show this cheatsheet
-  cs+f2             edit kitty.conf in $EDITOR
-  cs+f5             reload kitty.conf (no restart)
-  cs+f6             dump full active config to a window
-  cs+f10            toggle maximised
-  cs+f11            toggle fullscreen
-  cs+escape         open kitty's remote-control shell (REPL)
-  cs+u              unicode input by name (e.g. "snowman" -> snowman char)
-  cs+delete         reset terminal
+kk<TAB>  (shell commands for kitty — type "kk" then TAB) ─────────────────────
+  kktheme <name|fuzzy>  switch theme (fuzzy match); subcommands:
+                          list      interactive picker w/ live preview
+                          save      snapshot current theme as rollback target
+                          original  restore snapshot    dracula  vanilla Dracula
+  kktabname [name]      rename current tab   (-r reset;  no args = prompt)
+  kkbroadcast <cmd>     run <cmd> in every OTHER kitty window in this tab
+                          -a         all windows, all tabs
+                          -t REGEX   only windows whose title matches REGEX
+  (all three need allow_remote_control yes; see ~/dotfiles/utils/bash_kitty.sh)
 
 
-Tip:    `kitty +kitten show_key`  prints what kitty receives for any keypress.
-File:   ~/dotfiles/initrc/kitty/cheatsheet.txt   (lives in your dotfiles repo)
+Tip:  `kitten show_key`  prints what kitty receives for any keypress.
+File: ~/dotfiles/initrc/kitty/cheatsheet.txt   (in your dotfiles repo)
