@@ -1,7 +1,0 @@
-Snippet Directories
-1. vscode_snippets - VS Code-format JSON snippets. Loaded by garymjr/nvim-snippets
-                     (see ~/dotfiles/nvim.easy/lua/code_plugins/snippets.lua) and
-                     surfaced via blink.cmp's `snippets` source. Adding a new
-                     filetype: drop <ft>.json next to the others AND register it
-                     in package.json's contributes.snippets array. all.json is
-                     applied to every filetype via global_snippets={'all'}.

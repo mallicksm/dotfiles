@@ -59,11 +59,11 @@ function linkrc() {
       ["zellij"]="/dev/null"
    )
 
-   mydotfiles=$(command ls -1 $cdir/initrc/)
-   for dotfile in ${mydotfiles[@]}; do
+   for path in "$cdir"/initrc/*; do
+      dotfile=${path##*/}
       dest="${link_map[$dotfile]:-$HOME/.$dotfile}"
       info "Linking $dotfile → $dest"
-      linkup "$cdir/initrc/$dotfile" "$dest"
+      linkup "$path" "$dest"
    done
 
    link_kitty_os
