@@ -13,8 +13,8 @@ require('mini.basics').setup({
    },
 })
 -- mini.basics enables smartindent globally as part of `basic = true`. It's
--- redundant once any indentexpr/treesitter-indent is active, and it triggers
--- a per-open warning in vhda/verilog_systemverilog.vim. Turn it back off.
+-- redundant (and can fight) once any indentexpr/treesitter-indent is active --
+-- e.g. the built-in SystemVerilogIndent() for ft=sv. Turn it back off.
 vim.opt.smartindent = false
 
 require('mini.extra').setup()

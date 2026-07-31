@@ -4,12 +4,12 @@
 vim.filetype.add({
    -- Detect and assign filetype based on the extension of the filename
    extension = {
-      v = "verilog_systemverilog",
-      vh = "verilog_systemverilog",
-      vp = "verilog_systemverilog",
-      sv = "verilog_systemverilog",
-      svh = "verilog_systemverilog",
-      svp = "verilog_systemverilog",
+      v = "sv",
+      vh = "sv",
+      vp = "sv",
+      sv = "sv",
+      svh = "sv",
+      svp = "sv",
       qel = "tcl",
       fs = "tcl",
       tdf = "tdf",

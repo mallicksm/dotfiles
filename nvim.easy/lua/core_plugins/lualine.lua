@@ -47,12 +47,7 @@ return {
                "fileformat",
                clients_lsp,
                function()
-                  local ft = vim.bo.filetype
-                  if ft == "verilog_systemverilog" then
-                     return "sv"
-                  else
-                     return ft
-                  end
+                  return vim.bo.filetype
                end
             },
          },

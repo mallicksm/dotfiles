@@ -33,9 +33,9 @@ return {
       ts.install(ensure_installed)
 
       -- Map filetypes to their tree-sitter parser when the names differ.
-      -- after/ftdetect/filetype.lua only ever sets ft=verilog_systemverilog (never
-      -- 'verilog' or 'systemverilog'), so we only need that one alias.
-      vim.treesitter.language.register('systemverilog', { 'verilog_systemverilog' })
+      -- after/ftdetect/filetype.lua only ever sets ft=sv (never 'verilog' or
+      -- 'systemverilog'), so map our short ft=sv onto the 'systemverilog' parser.
+      vim.treesitter.language.register('systemverilog', { 'sv' })
       vim.treesitter.language.register('bash', { 'sh' })
       vim.treesitter.language.register('asm', { 'vmasm' })
 
@@ -45,9 +45,9 @@ return {
             local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
             if not lang then return end
             local ok = pcall(vim.treesitter.start, args.buf, lang)
-            if ok and vim.bo[args.buf].filetype ~= 'verilog_systemverilog' then
-               -- SV: no treesitter indents.scm; TS indentexpr returns 0 and
-               -- fights vhda indent (indentkeys includes ';'). Keep GetVerilogSystemVerilogIndent().
+            if ok and vim.bo[args.buf].filetype ~= 'sv' then
+               -- SV: no treesitter indents.scm; TS indentexpr returns 0. Keep the
+               -- built-in SystemVerilogIndent() (bridged via indent/sv.vim) instead.
                vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
             end
          end,

@@ -96,7 +96,7 @@ vim.lsp.config('verible', {
       end
       return vim.lsp.rpc.start(cmd_args, dispatchers)
    end,
-   filetypes    = { 'verilog_systemverilog' },
+   filetypes    = { 'sv' },
    root_markers = { '.git' },
 })
 

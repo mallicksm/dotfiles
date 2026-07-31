@@ -98,7 +98,6 @@ vim.pack.add({
    ----------------------------------------------------------------------------
    { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main' },
    { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' },
-   { src = 'https://github.com/vhda/verilog_systemverilog.vim' },
 }, {
    -- confirm = false silences the "These plugins will be installed:" popup
    -- that fires on every launch when vim.pack's in-session registry thinks
@@ -155,8 +154,6 @@ require('plugins.marks')
 require('plugins.undotree')
 -- plugins.neo-tree removed; snacks.explorer (<leader>ee) is the file browser now.
 -- plugins.telescope removed;  snacks.picker keymaps live in plugins/snacks.lua
-
-require('plugins.verilog')       -- vim.g.verilog_syntax_fold_lst (vimscript syntax)
 
 -- ----------------------------------------------------------------------------
 -- PHASE 2 setup -- deferred toolchain (LSP / completion / format / lint / dap /

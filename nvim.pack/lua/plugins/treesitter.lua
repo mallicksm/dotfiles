@@ -21,9 +21,9 @@ local ts = require('nvim-treesitter')
 vim.opt.runtimepath:prepend(vim.fn.stdpath('data') .. '/site/pack/core/opt/nvim-treesitter/runtime')
 ts.install(ensure_installed)
 
--- ftdetect/filetype.lua only emits ft=verilog_systemverilog (never 'verilog'
--- or 'systemverilog'), so we only need that one alias. Same for sh -> bash.
-vim.treesitter.language.register('systemverilog', { 'verilog_systemverilog' })
+-- ftdetect/filetype.lua only emits ft=sv (never 'verilog' or 'systemverilog'),
+-- so map our short ft=sv onto the 'systemverilog' parser. Same for sh -> bash.
+vim.treesitter.language.register('systemverilog', { 'sv' })
 vim.treesitter.language.register('bash', { 'sh' })
 vim.treesitter.language.register('asm', { 'vmasm' })
 
@@ -33,9 +33,9 @@ vim.api.nvim_create_autocmd('FileType', {
       local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
       if not lang then return end
       local ok = pcall(vim.treesitter.start, args.buf, lang)
-      if ok and vim.bo[args.buf].filetype ~= 'verilog_systemverilog' then
-         -- SV: no treesitter indents.scm; TS indentexpr returns 0 and fights
-         -- vhda indent (indentkeys includes ';'). Keep GetVerilogSystemVerilogIndent().
+      if ok and vim.bo[args.buf].filetype ~= 'sv' then
+         -- SV: no treesitter indents.scm; TS indentexpr returns 0. Keep the
+         -- built-in SystemVerilogIndent() (bridged via indent/sv.vim) instead.
          vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       end
    end,

@@ -17,6 +17,7 @@ vim.keymap.set('n', '#', '#<cmd>set hlsearch<CR>', { desc = 'Search backward for
 -- `q` (start macro) since `q` is overloaded by us.
 vim.keymap.set('n', 'gq',         'q',             { desc = 'Nav: Macro' })
 vim.keymap.set('n', 'q',          '<cmd>q<CR>',    { desc = 'Nav: Quit if no change' })
+vim.keymap.set('n', 'Q',          '<cmd>q!<CR>',   { desc = 'Nav: Force quit window (discard changes)' })
 vim.keymap.set('n', '<leader>q',  '<cmd>qa<CR>',   { desc = 'Nav: Quit all if no change' })
 vim.keymap.set('n', '<leader>x',  '<cmd>wqa!<CR>', { desc = 'Nav: Write quit all' })
 

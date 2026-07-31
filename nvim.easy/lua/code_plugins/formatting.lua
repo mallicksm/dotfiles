@@ -75,7 +75,7 @@ return {
                python = { 'black' },                                 -- pip install black
                c = { 'clang_format' },                               -- gcc13 + clang11
                cpp = { 'clang_format' },                             -- gcc13 + clang11
-               verilog_systemverilog = { 'verible_verilog_format' }, -- https://github.com/chipsalliance/verible/releases
+               sv = { 'verible_verilog_format' },                    -- https://github.com/chipsalliance/verible/releases
                semifore = { 'semiforefmt' },
                sh = { 'shfmt' },                                     -- mason: shfmt
                bash = { 'shfmt' },                                   -- shebang-detected #!/bin/bash buffers

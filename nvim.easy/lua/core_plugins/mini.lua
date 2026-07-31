@@ -24,8 +24,8 @@ return {
             },
          })
          -- mini.basics enables smartindent globally as part of its `basic = true`
-         -- bundle. It's redundant once any indentexpr/treesitter-indent is active
-         -- and it triggers a per-open warning in vhda/verilog_systemverilog.vim.
+         -- bundle. It's redundant (and can fight) once any indentexpr/treesitter-
+         -- indent is active -- e.g. the built-in SystemVerilogIndent() for ft=sv.
          vim.opt.smartindent = false
          -------------------------------------------------------------
          -- <leader>K for more info on cWORD MiniExtra

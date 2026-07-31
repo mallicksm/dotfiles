@@ -26,8 +26,8 @@
                 "path": "./trace32.json"
             },
             {
-                "language": "verilog_systemverilog",
-                "path": "./verilog_systemverilog.json"
+                "language": "sv",
+                "path": "./sv.json"
             },
             {
                 "language": "asm",

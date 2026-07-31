@@ -93,8 +93,7 @@ lockfile changes after a git pull.
 │   │   ├── noice.lua
 │   │   ├── render-markdown.lua
 │   │   ├── gitsigns.lua / neogit.lua / diffview.lua
-│   │   ├── harpoon.lua / marks.lua / undotree.lua (builtin pack)
-│   │   └── verilog_systemverilog.lua
+│   │   └── harpoon.lua / marks.lua / undotree.lua (builtin pack)
 │   ├── code_plugins/        LSP, format, lint, debug, completion
 │   │   ├── completions.lua  blink.cmp (must load before lspconfig)
 │   │   ├── lspconfig.lua    mason + mason-lspconfig + lspconfig

@@ -36,8 +36,7 @@ local default_config = {
          'fileformat',
          clients_lsp,
          function()
-            local ft = vim.bo.filetype
-            return ft == 'verilog_systemverilog' and 'sv' or ft
+            return vim.bo.filetype
          end,
       },
    },

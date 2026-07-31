@@ -1,4 +1,65 @@
 {
+   "main": {
+      "prefix": ["main"],
+      "description": "C entry point: argc/argv choice, returns 0",
+      "body": [
+         "int main(${1|int argc\\, char **argv,void|}) {",
+         "   $0",
+         "   return 0;",
+         "}"
+      ]
+   },
+   "if": {
+      "prefix": ["if"],
+      "description": "if block",
+      "body": [
+         "if (${1:condition}) {",
+         "   $0",
+         "}"
+      ]
+   },
+   "if-else": {
+      "prefix": ["if-else", "ife"],
+      "description": "if / else block",
+      "body": [
+         "if (${1:condition}) {",
+         "   $2",
+         "} else {",
+         "   $0",
+         "}"
+      ]
+   },
+   "for": {
+      "prefix": ["for"],
+      "description": "for loop",
+      "body": [
+         "for (int ${1:i} = 0; ${1:i} < ${2:n}; ${1:i}++) {",
+         "   $0",
+         "}"
+      ]
+   },
+   "while": {
+      "prefix": ["while"],
+      "description": "while loop",
+      "body": [
+         "while (${1:condition}) {",
+         "   $0",
+         "}"
+      ]
+   },
+   "switch": {
+      "prefix": ["switch", "case"],
+      "description": "switch / case block",
+      "body": [
+         "switch (${1:expr}) {",
+         "   case ${2:val}:",
+         "      $0",
+         "      break;",
+         "   default:",
+         "      break;",
+         "}"
+      ]
+   },
    "mrs": {
       "prefix": ["mrs"],
       "body": [

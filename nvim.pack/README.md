@@ -81,8 +81,7 @@ you update or delete packs.
 │   │   ├── harpoon.lua / marks.lua / undotree.lua
 │   │   ├── completions.lua      blink.cmp (before lspconfig)
 │   │   ├── lspconfig.lua        mason + mason-lspconfig + lspconfig
-│   │   ├── formatting.lua / linting.lua / debugging.lua
-│   │   └── verilog.lua          verilog_systemverilog.vim globals
+│   │   └── formatting.lua / linting.lua / debugging.lua
 │   ├── utils/                   Shared helpers (z_picker, format_sv, …)
 │   └── markdown/links.lua
 ├── after/                       ftdetect + ftplugin (mirrors nvim.easy)
