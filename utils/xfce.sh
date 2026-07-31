@@ -1,6 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+### ============================================================================
+### xfce.sh -- XFCE desktop provisioning + teardown (was setup_xfce / kill_xfce).
+###
+###   xfce.sh -s   Set up / polish THIS XFCE session via xfconf-query: disable
+###                screensaver+lock, add a workspace-switcher (pager) to a panel,
+###                and apply cursor/panel/font cosmetics from the CONFIG block.
+###   xfce.sh -k   Kill this XFCE/VNC session and wipe its config+cache so the
+###                next login starts from a clean slate.
+###   xfce.sh -h   This help (also shown when no option is given).
+###
+### One action per invocation. Not auto-sourced (name isn't bash_*.sh); run it
+### by hand -- ~/dotfiles/utils is on PATH, so `xfce.sh -s` / `xfce.sh -k`.
+### ============================================================================
+
 ### =======================
 ### CONFIG (tweak here)
 ### =======================
@@ -13,7 +27,7 @@ GTK_FONT="DejaVu Sans 11"      # Panel text follows this global GTK font
 SET_MINIMIZED_ICON_TYPE=1      # 1 = Minimized application icons (0=None, 2=File/launcher icons)
 
 ### =======================
-### Helpers (kept + unified)
+### Helpers
 ### =======================
 have() { command -v "$1" >/dev/null 2>&1; }
 xfget() { xfconf-query -c "$1" -p "$2" >/dev/null 2>&1; }
@@ -29,7 +43,7 @@ qset() {
 }
 
 ### =======================
-### Screensaver (yours)
+### Screensaver
 ### =======================
 ss_ch="xfce4-screensaver"
 
@@ -55,7 +69,7 @@ verify_screensaver() {
 }
 
 ### =======================
-### Pager to a panel (yours)
+### Pager to a panel
 ### =======================
 panel_ch="xfce4-panel"
 
@@ -102,7 +116,7 @@ add_workspace_switcher() {
 }
 
 ### =======================
-### Cosmetics (new additions)
+### Cosmetics
 ### =======================
 set_icon_type() {
    # 0=None, 1=Minimized application icons, 2=File/launcher icons
@@ -132,12 +146,12 @@ set_panel_font() {
 }
 
 ### =======================
-### Main
+### Actions
 ### =======================
-main() {
+xfce_setup() {
    have xfconf-query || { echo "xfconf-query not found"; exit 1; }
 
-   # Your proven bits
+   # Proven bits
    disable_screensaver
    verify_screensaver
    add_workspace_switcher
@@ -150,6 +164,56 @@ main() {
    set_panel_font "$GTK_FONT"
 
    echo "[*] Done."
+}
+
+xfce_kill() {
+   echo "[*] Wiping XFCE config + cache..."
+   rm -rf ~/.config/xfce4
+   rm -rf ~/.cache/xfce4
+   rm -rf ~/.cache/sessions
+   echo "[*] Killing XFCE processes..."
+   pkill xfconfd       || true
+   pkill xfce4-panel   || true
+   pkill xfce4-session || true
+   if [[ -n ${DISPLAY:-} ]]; then
+      echo "[*] Killing VNC server on ${DISPLAY}..."
+      vncserver -kill "$DISPLAY" || true
+   fi
+   echo "[*] Done."
+}
+
+usage() {
+   cat <<'EOF'
+xfce.sh -- XFCE desktop provisioning + teardown (was setup_xfce / kill_xfce)
+
+Usage: xfce.sh [-s | -k | -h]
+  -s   Set up / polish THIS XFCE session via xfconf-query: disable
+       screensaver+lock, add a workspace-switcher (pager) to a panel, and
+       apply the cursor/panel/font cosmetics from the CONFIG block.
+  -k   Kill this XFCE/VNC session and wipe its config+cache (~/.config/xfce4,
+       ~/.cache/xfce4, ~/.cache/sessions) so the next login starts clean.
+  -h   This help (also shown when no option is given).
+
+One action per invocation. Run by hand -- ~/dotfiles/utils is on PATH.
+EOF
+}
+
+### =======================
+### Dispatch (one action per run; no option -> help)
+### =======================
+main() {
+   local opt
+   OPTIND=1
+   while getopts ":skh" opt; do
+      case "$opt" in
+         s) xfce_setup; return $? ;;
+         k) xfce_kill;  return $? ;;
+         h) usage;      return 0  ;;
+         \?) echo "xfce.sh: unknown option -$OPTARG" >&2; usage; return 2 ;;
+      esac
+   done
+   # No option given -> help.
+   usage
 }
 
 main "$@"

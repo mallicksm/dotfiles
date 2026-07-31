@@ -56,7 +56,6 @@ export FZF_CTRL_R_OPTS="
 #    --color header:italic
 #    --header 'Press CTRL-/ to toggle preview'"
 
-export FZF_TMUX=1
 # for more info see fzf/shell/completion.zsh
 _fzf_compgen_path() {
    fd . "$1"

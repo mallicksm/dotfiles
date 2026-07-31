@@ -29,7 +29,7 @@ declare -A TOOL_GROUPS=(
    [prebuilt]="modern_linux_tools.sh starship_local_install.sh patchelf_local_install.sh zellij_local_install.sh pandoc_local_install.sh verible_local_install.sh nvim_local_install.sh"
    [rpm]="xclip_local_install.sh w3m_local_install.sh x11apps_local_install.sh"
    [app]="kitty_local_install.sh ollama_local_install.sh magick_local_install.sh clang_local_install.sh"
-   [source]="git_local_install.sh gettext_local_install.sh tmux_local_install.sh verilator_local_install.sh riscvgcc_local_install.sh"
+   [source]="git_local_install.sh gettext_local_install.sh verilator_local_install.sh riscvgcc_local_install.sh"
    [pip]="pip_local_install.sh"
 )
 GROUP_ORDER=(prebuilt rpm app source pip)
