@@ -152,7 +152,7 @@ require('snacks').setup({
    -- snacks.picker.files scoped there.
    dashboard = {
       enabled = true,
-      width   = 52, -- matches the EZ Nvim ASCII header width; tighter column
+      width   = 52, -- matches the PK Nvim ASCII header width; tighter column
       -- Left-align every line type within the dashboard column (defaults
       -- center the header/footer). With width=52 this gives a consistent
       -- vertical edge at the dashboard's left margin.
@@ -161,15 +161,15 @@ require('snacks').setup({
          footer = { '%s', align = 'left' },
       },
       preset = {
-         -- "EZ Nvim" ASCII art. Single-color (SnacksDashboardHeader -> Title).
+         -- "PK Nvim" ASCII art. Single-color (SnacksDashboardHeader -> Title).
          header = table.concat({
             '',
-            '███████╗███████╗   ███╗   ██╗██╗   ██╗██╗███╗   ███╗',
-            '██╔════╝╚══███╔╝   ████╗  ██║██║   ██║██║████╗ ████║',
-            '█████╗    ███╔╝    ██╔██╗ ██║██║   ██║██║██╔████╔██║',
-            '██╔══╝   ███╔╝     ██║╚██╗██║╚██╗ ██╔╝██║██║╚██╔╝██║',
-            '███████╗███████╗   ██║ ╚████║ ╚████╔╝ ██║██║ ╚═╝ ██║',
-            '╚══════╝╚══════╝   ╚═╝  ╚═══╝  ╚═══╝  ╚═╝╚═╝     ╚═╝',
+            '██████╗ ██╗  ██╗   ███╗   ██╗██╗   ██╗██╗███╗   ███╗',
+            '██╔══██╗██║ ██╔╝   ████╗  ██║██║   ██║██║████╗ ████║',
+            '██████╔╝█████╔╝    ██╔██╗ ██║██║   ██║██║██╔████╔██║',
+            '██╔═══╝ ██╔═██╗    ██║╚██╗██║╚██╗ ██╔╝██║██║╚██╔╝██║',
+            '██║     ██║  ██╗   ██║ ╚████║ ╚████╔╝ ██║██║ ╚═╝ ██║',
+            '╚═╝     ╚═╝  ╚═╝   ╚═╝  ╚═══╝  ╚═══╝  ╚═╝╚═╝     ╚═╝',
             '            h j k l   —   no mouse required',
             '',
          }, '\n'),
