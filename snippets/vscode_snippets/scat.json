@@ -1,5 +1,5 @@
 {
-   "item header": {
+   "header": {
       "prefix": ["sheader"],
       "body": [
          "#! armclang --target=arm-arm-non-eabi -march=armv8-a -E -x c",
@@ -12,17 +12,14 @@
       ],
       "description": "Code snippet for 'header' statement"
    },
-   "item cpreprocessor": {
-      "prefix": [
-         "cpreprocessor",
-         "cpreproc"
-      ],
+   "cpreprocessor": {
+      "prefix": ["cpreprocessor", "cpreproc"],
       "body": [
          "#! armclang --target=arm-arm-non-eabi -march=armv8-a -E -x c"
       ],
       "description": "Code snippet for 'cpreprocessor' statement"
    },
-   "item template": {
+   "template": {
       "prefix": ["template"],
       "body": [
          "LOAD ${2:0x00000800}",
@@ -37,9 +34,7 @@
       "description": "Code snippet for 'template' statement"
    },
    "load_region": {
-      "prefix": [
-         "load_region"
-      ],
+      "prefix": ["load_region"],
       "body": [
          "${1:LR_Name} ${2|base_address, +offset|} ${3|ALIGN 0x100,RELOC,OVERLAY,PI|} ${4:length}",
          "{",
@@ -49,9 +44,7 @@
       "description": "Snippet for defining an load region in an ARM Linker Scatter file"
    },
    "exec_region": {
-      "prefix": [
-         "exec_region"
-      ],
+      "prefix": ["exec_region"],
       "body": [
          "${1:ER_Name} ${2|base_address, +offset|} ${3|ALIGN 0x100,PADVALUE 0xff,OVERLAY,PI|} ${4|max_size, length|}",
          "{",
@@ -61,18 +54,14 @@
       "description": "Snippet for defining an load region in an ARM Linker Scatter file"
    },
    "input_section": {
-      "prefix": [
-         "input_section"
-      ],
+      "prefix": ["input_section"],
       "body": [
          "${1:module_select_pattern} (${2|section_property,+FIRST,+LAST,+ENTRY,+RO,+RW,+ZI,+XO,RO-CODE,+RO-DATA,+RW_DATA,+RW-CODE|})"
       ],
       "description": "Snippet for defining an input section in an ARM Linker Scatter file"
    },
    "load_region_doc": {
-      "prefix": [
-         "lr_doc"
-      ],
+      "prefix": ["lr_doc"],
       "body": [
          "; Uniquely define a load region and controls which parts of an elf file are placed here",
          "; Included Components",
@@ -92,9 +81,7 @@
       "description": "snippet for load region documentation"
    },
    "exec_region_doc": {
-      "prefix": [
-         "er_doc"
-      ],
+      "prefix": ["er_doc"],
       "body": [
          "; Specifies the region of memory where parts of the image are placed",
          "; Included Components",

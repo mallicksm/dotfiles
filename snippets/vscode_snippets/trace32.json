@@ -1,10 +1,12 @@
 {
-   "item hll": {
+   "hll": {
       "prefix": ["hll"],
-      "body": ["mode.hll"],
+      "body": [
+         "mode.hll"
+      ],
       "description": "Code snippet for 'hll' statement"
    },
-   "item if": {
+   "if": {
       "prefix": ["if"],
       "body": [
          "if register(pc)==address.offset(main)",
@@ -15,7 +17,8 @@
          "(",
          "   print %error \"booting to main failed\"",
          ")"
-      ]
+      ],
+      "description": "if"
    },
    "while": {
       "prefix": ["while"],
@@ -24,11 +27,15 @@
          "(",
          "   ${2:statement}",
          ")"
-      ]
+      ],
+      "description": "while"
    },
    "print": {
       "prefix": ["print"],
-      "body": ["print \"Hello world\""]
+      "body": [
+         "print \"Hello world\""
+      ],
+      "description": "print"
    },
    "gosub": {
       "prefix": ["gosub"],
@@ -44,6 +51,7 @@
          "entry &arg_value",
          "",
          "return &return_value"
-      ]
+      ],
+      "description": "gosub"
    }
 }

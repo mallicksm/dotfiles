@@ -56,15 +56,11 @@ META  ("i forgot" buttons) ─────────────────�
   cs+u                  unicode input by name      cs+delete  reset terminal
 
 kk<TAB>  (shell commands for kitty — type "kk" then TAB) ─────────────────────
-  kktheme <name|fuzzy>  switch theme (fuzzy match); subcommands:
-                          list      interactive picker w/ live preview
-                          save      snapshot current theme as rollback target
-                          original  restore snapshot    dracula  vanilla Dracula
   kktabname [name]      rename current tab   (-r reset;  no args = prompt)
   kkbroadcast <cmd>     run <cmd> in every OTHER kitty window in this tab
                           -a         all windows, all tabs
                           -t REGEX   only windows whose title matches REGEX
-  (all three need allow_remote_control yes; see ~/dotfiles/utils/bash_kitty.sh)
+  (both need allow_remote_control yes; see ~/dotfiles/utils/bash_kitty.sh)
 
 
 Tip:  `kitten show_key`  prints what kitty receives for any keypress.

@@ -1,55 +1,54 @@
 {
    "main": {
       "prefix": ["main"],
-      "description": "C entry point: argc/argv choice, returns 0",
       "body": [
          "int main(${1|int argc\\, char **argv,void|}) {",
          "   $0",
          "   return 0;",
          "}"
-      ]
+      ],
+      "description": "C entry point: argc/argv choice, returns 0"
    },
    "if": {
       "prefix": ["if"],
-      "description": "if block",
       "body": [
          "if (${1:condition}) {",
          "   $0",
          "}"
-      ]
+      ],
+      "description": "if block"
    },
    "if-else": {
       "prefix": ["if-else", "ife"],
-      "description": "if / else block",
       "body": [
          "if (${1:condition}) {",
          "   $2",
          "} else {",
          "   $0",
          "}"
-      ]
+      ],
+      "description": "if / else block"
    },
    "for": {
       "prefix": ["for"],
-      "description": "for loop",
       "body": [
          "for (int ${1:i} = 0; ${1:i} < ${2:n}; ${1:i}++) {",
          "   $0",
          "}"
-      ]
+      ],
+      "description": "for loop"
    },
    "while": {
       "prefix": ["while"],
-      "description": "while loop",
       "body": [
          "while (${1:condition}) {",
          "   $0",
          "}"
-      ]
+      ],
+      "description": "while loop"
    },
    "switch": {
       "prefix": ["switch", "case"],
-      "description": "switch / case block",
       "body": [
          "switch (${1:expr}) {",
          "   case ${2:val}:",
@@ -58,23 +57,29 @@
          "   default:",
          "      break;",
          "}"
-      ]
+      ],
+      "description": "switch / case block"
    },
    "mrs": {
       "prefix": ["mrs"],
       "body": [
          "__asm volatile(\"mrs %0, ${1:reg}\" : \"=r\"(${2:var}));"
-      ]
+      ],
+      "description": "mrs"
    },
    "msr": {
       "prefix": ["msr"],
       "body": [
          "__asm volatile(\"msr %0, ${1:reg}\" : : \"r\"(${2:var}));"
-      ]
+      ],
+      "description": "msr"
    },
    "asm": {
       "prefix": ["asm"],
-      "body": ["__asm volatile(\"${1:assembly code}\");"]
+      "body": [
+         "__asm volatile(\"${1:assembly code}\");"
+      ],
+      "description": "asm"
    },
    "easm": {
       "prefix": ["easm"],
@@ -83,7 +88,8 @@
          "      : ${2:\"=r\"(output_cvariable)}",
          "      : ${3:\"r\"(input_cvariable)}",
          "      : ${4:\"clobberlist\"});"
-      ]
+      ],
+      "description": "easm"
    },
    "barrier": {
       "prefix": ["barrier"],
@@ -93,7 +99,8 @@
          "//   gcc/armclang re-fetches into registers",
          "//   no assembly instructions are issued",
          "__asm__ volatile (\"\" ::: \"memory\");"
-      ]
+      ],
+      "description": "barrier"
    },
    "synchronize": {
       "prefix": ["synchronize"],
@@ -105,7 +112,8 @@
          "// the lock is released.",
          "// On AArch64 this issues a \"dmb ish\" instruction",
          "__sync_synchronize();"
-      ]
+      ],
+      "description": "synchronize"
    },
    "release": {
       "prefix": ["release"],
@@ -118,7 +126,8 @@
          "// Releasing exclusive access held by preceeding LDAXR instruction",
          "// STLR 0 [lk->locked],",
          "__sync_lock_release(&memvar);"
-      ]
+      ],
+      "description": "release"
    },
    "lock": {
       "prefix": ["lock"],
@@ -128,12 +137,14 @@
          "//   STLXR Ws Xt [&lk->locked], success when Ws=0",
          "// Implemented: Double loop to check for Ws=0 (inner) and ldaxr.Xt=0 (outer)",
          "localvar = __sync_swap(&memvar, 1);"
-      ]
+      ],
+      "description": "lock"
    },
    "attribute": {
       "prefix": ["attribute"],
       "body": [
          "__attribute__((${1|weak,aligned(16),section(\"romdata\"),always_inline,nomerge|})) "
-      ]
+      ],
+      "description": "attribute"
    }
 }

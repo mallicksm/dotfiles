@@ -8,3 +8,6 @@ initrc/kitty/kitty.os.conf
 # Clean up strays with: rmdir ibus/bus ibus lazygit
 /ibus/
 /lazygit/
+# Python bytecode cache (kitty compiles kittens under initrc/kitty/ into these)
+__pycache__/
+*.pyc

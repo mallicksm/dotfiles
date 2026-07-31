@@ -10,12 +10,6 @@
 # sort reverse last modified files
 --sortr=modified
 
-# filter out generated files
---glob
-!emu-soummya-*
---glob
-!run-soummya-*
-
 # Custom type groups -- usable as `rg --type <name>` or via the `rgrep` shell
 # function (in ~/dotfiles/utils/bash_vgrep.sh). Names chosen to NOT shadow
 # rg's built-in types (use `rg --type-list` to see those).

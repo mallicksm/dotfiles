@@ -1,18 +1,22 @@
 {
-   "item header": {
+   "header": {
       "prefix": ["jheader"],
-      "body": ["{", "   ${0:snippet}", "}"],
+      "body": [
+         "{",
+         "   ${0:snippet}",
+         "}"
+      ],
       "description": "Code snippet for 'header' statement"
    },
-   "item snippet": {
+   "snippet": {
       "prefix": ["snippet"],
       "body": [
-         "\"item ${1:trigger}\": {",
+         "\"${1:trigger}\": {",
          "   \"prefix\": [\"${1}\"],",
          "   \"body\": [",
          "      \"${0:statements}\"",
          "   ],",
-         "   \"description\": \"Code snippet for '${1}' statement\"",
+         "   \"description\": \"${2:description}\"",
          "},"
       ],
       "description": "Snippet generator"

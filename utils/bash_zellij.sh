@@ -79,7 +79,7 @@ function zz_zellij () {
       zellij kill-all-sessions -y || true
       zellij delete-all-sessions -y || true
       # if the above does not work, go turbo
-      local zj=$(ps aux |grep soummya|grep 'zellij --server' |grep -v grep|head -n 1|awk '{print $2}')
+      local zj=$(ps aux |grep "$USER"|grep 'zellij --server' |grep -v grep|head -n 1|awk '{print $2}')
       if [[ $zj != "" ]]; then
          kill -9 $zj
       fi

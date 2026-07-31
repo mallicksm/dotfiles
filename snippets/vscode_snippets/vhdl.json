@@ -1,243 +1,261 @@
 {
    "ieee_imports": {
-      "prefix": "ieee",
-      "description": "IEEE Standard Packages",
+      "prefix": ["ieee"],
       "body": [
          "library IEEE;",
          "use IEEE.std_logic_1164.all;",
          "use IEEE.numeric_std.all;"
-      ]
+      ],
+      "description": "IEEE Standard Packages"
    },
    "entity_declaration": {
-      "prefix": "ent",
-      "description": "Entity Declaration",
+      "prefix": ["ent"],
       "body": [
          "entity ${1:$TM_FILENAME_BASE} is",
-         "\tport (",
-         "\t\t$0",
-         "\t);",
+         "   port (",
+         "      $0",
+         "   );",
          "end entity ${1:$TM_FILENAME_BASE};"
-      ]
+      ],
+      "description": "Entity Declaration"
    },
    "architecture_declaration": {
-      "prefix": "arch",
-      "description": "Architecture Declaration",
+      "prefix": ["arch"],
       "body": [
          "architecture ${1:rtl} of ${2:$TM_FILENAME_BASE} is",
-         "\t",
+         "   ",
          "begin",
-         "\t",
-         "\t$0",
-         "\t",
+         "   ",
+         "   $0",
+         "   ",
          "end architecture ${1:rtl};"
-      ]
+      ],
+      "description": "Architecture Declaration"
    },
    "configuration_declaration": {
-      "prefix": "conf",
-      "description": "Configuration Declaration",
+      "prefix": ["conf"],
       "body": [
          "configuration ${1:rtl} of ${2:$TM_FILENAME_BASE} is",
-         "\t",
-         "\t$0",
-         "\t",
+         "   ",
+         "   $0",
+         "   ",
          "end configuration ${1:rtl};"
-      ]
+      ],
+      "description": "Configuration Declaration"
    },
    "package_declaration": {
-      "prefix": "pack",
-      "description": "Package Declaration",
+      "prefix": ["pack"],
       "body": [
          "package ${1:$TM_FILENAME_BASE} is",
-         "\t",
-         "\t$0",
-         "\t",
+         "   ",
+         "   $0",
+         "   ",
          "end package ${1:$TM_FILENAME_BASE};"
-      ]
+      ],
+      "description": "Package Declaration"
    },
    "package_body_declaration": {
-      "prefix": "pack",
-      "description": "Package Body Declaration",
+      "prefix": ["pack"],
       "body": [
          "package body ${1:$TM_FILENAME_BASE} is",
-         "\t",
-         "\t$0",
-         "\t",
+         "   ",
+         "   $0",
+         "   ",
          "end package body ${1:$TM_FILENAME_BASE};"
-      ]
+      ],
+      "description": "Package Body Declaration"
    },
    "case": {
-      "prefix": "case",
-      "description": "Case Statement",
+      "prefix": ["case"],
       "body": [
          "case ${1:expression} is",
-         "\twhen ${2:choice} =>",
-         "\t\t$0",
+         "   when ${2:choice} =>",
+         "      $0",
          "",
-         "\twhen others =>",
-         "\t\t",
+         "   when others =>",
+         "      ",
          "",
          "end case;"
-      ]
+      ],
+      "description": "Case Statement"
    },
    "case_generate": {
-      "prefix": "case",
-      "description": "Case Generate Statement",
+      "prefix": ["case"],
       "body": [
          "${1:generate_label}: case ${2:expression} generate",
-         "\twhen ${3:choice} =>",
-         "\t\t$0",
+         "   when ${3:choice} =>",
+         "      $0",
          "",
-         "\twhen others =>",
-         "\t\tnull;",
+         "   when others =>",
+         "      null;",
          "",
          "end generate $1;"
-      ]
+      ],
+      "description": "Case Generate Statement"
    },
    "if": {
-      "prefix": "if",
-      "description": "If Statement",
-      "body": ["if ${1:condition} then", "\t$0", "end if;"]
+      "prefix": ["if"],
+      "body": [
+         "if ${1:condition} then",
+         "   $0",
+         "end if;"
+      ],
+      "description": "If Statement"
    },
    "if_generate": {
-      "prefix": "if",
-      "description": "If Generate Statement",
+      "prefix": ["if"],
       "body": [
          "${1:generate_label}: if ${2:condition} generate",
-         "\t$0",
+         "   $0",
          "end generate $1;"
-      ]
+      ],
+      "description": "If Generate Statement"
    },
    "for": {
-      "prefix": "for",
-      "description": "For Loop",
+      "prefix": ["for"],
       "body": [
          "for ${1:loop_var} in ${2:range} loop",
-         "\t$0",
+         "   $0",
          "end loop;"
-      ]
+      ],
+      "description": "For Loop"
    },
    "for_generate": {
-      "prefix": "for",
-      "description": "For Generate",
+      "prefix": ["for"],
       "body": [
          "${1:generate_label}: for ${2:iteration} generate",
-         "\t$0",
+         "   $0",
          "end generate $1;"
-      ]
+      ],
+      "description": "For Generate"
    },
    "assert": {
-      "prefix": "assert",
-      "description": "Assertion",
+      "prefix": ["assert"],
       "body": [
          "assert ${1:neg_condition} report ${2:message} severity ${3|note,warning,error,failure|};"
-      ]
+      ],
+      "description": "Assertion"
    },
    "enumeration_type": {
-      "prefix": "typeenum",
-      "description": "Enumeration type declaration",
-      "body": ["type ${1:type_name} is (${0});"]
+      "prefix": ["typeenum"],
+      "body": [
+         "type ${1:type_name} is (${0});"
+      ],
+      "description": "Enumeration type declaration"
    },
    "array_type": {
-      "prefix": "typearray",
-      "description": "Array type declaration",
+      "prefix": ["typearray"],
       "body": [
          "type ${1:type_name} is array (${2:range}) of ${3:element_type};"
-      ]
+      ],
+      "description": "Array type declaration"
    },
    "record_type": {
-      "prefix": "typerecord",
-      "description": "Record type declaration",
+      "prefix": ["typerecord"],
       "body": [
          "type ${1:type_name} is record",
-         "\t${0}",
+         "   ${0}",
          "end record ${1:type_name};"
-      ]
+      ],
+      "description": "Record type declaration"
    },
    "subtype": {
-      "prefix": "subt",
-      "description": "Subtype declaration",
+      "prefix": ["subt"],
       "body": [
          "subtype ${1:subtype_name} is ${2:base_type} range ${3:0} ${4|to,downto|} ${5:7};"
-      ]
+      ],
+      "description": "Subtype declaration"
    },
    "testbench_process": {
-      "prefix": "tproc, processt",
-      "description": "Testbench Process (No Sensitivity List)",
+      "prefix": ["tproc", "processt"],
       "body": [
          "${1:proc_name}: process",
          "begin",
-         "\t$0",
+         "   $0",
          "end process $1;"
-      ]
+      ],
+      "description": "Testbench Process (No Sensitivity List)"
    },
    "combinational_process": {
-      "prefix": "cproc, processc",
-      "description": "Combinational Process",
+      "prefix": ["cproc", "processc"],
       "body": [
          "${1:proc_name}: process(${2:sensitivity_list})",
          "begin",
-         "\t$0",
+         "   $0",
          "end process $1;"
-      ]
+      ],
+      "description": "Combinational Process"
    },
    "asynchronous_reset_clocked_process": {
-      "prefix": "aproc, processa",
-      "description": "Clocked Process (Asynchronous Reset)",
+      "prefix": ["aproc", "processa"],
       "body": [
          "${1:proc_name}: process(${3:clk}, ${4:rst})",
          "begin",
-         "\tif ${4:rst} = ${5:rst_val} then",
-         "\t\t$0",
-         "\telsif ${2|rising_edge,falling_edge|}(${3:clk}) then",
-         "\t\t",
-         "\tend if;",
+         "   if ${4:rst} = ${5:rst_val} then",
+         "      $0",
+         "   elsif ${2|rising_edge,falling_edge|}(${3:clk}) then",
+         "      ",
+         "   end if;",
          "end process $1;"
-      ]
+      ],
+      "description": "Clocked Process (Asynchronous Reset)"
    },
    "synchronous_reset_clocked_process": {
-      "prefix": "sproc, processs",
-      "description": "Clocked Process (Synchronous Reset)",
+      "prefix": ["sproc", "processs"],
       "body": [
          "${1:proc_name}: process(${3:clk})",
          "begin",
-         "\tif ${2|rising_edge,falling_edge|}(${3:clk}) then",
-         "\t\tif ${4:rst} = ${5:rst_val} then",
-         "\t\t\t$0",
-         "\t\telse",
-         "\t\t\t",
-         "\t\tend if;",
-         "\tend if;",
+         "   if ${2|rising_edge,falling_edge|}(${3:clk}) then",
+         "      if ${4:rst} = ${5:rst_val} then",
+         "         $0",
+         "      else",
+         "         ",
+         "      end if;",
+         "   end if;",
          "end process $1;"
-      ]
+      ],
+      "description": "Clocked Process (Synchronous Reset)"
    },
    "std_logic_vector": {
-      "prefix": "std",
-      "description": "std_logic_vector Type",
-      "body": "std_logic_vector(${1:7} ${2|downto,to|} ${3:0})"
+      "prefix": ["std"],
+      "body": [
+         "std_logic_vector(${1:7} ${2|downto,to|} ${3:0})"
+      ],
+      "description": "std_logic_vector Type"
    },
    "std_ulogic_vector": {
-      "prefix": "stdu",
-      "description": "std_ulogic_vector Type",
-      "body": "std_ulogic_vector(${1:7} ${2|downto,to|} ${3:0})"
+      "prefix": ["stdu"],
+      "body": [
+         "std_ulogic_vector(${1:7} ${2|downto,to|} ${3:0})"
+      ],
+      "description": "std_ulogic_vector Type"
    },
    "signed": {
-      "prefix": "si",
-      "description": "signed Type",
-      "body": "signed(${1:7} ${2|downto,to|} ${3:0})"
+      "prefix": ["si"],
+      "body": [
+         "signed(${1:7} ${2|downto,to|} ${3:0})"
+      ],
+      "description": "signed Type"
    },
    "unsigned": {
-      "prefix": "uns",
-      "description": "unsigned Type",
-      "body": "unsigned(${1:7} ${2|downto,to|} ${3:0})"
+      "prefix": ["uns"],
+      "body": [
+         "unsigned(${1:7} ${2|downto,to|} ${3:0})"
+      ],
+      "description": "unsigned Type"
    },
    "zeroes": {
-      "prefix": "oth",
-      "description": "Zero Others",
-      "body": "others => '0'"
+      "prefix": ["oth"],
+      "body": [
+         "others => '0'"
+      ],
+      "description": "Zero Others"
    },
    "integer_range_limitation": {
-      "prefix": "intr",
-      "description": "Integer (Range Limitation)",
-      "body": "integer range ${1:0} ${2|downto,to|} ${3:255}"
+      "prefix": ["intr"],
+      "body": [
+         "integer range ${1:0} ${2|downto,to|} ${3:255}"
+      ],
+      "description": "Integer (Range Limitation)"
    }
 }

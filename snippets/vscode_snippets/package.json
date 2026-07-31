@@ -1,79 +1,78 @@
 {
-    "name": "vscode_snippets",
-    "engines": {
-        "vscode": "^1.11.0"
-    },
-    "contributes": {
-        "snippets": [
-            {
-                "language": "all",
-                "path": "./all.json"
-            },
-            {
-                "language": "c",
-                "path": "./c.json"
-            },
-            {
-                "language": "tcl",
-                "path": "./tcl.json"
-            },
-            {
-                "language": "tdf",
-                "path": "./tdf.json"
-            },
-            {
-                "language": "trace32",
-                "path": "./trace32.json"
-            },
-            {
-                "language": "sv",
-                "path": "./sv.json"
-            },
-            {
-                "language": "asm",
-                "path": "./asm.json"
-            },
-            {
-                "language": "json",
-                "path": "./json.json"
-            },
-            {
-                "language": "lua",
-                "path": "./lua.json"
-            },
-            {
-                "language": "make",
-                "path": "./make.json"
-            },
-            {
-                "language": "python",
-                "path": "./python.json"
-            },
-            {
-                "language": "scat",
-                "path": "./scat.json"
-            },
-            {
-                "language": "sh",
-                "path": "./sh.json"
-            },
-            {
-                "language": "cpp",
-                "path": "./cpp.json"
-            },
-            {
-                "language": "markdown",
-                "path": "./markdown.json"
-            },
-            {
-                "language": "vhdl",
-                "path": "./vhdl.json"
-            },
-            {
-                "language": "jira",
-                "path": "./jira.json"
-            }
-        ]
-    }
+   "name": "vscode_snippets",
+   "engines": {
+      "vscode": "^1.11.0"
+   },
+   "contributes": {
+      "snippets": [
+         {
+            "language": "all",
+            "path": "./all.json"
+         },
+         {
+            "language": "c",
+            "path": "./c.json"
+         },
+         {
+            "language": "tcl",
+            "path": "./tcl.json"
+         },
+         {
+            "language": "tdf",
+            "path": "./tdf.json"
+         },
+         {
+            "language": "trace32",
+            "path": "./trace32.json"
+         },
+         {
+            "language": "sv",
+            "path": "./sv.json"
+         },
+         {
+            "language": "asm",
+            "path": "./asm.json"
+         },
+         {
+            "language": "json",
+            "path": "./json.json"
+         },
+         {
+            "language": "lua",
+            "path": "./lua.json"
+         },
+         {
+            "language": "make",
+            "path": "./make.json"
+         },
+         {
+            "language": "python",
+            "path": "./python.json"
+         },
+         {
+            "language": "scat",
+            "path": "./scat.json"
+         },
+         {
+            "language": "sh",
+            "path": "./sh.json"
+         },
+         {
+            "language": "cpp",
+            "path": "./cpp.json"
+         },
+         {
+            "language": "markdown",
+            "path": "./markdown.json"
+         },
+         {
+            "language": "vhdl",
+            "path": "./vhdl.json"
+         },
+         {
+            "language": "jira",
+            "path": "./jira.json"
+         }
+      ]
+   }
 }
-

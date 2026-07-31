@@ -25,7 +25,7 @@ require('conform').setup({
          stdin   = true,
       },
       semiforefmt = {
-         command = 'semifore.py',
+         command = vim.fn.expand('$HOME') .. '/dotfiles/formatters/semifore.py',
          stdin   = true,
       },
       shfmt = {

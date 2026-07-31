@@ -1,32 +1,50 @@
 {
-   "item mov": {
+   "mov": {
       "prefix": ["mov"],
-      "body": ["mov x${1}, #${2:value}"],
+      "body": [
+         "mov x${1}, #${2:value}"
+      ],
       "description": "Code snippet for 'add' statement"
    },
-   "item orr": {
+   "orr": {
       "prefix": ["orr"],
-      "body": ["orr x${1}, x${2}, #${3:value}"],
+      "body": [
+         "orr x${1}, x${2}, #${3:value}"
+      ],
       "description": "Code snippet for 'orr' statement"
    },
-   "item add": {
+   "add": {
       "prefix": ["add"],
-      "body": ["add x${1}, x${2}, #${3:value}"],
+      "body": [
+         "add x${1}, x${2}, #${3:value}"
+      ],
       "description": "Code snippet for 'orr' statement"
    },
-   "item #ifdef": {
+   "#ifdef": {
       "prefix": ["ifdef"],
-      "body": ["#ifdef ${1:DEBUG}", "$0", "#endif // ${1}"],
+      "body": [
+         "#ifdef ${1:DEBUG}",
+         "$0",
+         "#endif // ${1}"
+      ],
       "description": "Code snippet for #ifdef"
    },
-   "item #ifndef": {
+   "#ifndef": {
       "prefix": ["ifndef"],
-      "body": ["#ifndef ${1:1}", "$0", "#endif // ${1}"],
+      "body": [
+         "#ifndef ${1:1}",
+         "$0",
+         "#endif // ${1}"
+      ],
       "description": "Code snippet for #ifndef"
    },
-   "item #if": {
+   "#if": {
       "prefix": ["if"],
-      "body": ["#if ${1:0}", "$0", "#endif // ${1}"],
+      "body": [
+         "#if ${1:0}",
+         "$0",
+         "#endif // ${1}"
+      ],
       "description": "Code snippet for #if"
    }
 }

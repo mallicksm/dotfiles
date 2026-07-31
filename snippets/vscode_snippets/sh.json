@@ -1,5 +1,5 @@
 {
-   "item header": {
+   "header": {
       "prefix": ["header"],
       "body": [
          "#!/usr/bin/env bash",
@@ -17,7 +17,7 @@
       ],
       "description": "insert header code"
    },
-   "item function": {
+   "function": {
       "prefix": ["func", "proc"],
       "body": [
          "function ${1:function_name}() {",
@@ -26,7 +26,7 @@
       ],
       "description": "New function"
    },
-   "item Getopt argument parsing": {
+   "Getopt argument parsing": {
       "prefix": ["getopt"],
       "body": [
          "# getopt",
@@ -68,7 +68,7 @@
       ],
       "description": "getopt template"
    },
-   "item for loop": {
+   "for loop": {
       "prefix": ["for"],
       "body": [
          "for (( i = 0; i < ${1:10}; i++ )); do",
@@ -77,7 +77,7 @@
       ],
       "description": "for loop"
    },
-   "item foreach loop": {
+   "foreach loop": {
       "prefix": ["foreach"],
       "body": [
          "for ${1:i} in \"\\${${2:hash}[@]}\"; do",
@@ -86,7 +86,7 @@
       ],
       "description": "foreach loop"
    },
-   "item while loop": {
+   "while loop": {
       "prefix": ["while"],
       "body": [
          "while ${2:[[ ${1:condition} ]]}; do",
@@ -95,7 +95,7 @@
       ],
       "description": "while loop"
    },
-   "item if statement": {
+   "if statement": {
       "prefix": ["if"],
       "body": [
          "if [[ ${1:condition} && ${2:condition} ]]; then",
@@ -104,7 +104,7 @@
       ],
       "description": "if statement"
    },
-   "item if-else block": {
+   "if-else block": {
       "prefix": ["if-else", "ife"],
       "body": [
          "if [[ ${1:condition} ]]; then",
@@ -117,7 +117,7 @@
       ],
       "description": "if-else block"
    },
-   "item case statement": {
+   "case statement": {
       "prefix": ["case", "switch"],
       "body": [
          "case ${1:\\$var} in",
@@ -130,7 +130,7 @@
       ],
       "description": "case statement"
    },
-   "item until loop": {
+   "until loop": {
       "prefix": ["until"],
       "body": [
          "until [[ ${1:condition} ]]; do",
@@ -140,51 +140,62 @@
       "description": "until loop"
    },
    "echo": {
-      "prefix": "echo",
-      "body": "echo \"${0:message}\"",
+      "prefix": ["echo"],
+      "body": [
+         "echo \"${0:message}\""
+      ],
       "description": "Echo a message."
    },
    "read": {
-      "prefix": "read",
-      "body": "read -r ${0:VAR}",
+      "prefix": ["read"],
+      "body": [
+         "read -r ${0:VAR}"
+      ],
       "description": "Read input of ${VAR}."
    },
    "break": {
-      "prefix": "break",
-      "body": "break ${0}",
-      "description": [
-         "The break command tells Bash to leave the loop straight away.\n",
-         "Enter the break or break (n) where n=number of loops."
-      ]
+      "prefix": ["break"],
+      "body": [
+         "break ${0}"
+      ],
+      "description": "The break command tells Bash to leave the loop straight away.\n Enter the break or break (n) where n=number of loops."
    },
    "expr": {
-      "prefix": "expr",
-      "body": "expr ${0:1 + 1}",
+      "prefix": ["expr"],
+      "body": [
+         "expr ${0:1 + 1}"
+      ],
       "description": "Calculate numbers with Bash."
    },
    "list": {
-      "prefix": "list",
+      "prefix": ["list"],
       "body": [
-      "${1:listname} = (\"${2:apple}\" \"${3:pear}\")"
+         "${1:listname} = (\"${2:apple}\" \"${3:pear}\")"
       ],
       "description": "Create a list in bash"
    },
-   "item stderr to /dev/null": {
+   "stderr to /dev/null": {
       "prefix": ["2"],
-      "body": "2>/dev/null",
+      "body": [
+         "2>/dev/null"
+      ],
       "description": "2>/dev/null"
    },
-   "item stdout to /dev/null": {
+   "stdout to /dev/null": {
       "prefix": ["1"],
-      "body": ">/dev/null",
+      "body": [
+         ">/dev/null"
+      ],
       "description": ">/dev/null"
    },
-   "item stdout & stderr to /dev/null": {
+   "stdout & stderr to /dev/null": {
       "prefix": ["12"],
-      "body": ">/dev/null 2>&1",
+      "body": [
+         ">/dev/null 2>&1"
+      ],
       "description": ">/dev/null 2>&1"
    },
-   "item hash": {
+   "hash": {
       "prefix": ["hash"],
       "body": [
          "declare -A ${1:hashname}",
@@ -194,12 +205,7 @@
       ],
       "description": "Code snippet for 'hash' statement"
    },
-   "expr": {
-      "prefix": ["expr"],
-      "body": "expr ${0:1 + 1}",
-      "description": "Calculate numbers with Bash."
-   },
-   "item var": {
+   "var": {
       "prefix": ["var"],
       "body": [
          "\\${var${1|#->globPattern,%globPattern<-,/glob/replace,:-default_value|}}"
@@ -213,9 +219,10 @@
          "while IFS= read -r line; do",
          "   echo \"\\$line\"",
          "done < \"\\$input\""
-      ]
+      ],
+      "description": "file"
    },
-   "item Cat to file": {
+   "Cat to file": {
       "prefix": ["cat"],
       "body": [
          "cat <<-EOF ${1:>/path/to/file}",
@@ -224,39 +231,53 @@
       ],
       "description": "cat... EOF"
    },
-   "item Shorthand if..then..else": {
+   "Shorthand if..then..else": {
       "prefix": ["ite"],
-      "body": "[[ ${1:condition} ]] && ${2:echo \"true\"} || ${3:echo \"false\"}",
+      "body": [
+         "[[ ${1:condition} ]] && ${2:echo \"true\"} || ${3:echo \"false\"}"
+      ],
       "description": "[[ ]] && true || false"
    },
-   "item time": {
+   "time": {
       "prefix": ["time"],
-      "body": ["time=\\$(date +%H-%M-%S)"],
+      "body": [
+         "time=\\$(date +%H-%M-%S)"
+      ],
       "description": "Code snippet for 'time' statement"
    },
-   "item date": {
+   "date": {
       "prefix": ["date"],
-      "body": ["date=\\$(date +\"%b-%d-%y_%H%M%p\")"],
+      "body": [
+         "date=\\$(date +\"%b-%d-%y_%H%M%p\")"
+      ],
       "description": "Code snippet for 'date' statement"
    },
    "print": {
       "prefix": ["print"],
       "body": [
          "print \"${1|RED,BLUE,GREEN,YELLOW,WHITE|}\" \"${2:Hello World}\""
-      ]
+      ],
+      "description": "print"
    },
    "error": {
       "prefix": ["error"],
       "body": [
          "${1|info,warn,error,completed|} \"${2:file not found}\""
-      ]
+      ],
+      "description": "error"
    },
    "download": {
       "prefix": ["download"],
-      "body": ["download \"${1:file}\" \"${2:url}\""]
+      "body": [
+         "download \"${1:file}\" \"${2:url}\""
+      ],
+      "description": "download"
    },
    "tempfile": {
       "prefix": ["tempfile"],
-      "body": ["tempfile=\\$(tempfile)"]
+      "body": [
+         "tempfile=\\$(tempfile)"
+      ],
+      "description": "tempfile"
    }
 }

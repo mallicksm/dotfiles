@@ -1,5 +1,5 @@
 {
-   "item header": {
+   "header": {
       "prefix": ["theader"],
       "body": [
          "// P/N - Positive/Negative edge.",
@@ -12,12 +12,15 @@
       ],
       "description": "insert header code"
    },
-   "item instance": {
+   "instance": {
       "prefix": ["instance"],
-      "body": ["INSTANCE ${1:inst1};", "   $0"],
+      "body": [
+         "INSTANCE ${1:inst1};",
+         "   $0"
+      ],
       "description": "instance"
    },
-   "item state": {
+   "state": {
       "prefix": ["state"],
       "body": [
          "STATE ${1:s0} {",
@@ -26,7 +29,7 @@
       ],
       "description": "Code snippet for state"
    },
-   "item if": {
+   "if": {
       "prefix": ["if"],
       "body": [
          "IF (${1:expression}) {",
@@ -35,7 +38,7 @@
       ],
       "description": "Code snippet for if"
    },
-   "item if-else": {
+   "if-else": {
       "prefix": ["if-else", "ife"],
       "body": [
          "IF (${1:expression}) {",
@@ -48,51 +51,63 @@
       ],
       "description": "Code snippet for if-else-if"
    },
-   "item counter": {
+   "counter": {
       "prefix": ["counter"],
       "body": [
          "${1|COUNTER1,COUNTER2|} ${2|<=,>|} ${3:<value>}"
       ],
       "description": "Code snippet for 'counter' statement"
    },
-   "item load": {
+   "load": {
       "prefix": ["load"],
-      "body": ["LOAD ${1|COUNTER1,COUNTER2|} ${2:<value>}"],
+      "body": [
+         "LOAD ${1|COUNTER1,COUNTER2|} ${2:<value>}"
+      ],
       "description": "Code snippet for 'load' statement"
    },
-   "item signal alias": {
+   "signal alias": {
       "prefix": ["alias"],
-      "body": ["${1:alias} = ${2:signal_instpath};"],
+      "body": [
+         "${1:alias} = ${2:signal_instpath};"
+      ],
       "description": "Code snippet for 'trigger' statement"
    },
-   "item exec": {
+   "exec": {
       "prefix": ["exec"],
-      "body": ["EXEC \"${1:qel_command}\";"],
+      "body": [
+         "EXEC \"${1:qel_command}\";"
+      ],
       "description": "Code snippet for 'exec' statement"
    },
-   "item tick define": {
+   "tick define": {
       "prefix": ["`define"],
-      "body": ["`define ${1:name} ${1:string}"],
+      "body": [
+         "`define ${1:name} ${1:string}"
+      ],
       "description": "Code snippet for tick define"
    },
-   "item tick include": {
+   "tick include": {
       "prefix": ["`include"],
-      "body": ["`include \"${1:global.tdf}\""],
+      "body": [
+         "`include \"${1:global.tdf}\""
+      ],
       "description": "Code snippet for tick include"
    },
-   "item single line trigger": {
+   "single line trigger": {
       "prefix": ["trigger"],
-      "body": ["TRIGGER = ${1:signal-name};"],
+      "body": [
+         "TRIGGER = ${1:signal-name};"
+      ],
       "description": "Code snippet for single line trigger"
    },
-   "item display statement": {
+   "display statement": {
       "prefix": ["display"],
       "body": [
          "DISPLAY(F=${4:f}, \"${1:text}%10.0t %${3|h,d,[enum_type]|}\", ${2:signalName});"
       ],
       "description": "Code snippet for display"
    },
-   "item tick if": {
+   "tick if": {
       "prefix": ["`if", "tick-if"],
       "body": [
          "`if \\$${1:value}",
@@ -101,7 +116,7 @@
       ],
       "description": "Code snippet for tick if"
    },
-   "item tick ifdef": {
+   "tick ifdef": {
       "prefix": ["`ifdef", "tick-ifdef"],
       "body": [
          "`ifdef ${1:name}",
@@ -110,7 +125,7 @@
       ],
       "description": "Code snippet for tick ifdef"
    },
-   "item enum declaration": {
+   "enum declaration": {
       "prefix": ["enum"],
       "body": [
          "enum ${1:enum_type} {",
