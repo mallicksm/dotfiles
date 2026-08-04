@@ -220,6 +220,74 @@ end, { desc = 'Show :messages (raw, bypasses Noice; notify if empty)' })
 -- buffers, preserves window layout, drops the buffer cleanly.
 vim.keymap.set('n', '<leader>vd', function() require('snacks').bufdelete() end, { desc = 'Delete current buffer (snacks: prompts on unsaved)' })
 
+-- Telescope-style fuzzy search over ALL live keymaps (every mode). Matches the
+-- keys (lhs), the mapped action (rhs), and the description -- so `terminal`,
+-- `grep`, `lazygit` etc. find a binding by intent. <CR> runs it; the ctrl-jump
+-- action opens where it's defined. Reflects the running config, not a file.
+-- (Same picker that lives under :Utilities -> "Keymaps"; this is the direct key.)
+--
+-- Custom `format`: the stock snacks keymap row wastes space on a literal
+-- "callback" placeholder (every Lua-function map) and a "buf:N" column. We
+-- nuke both. Row = <mode> <lhs> <desc-or-string-rhs> <file:line>, since for
+-- our function maps the DESC + SOURCE are the only signal (the rhs is a Lua
+-- closure with no textual form).
+vim.keymap.set('n', '<leader>vk', function()
+   local Snacks = require('snacks')
+   Snacks.picker.keymaps({
+      modes = { 'n', 'i', 'v', 'x', 'c', 't', 'o', 's' },
+      -- Hint on the top border via {title}, matching every other picker
+      -- (e.g. command_history's "... <CR> run, <esc> to quit").
+      title = 'Keymaps  (<CR> run · <c-e> edit source · <esc> quit)',
+      -- Horizontal split: list on top, source preview stacked BELOW (snacks'
+      -- 'vertical' preset = vertically-boxed panes). Widened from the preset's
+      -- 0.5 so the columns aren't truncated.
+      layout = { preset = 'vertical', layout = { width = 0.85, min_width = 100, height = 0.85 } },
+      -- `e` (normal mode -- hit <esc> first, like any snacks picker) opens the
+      -- file where the mapping is DEFINED, at its definition line. Built-in or
+      -- string-rhs maps have no Lua source, so we just notify.
+      actions = {
+         edit_source = function(picker, item)
+            if not (item and item.file) then
+               vim.notify('No Lua source for this mapping (built-in or string rhs)', vim.log.levels.WARN)
+               return
+            end
+            local file, pos = item.file, item.pos
+            picker:close()
+            vim.schedule(function()
+               vim.cmd('edit ' .. vim.fn.fnameescape(file))
+               if pos and pos[1] and pos[1] > 0 then
+                  pcall(vim.api.nvim_win_set_cursor, 0, { pos[1], pos[2] or 0 })
+               end
+            end)
+         end,
+      },
+      -- <c-e> edits the mapping's source. In INSERT mode too, so it works while
+      -- you're still typing the filter (bare `e` would just insert an 'e').
+      win = {
+         input = { keys = { ['<c-e>'] = { 'edit_source', mode = { 'i', 'n' } } } },
+         list  = { keys = { ['<c-e>'] = { 'edit_source', mode = { 'n' } } } },
+      },
+      format = function(item, picker)
+         local k   = item.item
+         local a   = Snacks.picker.util.align
+         local ret = {}
+         ret[#ret + 1] = { a(k.mode, 2), 'SnacksPickerKeymapMode' }
+         ret[#ret + 1] = { ' ' }
+         ret[#ret + 1] = { a(Snacks.util.normkey(k.lhs), 22), 'SnacksPickerKeymapLhs' }
+         ret[#ret + 1] = { ' ' }
+         -- Prefer the description; fall back to a real string rhs (command maps
+         -- like <cmd>...<CR>, *, #). Function maps with no desc show nothing
+         -- here rather than the useless "callback". (Filename dropped from the
+         -- row -- it's in the preview, and `e` opens it.)
+         local label = (k.desc and k.desc ~= '' and k.desc)
+            or (k.rhs and k.rhs ~= '' and k.rhs)
+            or ''
+         ret[#ret + 1] = { label, 'SnacksPickerKeymapRhs' }
+         return ret
+      end,
+   })
+end, { desc = 'Picker: keymaps (fuzzy search all hotkeys; <esc> then e = edit source)' })
+
 -- Window resize via Ctrl+Arrow. v:count1 lets `5<C-Right>` widen by 5.
 vim.keymap.set('n', '<C-Left>',  '"<Cmd>vertical resize -" . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Decrease window width' })
 vim.keymap.set('n', '<C-Right>', '"<Cmd>vertical resize +" . v:count1 . "<CR>"', { expr = true, replace_keycodes = false, desc = 'Increase window width' })
