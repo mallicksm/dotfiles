@@ -18,6 +18,19 @@
 # All three are disabled via `--disable-*` flags below. We then explicitly
 # bind only the keys we actually want pointing at atuin (Ctrl-A).
 
+# --- 0. Pin config dir (defensive) ------------------------------------------
+# atuin resolves its config dir as: $ATUIN_CONFIG_DIR -> $XDG_CONFIG_HOME/atuin
+# -> ~/.config/atuin, and auto-writes a default config.toml there if missing.
+# Our `vi` nvim wrapper (utils/bash_nvim.sh) exports XDG_CONFIG_HOME=~/dotfiles
+# for Neovim, and that leaks into ANY interactive shell spawned inside nvim
+# (snacks terminal <leader>vt, :terminal, lazygit shell-outs). Without this,
+# atuin would then read/create ~/dotfiles/atuin/config.toml -- a stray default
+# that pollutes the dotfiles repo. Pinning ATUIN_CONFIG_DIR (highest priority,
+# verified on atuin 18.16.1) makes atuin always use the real, symlinked config
+# regardless of XDG_CONFIG_HOME. Exported before the interactive guard so every
+# atuin invocation (init, precmd hooks, Ctrl-R) inherits it.
+export ATUIN_CONFIG_DIR="$HOME/.config/atuin"
+
 # --- 1. PATH (idempotent prepend) -------------------------------------------
 if [[ -d "$HOME/.atuin/bin" && ":$PATH:" != *":$HOME/.atuin/bin:"* ]]; then
    export PATH="$HOME/.atuin/bin:$PATH"

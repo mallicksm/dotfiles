@@ -7,7 +7,7 @@ function num {
       return
    fi
    input=$(($input))
-   printne "WHITE"   "dec: $input\n"
+   print   "WHITE"   "dec: $input"
    printne "GREEN"   "hex: 0x"; print_sequence "$(printf "%X\n" $input)" 8
    printne "MAGENTA" "bin: 2#"; print_sequence "$(echo "obase=2; $input" | bc)" 4
 }

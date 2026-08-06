@@ -1,9 +1,11 @@
 # Atuin config — tracked in dotfiles, symlinked into the location atuin reads.
 #
 # This file lives at ~/dotfiles/initrc/atuin.toml.
-# It is symlinked to ~/.config/atuin/config.toml by `dotfiles.sh linkrc`
-# (atuin v18 reads only ~/.config/atuin/config.toml; ATUIN_CONFIG_DIR is
-# ignored).
+# It is symlinked to ~/.config/atuin/config.toml by `dotfiles.sh linkrc`.
+# Config-dir resolution (verified on atuin 18.16.1): $ATUIN_CONFIG_DIR ->
+# $XDG_CONFIG_HOME/atuin -> ~/.config/atuin. Both env vars ARE honored, so
+# bash_atuin.sh pins ATUIN_CONFIG_DIR=~/.config/atuin to stop the `vi` nvim
+# wrapper's XDG_CONFIG_HOME=~/dotfiles from making atuin write ~/dotfiles/atuin.
 #
 # Atuin's data (sqlite DB, encryption key) lives in ~/.local/share/atuin/
 # by default — we override below via `data_dir` to keep it off NFS.
