@@ -153,7 +153,7 @@ define x11genRecalc {<Control-r>}
 define x11genXit {<q>}
 
 # Text window size
-define geometry {80x30}
+define geometry {140x60}
 
 # Utilize Engine suppresions when Diffing
 define ignSuprs {0}
