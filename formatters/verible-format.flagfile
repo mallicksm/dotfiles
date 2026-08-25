@@ -1,0 +1,15 @@
+# verible-verilog-format flags -- SINGLE SOURCE OF TRUTH, consumed by BOTH:
+#   - ~/dotfiles/utils/fmt.sh                         (CLI batch formatter)
+#   - nvim conform.nvim (nvim.easy/.../formatting.lua) (<leader>cf / on-save)
+# via  verible-verilog-format --flagfile=<this file>.  Edit HERE only; both
+# consumers pick up the change with no further edits.
+#
+# House style: 3-space indent, aligned port declarations + named-port
+# connections, 120-column limit (matches AscentLint LINE_LENGTH=120 so the
+# formatter and lint agree on wrapping).
+--column_limit=120
+--indentation_spaces=3
+--port_declarations_indentation=indent
+--port_declarations_alignment=align
+--named_port_indentation=indent
+--named_port_alignment=align

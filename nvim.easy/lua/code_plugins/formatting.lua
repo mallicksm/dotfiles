@@ -19,15 +19,12 @@ return {
                   command = 'clang-format',
                   args = { '--style=file:' .. vim.fn.expand('$HOME') .. '/dotfiles/formatters/clang-format' },
                },
-               -- Keep in sync with ~/dotfiles/formatters/verible-format.flagfile (batch: format_verible_sv.sh)
+               -- Flags live in the shared flagfile (single source of truth, also
+               -- used by ~/dotfiles/utils/fmt.sh). Edit that file, not here.
                verible_verilog_format = {
                   command = 'verible-verilog-format',
                   args = {
-                     '--port_declarations_indentation=indent',
-                     '--port_declarations_alignment=align',
-                     '--indentation_spaces=3',
-                     '--named_port_indentation=indent',
-                     '--named_port_alignment=align',
+                     '--flagfile=' .. vim.fn.expand('$HOME') .. '/dotfiles/formatters/verible-format.flagfile',
                      '$FILENAME'
                   },
                },
