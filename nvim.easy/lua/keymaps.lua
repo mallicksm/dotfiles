@@ -394,4 +394,24 @@ vim.keymap.set('n', '<C-g>', function()
    vim.notify(p, vim.log.levels.INFO)
 end, { desc = 'CTRL-G: full path -> noice (bot-right) + yank to ""' })
 
+-- Double-click highlights a word but leaves the clipboard untouched: with
+-- mouse=a nvim owns the mouse, so kitty never sees the selection and its
+-- copy_on_select can't fire. Nudge toward shift+drag, which hands the
+-- selection back to kitty (terminal_select_modifiers, initrc/kitty/kitty.conf).
+-- notify, NOT nvim_echo: noice silently drops a msg_show identical to the one
+-- before it (ui/state.lua State.skip), so an echoed hint shows once and never
+-- again. Notify builds a fresh message every call. The yellow comes from the
+-- mini_hint view in core_plugins/noice.lua, which this text is routed to.
+-- expr so the builtin <2-LeftMouse> still runs and selects the word;
+-- scheduled because the view opens a float and expr mappings run under
+-- textlock. Shift+double-click never reaches us -- kitty keeps that one -- so
+-- this only fires unshifted, which is exactly when the reminder is worth
+-- having.
+vim.keymap.set({ 'n', 'x' }, '<2-LeftMouse>', function()
+   vim.schedule(function()
+      vim.notify('shift+drag to copy to the clipboard', vim.log.levels.INFO)
+   end)
+   return '<2-LeftMouse>'
+end, { expr = true, desc = 'Double-click: select word + shift+drag copy reminder' })
+
 -- vim: ts=3 sts=3 sw=3 et

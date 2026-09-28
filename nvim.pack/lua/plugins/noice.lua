@@ -44,8 +44,23 @@ require('noice').setup({
          border      = { style = 'none' },
          win_options = { winblend = 30 },
       },
+      -- Same toast, yellow text -- for nudges rather than status (the mouse
+      -- hint from keymaps.lua). `view = 'mini'` inherits everything above;
+      -- only the message highlight differs. DiagnosticWarn, not WarningMsg:
+      -- gruvbox links WarningMsg to GruvboxRedBold.
+      mini_hint = {
+         view   = 'mini',
+         format = { { '{message}', hl_group = 'DiagnosticWarn' } },
+      },
    },
    routes = {
+      -- Mouse-selection hint from the <2-LeftMouse> map in keymaps.lua.
+      -- First match wins in noice, so this has to precede the generic
+      -- INFO -> mini route below, which would otherwise take it (in white).
+      {
+         filter = { event = 'notify', find = 'shift%+drag' },
+         view   = 'mini_hint',
+      },
       -- Redirect noisy info messages to the small mini view
       {
          filter = { event = 'msg_show', any = {

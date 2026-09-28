@@ -111,3 +111,5 @@
 	changed   = bold 33
 	branch    = bold 38;5;39
 	header    = bold               ; optional, makes headings pop
+[safe]
+	directory = *
