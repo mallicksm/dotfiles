@@ -4,3 +4,4 @@ parameter-name-style=localparam_style:ALL_CAPS
 -unpacked-dimensions-range-ordering
 -no-tabs
 -line-length=180
+-plusarg-assignment

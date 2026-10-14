@@ -18,6 +18,9 @@ PyMuPDF                # pymupdf (fitz)
 rapidocr-onnxruntime   # rapidocr_onnxruntime
 onnxruntime            # onnxruntime_test
 
+# --- formatters (wired into nvim <leader>cf + utils/fmt.sh) --------------------
+mbake                  # mbake (Makefile formatter; config: formatters/mbake.toml)
+
 # --- misc utilities ------------------------------------------------------------
 tqdm                   # tqdm
 watchdog               # watchmedo

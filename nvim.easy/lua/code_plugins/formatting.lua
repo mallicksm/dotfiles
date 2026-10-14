@@ -65,6 +65,18 @@ return {
                   args = { '-' }, -- read from stdin, write to stdout
                   stdin = true,
                },
+               mbake = {
+                  -- Makefile formatter. Knobs live in the shared config (single
+                  -- source of truth, also used by ~/dotfiles/utils/fmt.sh).
+                  command = 'mbake',
+                  args = {
+                     'format',
+                     '--stdin',
+                     '--config',
+                     vim.fn.expand('$HOME') .. '/dotfiles/formatters/mbake.toml',
+                  },
+                  stdin = true,
+               },
             },
             formatters_by_ft = {
                lua = { 'stylua' },                                   -- brew install stylua
@@ -78,6 +90,7 @@ return {
                bash = { 'shfmt' },                                   -- shebang-detected #!/bin/bash buffers
                zsh = { 'shfmt_zsh' },                                -- forces -ln=zsh; auto-detect can't tell rc-style files
                tcl = { 'tclfmt' },                                   -- mason: tclint (provides tclfmt)
+               make = { 'mbake' },                                   -- pip3 install --user mbake
             },
             notify_on_error = true, -- intentional: silent failures cost real time once. Flip to false if popups become annoying.
          })

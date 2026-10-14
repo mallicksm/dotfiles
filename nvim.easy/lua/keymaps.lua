@@ -400,8 +400,9 @@ end, { desc = 'CTRL-G: full path -> noice (bot-right) + yank to ""' })
 -- selection back to kitty (terminal_select_modifiers, initrc/kitty/kitty.conf).
 -- notify, NOT nvim_echo: noice silently drops a msg_show identical to the one
 -- before it (ui/state.lua State.skip), so an echoed hint shows once and never
--- again. Notify builds a fresh message every call. The yellow comes from the
--- mini_hint view in core_plugins/noice.lua, which this text is routed to.
+-- again. Notify builds a fresh message every call. The boxed presentation
+-- comes from the hint_box view in core_plugins/noice.lua, which this text is
+-- routed to; INFO here also picks the blue DiagnosticInfo trim on that box.
 -- expr so the builtin <2-LeftMouse> still runs and selects the word;
 -- scheduled because the view opens a float and expr mappings run under
 -- textlock. Shift+double-click never reaches us -- kitty keeps that one -- so

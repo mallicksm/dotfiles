@@ -61,3 +61,9 @@ export NOVAS_AUTO_SOURCE="$HOME/waves/count_edges.tcl"
 # command entry (cmd_enter_form=TRUE) and Interactive Console dock enabled.
 export NOVAS_RC="$HOME/novas.rc"
 export NOVAS_GUICONF="$HOME/novas.conf"
+
+# ls colors: the system default paints *.md and *.txt the same (38;5;39 blue).
+# Override so each stands out. LS_COLORS is last-match-wins in GNU ls, so
+# appending here beats the inherited default.
+#   *.md -> orchid/purple, *.rc -> green
+export LS_COLORS="${LS_COLORS}:*.md=38;5;170:*.rc=38;5;114"

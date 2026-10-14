@@ -67,6 +67,7 @@ Positional `path`s may be files or directories. Directories are recursed
 | `.zsh`                              | `zsh`      | `shfmt`                  | `shfmt -ln zsh -i 3 -ci -bn -sr -w <file>`                    |
 | `.tcl .qel .fs`                     | `tcl`      | `tclfmt`                 | `tclfmt - < file > tmp && mv` (stdin→stdout filter)          |
 | `.csr`                              | `semifore` | `semifore.py`            | `semifore.py < file > tmp && mv` (stdin→stdout filter)       |
+| `Makefile`, `makefile`, `GNUmakefile`, `.mk` | `make` | `mbake`              | `mbake format --stdin --config ~/dotfiles/formatters/mbake.toml` (stdin→stdout filter) |
 
 Filetypes with **no formatter** (skipped, WARN): `csh` (`cshrc`, `shellrc`,
 `.shellrc`), `markdown` (`.mdc`), `tdf`, `f`, `scat`, `trace32` (`.cmm`),
@@ -76,6 +77,55 @@ The verible flags are NOT hardcoded here: both `fmt.sh` and nvim `conform.nvim`
 pass `--flagfile=~/dotfiles/formatters/verible-format.flagfile`, the single
 source of truth (3-space indent, aligned port decls + named ports, 120-column
 limit to match AscentLint `LINE_LENGTH`). Edit that flagfile to change either.
+
+Makefiles go through `mbake`, with its knobs in
+`~/dotfiles/formatters/mbake.toml`, passed via `--config` from both sides -- same
+pattern as the verible flagfile. `Makefile` / `.mk` need no `ftdetect` rule; nvim
+resolves them to `ft=make` natively.
+
+Those knobs are **tuned by measurement** against a reference file
+(`uec00/simulation/Makefile`, hand-aligned house style). All 64 combinations of
+the six spacing/alignment options were swept, then the hygiene knobs on top; the
+committed settings are the minimum divergence at **28 changed lines**. The two
+that matter:
+
+- `align_variable_assignments = true` — this is what keeps `=` in a column at
+  all. With it off, mbake collapses every assignment to one space (37 lines).
+- `indent_nested_conditionals = false` — when on, the alignment pass *also*
+  strips the leading indent from `ifeq`/`ifdef` bodies (33 lines).
+
+**mbake cannot reach zero**, and it is worth knowing why before you reach for
+`<leader>cf` on a carefully aligned Makefile. mbake aligns the *operator start*
+and excludes `+=` lines from padding, so it emits `MAC_INCDIRS = x` above
+`MAC_INCDIRS += y`, whereas the house style pads so the `=` **character** lines
+up (`MAC_INCDIRS  = x`). The reference file is not mechanically reproducible
+either: some groups align the `=` char, others the operator start, and a long
+name (`ASSERT_OPTS`) is allowed to overflow rather than widen its whole block.
+Of the 28 residual lines, 21 are that alignment difference and **7 are inside
+recipe bodies**: mbake re-indents shell continuation lines, turning
+`\t   echo ...` into `\t\techo ...`. That is unconditional — no knob disables
+it. It is safe, because make strips the leading TAB and the shell ignores
+leading whitespace (verified: same 25 targets from `make -pn`, and recipe text
+identical after normalising insignificant whitespace). The exception to watch
+for is an un-indented heredoc (`<<EOF` rather than `<<-EOF`), where body
+whitespace is literal output; the reference file has none.
+
+So expect `<leader>cf` to nudge alignment and recipe-internal shell indentation.
+It will not change what the Makefile does.
+
+What it reliably fixes: spacing around `=` / `:=` / `?=`, trailing whitespace,
+missing final newline, runs of blank lines, and — the one that matters — a
+**space-indented recipe line converted to a TAB**, which is a real Makefile bug
+rather than a style nit.
+
+To re-measure after editing the config (note `command diff`: the interactive
+`diff` alias is `diff -b`, which ignores whitespace and will claim a whitespace
+formatter changed nothing):
+
+```bash
+mbake format --stdin --config ~/dotfiles/formatters/mbake.toml < Makefile \
+  | command diff Makefile - | grep -c '^<'
+```
 
 ## Dry-run vs execute
 
@@ -115,6 +165,9 @@ black --config ~/dotfiles/formatters/py-format.toml --quiet file.py
 
 # Shell
 shfmt -i 3 -ci -bn -sr -w file.sh
+
+# Makefile (mbake has no in-place flag that respects our config; use stdin)
+mbake format --stdin --config ~/dotfiles/formatters/mbake.toml < Makefile > t && mv t Makefile
 ```
 
 ## Examples

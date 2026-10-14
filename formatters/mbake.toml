@@ -1,0 +1,96 @@
+#-------------------------------------------------------------------------------
+# mbake.toml -- Makefile formatter config (mbake / https://pypi.org/project/mbake)
+#
+# Single source of truth for ft=make, shared by:
+#   - nvim conform.nvim  (<leader>cf)  -- nvim.pack + nvim.easy formatting.lua
+#   - ~/dotfiles/utils/fmt.sh          -- CLI mirror
+# Both pass --config <this file>, so edit here, not there.
+#
+# Install: pip3 install --user mbake   (see install/requirements.txt)
+#
+# TUNED AGAINST a reference file: uec00/simulation/Makefile (hand-aligned house
+# style). Every knob below was swept exhaustively (all 64 combinations of the six
+# spacing/alignment options, then the remaining hygiene knobs) and these settings
+# are the measured minimum divergence: 28 changed lines. Re-measure with:
+#   mbake format --stdin --config ~/dotfiles/formatters/mbake.toml < Makefile \
+#     | command diff Makefile - | grep -c '^<'
+# NB: use `command diff` -- the interactive `diff` alias is `diff -b`, which
+# ignores whitespace and will tell you a whitespace formatter changed nothing.
+#-------------------------------------------------------------------------------
+
+# Global settings
+debug = false
+verbose = false
+
+# Error message formatting
+gnu_error_format = true
+wrap_error_messages = false
+
+[formatter]
+# Spacing. With align_variable_assignments on, the alignment pass decides the
+# gap, so these three are effectively inert (verified: flipping them does not
+# change the output). Kept at mbake's defaults.
+space_around_assignment = true
+space_before_colon = false
+space_after_colon = true
+
+# Line continuation settings
+normalize_line_continuations = true
+max_line_length = 120
+
+# PHONY settings. All off on purpose: .PHONY is a semantic decision, not a
+# formatting one, and auto-inserting/reordering it churns diffs.
+auto_insert_phony_declarations = false
+group_phony_declarations = false
+phony_at_top = false
+
+# General hygiene. fix_missing_recipe_tabs is the one that actually matters:
+# a space-indented recipe line is a real Makefile bug, not a style nit.
+remove_trailing_whitespace = true
+ensure_final_newline = true
+normalize_empty_lines = true
+max_consecutive_empty_lines = 2
+fix_missing_recipe_tabs = true
+
+# Conditionals. OFF: when enabled, the alignment pass also strips the leading
+# indent from ifeq/ifdef bodies, losing the visual nesting. Costs 5 extra
+# changed lines (33 vs 28) on the reference file.
+indent_nested_conditionals = false
+tab_width = 2
+
+# Variable alignment. ON: this is what keeps '=' in a column at all. Off, mbake
+# collapses every assignment to a single space (37 changed lines vs 28).
+align_variable_assignments = true
+
+# OFF by measurement (28 vs 30), though it is the closer match in spirit --
+# the reference file does align across comments, whereas mbake restarts its
+# group at each one. Flip to true if you prefer that; it costs 2 lines.
+align_across_comments = false
+
+#-------------------------------------------------------------------------------
+# KNOWN RESIDUAL -- the 28 lines mbake cannot match on the reference file. No
+# config avoids either of these; both were verified by sweeping every knob.
+#
+# 21 lines: assignment alignment. mbake aligns the OPERATOR START and excludes
+#   '+=' lines from padding, so it emits
+#       MAC_INCDIRS = x        <- mbake
+#       MAC_INCDIRS += y
+#   where the house style pads so the '=' CHARACTER lines up:
+#       MAC_INCDIRS  = x       <- reference file
+#       MAC_INCDIRS += y
+#   The reference file is not mechanically reproducible anyway: some groups align
+#   the '=' char, others the operator start, and a long name (ASSERT_OPTS) is
+#   allowed to overflow rather than widen its whole block.
+#
+#  7 lines: mbake re-indents shell continuation lines INSIDE recipe bodies,
+#   e.g. "\t   echo ..." -> "\t\techo ..." and "\t fi; \" -> "\tfi; \". This is
+#   unconditional (identical 7 lines with every knob flipped, and worse -- 12 --
+#   with indent_nested_conditionals on).
+#   Safe here: make strips the leading TAB and the shell ignores leading
+#   whitespace, so the recipe text is unchanged modulo insignificant spacing
+#   (verified: same 25 targets from `make -pn`, recipe text identical after
+#   whitespace normalisation).
+#   CAUTION: that reasoning breaks for an un-indented heredoc (`<<EOF` rather
+#   than `<<-EOF`), where body whitespace IS literal output. The reference file
+#   has none. Re-check if you ever add one to a recipe.
+#-------------------------------------------------------------------------------

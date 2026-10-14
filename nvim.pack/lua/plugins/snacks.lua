@@ -83,7 +83,7 @@ require('snacks').setup({
       -- own BufReadCmd for `*.pdf` and tries to render the first page via
       -- `magick`, which (a) fails noisily on this box where ImageMagick isn't
       -- installed and (b) collides with our `*.pdf` BufReadCmd in
-      -- lua/autocmds.lua that hands PDFs to evince. Keep `pdf` out so PDFs flow
+      -- lua/autocmds.lua that hands PDFs to pdfcraft. Keep `pdf` out so PDFs flow
       -- cleanly through our autocmd. (Videos like mp4/mov/avi/mkv/webm are still
       -- here but `magick` can't render them without ffmpeg -- prune them too if
       -- you start seeing similar warnings on those.)
@@ -114,7 +114,7 @@ require('snacks').setup({
       top_down = false,
       margin   = { top = 0, right = 1, bottom = 0 },
       level    = vim.log.levels.TRACE,
-      timeout  = 3000,
+      timeout  = 10000,
    },
 
    -- snacks.input: handles vim.ui.input AND vim.ui.select (when ui_select on
@@ -132,6 +132,20 @@ require('snacks').setup({
             keys = {
                -- Close on <esc> in insert mode, matching old telescope behavior.
                ['<esc>'] = { 'close', mode = { 'n', 'i' } },
+            },
+         },
+      },
+      -- <leader>ee explorer sidebar: 25% of the editor width, floored at 40
+      -- columns. The explorer source otherwise inherits snacks' `sidebar`
+      -- preset, a fixed width = 40. A bare fraction (width = 0.25) also
+      -- scales, but the layout box ignores `min_width` -- only standalone
+      -- snacks.win honors it -- so the floor needs this function form.
+      sources   = {
+         explorer = {
+            layout = {
+               layout = {
+                  width = function() return math.max(40, math.floor(vim.o.columns * 0.25)) end,
+               },
             },
          },
       },

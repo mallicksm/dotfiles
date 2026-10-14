@@ -43,7 +43,7 @@ return {
          },
          -- vim.notify() routing:
          --   WARN / ERROR  -> snacks.notifier (big top-right popup, demands attention)
-         --   INFO / DEBUG  -> mini view       (small bottom-right toast, fades in ~2s)
+         --   INFO / DEBUG  -> mini view       (small bottom-right toast, fades in 10s)
          -- noice's "notify" view name still maps to whichever notifier is
          -- registered; with snacks.notifier enabled in snacks.lua, that's
          -- snacks instead of nvim-notify.
@@ -52,22 +52,33 @@ return {
             view = "notify",
          },
          views = {
-            -- Tighten the mini view a bit: bottom-right, short timeout, no border.
+            -- Tighten the mini view a bit: bottom-right, no border.
             -- (These are the noice defaults for "mini" plus an explicit timeout.)
             mini = {
-               timeout = 2000,
+               timeout = 10000,
                position = { row = -2, col = "100%" }, -- 2 rows above cmdline, right edge
                border = { style = "none" },
                win_options = { winblend = 30 }, -- semi-transparent
             },
-            -- Same toast, yellow text -- for nudges rather than status (the
-            -- mouse hint from keymaps.lua). `view = "mini"` inherits
-            -- everything above; only the message highlight differs.
-            -- DiagnosticWarn, not WarningMsg: gruvbox links WarningMsg to
-            -- GruvboxRedBold.
-            mini_hint = {
-               view = "mini",
-               format = { { "{message}", hl_group = "DiagnosticWarn" } },
+            -- Bordered box via snacks.notifier -- the same presentation
+            -- nvim's own "Type :qa and press <Enter> to exit Nvim" gets,
+            -- since messages.view above routes msg_show to "notify" too.
+            -- `view = "notify"` inherits that view's snacks backend and
+            -- {message} format; only the title and lifetime differ. No
+            -- `level` override on purpose: snacks links a box's
+            -- icon/border/title to Diagnostic<Level>, so the INFO level the
+            -- keymap notifies at gives the same blue DiagnosticInfo trim as
+            -- the Ctrl-C hint (WARN would make it yellow). snacks also keeps
+            -- any notification alive while the cursor sits in the cmdline
+            -- (its default global `keep` is getcmdpos() > 0), which is why
+            -- the Ctrl-C hint appears to linger. replace reuses a single
+            -- notification id, so repeated double-clicks update one box
+            -- instead of stacking a column of them.
+            hint_box = {
+               view = "notify",
+               title = "Mouse <double-click>",
+               timeout = 10000,
+               replace = true,
             },
          },
          routes = {
@@ -77,7 +88,7 @@ return {
                -- precede the generic INFO -> mini route below, which would
                -- otherwise take it (in white).
                filter = { event = "notify", find = 'shift%+drag' },
-               view = "mini_hint",
+               view = "hint_box",
             },
             {
                --[[ redirect annoying messages to mini ]]

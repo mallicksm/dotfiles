@@ -44,6 +44,16 @@ require('conform').setup({
          args    = { '-' },
          stdin   = true,
       },
+      mbake = {
+         -- Makefile formatter. Knobs live in the shared config (single source of
+         -- truth, also used by ~/dotfiles/utils/fmt.sh). Edit that file, not here.
+         command = 'mbake',
+         args    = {
+            'format', '--stdin',
+            '--config', vim.fn.expand('$HOME') .. '/dotfiles/formatters/mbake.toml',
+         },
+         stdin   = true,
+      },
    },
    formatters_by_ft = {
       lua      = { 'stylua' },
@@ -57,6 +67,7 @@ require('conform').setup({
       bash     = { 'shfmt' },
       zsh      = { 'shfmt_zsh' },
       tcl      = { 'tclfmt' },
+      make     = { 'mbake' },
    },
    notify_on_error = true,
 })

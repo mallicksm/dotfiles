@@ -33,14 +33,14 @@ vim.api.nvim_create_autocmd('BufReadCmd', {
       -- warnings. Plain shell `xdg-open foo.pdf` is clean because stdio is
       -- just the tty -- jobstart+detach mirrors that.
       --
-      -- On Linux, open in evince. To use a different viewer, swap 'evince'
+      -- On Linux, open in pdfcraft. To use a different viewer, swap 'pdfcraft'
       -- below for whatever's in PATH (or use 'xdg-open' to follow the system
       -- default association).
       local cmd
       if vim.fn.has('mac') == 1 then
          cmd = { 'open', fname }
       else
-         cmd = { 'evince', fname }
+         cmd = { 'pdfcraft', fname }
       end
       local ok, jid = pcall(vim.fn.jobstart, cmd, { detach = true })
       if not ok or jid <= 0 then

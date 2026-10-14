@@ -37,13 +37,16 @@ declare -A EXT2FT=(
    [py]=python [lua]=lua [json]=json
    [c]=c [cc]=cpp [cpp]=cpp [cxx]=cpp [hpp]=cpp [hh]=cpp
    [sh]=sh [bash]=bash [zsh]=zsh [tcl]=tcl
+   [mk]=make
 )
 
 # --- (1b) whole filename -> filetype ------------------------------------------
-# From after/ftdetect/filetype.lua `filename` table (catches extensionless files).
+# From after/ftdetect/filetype.lua `filename` table (catches extensionless files),
+# plus the nvim builtins for extensionless files that DO have a formatter.
 declare -A FILE2FT=(
    [bash_profile]=sh [bashrc]=sh
    [cshrc]=csh [shellrc]=csh [.shellrc]=csh
+   [Makefile]=make [makefile]=make [GNUmakefile]=make
 )
 
 # --- (2) filetype -> formatter key --------------------------------------------
@@ -59,13 +62,14 @@ declare -A FT2FMT=(
    [zsh]=shfmt_zsh
    [tcl]=tcl
    [semifore]=semifore
+   [make]=mbake
 )
 
 # --- formatter key -> underlying tool binary (for the "is it installed?" check).
 declare -A FMT2BIN=(
    [verible]=verible-verilog-format [clang]=clang-format [black]=black
    [stylua]=stylua [prettier]=prettier [shfmt]=shfmt [shfmt_zsh]=shfmt
-   [tcl]=tclfmt [semifore]="$FMT_DIR/semifore.py"
+   [tcl]=tclfmt [semifore]="$FMT_DIR/semifore.py" [mbake]=mbake
 )
 
 #-------------------------------------------------------------------------------
@@ -113,6 +117,7 @@ Formatters (same tools/flags as conform.nvim <leader>cf):
   .zsh                       shfmt -ln zsh -i 3 -ci -bn -sr
   .tcl .qel .fs              tclfmt
   .csr                       $FMT_DIR/semifore.py
+  Makefile GNUmakefile .mk   mbake format --stdin (config $FMT_DIR/mbake.toml)
 
 Behavior:
   - Directories are recursed (.git is pruned); only known extensions are picked.
@@ -209,6 +214,10 @@ do_format() {
          stepf "$dir" "$base" tclfmt - ;;
       semifore)
          stepf "$dir" "$base" "$FMT_DIR/semifore.py" ;;
+      mbake)
+         # knobs live in the shared config (single source of truth, also used by
+         # nvim conform.nvim); edit $FMT_DIR/mbake.toml, not here.
+         stepf "$dir" "$base" mbake format --stdin --config "$FMT_DIR/mbake.toml" ;;
       *)
          echo "internal: unhandled formatter '$fmt'" >&2; return 1 ;;
    esac
