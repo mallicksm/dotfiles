@@ -19,6 +19,10 @@ local function inactive()
    return 'inactive:' .. filename
 end
 
+local function total_lines()
+   return tostring(vim.fn.line('$'))
+end
+
 local default_config = {
    options = {
       theme              = 'dracula',
@@ -39,6 +43,10 @@ local default_config = {
             return vim.bo.filetype
          end,
       },
+      -- lualine defaults these to { 'progress' } / { 'location' }; naming them
+      -- replaces the '3%' progress readout with the buffer's total line count.
+      lualine_y = { total_lines },
+      lualine_z = { 'location' },
    },
    inactive_sections = {
       lualine_c = { { inactive, color = { fg = '#ffff00', gui = 'italic' } } },
