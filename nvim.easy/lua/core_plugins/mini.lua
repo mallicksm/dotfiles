@@ -301,17 +301,26 @@ return {
          ---------------------------------------------------
          -- <leader>K for more info on cWORD mini.hipatterns
          ---------------------------------------------------
+         -- Lua patterns have no case-insensitivity flag, so expand every letter
+         -- into a two-char class: NOTE -> [Nn][Oo][Tt][Ee]. Matches Note, note,
+         -- NoTe alike. The %f[%w] / %f[%W] frontiers still pin it to a
+         -- standalone word, so NOTES and FOONOTE stay unhighlighted.
+         local function ci_word(word)
+            local body = word:gsub('%a', function(c) return '[' .. c:upper() .. c:lower() .. ']' end)
+            return '%f[%w]()' .. body .. '()%f[%W]'
+         end
+
          require('mini.hipatterns').setup({
             highlighters = {
-               -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-               fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-               hack = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-               todo = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-               note = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-               smdebug = { pattern = '%f[%w]()smdebug()%f[%W]', group = 'MiniHipatternsFixme' },
-               smtodo = { pattern = '%f[%w]()smtodo()%f[%W]', group = 'MiniHipatternsHack' },
-               sminfo = { pattern = '%f[%w]()sminfo()%f[%W]', group = 'MiniHipatternsNote' },
-               smnote = { pattern = '%f[%w]()smnote()%f[%W]', group = 'MiniHipatternsTodo' },
+               -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE' (any case)
+               fixme = { pattern = ci_word('FIXME'), group = 'MiniHipatternsFixme' },
+               hack = { pattern = ci_word('HACK'), group = 'MiniHipatternsHack' },
+               todo = { pattern = ci_word('TODO'), group = 'MiniHipatternsTodo' },
+               note = { pattern = ci_word('NOTE'), group = 'MiniHipatternsNote' },
+               smdebug = { pattern = ci_word('smdebug'), group = 'MiniHipatternsFixme' },
+               smtodo = { pattern = ci_word('smtodo'), group = 'MiniHipatternsHack' },
+               sminfo = { pattern = ci_word('sminfo'), group = 'MiniHipatternsNote' },
+               smnote = { pattern = ci_word('smnote'), group = 'MiniHipatternsTodo' },
 
                -- Highlight hex color strings (`#rrggbb`) using that color
                hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),

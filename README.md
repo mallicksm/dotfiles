@@ -23,6 +23,7 @@ One `dotfiles.sh` symlinks everything into place; nothing needs root.
 |                                        | `snippets/README.md`).                                                      |
 | `formatters/`                          | Shared formatter configs (`clang-format`, `verible-rules`,                  |
 |                                        | `py-format.toml`, `semifore.py`).                                           |
+| `scripts/`                             | Standalone Python helpers (`mdcol.py` table fitter, `pdf2md.py`).           |
 | `docs/`                                | Reference notes (e.g. `aarch32-cp15-registers.md`).                         |
 | `.githooks/`                           | `post-checkout` / `post-merge` re-apply sensitive perms via `fix-perms`.    |
 
@@ -68,7 +69,15 @@ Two independent configs, selected by the `vi` wrapper in `utils/bash_nvim.sh`:
 - **`vi`** → `nvim.pack` (built-in `vim.pack` package manager) — the default.
 - **`vi -p`** → `nvim.easy` (`lazy.nvim`) — the "previous" setup.
 
-Both load via `NVIM_APPNAME` with `XDG_CONFIG_HOME=~/dotfiles`.
+Both load via `NVIM_APPNAME` with `XDG_CONFIG_HOME=~/dotfiles`, so their
+plugin and state dirs under `~/.local/{share,state,cache}/` stay separate
+and switching never cross-contaminates either install.
+
+The two trees are near-identical: filetype handling (`after/`, `syntax/`,
+`ftplugin/`, `indent/`, `queries/`), `lua/utils/`, `lua/autocmds.lua`,
+`lua/user_commands.lua`, and `.stylua.toml` are **duplicated copies, not
+symlinks** — edit both, and check with `diff -rq nvim.easy nvim.pack`.
+Only the plugin-loading layer genuinely differs.
 
 ## SSH
 

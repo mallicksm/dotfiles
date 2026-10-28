@@ -125,8 +125,8 @@ return {
       -- blankline.nvim. snacks.indent rotates `indent.hl` per depth, so the
       -- 7 Rainbow* groups give the same gruvbox rainbow that ibl produced.
       -- The Rainbow* hl groups are (re)created in the ColorScheme autocmd
-      -- registered in `config` below, so they survive `:Telescope colorscheme`
-      -- previews the same way the old ibl HIGHLIGHT_SETUP hook did.
+      -- registered in `config` below, so they survive a colorscheme switch
+      -- the same way the old ibl HIGHLIGHT_SETUP hook did.
       indent = {
          enabled = true,
          indent  = {

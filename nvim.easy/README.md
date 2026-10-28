@@ -6,12 +6,14 @@ Trace32, etc.). Plugins are managed with **lazy.nvim** (auto-cloned on first
 launch).
 
 A parallel tree lives at [`~/dotfiles/nvim.pack`](../nvim.pack/README.md) —
-same behavior, **`vim.pack`** instead of lazy.nvim. Use one as your daily
-driver; keep the other for comparison or migration.
+same behavior, **`vim.pack`** instead of lazy.nvim. That one is now the
+default `vi`; this tree is kept as the fallback (`vi -p`) and as the
+reference for anything that has not been ported yet.
 
 ## Requirements
 
-- Neovim **0.10+** (0.12+ if you also use `nvim.pack`)
+- Neovim **0.12+** — `core_plugins/undotree.lua` wires up the built-in
+  `$VIMRUNTIME/pack/dist/opt/nvim.undotree` rather than mbbill/undotree
 - `git` on `PATH` (lazy.nvim bootstrap)
 - Optional but expected in practice: `make` (some plugin builds), Mason
   tools (`tree-sitter-cli`, `shfmt`, …) installed on first LSP session
@@ -26,14 +28,18 @@ XDG_CONFIG_HOME=~/dotfiles NVIM_APPNAME=nvim.easy nvim
 ```
 
 **Recommended:** use the `vi` wrapper in `~/dotfiles/utils/bash_nvim.sh`
-(sourced from your shellrc). It exports those variables and defaults to
-`nvim.easy`:
+(sourced from your shellrc). It exports those variables for you. Note that
+the wrapper defaults to **`nvim.pack`**; this tree is the `-p` ("previous")
+option:
 
 ```bash
-vi              # lazy.nvim config (this tree)
-vi -p           # switch to nvim.pack (see sibling README)
-vi -x file.sv   # optional xterm wrapper
+vi -p           # lazy.nvim config (this tree)
+vi              # nvim.pack, the default (see sibling README)
+vi -p -x f.sv   # optional xterm wrapper
 ```
+
+The wrapper consumes a bare `-p` as the config switch, so nvim's own
+"open in tabs" flag has to be given a count: `vi -p5`.
 
 Git difftool (from `~/dotfiles/initrc/gitconfig`) also points at this app
 name for `git difftool`.
@@ -105,9 +111,17 @@ lockfile changes after a git pull.
 ├── after/
 │   ├── ftdetect/filetype.lua
 │   └── ftplugin/*.lua       Per-filetype settings (markdown, SV, jira, …)
+├── ftplugin/sv.vim          Defers to built-in systemverilog ftplugin
+├── indent/sv.vim            Defers to built-in SystemVerilogIndent()
 ├── queries/systemverilog/   treesitter textobjects (custom query)
-└── syntax/*.vim             Vendored syntax (jira, map, trace32, tdf, …)
+├── syntax/*.vim             Vendored syntax (jira, map, trace32, tdf, …)
+└── .stylua.toml             3-space, single quotes, column 160
 ```
+
+Everything from `after/` down — plus `lua/utils/`, `lua/markdown/`,
+`lua/autocmds.lua`, `lua/user_commands.lua`, and `.stylua.toml` — is
+byte-identical to the `nvim.pack` tree. There are no symlinks between the
+two: **a change to any of those files has to be made twice.**
 
 ### How lazy.nvim discovers plugins
 
@@ -171,16 +185,19 @@ cd ~/dotfiles && git add nvim.easy/lazy-lock.json && git commit -m "nvim: bump l
   spec so lazy can defer-load it.
 - **New filetype:** add `after/ftplugin/<type>.lua` and optionally
   `syntax/<type>.vim` + treesitter parser in `plugins/treesitter.lua`.
-- **Style:** `.stylua.toml` at repo root; run `stylua` on changed Lua.
+- **Style:** `nvim.easy/.stylua.toml` (not the dotfiles root — stylua
+  searches upward from the file being formatted, so the copy has to sit
+  inside each config tree). Run `stylua` on changed Lua, or `<leader>mp`.
 
 ## Sibling config: nvim.pack
 
-| Topic           | nvim.easy (this tree)     | nvim.pack                    |
-| --------------- | ------------------------- | ---------------------------- |
-| Package manager | lazy.nvim                 | built-in `vim.pack` (0.12+)  |
-| Plugin list     | auto-discovered specs     | explicit `lua/plugins.lua`   |
-| Lockfile        | `lazy-lock.json`          | `nvim-pack-lock.json`        |
-| Update command  | `:Lazy update` / `sync`   | `:lua vim.pack.update()`     |
-| Lazy loading    | per-spec `keys` / `event` | eager (all plugins at start) |
+| Topic           | nvim.easy (this tree)     | nvim.pack                        |
+| --------------- | ------------------------- | -------------------------------- |
+| Launched by     | `vi -p`                   | `vi` (default)                   |
+| Package manager | lazy.nvim                 | built-in `vim.pack` (0.12+)      |
+| Plugin list     | auto-discovered specs     | explicit `lua/plugins.lua`       |
+| Lockfile        | `lazy-lock.json`          | `nvim-pack-lock.json`            |
+| Update command  | `:Lazy update` / `sync`   | `:lua vim.pack.update()`         |
+| Lazy loading    | per-spec `keys` / `event` | two phases, deferred on VimEnter |
 
 Details: [`../nvim.pack/README.md`](../nvim.pack/README.md).
