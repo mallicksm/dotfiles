@@ -62,7 +62,14 @@ local function open_externally(linux_cmd, label)
    else
       cmd = { linux_cmd, fname }
    end
-   local ok, jid = pcall(vim.fn.jobstart, cmd, { detach = true })
+   -- The `vi` wrapper exports XDG_CONFIG_HOME=~/dotfiles so nvim picks up its
+   -- config from there. The viewer would inherit that and scatter its own
+   -- prefs/logs into the dotfiles repo, splitting its settings across two
+   -- locations depending on how it was launched. Hand it the real config home.
+   local ok, jid = pcall(vim.fn.jobstart, cmd, {
+      detach = true,
+      env = { XDG_CONFIG_HOME = vim.env.HOME .. '/.config' },
+   })
    if not ok or jid <= 0 then
       vim.notify('Failed to launch ' .. label .. ': ' .. tostring(jid), vim.log.levels.ERROR)
    end
