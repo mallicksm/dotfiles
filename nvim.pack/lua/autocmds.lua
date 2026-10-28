@@ -5,16 +5,18 @@
 -- placeholder buffer in nvim so we don't accidentally close the editor when the
 -- document was the sole argument.
 --
--- `linux` is the command used on Linux; macOS always uses `open`, which follows
--- the system associations. Add an entry here to cover more formats.
+-- `linux` is the command run on Linux; `mac` is the .app launched via `open -a`
+-- on macOS. Both point at the ArtCraft apps so documents open in the same editor
+-- on either platform, instead of macOS handing them to Preview/Excel via the
+-- system file associations. Add an entry here to cover more formats.
 --
 -- Name the app directly rather than 'xdg-open': under XFCE, xdg-open delegates
 -- to `exo-open`, which returns 1 when run from a jobstart() job (it works from
 -- an interactive shell), so xdg-open exits 4 and nothing launches.
 local external_viewers = {
-   { patterns = { '*.pdf' },  linux = 'pdfcraft',  label = 'PDF viewer' },
-   { patterns = { '*.xlsx' }, linux = 'gridcraft', label = 'spreadsheet editor' },
-   { patterns = { '*.docx' }, linux = 'wordcraft', label = 'word processor' },
+   { patterns = { '*.pdf' },  linux = 'pdfcraft',  mac = 'PdfCraft',  label = 'PDF viewer' },
+   { patterns = { '*.xlsx' }, linux = 'gridcraft', mac = 'GridCraft', label = 'spreadsheet editor' },
+   { patterns = { '*.docx' }, linux = 'wordcraft', mac = 'WordCraft', label = 'word processor' },
 }
 
 -- xlsx/docx are ZIP containers, so the built-in zip.vim claims a BufReadCmd for
@@ -30,7 +32,8 @@ pcall(vim.api.nvim_clear_autocmds, {
    pattern = { '*.xlsx', '*.docx' },
 })
 
-local function open_externally(linux_cmd, label)
+local function open_externally(viewer)
+   local linux_cmd, mac_app, label = viewer.linux, viewer.mac, viewer.label
    local fname = vim.fn.fnamemodify(vim.fn.expand('<afile>'), ':p')
 
    vim.bo.buftype = 'nofile'
@@ -58,7 +61,10 @@ local function open_externally(linux_cmd, label)
    -- just the tty -- jobstart+detach mirrors that.
    local cmd
    if vim.fn.has('mac') == 1 then
-      cmd = { 'open', fname }
+      -- `open -a <App>` routes through the named app instead of the default
+      -- handler, so PDFs/spreadsheets land in the ArtCraft apps rather than
+      -- Preview/Excel. No `-n`, so a file opens in an already-running instance.
+      cmd = { 'open', '-a', mac_app, fname }
    else
       cmd = { linux_cmd, fname }
    end
@@ -79,7 +85,7 @@ for _, viewer in ipairs(external_viewers) do
    vim.api.nvim_create_autocmd('BufReadCmd', {
       pattern = viewer.patterns,
       callback = function()
-         open_externally(viewer.linux, viewer.label)
+         open_externally(viewer)
       end,
    })
 end
