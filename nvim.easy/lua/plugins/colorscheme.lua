@@ -25,6 +25,13 @@ return {
       -- keeps other plugins' floats (telescope, noice, etc.) untouched.
       vim.api.nvim_set_hl(0, 'SnacksNormal', { link = 'Normal' })
       vim.api.nvim_set_hl(0, 'SnacksNormalNC', { link = 'Normal' })
+      -- gruvbox ships Folded with Comment's exact fg (#928374 + italic), so a
+      -- closed fold reads as a comment. Aqua on bg2 (#504945) makes it a
+      -- distinct band; bg2 rather than bg1 keeps a fold on the cursor line
+      -- readable, since CursorLine is bg1 (#3c3836).
+      vim.api.nvim_set_hl(0, 'Folded', {
+         fg = '#8ec07c', bg = '#504945', bold = true, italic = false,
+      })
    end,
 }
 -- vim: ts=3 sts=3 sw=3 et

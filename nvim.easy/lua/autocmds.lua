@@ -1,53 +1,77 @@
 -- Real autocmds only. User commands moved to lua/user_commands.lua.
 -- See `:help lua-guide-autocommands` for the API.
 
--- Open PDFs in the system's default viewer (vim.ui.open dispatches to `open` on macOS,
--- `xdg-open` on Linux, etc.). Leaves a small placeholder buffer in nvim so we don't
--- accidentally close the editor when the PDF was the sole argument.
-vim.api.nvim_create_autocmd('BufReadCmd', {
-   pattern = '*.pdf',
-   callback = function()
-      local fname = vim.fn.fnamemodify(vim.fn.expand('<afile>'), ':p')
+-- Hand documents we can't usefully edit to an external viewer. Leaves a small
+-- placeholder buffer in nvim so we don't accidentally close the editor when the
+-- document was the sole argument.
+--
+-- `linux` is the command used on Linux; macOS always uses `open`, which follows
+-- the system associations. Use 'xdg-open' to follow the system association on
+-- Linux too. Add an entry here to cover more formats.
+local external_viewers = {
+   { patterns = { '*.pdf' },            linux = 'pdfcraft', label = 'PDF viewer' },
+   { patterns = { '*.xlsx', '*.docx' }, linux = 'xdg-open', label = 'system document opener' },
+}
 
-      vim.bo.buftype = 'nofile'
-      vim.bo.bufhidden = 'wipe'
-      vim.bo.swapfile = false
-      -- Rename the placeholder so the buffer name does NOT end in `.pdf`.
-      -- snacks.image keys off the extension and would otherwise try to
-      -- render the file as an inline PNG via `magick` (failing loudly when
-      -- ImageMagick isn't installed -- exactly the case here). The rename
-      -- also matches the historical `foo.pdf.txt` naming the old
-      -- pdftotext.py flow used.
-      pcall(vim.api.nvim_buf_set_name, 0, fname .. '.opened')
-      vim.b.snacks_image = false -- belt-and-suspenders against snacks.image
-      vim.api.nvim_buf_set_lines(0, 0, -1, false, {
-         '-- Opened ' .. fname .. ' in the system PDF viewer --',
-         '',
-         'Use :bd to close this placeholder buffer.',
-      })
-      vim.bo.modifiable = false
-      vim.bo.readonly = true
-
-      -- NB: use jobstart (not vim.ui.open / vim.system) so the child doesn't
-      -- inherit captured pipes that some viewers trip on with thumbnailer
-      -- warnings. Plain shell `xdg-open foo.pdf` is clean because stdio is
-      -- just the tty -- jobstart+detach mirrors that.
-      --
-      -- On Linux, open in pdfcraft. To use a different viewer, swap 'pdfcraft'
-      -- below for whatever's in PATH (or use 'xdg-open' to follow the system
-      -- default association).
-      local cmd
-      if vim.fn.has('mac') == 1 then
-         cmd = { 'open', fname }
-      else
-         cmd = { 'pdfcraft', fname }
-      end
-      local ok, jid = pcall(vim.fn.jobstart, cmd, { detach = true })
-      if not ok or jid <= 0 then
-         vim.notify('Failed to launch PDF viewer: ' .. tostring(jid), vim.log.levels.ERROR)
-      end
-   end,
+-- xlsx/docx are ZIP containers, so the built-in zip.vim claims a BufReadCmd for
+-- them too and interleaves its archive listing with our placeholder buffer.
+-- zip.vim is sourced after init.lua but BufReadCmd fires before VimEnter, so
+-- there is no later hook to undo it from: load it now, then drop just those two
+-- patterns. Sourcing sets g:loaded_zipPlugin, so normal plugin loading skips it
+-- afterwards and real *.zip browsing is untouched.
+vim.cmd('runtime! plugin/zipPlugin.vim')
+pcall(vim.api.nvim_clear_autocmds, {
+   group = 'zip',
+   event = 'BufReadCmd',
+   pattern = { '*.xlsx', '*.docx' },
 })
+
+local function open_externally(linux_cmd, label)
+   local fname = vim.fn.fnamemodify(vim.fn.expand('<afile>'), ':p')
+
+   vim.bo.buftype = 'nofile'
+   vim.bo.bufhidden = 'wipe'
+   vim.bo.swapfile = false
+   -- Rename the placeholder so the buffer name does NOT keep the real
+   -- extension. snacks.image keys off the extension and would otherwise try
+   -- to render the file as an inline PNG via `magick` (failing loudly when
+   -- ImageMagick isn't installed -- exactly the case here). The rename
+   -- also matches the historical `foo.pdf.txt` naming the old
+   -- pdftotext.py flow used.
+   pcall(vim.api.nvim_buf_set_name, 0, fname .. '.opened')
+   vim.b.snacks_image = false -- belt-and-suspenders against snacks.image
+   vim.api.nvim_buf_set_lines(0, 0, -1, false, {
+      '-- Opened ' .. fname .. ' in the ' .. label .. ' --',
+      '',
+      'Use :bd to close this placeholder buffer.',
+   })
+   vim.bo.modifiable = false
+   vim.bo.readonly = true
+
+   -- NB: use jobstart (not vim.ui.open / vim.system) so the child doesn't
+   -- inherit captured pipes that some viewers trip on with thumbnailer
+   -- warnings. Plain shell `xdg-open foo.pdf` is clean because stdio is
+   -- just the tty -- jobstart+detach mirrors that.
+   local cmd
+   if vim.fn.has('mac') == 1 then
+      cmd = { 'open', fname }
+   else
+      cmd = { linux_cmd, fname }
+   end
+   local ok, jid = pcall(vim.fn.jobstart, cmd, { detach = true })
+   if not ok or jid <= 0 then
+      vim.notify('Failed to launch ' .. label .. ': ' .. tostring(jid), vim.log.levels.ERROR)
+   end
+end
+
+for _, viewer in ipairs(external_viewers) do
+   vim.api.nvim_create_autocmd('BufReadCmd', {
+      pattern = viewer.patterns,
+      callback = function()
+         open_externally(viewer.linux, viewer.label)
+      end,
+   })
+end
 
 -- Restore the cursor to its last position when re-opening a buffer.
 vim.api.nvim_create_autocmd('BufReadPost', {
