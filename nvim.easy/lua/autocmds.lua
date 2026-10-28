@@ -6,11 +6,15 @@
 -- document was the sole argument.
 --
 -- `linux` is the command used on Linux; macOS always uses `open`, which follows
--- the system associations. Use 'xdg-open' to follow the system association on
--- Linux too. Add an entry here to cover more formats.
+-- the system associations. Add an entry here to cover more formats.
+--
+-- Name the app directly rather than 'xdg-open': under XFCE, xdg-open delegates
+-- to `exo-open`, which returns 1 when run from a jobstart() job (it works from
+-- an interactive shell), so xdg-open exits 4 and nothing launches.
 local external_viewers = {
-   { patterns = { '*.pdf' },            linux = 'pdfcraft', label = 'PDF viewer' },
-   { patterns = { '*.xlsx', '*.docx' }, linux = 'xdg-open', label = 'system document opener' },
+   { patterns = { '*.pdf' },  linux = 'pdfcraft',  label = 'PDF viewer' },
+   { patterns = { '*.xlsx' }, linux = 'gridcraft', label = 'spreadsheet editor' },
+   { patterns = { '*.docx' }, linux = 'wordcraft', label = 'word processor' },
 }
 
 -- xlsx/docx are ZIP containers, so the built-in zip.vim claims a BufReadCmd for
