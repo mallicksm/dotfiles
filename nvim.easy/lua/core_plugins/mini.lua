@@ -303,11 +303,64 @@ return {
          ---------------------------------------------------
          -- Lua patterns have no case-insensitivity flag, so expand every letter
          -- into a two-char class: NOTE -> [Nn][Oo][Tt][Ee]. Matches Note, note,
-         -- NoTe alike. The %f[%w] / %f[%W] frontiers still pin it to a
-         -- standalone word, so NOTES and FOONOTE stay unhighlighted.
+         -- NoTe alike.
+         local function ci_body(word)
+            return (word:gsub('%a', function(c) return '[' .. c:upper() .. c:lower() .. ']' end))
+         end
+
+         -- The %f[%w] / %f[%W] frontiers pin it to a standalone word, so NOTES
+         -- and FOONOTE stay unhighlighted.
          local function ci_word(word)
-            local body = word:gsub('%a', function(c) return '[' .. c:upper() .. c:lower() .. ']' end)
-            return '%f[%w]()' .. body .. '()%f[%W]'
+            return '%f[%w]()' .. ci_body(word) .. '()%f[%W]'
+         end
+
+         -- Keyword -> badge group. List order is precedence: if a block's first
+         -- line carries two keywords, the earlier entry picks the wash color.
+         local keywords = {
+            { 'FIXME', 'MiniHipatternsFixme' },
+            { 'HACK', 'MiniHipatternsHack' },
+            { 'TODO', 'MiniHipatternsTodo' },
+            { 'NOTE', 'MiniHipatternsNote' },
+            { 'smdebug', 'MiniHipatternsFixme' },
+            { 'smtodo', 'MiniHipatternsHack' },
+            { 'sminfo', 'MiniHipatternsNote' },
+            { 'smnote', 'MiniHipatternsTodo' },
+         }
+
+         -- Block wash: one calmer sibling per badge color, gruvbox bright_* ->
+         -- neutral_*. Same hue, one rung down the ladder.
+         local block_tone = {
+            MiniHipatternsFixme = '#cc241d', -- neutral_red
+            MiniHipatternsHack = '#d79921',  -- neutral_yellow
+            MiniHipatternsTodo = '#689d6a',  -- neutral_aqua
+            MiniHipatternsNote = '#458588',  -- neutral_blue
+         }
+         local function set_block_hl()
+            for base, fg in pairs(block_tone) do
+               vim.api.nvim_set_hl(0, base .. 'Block', { fg = fg })
+            end
+         end
+         set_block_hl()
+         vim.api.nvim_create_autocmd('ColorScheme', {
+            group = vim.api.nvim_create_augroup('user-hipatterns-block', { clear = true }),
+            callback = set_block_hl,
+            desc = 'mini.hipatterns: re-apply comment-block wash colors after theme switch',
+         })
+
+         -- A "block" is a run of consecutive WHOLE-LINE comments, ended by any
+         -- non-comment line. The leader comes from the buffer's own
+         -- 'commentstring', so //, -- and # all work with no per-ft table.
+         -- Returns nil for buffers that have none -- those get no wash.
+         local function comment_prefix(buf_id)
+            local leader = (vim.bo[buf_id].commentstring or ''):match('^%s*(.-)%s*%%s')
+            if leader == nil or leader == '' then return nil end
+            return (leader:gsub('%W', '%%%0')) -- escape for use in a Lua pattern
+         end
+
+         local function is_comment_line(buf_id, lnum, prefix)
+            if lnum < 1 then return false end
+            local l = vim.api.nvim_buf_get_lines(buf_id, lnum - 1, lnum, false)[1]
+            return l ~= nil and l:find('^%s*' .. prefix) ~= nil
          end
 
          require('mini.hipatterns').setup({
@@ -321,6 +374,35 @@ return {
                smtodo = { pattern = ci_word('smtodo'), group = 'MiniHipatternsHack' },
                sminfo = { pattern = ci_word('sminfo'), group = 'MiniHipatternsNote' },
                smnote = { pattern = ci_word('smnote'), group = 'MiniHipatternsTodo' },
+
+               -- Tint a whole comment block when its FIRST line carries a
+               -- keyword. Evaluated per line (each line walks up to its own
+               -- block head) rather than as one tall extmark off line 1, so a
+               -- line typed at the bottom of the block is washed immediately
+               -- instead of waiting for line 1 to be re-rendered.
+               -- Caveat: deleting the keyword from the head leaves the lines
+               -- below stale until they are themselves touched.
+               -- priority 199 keeps it under the badges (200), so the keyword
+               -- on the head line stays a bright pill.
+               comment_block = {
+                  pattern = function(buf_id)
+                     local prefix = comment_prefix(buf_id)
+                     if prefix == nil then return nil end
+                     return '^()%s*' .. prefix .. '.*()$'
+                  end,
+                  group = function(buf_id, _, data)
+                     local prefix = comment_prefix(buf_id)
+                     if prefix == nil then return nil end
+                     local head = data.line
+                     while is_comment_line(buf_id, head - 1, prefix) do head = head - 1 end
+                     local text = vim.api.nvim_buf_get_lines(buf_id, head - 1, head, false)[1] or ''
+                     for _, kw in ipairs(keywords) do
+                        if text:find('%f[%w]' .. ci_body(kw[1]) .. '%f[%W]') then return kw[2] .. 'Block' end
+                     end
+                     return nil
+                  end,
+                  extmark_opts = { priority = 199 },
+               },
 
                -- Highlight hex color strings (`#rrggbb`) using that color
                hex_color = require('mini.hipatterns').gen_highlighter.hex_color(),
