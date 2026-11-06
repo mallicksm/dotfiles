@@ -1,29 +1,24 @@
--- mason + mason-lspconfig + mason-tool-installer + nvim-lspconfig + fidget +
--- lazydev. Order: mason -> mason-tool-installer (binaries) -> mason-lspconfig
--- (LSPs) -> nvim-lspconfig (per-server config + LspAttach keymaps).
+-- LSP stack. Plugins are already on disk (vim.pack), so this file only does
+-- setup; the nvim.easy twin wraps the same body in a lazy.nvim spec.
 
 require('mason').setup({})
 
 require('mason-tool-installer').setup({
    ensure_installed = {
       'tree-sitter-cli', -- needed by nvim-treesitter (main) to compile parsers
-      'shfmt',           -- bash / sh formatter (Go static binary, no glibc dep)
-      'shellcheck',      -- bash / sh linter (Haskell static binary)
-      'tclint',          -- Tcl linter; also installs the `tclfmt` binary
+      'shfmt',           -- bash / sh formatter
+      'shellcheck',      -- bash / sh linter
+      'tclint',          -- Tcl linter; also installs tclfmt
       'black',           -- Python formatter (used via conform)
    },
    run_on_start = true,
 })
 
--- fidget removed: noice.nvim already renders LSP progress (lsp.progress is on
--- by default in noice). The plugin is also dropped from plugins.lua's vim.pack
--- spec list; remove the on-disk pack/ entry with :lua vim.pack.del{'fidget.nvim'}.
 require('lazydev').setup({
    library = { { path = '${3rd}/luv/library', words = { 'vim%.uv' } } },
 })
 
--- Diagnostic display: nvim 0.11+ defaults virtual_text=off; opt back in
--- with a small bullet prefix and severity-sorted ordering.
+-- nvim 0.11+ defaults virtual_text=off; opt back in.
 vim.diagnostic.config({
    virtual_text     = { prefix = '●', spacing = 2 },
    signs            = true,
@@ -33,44 +28,39 @@ vim.diagnostic.config({
    float            = { border = 'rounded', source = 'if_many' },
 })
 
--- Per-buffer LSP keymaps -- attached when ANY LSP attaches to a buffer.
+-- Per-buffer keymaps, attached when any LSP attaches. The goto/list actions go
+-- through snacks.picker; wrapping in function() defers require() to keypress.
+-- Reference highlighting lives in snacks.words (plugins/snacks.lua).
 vim.api.nvim_create_autocmd('LspAttach', {
    group    = vim.api.nvim_create_augroup('user-lsp-attach', { clear = true }),
    callback = function(event)
       local map = function(keys, func, desc, mode)
-         mode = mode or 'n'
-         vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+         vim.keymap.set(mode or 'n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
       end
 
-      -- LSP picker actions go through snacks.picker (telescope removed).
-      map('gd',         function() require('snacks').picker.lsp_definitions() end,        '[G]oto [D]efinition')
-      map('gr',         function() require('snacks').picker.lsp_references() end,         '[G]oto [R]eferences')
-      map('<leader>cc', function() require('snacks').picker.lsp_type_definitions() end,   '[c]ode: type definition ([c][c])')
-      map('<leader>cs', function() require('snacks').picker.lsp_workspace_symbols() end,  '[c]ode: workspace [S]ymbols')
-      map('<leader>cr', vim.lsp.buf.rename, '[c]ode: [r]ename')
-      map('<leader>ca', vim.lsp.buf.code_action, '[c]ode: code [a]ction', { 'n', 'x' })
-      map('gD',         vim.lsp.buf.declaration,                                          '[G]oto [D]eclaration')
-      map('K',          function() vim.lsp.buf.hover({ border = 'rounded' }) end,         'Documentation')
-
-      -- The hand-rolled CursorHold/CursorMoved document_highlight pair moved
-      -- into snacks.words (configured in plugins/snacks.lua). snacks.words
-      -- attaches per-buf on LspAttach, debounces the highlight call, and gives
-      -- us ]] / [[ jumps between references for free.
+      map('gd',         function() require('snacks').picker.lsp_definitions() end,       '[G]oto [D]efinition')
+      map('gr',         function() require('snacks').picker.lsp_references() end,        '[G]oto [R]eferences')
+      map('<leader>cc', function() require('snacks').picker.lsp_type_definitions() end,  '[c]ode: type definition ([c][c])')
+      map('<leader>cs', function() require('snacks').picker.lsp_workspace_symbols() end, '[c]ode: workspace [S]ymbols')
+      map('<leader>cr', vim.lsp.buf.rename,                                              '[c]ode: [r]ename')
+      map('<leader>ca', vim.lsp.buf.code_action,                                         '[c]ode: code [a]ction', { 'n', 'x' })
+      map('gD',         vim.lsp.buf.declaration,                                         '[G]oto [D]eclaration')
+      map('K',          function() vim.lsp.buf.hover({ border = 'rounded' }) end,        'Documentation')
    end,
 })
 
--- Default capabilities for every server (enriched by blink.cmp).
+-- Capabilities for every server, from blink.cmp.
 vim.lsp.config('*', {
    capabilities = require('blink.cmp').get_lsp_capabilities(),
 })
 
--- Mason-managed servers (lua_ls, bashls) inherit '*' and are auto-enabled.
+-- Mason-managed servers inherit '*' and are auto-enabled.
 require('mason-lspconfig').setup({
    ensure_installed = { 'lua_ls', 'bashls' },
    automatic_enable = true,
 })
 
--- Standalone servers (NOT installed via Mason: clangd / verible / pyright).
+-- Standalone servers (not Mason-installed).
 vim.lsp.config('clangd', {
    cmd          = { 'clangd' },
    filetypes    = { 'c', 'cpp' },
@@ -78,23 +68,23 @@ vim.lsp.config('clangd', {
 })
 
 vim.lsp.config('verible', {
-   -- cmd as a function so we can opportunistically inject --file_list_path
-   -- from the project's filelist.f. No notify -- nvim-notify (via noice)
-   -- shows DEBUG-level messages too, so even DEBUG popped a toast on every
-   -- project open. Inspect via :LspInfo / :checkhealth lsp instead.
+   -- cmd is a function so we can inject the project's filelist.f and pin cwd.
+   -- Inspect via :LspInfo / :checkhealth lsp -- no notify, since nvim-notify
+   -- (via noice) toasts even DEBUG messages on every project open.
    cmd = function(dispatchers)
       local cmd_args = {
          'verible-verilog-ls',
          '--rules_config=' .. vim.fn.expand('~/dotfiles/formatters/verible-rules'),
       }
       local root = vim.fs.root(0, { '.git' })
-      if root then
-         local fl = root .. '/filelist.f'
-         if vim.uv.fs_stat(fl) then
-            table.insert(cmd_args, '--file_list_path=' .. fl)
-         end
+      if root and vim.uv.fs_stat(root .. '/filelist.f') then
+         table.insert(cmd_args, '--file_list_path=' .. root .. '/filelist.f')
       end
-      return vim.lsp.rpc.start(cmd_args, dispatchers)
+      -- cwd MUST be the repo root: verible resolves `include against its own
+      -- working directory, so starting inside mac/.../md80 resolves that dir's
+      -- all_includes.vh, which pulls five whole .sv packages into every file
+      -- and SIGSEGVs SymbolTable::Builder.
+      return vim.lsp.rpc.start(cmd_args, dispatchers, { cwd = root })
    end,
    filetypes    = { 'sv' },
    root_markers = { '.git' },
