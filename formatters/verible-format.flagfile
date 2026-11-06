@@ -7,9 +7,20 @@
 # House style: 3-space indent, aligned port declarations + named-port
 # connections, 120-column limit (matches AscentLint LINE_LENGTH=120 so the
 # formatter and lint agree on wrapping).
+#
+# Two things alignment will NOT do, both by design in verible:
+#   - a line whose formatted width exceeds --column_limit is emitted
+#     byte-for-byte unchanged (--try_wrap_long_lines defaults to false), so a
+#     long trailing // comment makes a declaration skip formatting entirely;
+#   - an alignment group spans every consecutive declaration (blank lines and
+#     comments do NOT split it; only a statement like assign/localparam does),
+#     and if aligning the group would push any row past --column_limit the
+#     whole group is flush-left instead. One wide package type among plain
+#     `logic` declarations therefore unaligns the entire run.
 --column_limit=120
 --indentation_spaces=3
 --port_declarations_indentation=indent
 --port_declarations_alignment=align
 --named_port_indentation=indent
 --named_port_alignment=align
+--module_net_variable_alignment=align
