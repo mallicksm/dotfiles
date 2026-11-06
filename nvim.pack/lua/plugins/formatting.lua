@@ -61,7 +61,11 @@ require('conform').setup({
       python   = { 'black' },
       c        = { 'clang_format' },
       cpp      = { 'clang_format' },
-      sv       = { 'verible_verilog_format' },
+      -- verible strips trailing whitespace on code lines but leaves comment
+      -- interiors untouched by design, and there is no flag for it -- so run
+      -- conform's builtin trim pass after it. NOT applied to markdown, where
+      -- two trailing spaces are a hard line break.
+      sv       = { 'verible_verilog_format', 'trim_whitespace' },
       semifore = { 'semiforefmt' },
       sh       = { 'shfmt' },
       bash     = { 'shfmt' },

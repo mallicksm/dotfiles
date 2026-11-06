@@ -128,6 +128,10 @@ local function can_persist_view(buf)
    if vim.bo[buf].buftype ~= "" then return false end
    if vim.api.nvim_buf_get_name(buf) == "" then return false end
    if persist_view_exclude[vim.bo[buf].filetype] then return false end
+   -- Floating windows are picker previews. They load the REAL buffer, so every
+   -- check above passes, and closing the float would mkview over your saved
+   -- folds with the preview's all-open state.
+   if vim.api.nvim_win_get_config(0).relative ~= "" then return false end
    return true
 end
 
@@ -140,13 +144,32 @@ vim.api.nvim_create_autocmd("BufWinLeave", {
    end,
 })
 
+-- treesitter builds folds asynchronously, so a view file's `sil! normal! zc`
+-- lines are silently dropped when loadview wins the race against the parser --
+-- foldlevel gets restored but individual closed folds do not. Retry a few
+-- times with backoff, and stop as soon as the cursor moves so a late retry
+-- never yanks you back to the saved position.
+local function restore_view(buf, win, attempt, anchor)
+   if attempt > 5 then return end
+   if not (vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_win_is_valid(win)) then return end
+   if vim.api.nvim_win_get_buf(win) ~= buf or vim.api.nvim_get_current_win() ~= win then return end
+   if anchor and vim.api.nvim_win_get_cursor(win)[1] ~= anchor then return end
+
+   pcall(vim.cmd.loadview, { mods = { emsg_silent = true } })
+
+   local landed = vim.api.nvim_win_get_cursor(win)[1]
+   if vim.fn.foldclosed(landed) ~= -1 then return end -- folds are back, done
+   vim.defer_fn(function() restore_view(buf, win, attempt + 1, landed) end, 120 * attempt)
+end
+
 vim.api.nvim_create_autocmd("BufWinEnter", {
    group = persist_view_group,
    callback = function(event)
       if not can_persist_view(event.buf) then return end
+      local win = vim.api.nvim_get_current_win()
       vim.schedule(function()
          if can_persist_view(event.buf) then
-            pcall(vim.cmd.loadview, { mods = { emsg_silent = true } })
+            restore_view(event.buf, win, 1, nil)
          end
       end)
    end,

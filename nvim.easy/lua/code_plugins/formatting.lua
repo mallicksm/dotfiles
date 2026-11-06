@@ -84,7 +84,11 @@ return {
                python = { 'black' },                                 -- pip install black
                c = { 'clang_format' },                               -- gcc13 + clang11
                cpp = { 'clang_format' },                             -- gcc13 + clang11
-               sv = { 'verible_verilog_format' },                    -- https://github.com/chipsalliance/verible/releases
+               -- verible strips trailing whitespace on code lines but leaves comment
+               -- interiors untouched by design, and there is no flag for it -- so run
+               -- conform's builtin trim pass after it. NOT applied to markdown, where
+               -- two trailing spaces are a hard line break.
+               sv = { 'verible_verilog_format', 'trim_whitespace' },  -- https://github.com/chipsalliance/verible/releases
                semifore = { 'semiforefmt' },
                sh = { 'shfmt' },                                     -- mason: shfmt
                bash = { 'shfmt' },                                   -- shebang-detected #!/bin/bash buffers
