@@ -1,34 +1,60 @@
 #!/usr/bin/env bash
 #===============================================================================
-# nvim_local_install.sh -- Neovim, non-root into ~/.local/tools + ~/.local/bin.
+# nvim_local_install.sh -- Neovim, prebuilt, non-root.
 #
-# Uses the neovim/neovim-releases repo (static builds that run on older glibc,
-# e.g. EL8) by default. Grabs the LATEST release; pin with NVIM_VERSION, e.g.:
-#     NVIM_VERSION=v0.11.3 ./nvim_local_install.sh
-# Set NVIM_REPO=neovim/neovim to use the mainline (newer-glibc) builds instead.
+# Pulls from neovim/neovim-releases by default -- those are the static builds
+# that still run on old glibc (EL8). Set $NVIM_REPO=neovim/neovim for the
+# mainline builds instead.
+#
+# Unpacks into ~/.local/tools/nvim_<tag>, retags ~/.local/tools/nvim_latest,
+# and links ~/.local/bin/nvim at it, so the bin symlink never has to change.
+#
+# Newest release by default; pin with $NVIM_VERSION or -r (e.g. v0.11.3).
+#
+# Spec: ~/dotfiles/install/recipe.md
 #===============================================================================
-set -euo pipefail
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
+set -uo pipefail
+source "$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/recipe.sh"
 
-sm_require curl tar
+TOOL=nvim
+TOOL_DESC="Neovim editor"
+TOOL_REPO="${NVIM_REPO:-neovim/neovim-releases}"
+TOOL_PIN_VAR=NVIM_VERSION
+TOOL_PIN_DEFAULT=v0.11.3
+TOOL_BINS=(nvim)
+TOOL_NEEDS=(curl tar)
+TOOL_JOBS=(check fetch install link verify)
+TOOL_ENV_EXTRA="  \$NVIM_REPO      release repo (default: neovim/neovim-releases, old-glibc safe)"
+TOOL_USAGE_EXTRA="The config this drives lives in ~/dotfiles/nvim.pack (default, vim.pack) and
+~/dotfiles/nvim.easy (lazy.nvim); the 'vi' wrapper in utils/bash_nvim.sh picks.
+nvim.pack needs Neovim 0.12+ for vim.pack, so do not pin below that for it."
+RECIPE_JOB_DESC[install]="copy the unpacked tree to \$TOOLSDIR/nvim_<tag> and retag nvim_latest"
+RECIPE_JOB_DESC[link]="symlink \$TOOLSDIR/nvim_latest/bin/nvim into \$BIN"
 
-repo="${NVIM_REPO:-neovim/neovim-releases}"
-tag="$(sm_resolve_version "${NVIM_VERSION:-}" "$repo")"
-sm_banner neovim "$tag"
+NVIM_ASSET="nvim-linux-$(uname -m).tar.gz"
 
-dst="$TOOLSDIR/nvim_${tag}"
-rm -rf "$dst" && mkdir -p "$dst"
-Pushd "$dst"
+job_fetch() {
+   rc_workdir
+   rc_fetch_extract "https://github.com/$TOOL_REPO/releases/download/$VER/$NVIM_ASSET"
+}
 
-asset="nvim-linux-x86_64.tar.gz"
-sm_fetch_extract "https://github.com/${repo}/releases/download/${tag}/${asset}"
+job_install() {
+   local dst="$TOOLSDIR/nvim_$VER"
+   rc_rmrf "$dst"
+   rc_mkdir "$dst"
+   run_sh "d=\$(find . -maxdepth 1 -type d -name 'nvim-linux*' | head -1); \
+[ -n \"\$d\" ] || { echo 'no nvim-linux* dir after extract' >&2; exit 1; }; \
+cp -r \"\$d\"/. $(printf '%q' "$dst")/" || {
+      record install FAIL "no nvim-linux* directory after extracting $NVIM_ASSET"
+      return 1
+   }
+   step / ln -sfn "$dst" "$TOOLSDIR/nvim_latest"
+   record install OK "$dst (nvim_latest retagged)"
+}
 
-# The tarball unpacks to nvim-linux-x86_64/; keep a stable nvim_latest symlink
-# alongside the versioned dir so the bin symlink never needs updating.
-extracted="$(find . -maxdepth 1 -type d -name 'nvim-linux*' | head -1)"
-ln -sfn "$dst/${extracted#./}" "$TOOLSDIR/nvim_latest"
-Popd
+job_link() {
+   rc_link_bin "$TOOLSDIR/nvim_latest/bin/nvim" nvim
+}
 
-sm_link_bin "$TOOLSDIR/nvim_latest/bin/nvim" nvim
-completed "nvim ${tag} ready: $("$BIN/nvim" --version | head -1)"
+recipe_main "$@"
 # vim: ts=3 sts=3 sw=3 et

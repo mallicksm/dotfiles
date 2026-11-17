@@ -1,47 +1,176 @@
 #!/usr/bin/env bash
 #===============================================================================
-# Bash Script
-# Created: Feb-14-2023
-# Author: soummya
+# dotfiles.sh -- set up this Unix environment: link the dotfiles, install the tools.
 #
-# Note:
+# Two halves:
+#   * LINKING  -- symlink ~/dotfiles/initrc/* into place. Owned by this file.
+#   * INSTALLING -- delegated, one tool per recipe, to
+#                 ~/dotfiles/install/<tool>_local_install.sh.
 #
-# Description: dotfiles executor to setup Unix environment.
+# Every installer is its own script with its own -h, version pinning and
+# dry-run preview; this file only decides which ones to run. To work on a
+# single tool, call its installer directly:
+#     ~/dotfiles/install/starship_local_install.sh -h
 #
+# Created: Feb-14-2023  Author: soummya
+# Spec: ~/dotfiles/install/recipe.md  (the installer engine)
 #===============================================================================
 # shellcheck source=utils/bash_first.sh
-# bash_first.sh provides everything dotfiles.sh needs at install/link time:
-# colors, info/warn/error/completed/print/printne, has, Pushd/Popd, download.
+# bash_first.sh provides everything dotfiles.sh needs at link time: colors,
+# info/warn/error/completed/print/printne, has, Pushd/Popd, download.
 # Domain-specific helpers (build_from_recipe, ifont, ...) remain in
 # bash_snippets.sh and are NOT needed here.
 source ~/dotfiles/utils/bash_first.sh 2> /dev/null
 cdir=$(dirname "$(realpath "$0")")
+prog="${0##*/}"
+INSTALL_DIR="$cdir/install"
 
+#-------------------------------------------------------------------------------
+# Actions
+#-------------------------------------------------------------------------------
+# Tools installed by `all`, in order. Each name maps to
+# install/<name>_local_install.sh. Everything else in install/ is deliberately
+# opt-in -- run it by name, or use install/install_all.sh for the full set.
+CORE_TOOLS=(clang_format z starship zellij fzf)
+
+# action -> one-line description, for --help. Order matters here.
+ACTION_ORDER=(all linkrc install check tools)
+declare -A ACTION_DESC=(
+   [all]="linkrc, then install the core tools (${CORE_TOOLS[*]}) and zvim"
+   [linkrc]="symlink initrc/* into \$HOME (and pick the per-OS kitty.conf)"
+   [install]="install the named tools, or the core set with no names"
+   [check]="report installed vs upstream version for every known tool"
+   [tools]="list every installer in install/ and exit"
+)
+
+# Legacy action names kept because they are in muscle memory and in corp
+# scripts: old name -> what it now does.
+declare -A LEGACY_ACTIONS=(
+   [getstarship]="install starship"
+   [getz]="install z"
+   [getfzf]="install fzf"
+   [getfonts]="install fonts"
+   [getnpm]="install node"
+   [zellij]="install zellij"
+   [clang-format]="install clang_format"
+   [install_zvim]="link ~/dotfiles/utils/zvim into ~/.local/bin"
+)
+
+#-------------------------------------------------------------------------------
+# usage
+#-------------------------------------------------------------------------------
+usage() {
+   cat <<EOF
+Usage: $prog [-n] [ACTION] [ARGS...]
+
+Set up this environment: link the dotfiles, install the tools.
+
+Actions (default: all):
+$(for a in "${ACTION_ORDER[@]}"; do printf '  %-9s %s\n' "$a" "${ACTION_DESC[$a]}"; done)
+
+Options:
+  -n, --dry-run   show every change without making it (also previews installs)
+  -h, --help      show this help and exit
+
+Installing:
+  Each tool is a standalone recipe in install/, with its own help, version
+  pinning (-r / a \$<TOOL>_VERSION env var), job selection and dry run:
+
+    $prog install starship zellij        # these two
+    $prog install                        # the core set: ${CORE_TOOLS[*]}
+    $prog -n install nvim                # preview without touching anything
+    install/nvim_local_install.sh -h     # everything that one tool can do
+
+  '$prog tools' lists them all. install/install_all.sh runs the whole set,
+  including the groups too slow for a default run (from-source builds).
+
+  Tools that take their own positional arguments (fonts) keep their legacy
+  action, since '$prog install' reads every word after it as a tool name:
+
+    $prog getfonts JetBrainsMono Meslo
+
+Checking what is stale:
+    $prog check                          # installed vs upstream, every tool
+
+Legacy action names, still accepted:
+$(for a in $(printf '%s\n' "${!LEGACY_ACTIONS[@]}" | sort); do
+     printf '  %-14s -> %s\n' "$a" "${LEGACY_ACTIONS[$a]}"
+  done)
+
+Examples:
+  $prog                     # the usual: link everything, install the core tools
+  $prog -n                  # ...but show it first
+  $prog linkrc              # re-link dotfiles only, install nothing
+  $prog install nvim verible lazygit
+EOF
+}
+
+die() { echo "$prog: error: $*" >&2; echo >&2; usage >&2; exit 2; }
+
+#-------------------------------------------------------------------------------
+# Option parsing
 #-------------------------------------------------------------------------------
 # --dry-run / -n : show every filesystem change without performing it.
 # Recognized in any position; stripped before the action dispatch below.
+# -h / --help is handled here too, so it works before the $corp check.
 DRY_RUN=0
 __df_args=()
 for __df_a in "$@"; do
    case "$__df_a" in
       --dry-run|-n) DRY_RUN=1 ;;
+      -h|--help)    usage; exit 0 ;;
       *) __df_args+=("$__df_a") ;;
    esac
 done
-set -- "${__df_args[@]}"
+set -- "${__df_args[@]+"${__df_args[@]}"}"
 unset __df_args __df_a
 if [[ "$DRY_RUN" == "1" ]]; then
    warn "DRY-RUN mode: no filesystem changes will be made"
 fi
 
-# _dry_install <label> : in dry-run, print the install intent and return 0
-# so the caller can `&& return` out of any install_* / get* function.
-# In normal mode, returns 1 (caller proceeds with real work).
-function _dry_install() {
-   [[ "$DRY_RUN" == "1" ]] || return 1
-   warn "  [dry-run] install  $*"
-   return 0
+#-------------------------------------------------------------------------------
+# Installer dispatch
+#-------------------------------------------------------------------------------
+# recipe <tool> [extra args...] : run install/<tool>_local_install.sh.
+# The installers are dry-run by DEFAULT, so -e is what makes them act; not
+# passing it is exactly this script's --dry-run. One switch, two scripts, no
+# second notion of "pretend".
+function recipe() {
+   local tool="$1"; shift
+   local script="$INSTALL_DIR/${tool}_local_install.sh"
+   if [[ ! -x "$script" ]]; then
+      error "no installer for '$tool' ($script)"
+      return 1
+   fi
+   local args=()
+   [[ "$DRY_RUN" == "1" ]] || args+=(-e)
+   info "$tool"
+   "$script" "${args[@]+"${args[@]}"}" "$@"
 }
+
+# install_tools [tool...] : the named tools, or the core set.
+# Deliberately NOT named `install` -- that would shadow /usr/bin/install for
+# everything sourced after it, including ~/corp/dotfiles.sh.
+function install_tools() {
+   local tools=("$@")
+   (( ${#tools[@]} )) || tools=("${CORE_TOOLS[@]}")
+   local t rc=0
+   for t in "${tools[@]}"; do
+      recipe "$t" || rc=1
+   done
+   return "$rc"
+}
+
+# check_tools : read-only version report across everything install/ knows about.
+function check_tools() {
+   "$INSTALL_DIR/install_all.sh" -a -j check
+}
+
+# list_tools : what can be installed.
+function list_tools() {
+   "$INSTALL_DIR/install_all.sh" --list
+}
+
 #-------------------------------------------------------------------------------
 # linkrc -link dotfiles
 function linkrc() {
@@ -101,6 +230,7 @@ function link_kitty_os() {
    info "Linking kitty.os.conf → $src ($(uname -s))"
    ln -sf "$src" "$target"
 }
+
 function linkup() {
    local s=$1 # Source
    local d=$2 # Destination
@@ -174,190 +304,43 @@ function linkup() {
 }
 
 #-------------------------------------------------------------------------------
+# zvim is a two-line wrapper that lives in the repo, so this is a link, not an
+# install -- there is nothing to download and no version to track.
 function install_zvim() {
    linkup ~/dotfiles/utils/zvim ~/.local/bin/zvim
 }
-#-------------------------------------------------------------------------------
-# shellcheck disable=SC2120  # invoked via dispatcher; args optional
-function zellij() {
-   local force="" arg
-   for arg in "$@"; do
-      [[ "$arg" == "-f" || "$arg" == "--force" ]] && force="yes"
-   done
-   _dry_install "zellij  →  ~/.local/bin/zellij${force:+  (force)}" && return
-   echo "Info: Installing zellij"
-   if [[ $(uname -s) == "Linux" ]]; then
-      local src target tarball
-      src="https://github.com/zellij-org/zellij/releases/latest/download/zellij-$(uname -m)-unknown-linux-musl.tar.gz"
-      target=~/.local/bin/zellij
-      tarball="${src##*/}"
-      if [[ (! -f $target) || ($force == "yes") ]]; then
-         mkdir -p "$(dirname "$target")"
-         Pushd "$(dirname "$target")"
-         if download "$src" && tar -xz -f "$tarball"; then
-            chmod +x "$target"
-            "$target" --version
-         else
-            echo "Info: zellij install failed (download or extract)"
-         fi
-         rm -f "$tarball"
-         Popd
-      else
-         echo "Info: Already installed ($("$target" --version 2>/dev/null)). Pass -f to force reinstall."
-      fi
-   elif [[ $(uname -s) == "Darwin" ]]; then
-      if [[ "$force" == "yes" ]]; then
-         brew reinstall zellij
-      else
-         brew install zellij
-      fi
-   else
-      echo "Attention: unsupported OS"
-   fi
-}
 
 #-------------------------------------------------------------------------------
-function clang-format() {
-   _dry_install "clang-format  →  ~/.local/bin/clang-format" && return
-   echo "Info: Installing clang-format"
-   if [[ $(uname -s) == "Linux" ]]; then
-      src=https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-f4f85437/clang-format-16_linux-amd64
-      target=~/.local/bin/clang-format
-      if [[ ! -f $target ]]; then
-         Pushd "$(dirname $target)"
-         download "$src" && mv "${src##*/}" "$(basename $target)" && chmod +x "$(basename $target)" || echo "Info: Download failed"
-         Popd
-      fi
-   elif [[ $(uname -s) == "Darwin" ]]; then
-      brew install clang-format
-   else
-      echo "Attention: unsupported OS"
-   fi
-}
-
-#-------------------------------------------------------------------------------
-function getz() {
-   _dry_install "z.sh  →  ~/dotfiles/initrc/z.sh" && return
-   echo "Info: Installing z"
-   src=https://raw.githubusercontent.com/rupa/z/master/z.sh
-   target=~/dotfiles/initrc/z.sh
-   if [[ ! -f $target ]]; then
-      Pushd "$(dirname $target)"
-      download "$src" && mv "${src##*/}" "$(basename $target)" || echo "Info: Download failed"
-      Popd
-   fi
-}
-
-#-------------------------------------------------------------------------------
-function getstarship() {
-   _dry_install "starship  →  ~/.local/bin/starship" && return
-   echo "Info: Installing starship"
-   local src target tmpdir
-   src=https://starship.rs/install.sh
-   target=~/.local/bin/starship
-   mkdir -p "$(dirname "$target")"
-   if [[ ! -f "$target" ]]; then
-      tmpdir=$(mktemp -d)
-      Pushd "$tmpdir"
-      download "$src" && sh "${src##*/}" -b "$(dirname "$target")" || echo "Info: Download/install failed"
-      Popd
-      rm -rf "$tmpdir"
-   fi
-}
-function getfzf() {
-   _dry_install "fzf  →  ~/.fzf (git clone)" && return
-   [[ ! -d ~/.fzf ]] && git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-}
-# getfonts [-f|--force] [Family ...]
-# Install one or more Nerd Fonts from ryanoasis/nerd-fonts into
-# ~/.local/share/fonts/<Family>/. Each Family is the basename of the release
-# asset (e.g. FiraCode, Hack, JetBrainsMono, Meslo, Iosevka, CascadiaCode).
-# With no args, installs the default set. Skips families already present
-# unless -f/--force is passed. Refreshes fontconfig cache at the end.
-function getfonts() {
-   # The bottom-of-file dispatcher `"${1:-all}" "$@"` passes the function
-   # name itself as $1; absorb it so it isn't treated as a font family.
-   [[ "${1:-}" == "getfonts" ]] && shift
-   local force="" arg families=()
-   for arg in "$@"; do
-      case "$arg" in
-         -f|--force) force="yes" ;;
-         -*) warn "getfonts: unknown flag $arg"; return 2 ;;
-         *) families+=("$arg") ;;
-      esac
-   done
-   [[ ${#families[@]} -eq 0 ]] && families=(FiraCode Hack)
-
-   local fontdir="$HOME/.local/share/fonts"
-   local fam target src zip
-   for fam in "${families[@]}"; do
-      target="$fontdir/$fam"
-      src="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${fam}.zip"
-      _dry_install "$fam Nerd Font  →  $target${force:+  (force)}" && continue
-      if [[ -d "$target" && -n "$(command ls -A "$target" 2>/dev/null)" && "$force" != "yes" ]]; then
-         info "$fam already installed at $target (pass -f to reinstall)"
-         continue
-      fi
-      info "Installing $fam Nerd Font"
-      mkdir -p "$target"
-      Pushd "$target"
-      zip="${src##*/}"
-      if download "$src" && unzip -oq "$zip"; then
-         rm -f "$zip"
-         completed "$fam → $target"
-      else
-         error "$fam install failed (download or unzip)"
-         rm -f "$zip"
-      fi
-      Popd
-   done
-
-   if has fc-cache; then
-      info "Refreshing fontconfig cache"
-      fc-cache -f "$fontdir" >/dev/null 2>&1
-   fi
-}
-getnpm() {
-   local NODE_VERSION="v20.12.2"
-   local ARCH="linux-x64"
-   local INSTALL_DIR="$HOME/.local/node"
-   local TARBALL="node-$NODE_VERSION-$ARCH.tar.xz"
-   local URL="https://nodejs.org/dist/$NODE_VERSION/$TARBALL"
-
-   _dry_install "node $NODE_VERSION + npm  →  $INSTALL_DIR" && return
-
-   echo "📦 Downloading Node.js $NODE_VERSION for $ARCH..."
-   download "$URL" || {
-      echo "❌ Failed to download Node.js"
-      return 1
-   }
-
-   echo "📂 Extracting to $INSTALL_DIR..."
-   mkdir -p "$INSTALL_DIR"
-   tar -xf "$TARBALL" --strip-components=1 -C "$INSTALL_DIR" || {
-      echo "❌ Failed to extract"
-      return 1
-   }
-
-   echo "🧹 Cleaning up..."
-   rm "$TARBALL"
-
-   echo "✅ Node and npm installed locally in $INSTALL_DIR"
-   "$INSTALL_DIR/bin/node" -v
-   "$INSTALL_DIR/bin/npm" -v
-}
-
-#-------------------------------------------------------------------------------
-# shellcheck disable=SC2120  # invoked via dispatcher; args optional
 function all() {
    linkrc
-   clang-format
-   getz
-   getstarship
-   zellij "$@"   # forward -f/--force through to the zellij installer
+   install_tools "${CORE_TOOLS[@]}"
    install_zvim
-   getfzf
 }
+
+#-------------------------------------------------------------------------------
+# Dispatch
+#-------------------------------------------------------------------------------
+# action -> the function to call, with any arguments it is always given.
+# An explicit table rather than `declare -F "$1"`, so that internal helpers
+# (linkup, recipe, die, ...) are not silently runnable as actions and a typo
+# gets a real error instead of a confusing partial run.
+declare -A DISPATCH=(
+   [all]="all"
+   [linkrc]="linkrc"
+   [install]="install_tools"
+   [check]="check_tools"
+   [tools]="list_tools"
+
+   # Legacy names, kept because they are in muscle memory and corp scripts.
+   [getstarship]="install_tools starship"
+   [getz]="install_tools z"
+   [getfzf]="install_tools fzf"
+   [getnpm]="install_tools node"
+   [getfonts]="recipe fonts"
+   [zellij]="recipe zellij"
+   [clang-format]="install_tools clang_format"
+   [install_zvim]="install_zvim"
+)
 
 echo "Executing ~/corp/dotfiles.sh if any.."
 # shellcheck source=/dev/null   # corp file may not exist on every host
@@ -365,7 +348,14 @@ echo "Executing ~/corp/dotfiles.sh if any.."
 
 if [[ -z "${corp:-}" ]]; then
    echo "Please export corp=xxx"
-   exit
+   exit 1
 fi
 
-"${1:-all}" "$@"
+action="${1:-all}"
+[[ -n "${DISPATCH[$action]:-}" ]] || die "unknown action: $action  (try '$prog -h')"
+shift 2> /dev/null   # the rest are the action's own arguments
+
+# Word-split is intentional: the table values are "function arg..." strings
+# built in this file, not user input.
+# shellcheck disable=SC2086
+${DISPATCH[$action]} "$@"

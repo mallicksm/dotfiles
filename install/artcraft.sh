@@ -53,7 +53,7 @@ RESULTS=()
 # Resolve through symlinks so a symlink on $PATH still finds the real checkout.
 SELF="${BASH_SOURCE[0]}"
 command -v realpath >/dev/null 2>&1 && SELF="$(realpath "$SELF" 2>/dev/null || echo "$SELF")"
-SELF_DIR="$(cd -- "$(dirname -- "$SELF")" 2>/dev/null && pwd)"
+SELF_DIR="$(CDPATH= cd -- "$(dirname -- "$SELF")" 2>/dev/null && pwd)"
 
 # Everything that varies between the three apps lives here. Per-product env
 # vars (PDFCRAFT_SRC, GRIDCRAFT_DEST, ...) win over the shared ARTCRAFT_* ones,
@@ -189,7 +189,7 @@ step() {
       return 0
    fi
    mkdir -p "${log%/*}"
-   ( cd "$dir" && "$@" ) >>"$log" 2>&1
+   ( CDPATH= cd -- "$dir" && "$@" ) >>"$log" 2>&1
 }
 
 print_summary() {

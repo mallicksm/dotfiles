@@ -12,7 +12,7 @@
 #   * LATEST, but PINNABLE (hybrid): sm_resolve_version prefers an explicit pin
 #     (env var / arg) and otherwise queries the GitHub "latest release" API.
 #     So a bare run on a fresh box grabs the newest release, while
-#     `RG_VERSION=14.1.1 ./modern_linux_tools.sh` reproduces a known-good one.
+#     `RG_VERSION=14.1.1 ./ripgrep_local_install.sh -e` reproduces a known-good one.
 #
 # Source this at the top of a tool script:
 #     set -euo pipefail

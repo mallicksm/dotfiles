@@ -1,6 +1,11 @@
 --- Markdown link follower used by after/ftplugin/markdown.lua.
 ---
---- Recognises three link targets in `[label](target)`:
+--- Recognises three link forms:
+---   - inline       `[label](target)`
+---   - reference    `[label][ref]`, collapsed `[label][]`, and the
+---                  `[ref]: target` definition line itself.
+---
+--- and three target kinds:
 ---   - `#anchor`        -> jumps to <a id="anchor"></a> or to a heading whose
 ---                         slug matches `anchor`.
 ---   - `https://...` /  -> opens via xdg-open (system browser / mailto).
@@ -26,17 +31,46 @@ local function slugify(s)
    return s
 end
 
+-- Scans the buffer for a `[ref]: target` definition. Reference labels are
+-- case-insensitive per the markdown spec.
+local function resolve_ref(ref)
+   local needle = ref:lower()
+   for _, line in ipairs(vim.api.nvim_buf_get_lines(0, 0, -1, false)) do
+      local key, target = line:match('^%s*%[([^%]]+)%]:%s+(%S+)')
+      if key and key:lower() == needle then
+         return target
+      end
+   end
+   return nil
+end
+
 -- Returns (label, target) of the markdown link the cursor is sitting inside,
--- or (nil, nil) if there isn't one. Iterates over `[..](..)` matches on the
--- current line and picks the one whose byte-range covers the cursor column.
+-- or (nil, nil) if there isn't one. Iterates over the matches on the current
+-- line and picks the one whose byte-range covers the cursor column.
+-- A reference with no matching definition returns (label, nil, ref).
 local function link_at_cursor()
    local line = vim.api.nvim_get_current_line()
    local col = vim.api.nvim_win_get_cursor(0)[2] + 1 -- 1-indexed
+
    for s, label, target, e in line:gmatch('()%[([^%]]+)%]%(([^%)]+)%)()') do
       if col >= s and col < e then
          return label, target
       end
    end
+
+   for s, label, ref, e in line:gmatch('()%[([^%]]+)%]%[([^%]]*)%]()') do
+      if col >= s and col < e then
+         ref = ref ~= '' and ref or label -- collapsed `[label][]`
+         return label, resolve_ref(ref), ref
+      end
+   end
+
+   -- Sitting on the definition line itself: follow it like any other target.
+   local key, target = line:match('^%s*%[([^%]]+)%]:%s+(%S+)')
+   if key then
+      return key, target
+   end
+
    return nil, nil
 end
 
@@ -66,9 +100,13 @@ local function jump_to_anchor(anchor)
 end
 
 function M.follow_link()
-   local _, target = link_at_cursor()
+   local _, target, badref = link_at_cursor()
    if not target then
-      vim.notify('no markdown link under cursor', vim.log.levels.INFO)
+      if badref then
+         vim.notify('undefined link reference: [' .. badref .. ']', vim.log.levels.WARN)
+      else
+         vim.notify('no markdown link under cursor', vim.log.levels.INFO)
+      end
       return
    end
 
