@@ -95,8 +95,8 @@ bind -m vi-insert  -x '"\C-e": zz_explorer'
 bind -m vi-command -x '"\C-e": zz_explorer'
 
 # Ctrl+G ("G for grep") -> live ripgrep + fzf with type-filter hotkeys.
-# Defined in ~/dotfiles/utils/bash_vgrep.sh (function rgrep). F1-F6 inside
-# fzf swap the type filter; Enter opens the matched line in nvim.
+# Defined in ~/dotfiles/utils/bash_rgrep.sh (function rgrep). CTRL-T inside
+# fzf opens a filetype picker; Enter opens the matched line in nvim.
 # Note: overrides bash readline default Ctrl+G (vi: clear-pending-vi-cmd).
 bind -m vi-insert  -x '"\C-g": rgrep'
 bind -m vi-command -x '"\C-g": rgrep'
