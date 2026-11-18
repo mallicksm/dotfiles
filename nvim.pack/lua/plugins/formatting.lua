@@ -41,7 +41,9 @@ require('conform').setup({
       },
       tclfmt = {
          command = 'tclfmt',
-         args    = { '-' },
+         -- Same config tclsp gets (see lspconfig.lua); without -c, tclfmt would
+         -- wrap at its default 100 and fight the linter's 200.
+         args    = { '-c', vim.fn.expand('$HOME') .. '/dotfiles/formatters/tclint.toml', '-' },
          stdin   = true,
       },
       mbake = {

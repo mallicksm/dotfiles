@@ -1,0 +1,26 @@
+# tclint / tclfmt / tclsp config.
+#
+# One file drives all three, the same way ~/dotfiles/formatters/clang-format
+# drives clang-format and ~/dotfiles/formatters/mbake.toml drives mbake:
+#   tclfmt  -- conform passes -c <this file>   (nvim .../formatting.lua)
+#   tclsp   -- LSP init_options.globalSettings.configPath
+#              (nvim .../lspconfig.lua; the path there MUST be absolute)
+#   tclint  -- `tclint -c ~/dotfiles/formatters/tclint.toml <file>` by hand
+#
+# tclint only auto-discovers `tclint.toml` / `.tclint` / pyproject.toml by
+# walking UP from the file being checked, so without the explicit -c and
+# configPath above nothing outside a project tree would ever see this.
+#
+# Valid [style] keys (tclint 0.8.0), with their defaults:
+#   indent                 4 spaces      (left alone -- changing it rewrites
+#                                         every .tcl on the next format)
+#   line-length            100
+#   max-blank-lines        2
+#   indent-namespace-eval  true
+#   spaces-in-braces       never
+#   emacs                  false
+
+[style]
+# 100 is tclint's default and too tight for the EDA scripts here -- long
+# set/lappend lines with full hierarchical paths blow past it constantly.
+line-length = 200

@@ -75,6 +75,25 @@ return {
             capabilities = require('blink.cmp').get_lsp_capabilities(),
          })
 
+         -- tclsp ships in the Mason `tclint` package, so it is auto-enabled
+         -- below and does not belong with the standalone servers; this only
+         -- bolts the config path onto it. tclsp has no -c flag -- it finds
+         -- tclint.toml by walking UP from the file -- so initialization_options
+         -- is the only way to reach a config outside the project tree. The path
+         -- must be ABSOLUTE or tclsp warns and ignores it.
+         --
+         -- MUST come before mason-lspconfig.setup(): automatic_enable attaches
+         -- to already-open buffers right there, and a client started before this
+         -- line gets init_options = nil and silently falls back to the default
+         -- 100-column limit.
+         vim.lsp.config('tclsp', {
+            init_options = {
+               globalSettings = {
+                  configPath = vim.fn.expand('$HOME') .. '/dotfiles/formatters/tclint.toml',
+               },
+            },
+         })
+
          -- Mason-managed servers inherit '*' and are auto-enabled.
          require('mason-lspconfig').setup({
             ensure_installed = { 'lua_ls', 'bashls' },

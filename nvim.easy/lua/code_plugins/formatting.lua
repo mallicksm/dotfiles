@@ -62,7 +62,10 @@ return {
                },
                tclfmt = {
                   command = 'tclfmt',
-                  args = { '-' }, -- read from stdin, write to stdout
+                  -- -c is the same config tclsp gets (see lspconfig.lua); without
+                  -- it tclfmt wraps at its default 100 and fights the linter's 200.
+                  -- Trailing '-' reads from stdin, writes to stdout.
+                  args = { '-c', vim.fn.expand('$HOME') .. '/dotfiles/formatters/tclint.toml', '-' },
                   stdin = true,
                },
                mbake = {
